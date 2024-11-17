@@ -1,23 +1,24 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+    <div class="container-fluid p-0">
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+        <div class="row mb-2 mb-xl-3">
+            <div class="col-auto d-none d-sm-block">
+                <h3><strong>Analytics</strong> Dashboard</h3>
+            </div>
 
-                    {{ __('You are logged in!') }}
-                </div>
+            <div class="col-auto ms-auto text-end mt-n1">
+                <a href="#" class="btn btn-light bg-white me-2">Invite a Friend</a>
+                <a href="#" class="btn btn-primary">New Project</a>
             </div>
         </div>
+
     </div>
-</div>
+
 @endsection
+
+@push('script')
+
+
+@endpush
