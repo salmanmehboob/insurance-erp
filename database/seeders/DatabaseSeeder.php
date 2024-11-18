@@ -18,6 +18,10 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
              PermissionsSeeder::class,
+
+             UsStatesSeeder::class,
+            EmailStatusesSeeder::class,
+            PrimaryLanguagesSeeder::class,
         ]);
     }
 }
