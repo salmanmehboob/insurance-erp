@@ -75,12 +75,12 @@
                 </li>
             @endcan
 
-            @can('view-loan-management')
+            @can('view-agencies')
 
                 <li class="sidebar-item  ">
-                    <a class="sidebar-link" href="{{ route('dashboard') }}">
+                    <a class="sidebar-link" href="{{ route('show-agency') }}">
                         <i class="fas fa-bank"></i>
-                        <span class="align-middle">Loan</span>
+                        <span class="align-middle">Agency Information</span>
                     </a>
                 </li>
             @endcan
