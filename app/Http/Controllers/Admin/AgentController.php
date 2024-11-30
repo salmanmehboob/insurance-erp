@@ -31,10 +31,11 @@ class AgentController extends Controller
      */
     public function index()
     {
-        $agents = Agent::with('state', 'bank')->orderBy('created_at', 'DESC')->get();
+        $agents = Agent::with(['state', 'bank', 'user.permissions' ,'agencies.locations'])->orderBy('created_at', 'DESC')->get();
         $title = 'Agents';
         return view('admin.agent.index', compact('title', 'agents'));
     }
+
 
     /**
      * Show the form for creating a new agent.

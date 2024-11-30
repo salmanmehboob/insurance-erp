@@ -34,6 +34,7 @@ class Agent extends Model
     {
         return $this->hasMany(AgentAgency::class);
     }
+
     public function bank()
     {
         return $this->belongsTo(BankAccount::class, 'bank_id');

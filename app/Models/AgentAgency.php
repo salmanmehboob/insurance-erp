@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AgentAgency extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'agent_id',
@@ -22,5 +22,10 @@ class AgentAgency extends Model
     public function agent()
     {
         return $this->belongsTo(Agent::class);
+    }
+
+    public function locations()
+    {
+        return $this->hasMany(Agency::class,'id');
     }
 }

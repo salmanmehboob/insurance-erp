@@ -44,29 +44,37 @@
                     </thead>
                     <tbody>
                     @foreach($agents as $agent)
+{{--                        {{dd($agent->user)}}--}}
                         <tr>
-                             <td data-bs-toggle="modal" data-bs-target="#agentModal" class="clickable-row"
+                            <td data-bs-toggle="modal" data-bs-target="#agentModal" class="clickable-row"
                                 data-id="{{ $agent->id }}"
-                                data-name="{{ $agent->name }}" data-email="{{ $agent->email }}"
-                                data-phone_no="{{ $agent->phone_no }}" data-city="{{ $agent->city }}"
-                                data-state="{{ $agent->state }}" data-zip_code="{{ $agent->zip_code }}"
-                                data-address="{{ $agent->address }}" data-bank_name="{{ $agent->bank->name ?? 'N/A' }}"
+                                data-name="{{ $agent->name }}"
+                                data-email="{{ $agent->email }}"
+                                data-phone_no="{{ $agent->phone_no }}"
+                                data-city="{{ $agent->city }}"
+                                data-state="{{ $agent->state->name }}"
+                                data-zip_code="{{ $agent->zip_code }}"
+                                data-address="{{ $agent->address }}"
+                                data-bank_name="{{ $agent->bank->bank_name ?? 'N/A' }}"
                                 data-commission_percentage="{{ $agent->commission_in_percentage }}"
                                 data-commission_fee="{{ $agent->commission_fee }}"
-                                >{{ $agent->name }}</td>
+                                data-notes="{{ $agent->note}}"
+                                data-locations="{{ $agent->agencies->flatMap(fn($agency) => $agency->locations->pluck('agency_name'))->implode(', ') ?? 'No Locations' }}"
+                                data-permissions="{{ $agent->user->getAllPermissions()->pluck('id')->join(',') }}"
+                                data-permission-names="{{ $agent->user->getAllPermissions()->pluck('short_name')->join(',') }}"                            >{{ $agent->name }}</td>
                             <td>{{ $agent->email }}</td>
                             <td>{{ $agent->phone_no }}</td>
                             <td>{{ $agent->city }}</td>
                             <td>
                                 <div class="d-flex action-buttons">
-                                    @can('edit-agents')
+                                    @can('edit-agent')
                                         <a title="Edit" href="{{ route('edit-agent', $agent->id) }}"
                                            class="text-primary me-2 action-buttons">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                     @endcan
 
-                                    @can('delete-agents')
+                                    @can('delete-agent')
                                         <a href="javascript:void(0)"
                                            data-url="{{ route('destroy-agent') }}"
                                            data-status="0"
@@ -81,6 +89,7 @@
                             </td>
                         </tr>
                     @endforeach
+
                     </tbody>
                 </table>
             </div>
@@ -139,6 +148,21 @@
                                     <input type="text" class="form-control" id="bank_name" disabled>
                                 </div>
 
+                                <div class="col-md-12">
+                                    <label for="notes" class="form-label">Notes</label>
+                                    <textarea class="form-control" id="notes" disabled></textarea>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="locations" class="form-label">Locations</label>
+                                    <input type="text" class="form-control" id="locations" disabled>
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <h6>Permissions</h6>
+                                    <div id="permissions-container">
+                                        <!-- Checkboxes will be appended here -->
+                                    </div>
+                                </div>
+
                             </div>
                         </form>
                     </div>
@@ -168,6 +192,9 @@
                 var bank_name = $(this).data("bank_name");
                 var commission_percentage = $(this).data("commission_percentage");
                 var commission_fee = $(this).data("commission_fee");
+                var notes = $(this).data("notes");
+                var locations = $(this).data("locations");
+                var permissions = $(this).data("permissions");
 
                 $('#name').val(name);
                 $('#email').val(email);
@@ -179,7 +206,34 @@
                 $('#bank_name').val(bank_name);
                 $('#commission_percentage').val(commission_percentage);
                 $('#commission_fee').val(commission_fee);
-             });
+                $('#notes').val(notes);
+                $('#locations').val(locations);
+                // $('#permissions').val(permissions);
+
+                // Clear the permissions container
+                $("#permissions-container").empty();
+
+                // Retrieve data from the clicked row
+                var permissions = $(this).data("permissions").split(','); // IDs of permissions
+                var permissionNames = $(this).data("permission-names").split(','); // Names of permissions
+
+                // Generate checkboxes dynamically
+                permissionNames.forEach((permissionName, index) => {
+                    var permissionId = permissions[index];
+                    var isChecked = permissions.includes(permissionId.toString()) ? "checked" : "";
+
+                    $("#permissions-container").append(`
+                <div class="form-check">
+                    <input class="form-check-input" disabled type="checkbox" id="permission-${permissionId}" value="${permissionId}" ${isChecked}>
+                    <label class="form-check-label" for="permission-${permissionId}">
+                        ${permissionName}
+                    </label>
+                </div>
+            `);
+                });
+
+            });
+
         });
     </script>
 @endpush
