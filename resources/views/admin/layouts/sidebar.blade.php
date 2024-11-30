@@ -77,12 +77,21 @@
 
             @can('view-agencies')
 
-                <li class="sidebar-item  ">
-                    <a class="sidebar-link" href="{{ route('show-agency') }}">
-                        <i class="fas fa-bank"></i>
-                        <span class="align-middle">Agency Information</span>
+                <li class="sidebar-item">
+                    <a data-bs-target="#agencySetting" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                        <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Agency Setting</span>
                     </a>
+                    <ul id="agencySetting" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                        <li class="sidebar-item  ">
+                            <a class="sidebar-link" href="{{ route('show-agency') }}">
+                                <i class="fas fa-bank"></i>
+                                <span class="align-middle">Agency Information</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+
+
             @endcan
         </ul>
     </div>

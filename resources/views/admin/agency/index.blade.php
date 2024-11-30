@@ -45,18 +45,18 @@
                     </thead>
                     <tbody>
                     @foreach($agencies as $agency)
-                        <tr data-bs-toggle="modal" data-bs-target="#agencyModal" class="clickable-row"
-                            data-id="{{ $agency->id }}"
-                            data-agency_name="{{ $agency->agency_name }}" data-address="{{ $agency->address }}"
-                            data-city="{{ $agency->city }}" data-state_name="{{ $agency->state->name ?? 'N/A' }}"
-                            data-zip_code="{{ $agency->zip_code }}" data-phone="{{ $agency->phone }}"
-                            data-secondary_phone="{{ $agency->secondary_phone }}" data-fax="{{ $agency->fax }}"
-                            data-account_number="{{ $agency->account_number }}"
-                            data-bank_name="{{ $agency->bank->bank_name ?? 'N/A' }}"
-                            data-custom_message="{{ $agency->custom_message }}"
-                            data-logo="{{ showImage($agency->logo, 'logos') }}">
+                        <tr>
                             <td><img src="{{  showImage($agency->logo , 'logos') }}" width="50" height="50"></td>
-                            <td>{{ $agency->agency_name }}</td>
+                            <td data-bs-toggle="modal" data-bs-target="#agencyModal" class="clickable-row"
+                                data-id="{{ $agency->id }}"
+                                data-agency_name="{{ $agency->agency_name }}" data-address="{{ $agency->address }}"
+                                data-city="{{ $agency->city }}" data-state_name="{{ $agency->state->name ?? 'N/A' }}"
+                                data-zip_code="{{ $agency->zip_code }}" data-phone="{{ $agency->phone }}"
+                                data-secondary_phone="{{ $agency->secondary_phone }}" data-fax="{{ $agency->fax }}"
+                                data-account_number="{{ $agency->account_number }}"
+                                data-bank_name="{{ $agency->bank->bank_name ?? 'N/A' }}"
+                                data-custom_message="{{ $agency->custom_message }}"
+                                data-logo="{{ showImage($agency->logo, 'logos') }}">{{ $agency->agency_name }}</td>
                             <td>{{ $agency->address }}</td>
                             <td>{{ $agency->city }}</td>
                             <td>
@@ -168,7 +168,7 @@
 
 
             // When a row is clicked, populate the modal
-            $(".clickable-row").not('.action-buttons').on("click", function() {
+            $(".clickable-row").on("click", function() {
                 var agency_name = $(this).data("agency_name");
                 var address = $(this).data("address");
                 var city = $(this).data("city");

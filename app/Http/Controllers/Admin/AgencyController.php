@@ -97,7 +97,7 @@ class AgencyController extends Controller
         $agency = Agency::find($id);
 
         if (!$agency) {
-            return redirect()->route('admin.agencies.index')->with('error', 'Agency not found.');
+            return redirect()->route('show-agency')->with('error', 'Agency not found.');
         }
 
         $title = 'Edit Agency';
@@ -114,7 +114,7 @@ class AgencyController extends Controller
         $agency = Agency::find($id);
 
         if (!$agency) {
-            return redirect()->route('admin.agencies.index')->with('error', 'Agency not found.');
+            return redirect()->route('show-agency')->with('error', 'Agency not found.');
         }
 
         $validator = Validator::make($request->all(), [
@@ -127,7 +127,7 @@ class AgencyController extends Controller
             'secondary_phone' => 'nullable|string|max:15',
             'fax' => 'nullable|string|max:15',
             'account_number' => 'nullable|string|max:255',
-            'bank_id' => 'nullable|exists:banks,id',
+            'bank_id' => 'nullable|exists:bank_accounts,id',
             'custom_message' => 'nullable|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
@@ -157,7 +157,7 @@ class AgencyController extends Controller
             $agency->update($data);
 
             DB::commit();
-            return redirect()->route('admin.agencies.index')->with('success', 'Agency updated successfully.');
+            return redirect()->route('show-agency')->with('success', 'Agency updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
