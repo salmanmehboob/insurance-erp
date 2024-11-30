@@ -52,14 +52,38 @@ class UpdatePermissionCommand extends Command
             'Delete',
         );
 
+        $agentPermissions = array(
+            'Access Business Report',
+            'Access Daily Transaction Report',
+            'Access Account Reconcile',
+            'Allow Edit/Delete/Void Payments & Deleting Clients',
+            'Allow Agency Setup',
+            'Allow Check Writing and Printing',
+            'Allow Company & User Screen Access',
+            'Allow Postmarking & Mail Logs Edit',
+            'Pre-fill Amount When Taking Payments',
+            'Allow Add/Edit Access for Agency Fees'
+        );
+
         foreach ($modules as $module) {
-            foreach ($permissions as $permission) {
-                $permissionName = $permission . ' ' . $module->name;
-                $permissionExist = Permission::where('short_name', $permissionName)->exists();
-                if ($permissionExist == false) {
-                    Permission::create(['short_name' => $permissionName, 'name' => str_replace(' ', '-', strtolower($permissionName)) , 'module' => $module->id]);
+            if($module->name == 'Agent'){
+                foreach ($agentPermissions as $agp) {
+                    $agentPermissionName = $agp . ' ' . $module->name;
+                    $agentPermissionExist = Permission::where('short_name', $agentPermissionName)->exists();
+                    if ($agentPermissionExist == false) {
+                        Permission::create(['short_name' => $agentPermissionName, 'name' => str_replace(' ', '-', strtolower($agentPermissionName)) , 'module' => $module->id]);
+                    }
+                }
+            }else{
+                foreach ($permissions as $permission) {
+                    $permissionName = $permission . ' ' . $module->name;
+                    $permissionExist = Permission::where('short_name', $permissionName)->exists();
+                    if ($permissionExist == false) {
+                        Permission::create(['short_name' => $permissionName, 'name' => str_replace(' ', '-', strtolower($permissionName)) , 'module' => $module->id]);
+                    }
                 }
             }
+
         }
 
     }

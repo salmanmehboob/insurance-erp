@@ -18,6 +18,7 @@ class ModuleSeeder extends Seeder
             'Users',
             'Roles',
             'Agencies',
+            'Agent',
 
         );
 
