@@ -81,9 +81,8 @@ function showImage($image, $dir)
         // If image is available, return the asset path for storage
         return asset('storage/'   . $image);
     } else {
-        // If no image is found, return a default placeholder image
-        $image = 'placeholder.jpg';
-        return asset('assets/' . $image);
+
+        return asset('backend/img/avatars/placeholder.jpg');
     }
 }
 

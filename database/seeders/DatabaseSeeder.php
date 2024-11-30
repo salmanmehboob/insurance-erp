@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
              UsStatesSeeder::class,
             EmailStatusesSeeder::class,
             PrimaryLanguagesSeeder::class,
+            BankAccountSeeder::class,
         ]);
     }
 }

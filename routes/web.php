@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AgencyController;
+use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\Admin\Dashboard\SuperAdminDashboardController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\RoleController;
@@ -48,6 +49,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('agency/{id}/edit', [AgencyController::class, 'edit'])->name('edit-agency');
     Route::put('update-agency{id}', [AgencyController::class, 'update'])->name('update-agency');
     Route::post('destroy-agency', [AgencyController::class, 'destroy'])->name('destroy-agency');
+
+
+    Route::get('show-agent', [AgentController::class, 'index'])->name('show-agent');
+    Route::get('add-agent', [AgentController::class, 'create'])->name('add-agent');
+    Route::post('store-agent', [AgentController::class, 'store'])->name('store-agent');
+    Route::get('agent/{id}/edit', [AgentController::class, 'edit'])->name('edit-agent');
+    Route::put('update-agent{id}', [AgentController::class, 'update'])->name('update-agent');
+    Route::post('destroy-agent', [AgentController::class, 'destroy'])->name('destroy-agent');
 
 
 });

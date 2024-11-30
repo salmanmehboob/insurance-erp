@@ -88,6 +88,13 @@
                                 <span class="align-middle">Agency Information</span>
                             </a>
                         </li>
+                        <li class="sidebar-item  ">
+                            <a class="sidebar-link" href="{{ route('show-agent') }}">
+                                <i class="fas fa-user-astronaut"></i>
+                                <span class="align-middle">Setup Agent</span>
+                            </a>
+                        </li>
+
                     </ul>
                 </li>
 

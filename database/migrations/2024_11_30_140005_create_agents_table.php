@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('agents', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('user_id'); // Foreign key to US states
             $table->string('address')->nullable();
             $table->string('city');
             $table->unsignedBigInteger('state_id'); // Foreign key to US states
@@ -26,6 +27,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes(); // Soft delete timestamp
             // Foreign key constraint
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('state_id')->references('id')->on('us_states')->onDelete('cascade');
             $table->foreign('bank_id')->references('id')->on('bank_accounts')->onDelete('cascade');
         });
