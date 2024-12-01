@@ -31,7 +31,7 @@ class AgentController extends Controller
      */
     public function index()
     {
-        $agents = Agent::with(['state', 'bank', 'user.permissions' ,'agencies.locations'])->orderBy('created_at', 'DESC')->get();
+        $agents = Agent::with(['state', 'bank', 'user.permissions', 'agencies.locations'])->orderBy('created_at', 'DESC')->get();
         $title = 'Agents';
         return view('admin.agent.index', compact('title', 'agents'));
     }
@@ -155,7 +155,7 @@ class AgentController extends Controller
      */
     public function edit($id)
     {
-        $agent = Agent::find($id);
+        $agent = Agent::with(['agencies.locations', 'user.permissions'])->find($id);
 
         if (!$agent) {
             return redirect()->route('show-agent')->with('error', 'Agent not found.');
@@ -164,33 +164,41 @@ class AgentController extends Controller
         $title = 'Edit Agent';
         $states = UsState::all();
         $banks = BankAccount::all();
-        return view('admin.agent.edit', compact('title', 'agent', 'states', 'banks'));
+        $permissions = Permission::where('module', 4)->get(); // Module 4 Permissions
+        $agencies = Agency::all(); // Assuming `Agency` model for locations
+
+//        dd($agent->agencies);
+        return view('admin.agent.edit', compact('title', 'agent', 'states', 'banks', 'permissions', 'agencies'));
     }
+
 
     /**
      * Update an existing agent in the database.
      */
     public function update(Request $request, $id)
     {
-        $agent = Agent::find($id);
+        $agent = Agent::with('user', 'agencies')->find($id);
 
         if (!$agent) {
             return redirect()->route('show-agent')->with('error', 'Agent not found.');
         }
 
         $validator = Validator::make($request->all(), [
-            'agent_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'address' => 'nullable|string',
             'city' => 'required|string|max:255',
             'state_id' => 'required|exists:us_states,id',
             'zip_code' => 'nullable|string|max:10',
-            'phone' => 'required|string|max:15',
-            'secondary_phone' => 'nullable|string|max:15',
-            'fax' => 'nullable|string|max:15',
-            'account_number' => 'nullable|string|max:255',
-            'bank_id' => 'nullable|exists:bank_accounts,id',
-            'custom_message' => 'nullable|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'phone_no' => 'required|string',
+            'notes' => 'required|string',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $agent->user->id,
+            'username' => 'required|string|max:255',
+            'password' => 'nullable|string|min:8', // Only update if provided
+            'commission_in_percentage' => 'nullable|numeric',
+            'commission_fee' => 'nullable|numeric',
+            'selected_location_ids' => 'nullable|array',
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'exists:permissions,id',
         ]);
 
         if ($validator->fails()) {
@@ -202,23 +210,61 @@ class AgentController extends Controller
         DB::beginTransaction();
 
         try {
+            // Validated data
             $data = $validator->validated();
 
-            // Handle logo upload
-            if ($request->hasFile('logo')) {
-                // Delete old logo if exists
-                if ($agent->logo && \Storage::exists('public/' . $agent->logo)) {
-                    \Storage::delete('public/' . $agent->logo);
-                }
+            // Update user details
+            $updateData = [
+                'email' => $data['email'],
+                'name' => $data['username'],
+            ];
 
-                $logoPath = $request->file('logo')->store('logos', 'public');
-                $data['logo'] = $logoPath;
+            // Only update the password if provided
+            if (!empty($data['password'])) {
+                $updateData['password'] = ($data['password']); // Hash the password before saving
             }
 
-            $agent->update($data);
+            $agent->user->update($updateData);
+
+
+            // Update agent details
+            $agent->update([
+                'name' => $data['name'],
+                'address' => $data['address'],
+                'city' => $data['city'],
+                'state_id' => $data['state_id'],
+                'zip_code' => $data['zip_code'],
+                'phone_no' => $data['phone_no'],
+                'email' => $data['email'],
+                'note' => $data['notes'],
+                'commission_in_percentage' => $data['commission_in_percentage'] ?? null,
+                'commission_fee' => $data['commission_fee'] ?? null,
+            ]);
+
+            // Update permissions
+            if ($request->has('permissions')) {
+                $allPermissions = Permission::whereIn('id', $data['permissions'])->get();
+                $agent->user->syncPermissions($allPermissions);
+            }
+//            dd($agent);
+            // Update location associations (agent_agencies)
+            if (!empty($data['selected_location_ids'])) {
+                $locationIds = array_map('intval', explode(',', trim($data['selected_location_ids'][0], ',')));
+                $agent->agencies()->whereNotIn('agency_id', $locationIds)->delete(); // Remove unselected
+                foreach ($locationIds as $locationId) {
+                    $agent->agencies()->updateOrCreate(
+                        ['agency_id' => $locationId],
+                        ['agent_id' => $agent->id]
+                    );
+                }
+            } else {
+                $agent->agencies()->delete(); // Remove all if none provided
+            }
+
+//            dd($agent);
 
             DB::commit();
-            return redirect()->route('show-agent')->with('success', 'Agent updated successfully.');
+            return redirect()->route('show-agent')->with('success', 'Agent and User updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());

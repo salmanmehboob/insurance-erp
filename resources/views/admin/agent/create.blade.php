@@ -124,7 +124,7 @@
                                         <label class="col-form-label">Phone <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="phone_no" class="form-control"
-                                                   placeholder="Phone Number" value="{{ old('phone_no') }}">
+                                                   placeholder="(999) 999-9999" data-inputmask="'mask': '(999) 999-9999'"value="{{ old('phone_no') }}">
                                             @if ($errors->has('phone_no'))
                                                 <span class="text-danger">{{ $errors->first('phone_no') }}</span>
                                             @endif
@@ -247,7 +247,7 @@
                                     <div class="col-md-5">
                                         <h4>Assigned Locations</h4>
                                         <ul id="selected-list" class="list-group">
-                                            <!-- Selected items will appear here -->
+
                                         </ul>
                                         <!-- Hidden input fields to store selected locations -->
                                         <input type="hidden" id="selected-location-ids" name="selected_location_ids[]">

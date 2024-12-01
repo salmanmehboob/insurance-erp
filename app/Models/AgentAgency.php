@@ -24,6 +24,12 @@ class AgentAgency extends Model
         return $this->belongsTo(Agent::class);
     }
 
+    public function agencies()
+    {
+        return $this->belongsToMany(Agency::class, 'agent_agencies', 'agent_id', 'agency_id');
+    }
+
+
     public function locations()
     {
         return $this->hasMany(Agency::class,'id');
