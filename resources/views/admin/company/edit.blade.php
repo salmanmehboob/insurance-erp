@@ -1,7 +1,15 @@
 @extends('admin.layouts.app')
 
 @push('style')
-    <!-- Add any custom stylesheets here -->
+    <style>
+        .repeater-item {
+            margin-bottom: 20px;
+        }
+
+        .repeater-item .btn-danger {
+            margin-top: 10px;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -9,7 +17,7 @@
     <div class="page-header page-header-light">
         <div class="page-header-content header-elements-md-inline">
             <div class="page-title d-flex">
-                <h4><span class="font-weight-semibold">{{ $title }}</span></h4>
+                <h4><span class="font-weight-semibold"></span>{{ $title }}</h4>
                 <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
             </div>
         </div>
@@ -18,27 +26,25 @@
 
     <!-- Content area -->
     <div class="content">
-        <!-- Form -->
+        <!-- Form validation -->
         <div class="card">
-            <form action="{{ route('update-agent', $agent->id) }}" method="POST" enctype="multipart/form-data"
+            <!-- Company form -->
+            <form action="{{ route('update-company', $company->id) }}" method="POST" enctype="multipart/form-data"
                   class="flex-fill form-validate-jquery">
                 @csrf
                 @method('PUT')
-
                 <div class="card-body">
+
                     <!-- Tab navigation -->
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
                             <a href="#general-tab" class="nav-link active" data-bs-toggle="tab">General</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#location-tab" class="nav-link" data-bs-toggle="tab">Location</a>
+                            <a href="#location-tab" class="nav-link" data-bs-toggle="tab">Attachments</a>
                         </li>
                         <li class="nav-item">
                             <a href="#notes-tab" class="nav-link" data-bs-toggle="tab">Notes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#permission-tab" class="nav-link" data-bs-toggle="tab">Permissions</a>
                         </li>
                     </ul>
 
@@ -46,17 +52,19 @@
                     <div class="tab-content">
                         <!-- General tab -->
                         <div class="tab-pane fade show active" id="general-tab">
+
                             <fieldset class="border p-3 mb-4">
-                                <legend class="mb-3">Contact Information</legend>
+                                <legend class="mb-3 azm-color-444">Contact Information</legend>
                                 <div class="row mt-3">
-                                    <!-- Name -->
+                                    <!-- Company Name -->
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Agent Name <span
-                                                class="text-danger">*</span></label>
+                                        <label class="col-form-label">Company Name <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="name" class="form-control"
-                                                   value="{{ old('name', $agent->name) }}" placeholder="Agent Name">
-                                            @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                                            <input type="text" name="name" class="form-control" placeholder="Company Name"
+                                                   value="{{ old('name', $company->name) }}">
+                                            @if ($errors->has('name'))
+                                                <span class="text-danger">{{ $errors->first('name') }}</span>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -64,9 +72,11 @@
                                     <div class="col-md-6">
                                         <label class="col-form-label">Address</label>
                                         <div class="form-group">
-                                            <input type="text" name="address" class="form-control"
-                                                   value="{{ old('address', $agent->address) }}" placeholder="Address">
-                                            @error('address') <span class="text-danger">{{ $message }}</span> @enderror
+                                            <input type="text" name="address" class="form-control" placeholder="Address"
+                                                   value="{{ old('address', $company->address) }}">
+                                            @if ($errors->has('address'))
+                                                <span class="text-danger">{{ $errors->first('address') }}</span>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -74,9 +84,11 @@
                                     <div class="col-md-4">
                                         <label class="col-form-label">City</label>
                                         <div class="form-group">
-                                            <input type="text" name="city" class="form-control"
-                                                   value="{{ old('city', $agent->city) }}" placeholder="City">
-                                            @error('city') <span class="text-danger">{{ $message }}</span> @enderror
+                                            <input type="text" name="city" class="form-control" placeholder="City"
+                                                   value="{{ old('city', $company->city) }}">
+                                            @if ($errors->has('city'))
+                                                <span class="text-danger">{{ $errors->first('city') }}</span>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -89,25 +101,26 @@
                                                 <option></option>
                                                 @foreach($states as $state)
                                                     <option value="{{ $state->id }}"
-                                                        {{ old('state_id', $agent->state_id) == $state->id ? 'selected' : '' }}>
+                                                        {{ old('state_id', $company->state_id) == $state->id ? 'selected' : '' }}>
                                                         {{ $state->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            @error('state_id') <span class="text-danger">{{ $message }}</span> @enderror
+                                            @if ($errors->has('state_id'))
+                                                <span class="text-danger">{{ $errors->first('state_id') }}</span>
+                                            @endif
                                         </div>
                                     </div>
-
-
 
                                     <!-- Zip Code -->
                                     <div class="col-md-4">
                                         <label class="col-form-label">Zip Code</label>
                                         <div class="form-group">
-                                            <input type="text" name="zip_code" class="form-control"
-                                                   value="{{ old('zip_code', $agent->zip_code) }}"
-                                                   placeholder="Zip Code">
-                                            @error('zip_code') <span class="text-danger">{{ $message }}</span> @enderror
+                                            <input type="text" name="zip_code" class="form-control" placeholder="Zip Code"
+                                                   value="{{ old('zip_code', $company->zip_code) }}">
+                                            @if ($errors->has('zip_code'))
+                                                <span class="text-danger">{{ $errors->first('zip_code') }}</span>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -116,70 +129,65 @@
                                         <label class="col-form-label">Phone <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="phone_no" class="form-control"
-                                                   value="{{ old('phone_no', $agent->phone_no) }}"
-                                                   placeholder="(999) 999-9999" data-inputmask="'mask': '(999) 999-9999'">
-                                            @error('phone_no') <span class="text-danger">{{ $message }}</span> @enderror
+                                                   placeholder="(999) 999-9999" data-inputmask="'mask': '(999) 999-9999'"
+                                                   value="{{ old('phone_no', $company->phone_no) }}">
+                                            @if ($errors->has('phone_no'))
+                                                <span class="text-danger">{{ $errors->first('phone_no') }}</span>
+                                            @endif
                                         </div>
                                     </div>
 
-                                    <!-- Email -->
+                                    <!-- Fax -->
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Email</label>
+                                        <label class="col-form-label">Fax <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="email" name="email" class="form-control"
-                                                   value="{{ old('email', $agent->email) }}" placeholder="Email">
-                                            @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                                            <input type="text" name="fax_no" class="form-control"
+                                                   placeholder="(999) 999-9999" data-inputmask="'mask': '(999) 999-9999'"
+                                                   value="{{ old('fax_no', $company->fax_no) }}">
+                                            @if ($errors->has('fax_no'))
+                                                <span class="text-danger">{{ $errors->first('fax_no') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="col-form-label">Website <span class="text-danger">*</span></label>
+                                        <div class="form-group">
+                                            <input type="text" name="website" class="form-control" placeholder="Website"
+                                                   value="{{ old('website', $company->website) }}">
+                                            @if ($errors->has('website'))
+                                                <span class="text-danger">{{ $errors->first('website') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="col-form-label">Agency Code <span class="text-danger">*</span></label>
+                                        <div class="form-group">
+                                            <input type="text" name="agency_code" class="form-control"
+                                                   placeholder="Agency Code" value="{{ old('agency_code', $company->agency_code) }}">
+                                            @if ($errors->has('agency_code'))
+                                                <span class="text-danger">{{ $errors->first('agency_code') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                             </fieldset>
 
-                            <!-- Login Details -->
                             <fieldset class="border p-3 mb-4">
-                                <legend class="mb-3">Login</legend>
+                                <legend class="mb-3 azm-color-444">Commission</legend>
                                 <div class="row mt-3">
-                                    <div class="col-md-6">
-                                        <label class="col-form-label">User ID</label>
-                                        <div class="form-group">
-                                            <input type="text" name="username" class="form-control"
-                                                   value="{{ old('username', $agent->user->name) }}"
-                                                   placeholder="User ID">
-                                            @error('username') <span class="text-danger">{{ $message }}</span> @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="col-form-label">Password</label>
-                                        <div class="form-group">
-                                            <input type="password" name="password" class="form-control"
-                                                   placeholder="***********">
-                                            @error('password') <span class="text-danger">{{ $message }}</span> @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <!-- Commission -->
-                            <fieldset class="border p-3 mb-4">
-                                <legend class="mb-3">Commission</legend>
-                                <div class="row mt-3">
+                                    <!-- Commission -->
                                     <div class="col-md-6">
                                         <label class="col-form-label">Commission (%)</label>
                                         <div class="form-group">
                                             <input type="number" name="commission_in_percentage" class="form-control"
-                                                   value="{{ old('commission_in_percentage', $agent->commission_in_percentage) }}"
-                                                   placeholder="Commission %">
-                                            @error('commission_in_percentage') <span
-                                                class="text-danger">{{ $message }}</span> @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="col-form-label">Flat Fee</label>
-                                        <div class="form-group">
-                                            <input type="number" name="commission_fee" class="form-control"
-                                                   value="{{ old('commission_fee', $agent->commission_fee) }}"
-                                                   placeholder="Flat Fee">
-                                            @error('commission_fee') <span
-                                                class="text-danger">{{ $message }}</span> @enderror
+                                                   placeholder="Commission Percentage"
+                                                   value="{{ old('commission_in_percentage', $company->commission_in_percentage) }}">
+                                            @if ($errors->has('commission_in_percentage'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('commission_in_percentage') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -189,127 +197,92 @@
                         <!-- Location tab -->
                         <div class="tab-pane fade" id="location-tab">
                             <div class="row mt-3">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <h4>All Locations</h4>
-                                        <ul id="available-list" class="list-group">
-                                            @php
-                                                // Collect all assigned location IDs
-                                                $assignedLocationIds = $agent->agencies->flatMap(function ($agency) {
-                                                    return $agency->locations->pluck('id');
-                                                })->toArray();
-                                            @endphp
-
-                                            @foreach($agencies as $row)
-                                                @if(!in_array($row->id, $assignedLocationIds))
-                                                    <li class="list-group-item" data-id="{{$row->id}}"
-                                                        data-name="{{'location_'.$row->id}}">
-                                                        {{$row->agency_name . ' ' . $row->address}}
-                                                    </li>
-                                                @endif
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-2 text-center">
-                                        <a id="move-to-selected" class="btn btn-primary my-4"> &gt;&gt; </a>
-                                        <a id="move-to-available" class="btn btn-primary my-4"> &lt;&lt; </a>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <h4>Assigned Locations</h4>
-                                        <ul id="selected-list" class="list-group">
-                                            @php
-                                                $selectedLocationIds = [];
-                                                $selectedLocationNames = [];
-                                            @endphp
-                                            @foreach($agent->agencies as $agency)
-                                                @foreach($agency->locations as $location)
-{{--                                                    {{dd($location)}}--}}
-                                                    @php
-                                                        $selectedLocationIds[] = $location->id;
-                                                        $selectedLocationNames[] = $location->agency_name . '   ' . $location->address;
-                                                    @endphp
-                                                    <li class="list-group-item" data-id="{{ $location->id }}"
-                                                        data-name="{{ 'location_'.$location->id }}">
-                                                        {{ $location->agency_name . ' - ' . $location->address }}
-                                                    </li>
-                                                @endforeach
-                                            @endforeach
-                                        </ul>
-                                        <!-- Hidden input fields to store selected locations -->
-                                        <input type="hidden" id="selected-location-ids" name="selected_location_ids[]"
-                                               value="{{ implode(',', $selectedLocationIds) }}">
-                                        <input type="hidden" id="selected-location-names" name="selected_location_names[]"
-                                               value="{{ implode(',', $selectedLocationNames) }}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Notes tab -->
-                        <div class="tab-pane fade" id="notes-tab">
-                            <fieldset class="border p-3 mb-4">
-                                <legend class="mb-3">Agent Notes</legend>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label class="col-form-label">Notes</label>
-                                        <div class="form-group">
-                    <textarea name="notes" class="form-control" rows="5"
-                              placeholder="Add any relevant notes about the agent">{{ old('notes', $agent->note) }}</textarea>
-                                            @error('notes') <span class="text-danger">{{ $message }}</span> @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-
-
-                        <div class="tab-pane fade" id="permission-tab">
-                            <div class="row mt-3">
-                                <!-- Permissions -->
-                                <div class="col-md-12">
-                                    <label class="col-form-label">Permissions</label>
-                                    <div class="form-group">
-                                        <!-- "Select All" Checkbox -->
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="select-all" onclick="toggleAllPermissions()">
-                                            <label class="form-check-label fw-bold" for="select-all">Administrator: Allow All Access</label>
-                                        </div>
-
-                                        <div class="row mt-3">
-                                            <!-- Individual Permission Checkboxes -->
-                                            @foreach($permissions as $row)
-                                                <div class="col-md-4 mb-2">
-                                                    <div class="form-check">
-                                                        <input type="checkbox"
-                                                               class="form-check-input permission-checkbox"
-                                                               name="permissions[]"
-                                                               id="permission{{$row->id}}"
-                                                               value="{{$row->id}}"
-                                                            {{ in_array($row->id, old('permissions', $agent->user->getAllPermissions()->pluck('id')->toArray())) ? 'checked' : '' }}>
-                                                        <label class="form-check-label" for="permission{{$row->id}}">
-                                                            {{$row->short_name}}
-                                                        </label>
+                                <div id="attachments-container">
+                                    @foreach ($company->attachments as $index => $attachment)
+                                        <div class="attachment-row mt-5">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                        <label for="attachment_name_{{ $index }}">Attachment Name</label>
+                                                        <input type="hidden" name="attachment_id[]" value="{{ $attachment->id }}">
+                                                        <input type="text" name="attachment_name[]" class="form-control"
+                                                               placeholder="Enter attachment name"
+                                                               value="{{ $attachment->attachment_name }}">
                                                     </div>
                                                 </div>
-                                            @endforeach
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                        <label for="attachment_file_{{ $index }}">Attachment File</label>
+                                                        <input type="file" name="attachment_file[]" class="form-control">
+                                                        <span>Uploaded Attachments: </span>
+                                                        <a target="_blank" href="{{ asset('storage/'.$attachment->path) }}">
+                                                            {{ $attachment->attachment_name }}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="button" class="btn btn-danger mt-4 remove-row"
+                                                            data-attachment-id="{{ $attachment->id }}">
+                                                        <i class="fa fa-trash-alt"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        @error('permissions')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                    @endforeach
+                                </div>
+
+                                <!-- Hidden Template -->
+                                <template id="attachment-template">
+                                    <div class="attachment-row mt-5">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="attachment_name">Attachment Name</label>
+                                                    <input type="text" name="attachment_name[]" class="form-control" placeholder="Enter attachment name">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="attachment_file">Attachment File</label>
+                                                    <input type="file" name="attachment_file[]" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button type="button" class="btn btn-danger mt-3 remove-row"><i class="fa fa-trash-alt"></i></button>
+                                            </div>
+                                        </div>
                                     </div>
+                                </template>
+                                <div class="col-md-6 mt-5">
+                                    <button type="button" class="btn btn-primary" id="add-attachment">Add Attachment
+                                    </button>
                                 </div>
                             </div>
                         </div>
 
-
+                        <!-- Notes tab -->
+                        <div class="tab-pane fade" id="notes-tab">
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <label class="col-form-label">Notes</label>
+                                    <div class="form-group">
+                                        <textarea name="note" class="form-control" rows="4">{{ old('notes', $company->note) }}</textarea>
+                                        @if ($errors->has('note'))
+                                            <span class="text-danger">{{ $errors->first('note') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Submit button -->
+                </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary float-end m-5">Update</button>
+                    <button type="submit" class="btn btn-primary float-end m-5">Save Changes</button>
                 </div>
             </form>
         </div>
+        <!-- /form validation -->
     </div>
     <!-- /content area -->
 @endsection
@@ -317,6 +290,8 @@
 @push('script')
     <script>
         $(document).ready(function () {
+
+            // Initialize Select2 dropdowns
             $('.select2').select2({
                 width: '100%',
                 placeholder: "Select an option",
@@ -324,81 +299,18 @@
             });
 
 
-            // Handle click event to toggle selection
-            $(document).on('click', '.list-group-item', function() {
-                $(this).toggleClass('selected');
+            // Add new attachment row
+            $('#add-attachment').click(function () {
+                let template = document.getElementById('attachment-template').content.cloneNode(true);
+                console.log(template);
+                let newAttachment = $(template); // Convert the cloned template into a jQuery object
+                $('#attachments-container').append(newAttachment); // Append to container
+                newAttachment.hide().slideDown(); // Hide it initially and then slide it down
             });
 
-            // Move items from available list to selected list
-            $('#move-to-selected').click(function() {
-                $('#available-list .selected').each(function() {
-                    var id = $(this).data('id');
-                    var name = $(this).data('name');
-                    $(this).removeClass('selected').appendTo('#selected-list');
-
-                    // Update hidden input fields with selected location data
-                    addLocationToInputs(id, name);
-                });
+            $(document).on('click', '.remove-row', function () {
+                $(this).closest('.attachment-row').remove();
             });
-
-            // Move items from selected list to available list
-            $('#move-to-available').click(function() {
-                $('#selected-list .selected').each(function() {
-                    var id = $(this).data('id');
-                    var name = $(this).data('name');
-                    $(this).removeClass('selected').appendTo('#available-list');
-
-                    // Update hidden input fields by removing location data
-                    removeLocationFromInputs(id, name);
-                });
-            });
-
-            // Function to add location data to hidden inputs
-            function addLocationToInputs(id, name) {
-                var currentIds = $('#selected-location-ids').val().split(',');
-                var currentNames = $('#selected-location-names').val().split(',');
-                if (!currentIds.includes(id.toString())) {
-                    currentIds.push(id);
-                    currentNames.push(name);
-                }
-                $('#selected-location-ids').val(currentIds.join(','));
-                $('#selected-location-names').val(currentNames.join(','));
-            }
-
-            // Function to remove location data from hidden inputs
-            function removeLocationFromInputs(id, name) {
-                var currentIds = $('#selected-location-ids').val().split(',');
-                var currentNames = $('#selected-location-names').val().split(',');
-                var index = currentIds.indexOf(id.toString());
-                if (index !== -1) {
-                    currentIds.splice(index, 1);
-                    currentNames.splice(index, 1);
-                }
-                $('#selected-location-ids').val(currentIds.join(','));
-                $('#selected-location-names').val(currentNames.join(','));
-            }
-
-
-
-
         });
-        // Function to toggle all checkboxes
-        function toggleAllPermissions() {
-            let checkboxes = document.querySelectorAll('.permission-checkbox');
-            let isChecked = document.getElementById('select-all').checked;
-
-            checkboxes.forEach(function(checkbox) {
-                checkbox.checked = isChecked;
-            });
-        }
     </script>
-
-    <style>
-        .list-group-item.selected {
-            background-color: #007bff;
-            color: white;
-        }
-    </style>
-
 @endpush
-

@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\UsState;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 
@@ -134,7 +135,7 @@ class InsuranceCompanyController extends Controller
      */
     public function edit($id)
     {
-        $company = Company::with(['agencies.locations', 'user.permissions'])->find($id);
+        $company = InsuranceCompany::find($id);
 
         if (!$company) {
             return redirect()->route('show-company')->with('error', 'Company not found.');
@@ -143,11 +144,8 @@ class InsuranceCompanyController extends Controller
         $title = 'Edit Company';
         $states = UsState::all();
         $banks = BankAccount::all();
-        $permissions = Permission::where('module', 4)->get(); // Module 4 Permissions
-        $agencies = Agency::all(); // Assuming `Agency` model for locations
-
-//        dd($company->agencies);
-        return view('admin.company.edit', compact('title', 'company', 'states', 'banks', 'permissions', 'agencies'));
+//        dd($company->attachments);
+        return view('admin.company.edit', compact('title', 'company', 'states', 'banks'));
     }
 
 
@@ -156,12 +154,7 @@ class InsuranceCompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $company = Company::with('user', 'agencies')->find($id);
-
-        if (!$company) {
-            return redirect()->route('show-company')->with('error', 'Company not found.');
-        }
-
+        // Validate the request
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'address' => 'nullable|string',
@@ -169,15 +162,14 @@ class InsuranceCompanyController extends Controller
             'state_id' => 'required|exists:us_states,id',
             'zip_code' => 'nullable|string|max:10',
             'phone_no' => 'required|string',
-            'notes' => 'required|string',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $company->user->id,
-            'username' => 'required|string|max:255',
-            'password' => 'nullable|string|min:8', // Only update if provided
+            'fax_no' => 'required|string',
+            'website' => 'required|string',
+            'agency_code' => 'required|string',
+            'note' => 'required|string',
             'commission_in_percentage' => 'nullable|numeric',
-            'commission_fee' => 'nullable|numeric',
-            'selected_location_ids' => 'nullable|array',
-            'permissions' => 'nullable|array',
-            'permissions.*' => 'exists:permissions,id',
+            'attachment_id.*' => 'nullable|integer|exists:insurance_company_attachments,id', // Existing attachment IDs
+            'attachment_name.*' => 'nullable|string|max:255',
+            'attachment_file.*' => 'nullable|file|mimes:jpg,png,pdf,docx|max:2048', // File validation rules
         ]);
 
         if ($validator->fails()) {
@@ -189,22 +181,10 @@ class InsuranceCompanyController extends Controller
         DB::beginTransaction();
 
         try {
-            // Validated data
             $data = $validator->validated();
 
-            // Update user details
-            $updateData = [
-                'email' => $data['email'],
-                'name' => $data['username'],
-            ];
-
-            // Only update the password if provided
-            if (!empty($data['password'])) {
-                $updateData['password'] = ($data['password']); // Hash the password before saving
-            }
-
-            $company->user->update($updateData);
-
+            // Find the existing company
+            $company = InsuranceCompany::findOrFail($id);
 
             // Update company details
             $company->update([
@@ -214,36 +194,68 @@ class InsuranceCompanyController extends Controller
                 'state_id' => $data['state_id'],
                 'zip_code' => $data['zip_code'],
                 'phone_no' => $data['phone_no'],
-                'email' => $data['email'],
-                'note' => $data['notes'],
+                'fax_no' => $data['fax_no'],
+                'website' => $data['website'],
+                'agency_code' => $data['agency_code'],
+                'note' => $data['note'],
                 'commission_in_percentage' => $data['commission_in_percentage'] ?? null,
-                'commission_fee' => $data['commission_fee'] ?? null,
             ]);
 
-            // Update permissions
-            if ($request->has('permissions')) {
-                $allPermissions = Permission::whereIn('id', $data['permissions'])->get();
-                $company->user->syncPermissions($allPermissions);
-            }
-//            dd($company);
-            // Update location associations (company_agencies)
-            if (!empty($data['selected_location_ids'])) {
-                $locationIds = array_map('intval', explode(',', trim($data['selected_location_ids'][0], ',')));
-                $company->agencies()->whereNotIn('agency_id', $locationIds)->delete(); // Remove unselected
-                foreach ($locationIds as $locationId) {
-                    $company->agencies()->updateOrCreate(
-                        ['agency_id' => $locationId],
-                        ['company_id' => $company->id]
-                    );
+            // Get all existing attachment IDs from the database
+            $existingAttachmentIds = $company->attachments()->pluck('id')->toArray();
+
+            // Get submitted attachment IDs from the form
+            $submittedAttachmentIds = $data['attachment_id'] ?? [];
+
+            // Find IDs to delete
+            $attachmentsToDelete = array_diff($existingAttachmentIds, $submittedAttachmentIds);
+
+            // Delete removed attachments
+            if (!empty($attachmentsToDelete)) {
+                $attachments = InsuranceCompanyAttachment::whereIn('id', $attachmentsToDelete)->get();
+                foreach ($attachments as $attachment) {
+                    // Delete file from storage
+                    Storage::disk('public')->delete($attachment->path);
+                    // Delete record from database
+                    $attachment->delete();
                 }
-            } else {
-                $company->agencies()->delete(); // Remove all if none provided
             }
 
-//            dd($company);
+            // Handle existing attachments that are updated
+            foreach ($submittedAttachmentIds as $index => $attachmentId) {
+                if ($attachmentId) {
+                    $attachment = InsuranceCompanyAttachment::findOrFail($attachmentId);
+                    $attachment->update([
+                        'attachment_name' => $data['attachment_name'][$index],
+                    ]);
+
+                    // If a new file is uploaded, replace the existing one
+                    if (isset($request->file('attachment_file')[$index])) {
+                        $file = $request->file('attachment_file')[$index];
+                        $path = $file->store('insurance_company_attachments', 'public');
+                        // Delete the old file
+                        Storage::disk('public')->delete($attachment->path);
+                        // Update the path
+                        $attachment->update(['path' => $path]);
+                    }
+                }
+            }
+
+            // Handle new attachments
+            $attachmentFiles = $request->file('attachment_file') ?? [];
+            foreach ($attachmentFiles as $index => $file) {
+                if (empty($submittedAttachmentIds[$index])) {
+                    $filename = $file->getClientOriginalName();
+                    $path = $file->store('insurance_company_attachments', 'public');
+                    $company->attachments()->create([
+                        'attachment_name' => $data['attachment_name'][$index] ?? $filename,
+                        'path' => $path,
+                    ]);
+                }
+            }
 
             DB::commit();
-            return redirect()->route('show-company')->with('success', 'Company and User updated successfully.');
+            return redirect()->route('show-company')->with('success', 'Company updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
@@ -256,7 +268,7 @@ class InsuranceCompanyController extends Controller
     public function destroy(Request $request)
     {
 
-        $company = Company::find($request->id);
+        $company = InsuranceCompany::find($request->id);
 
         if (!$company) {
             return response()->json(['error' => 'Company not found.'], 404);

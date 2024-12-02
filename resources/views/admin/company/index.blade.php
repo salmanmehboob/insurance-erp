@@ -58,7 +58,8 @@
                                 data-website="{{ $company->website }}"
                                 data-agency_code="{{ $company->agency_code }}"
                                 data-commission_percentage="{{ $company->commission_in_percentage }}"
-                                data-notes="{{ $company->note }}"
+                                data-note="{{ $company->note }}"
+                                    data-attachments="{{ $company->attachments->toJson() }}"
                             >{{ $company->name }}</td>
                             <td>{{ $company->phone_no }}</td>
                             <td>{{ $company->city }}</td>
@@ -66,16 +67,16 @@
                             <td>{{ $company->commission_in_percentage }}</td>
                             <td>
                                 <div class="d-flex action-buttons">
-                                    @can('edit-insurance-company')
-                                        <a title="Edit" href="{{ route('edit-insurance-company', $company->id) }}"
+                                    @can('edit-company')
+                                        <a title="Edit" href="{{ route('edit-company', $company->id) }}"
                                            class="text-primary me-2 action-buttons">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                     @endcan
 
-                                    @can('delete-insurance-company')
+                                    @can('delete-company')
                                         <a href="javascript:void(0)"
-                                           data-url="{{ route('destroy-insurance-company') }}"
+                                           data-url="{{ route('destroy-company') }}"
                                            data-status="0"
                                            data-label="delete"
                                            data-id="{{ $company->id }}"
@@ -148,8 +149,14 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label for="notes" class="form-label">Notes</label>
-                                    <textarea class="form-control" id="notes" disabled></textarea>
+                                    <textarea class="form-control" id="note" disabled></textarea>
                                 </div>
+
+                                <div class="col-md-12">
+                                    <label for="attachments" class="form-label">Attachments</label>
+                                    <ul id="attachments-list" class="list-group"></ul>
+                                </div>
+
                             </div>
                         </form>
                     </div>
@@ -172,12 +179,29 @@
                 const fields = [
                     "name", "phone_no", "address", "city", "state",
                     "zip_code", "agency_code", "commission_percentage",
-                    "fax_no", "website", "notes"
+                    "fax_no", "website", "note"
                 ];
 
                 fields.forEach(field => {
                     $(`#${field}`).val($(this).data(field));
                 });
+
+                // Populate attachments
+                const attachments = $(this).data('attachments');
+                const $attachmentsList = $('#attachments-list');
+                $attachmentsList.empty(); // Clear previous attachments
+
+                if (attachments && attachments.length > 0) {
+                    attachments.forEach(attachment => {
+                        $attachmentsList.append(`
+                    <li class="list-group-item">
+                        <a href="storage/${attachment.path}" target="_blank">${attachment.attachment_name}</a>
+                    </li>
+                `);
+                    });
+                } else {
+                    $attachmentsList.append('<li class="list-group-item text-muted">No attachments available</li>');
+                }
             });
         });
     </script>
