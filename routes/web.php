@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AgencyController;
 use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\Admin\Dashboard\SuperAdminDashboardController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\InsuranceCompanyController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -58,6 +59,12 @@ Route::middleware(['auth'])->group(function () {
     Route::put('update-agent{id}', [AgentController::class, 'update'])->name('update-agent');
     Route::post('destroy-agent', [AgentController::class, 'destroy'])->name('destroy-agent');
 
+    Route::get('show-company', [InsuranceCompanyController::class, 'index'])->name('show-company');
+    Route::get('add-company', [InsuranceCompanyController::class, 'create'])->name('add-company');
+    Route::post('store-company', [InsuranceCompanyController::class, 'store'])->name('store-company');
+    Route::get('company/{id}/edit', [InsuranceCompanyController::class, 'edit'])->name('edit-company');
+    Route::put('update-company{id}', [InsuranceCompanyController::class, 'update'])->name('update-company');
+    Route::post('destroy-company', [InsuranceCompanyController::class, 'destroy'])->name('destroy-company');
 
 });
 
