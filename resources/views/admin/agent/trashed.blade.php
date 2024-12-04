@@ -21,20 +21,12 @@
             <div class="card-header header-elements-inline">
                 <h5 class="card-title"></h5>
                 <div class="header-elements">
-                        <div class="col-md-12 mt-5">
-                            @can('create-agent')
-                            <a href="{{ route('add-agent') }}" class="btn btn-outline-primary float-end">
-                                <b><i class="fas fa-plus"></i></b> {{ $title }}
-                            </a>
-                            @endcan
-
-                            <a href="{{ route('trashed-agents') }}" class="btn btn-outline-danger float-end me-4">
-                                <i class="fas fa-trash-restore"></i> View Trashed Agents
-                            </a>
-
-
+                         <div class="col-md-12 mt-5">
+                             <a href="{{ route('show-agent') }}" class="btn btn-outline-danger float-end me-4">
+                                 <i class="fas fa-eye"></i> View Active Agents
+                             </a>
                         </div>
-                </div>
+                 </div>
             </div>
 
             <div class="card-body">
@@ -72,28 +64,23 @@
                             <td>{{ $agent->phone_no }}</td>
                             <td>{{ $agent->city }}</td>
                             <td>{{ $agent->assignedLocations ?? 'No Locations' }}</td>
-                            <td>
-                                <div class="d-flex action-buttons">
-                                    @can('edit-agent')
-                                        <a title="Edit" href="{{ route('edit-agent', $agent->id) }}"
-                                           class="text-primary me-2 action-buttons">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    @endcan
-
-                                    @can('delete-agent')
-                                        <a href="javascript:void(0)"
-                                           data-url="{{ route('destroy-agent') }}"
-                                           data-status="0"
-                                           data-label="delete"
-                                           data-id="{{ $agent->id }}"
-                                           class="text-danger me-1 change-status-record action-buttons"
-                                           title="Suspend Record">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    @endcan
-                                </div>
-                            </td>
+                             <td>
+                                 <div class="d-flex action-buttons">
+                                     <form method="POST" action="{{ route('restore-agent', $agent->id) }}">
+                                         @csrf
+                                         <button type="submit" class="btn btn-success btn-sm me-2" title="Restore">
+                                             <i class="fas fa-undo"></i> Restore
+                                         </button>
+                                     </form>
+                                     <form method="POST" action="{{ route('force-delete-agent', $agent->id) }}">
+                                         @csrf
+                                         @method('DELETE')
+                                         <button type="submit" class="btn btn-danger btn-sm" title="Delete Permanently">
+                                             <i class="fas fa-trash-alt"></i> Delete Permanently
+                                         </button>
+                                     </form>
+                                 </div>
+                             </td>
                         </tr>
                     @endforeach
 

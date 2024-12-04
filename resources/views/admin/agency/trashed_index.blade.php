@@ -24,15 +24,8 @@
                 <div class="header-elements">
                         <div class="col-md-12 mt-5">
 
-
-                            @can('create-agencies')
-                            <a href="{{route('add-agency')}}" class="btn btn-outline-primary float-end">
-                                <b><i class="fas fa-plus"></i></b> {{$title}}
-                            </a>
-                            @endcan
-
-                                <a href="{{route('trashed-agencies')}}" class="btn btn-outline-danger float-end me-4">
-                                    <b><i class="fas fa-trash-restore"></i></b> View Deleted Data
+                                <a href="{{route('show-agency')}}" class="btn btn-outline-secondary float-end me-4">
+                                    <b><i class="fas fa-eye"></i></b> View Active Agencies
                                 </a>
                         </div>
                 </div>
@@ -50,9 +43,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($agencies as $agency)
+                    @foreach($trashedAgencies as $agency)
                         <tr>
-                            <td><img src="{{  showImage($agency->logo , 'logos') }}" width="50" height="50"></td>
+                            <td><img src="{{ showImage($agency->logo, 'logos') }}" width="50" height="50"></td>
                             <td data-bs-toggle="modal" data-bs-target="#agencyModal" class="clickable-row"
                                 data-id="{{ $agency->id }}"
                                 data-agency_name="{{ $agency->agency_name }}" data-address="{{ $agency->address }}"
@@ -65,27 +58,20 @@
                                 data-logo="{{ showImage($agency->logo, 'logos') }}">{{ $agency->agency_name }}</td>
                             <td>{{ $agency->address }}</td>
                             <td>{{ $agency->city }}</td>
-                            <td>
-                                <div class="d-flex action-buttons">
-                                    @can('edit-agencies')
-                                        <a title="Edit" href="{{ route('edit-agency', $agency->id) }}"
-                                           class="text-primary me-2 action-buttons">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    @endcan
-
-                                    @can('delete-agencies')
-                                        <a href="javascript:void(0)"
-                                           data-url="{{route('destroy-agency')}}"
-                                           data-status="0"
-                                           data-label="delete"
-                                           data-id="{{ $agency->id }}"
-                                           class="text-danger me-1 change-status-record action-buttons "
-                                           title="Suspend Record">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    @endcan
-                                </div>
+                            <td class="text-center">
+                                <form action="{{ route('restore-agency', $agency->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        Restore
+                                    </button>
+                                </form>
+                                <form action="{{ route('force-delete-agency', $agency->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        Delete Permanently
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach

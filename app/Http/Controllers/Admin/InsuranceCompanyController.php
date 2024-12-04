@@ -287,4 +287,29 @@ class InsuranceCompanyController extends Controller
             return response()->json(['error' => 'Something went wrong: ' . $e->getMessage()], 500);
         }
     }
+
+    public function trashed()
+    {
+        $trashedCompanies = InsuranceCompany::onlyTrashed()->orderBy('deleted_at', 'DESC')->get();
+        $title = 'Trashed Companies';
+        return view('admin.company.trashed', compact('title', 'trashedCompanies'));
+    }
+
+    public function restore($id)
+    {
+        $company = InsuranceCompany::withTrashed()->findOrFail($id);
+        $company->restore();
+
+        return redirect()->route('show-company')->with('success', 'Company restored successfully.');
+    }
+
+    public function forceDelete($id)
+    {
+        $company = InsuranceCompany::withTrashed()->findOrFail($id);
+        $company->forceDelete();
+
+        return redirect()->route('show-company')->with('success', 'Company permanently deleted.');
+    }
+
+
 }

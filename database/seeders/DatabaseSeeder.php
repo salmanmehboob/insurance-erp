@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Gender;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -33,5 +34,14 @@ class DatabaseSeeder extends Seeder
             VehicleModelsSeeder::class,
             YearsSeeder::class,
         ]);
+
+        $this->runPermissionUpdateCommand();
+
+    }
+
+    private function runPermissionUpdateCommand()
+    {
+        Artisan::call('permission:update');
+        $this->command->info('Permissions updated successfully.');
     }
 }

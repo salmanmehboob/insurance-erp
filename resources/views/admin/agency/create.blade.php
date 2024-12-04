@@ -29,7 +29,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <!-- Agency Name -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label class="col-form-label">Agency Name <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="agency_name" class="form-control" placeholder="Agency Name" value="{{ old('agency_name') }}">
@@ -40,7 +40,7 @@
                                     </div>
 
                                     <!-- Address -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label class="col-form-label">Address</label>
                                         <div class="form-group">
                                             <input type="text" name="address" class="form-control" placeholder="Address" value="{{ old('address') }}">

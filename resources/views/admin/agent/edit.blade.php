@@ -189,61 +189,55 @@
                         <!-- Location tab -->
                         <div class="tab-pane fade" id="location-tab">
                             <div class="row mt-3">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <h4>All Locations</h4>
-                                        <ul id="available-list" class="list-group">
-                                            @php
-                                                // Collect all assigned location IDs
-                                                $assignedLocationIds = $agent->agencies->flatMap(function ($agency) {
-                                                    return $agency->locations->pluck('id');
-                                                })->toArray();
-                                            @endphp
+                                <div class="col-md-5">
+                                    <h4>All Locations</h4>
+                                    <ul id="available-list" class="list-group">
 
-                                            @foreach($agencies as $row)
-                                                @if(!in_array($row->id, $assignedLocationIds))
-                                                    <li class="list-group-item" data-id="{{$row->id}}"
-                                                        data-name="{{'location_'.$row->id}}">
-                                                        {{$row->agency_name . ' ' . $row->address}}
-                                                    </li>
-                                                @endif
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-2 text-center">
-                                        <a id="move-to-selected" class="btn btn-primary my-4"> &gt;&gt; </a>
-                                        <a id="move-to-available" class="btn btn-primary my-4"> &lt;&lt; </a>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <h4>Assigned Locations</h4>
-                                        <ul id="selected-list" class="list-group">
+
+                                      @foreach($allAgencies as $agency)
+
+                                        @if(!in_array($agency->id, $assignedLocationIds))  <!-- Filter out assigned locations -->
+                                            <li class="list-group-item" data-id="{{$agency->id}}" data-name="location_{{$agency->id}}">
+                                                {{$agency->agency_name . ' - ' . $agency->address}}
+                                            </li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                </div>
+
+                                <div class="col-md-2 text-center">
+                                    <a id="move-to-selected" class="btn btn-primary my-4"> &gt;&gt; </a>
+                                    <a id="move-to-available" class="btn btn-primary my-4"> &lt;&lt; </a>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <h4>Assigned Locations</h4>
+                                    <ul id="selected-list" class="list-group">
+                                        @php
+                                            $selectedLocationIds = [];
+                                            $selectedLocationNames = [];
+                                        @endphp
+                                        @foreach($agent->agencies as $agency)
                                             @php
-                                                $selectedLocationIds = [];
-                                                $selectedLocationNames = [];
+                                                $selectedLocationIds[] = $agency->locations->id;
+                                                $selectedLocationNames[] = $agency->locations->agency_name . ' - ' . $agency->locations->address;
                                             @endphp
-                                            @foreach($agent->agencies as $agency)
-                                                @foreach($agency->locations as $location)
-{{--                                                    {{dd($location)}}--}}
-                                                    @php
-                                                        $selectedLocationIds[] = $location->id;
-                                                        $selectedLocationNames[] = $location->agency_name . '   ' . $location->address;
-                                                    @endphp
-                                                    <li class="list-group-item" data-id="{{ $location->id }}"
-                                                        data-name="{{ 'location_'.$location->id }}">
-                                                        {{ $location->agency_name . ' - ' . $location->address }}
-                                                    </li>
-                                                @endforeach
-                                            @endforeach
-                                        </ul>
-                                        <!-- Hidden input fields to store selected locations -->
-                                        <input type="hidden" id="selected-location-ids" name="selected_location_ids[]"
-                                               value="{{ implode(',', $selectedLocationIds) }}">
-                                        <input type="hidden" id="selected-location-names" name="selected_location_names[]"
-                                               value="{{ implode(',', $selectedLocationNames) }}">
-                                    </div>
+                                            <li class="list-group-item" data-id="{{ $agency->locations->id }}" data-name="location_{{$agency->locations->id}}">
+                                                {{ $agency->locations->agency_name . ' - ' . $agency->locations->address }}
+                                            </li>
+                                        @endforeach
+                                    </ul>
+
+                                    <!-- Hidden input fields to store selected locations -->
+                                    <input type="hidden" id="selected-location-ids" name="selected_location_ids[]"
+                                           value="{{ implode(',', $selectedLocationIds) }}">
+                                    <input type="hidden" id="selected-location-names" name="selected_location_names[]"
+                                           value="{{ implode(',', $selectedLocationNames) }}">
                                 </div>
                             </div>
                         </div>
+
+
                         <!-- Notes tab -->
                         <div class="tab-pane fade" id="notes-tab">
                             <fieldset class="border p-3 mb-4">

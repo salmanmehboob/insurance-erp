@@ -36,10 +36,15 @@ class UserController extends Controller
     {
         $data = array();
         $title = 'Add User';
-        $users = User::with('roles')
+        // Fetch all users, including soft-deleted, excluding the currently authenticated user
+        $users = User::withTrashed()
+            ->with('roles')
             ->where('id', '>', auth()->user()->id)
             ->orderBy('created_at', 'DESC')
             ->get();
+
+
+//        dd($users);
 
         return view('admin.user.index', compact('title', 'users', 'data'));
     }
@@ -201,10 +206,17 @@ class UserController extends Controller
     public function destroy(Request $request)
     {
         $user = User::find($request->id);
-        $user->status = $request->status;
-        $user->save();
+        $user->delete();
 
-        return response()->json(['success' => 'Status has been changed.']);
+        return response()->json(['success' => 'User has been suspended successfully.']);
+    }
+
+    public function restore(Request $request)
+    {
+        $user = User::withTrashed()->findOrFail($request->id);
+        $user->restore();
+
+        return response()->json(['success' => 'User has been restored successfully.']);
     }
 
 

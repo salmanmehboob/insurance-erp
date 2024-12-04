@@ -32,6 +32,6 @@ class AgentAgency extends Model
 
     public function locations()
     {
-        return $this->hasMany(Agency::class,'id');
+        return $this->belongsTo(Agency::class ,'agency_id');
     }
 }

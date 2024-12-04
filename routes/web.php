@@ -32,9 +32,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('store-user', [UserController::class, 'store'])->name('store-user');
     Route::get('user/{id}/edit', [UserController::class, 'edit'])->name('edit-user');
     Route::put('update-user{id}', [UserController::class, 'update'])->name('update-user');
-    Route::post('changeStatus-user', [UserController::class, 'changeStatus'])->name('changeStatus-user');
-    Route::post('delete-user', [UserController::class, 'delete'])->name('delete-user');
-    Route::post('changePassword', [UserController::class, 'changePassword'])->name('changePassword');
+    Route::post('changeStatus-user', [UserController::class, 'destroy'])->name('changeStatus-user');
+     Route::post('changePassword', [UserController::class, 'changePassword'])->name('changePassword');
+    Route::post('/user/restore', [UserController::class, 'restore'])->name('restore-user');
 
 
     Route::get('show-role', [RoleController::class, 'show'])->name('show-role');
@@ -50,6 +50,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('agency/{id}/edit', [AgencyController::class, 'edit'])->name('edit-agency');
     Route::put('update-agency{id}', [AgencyController::class, 'update'])->name('update-agency');
     Route::post('destroy-agency', [AgencyController::class, 'destroy'])->name('destroy-agency');
+    Route::get('/trashed-agencies', [AgencyController::class, 'trashedIndex'])->name('trashed-agencies');
+    Route::post('/restore-agency/{id}', [AgencyController::class, 'restoreAgency'])->name('restore-agency');
+    Route::delete('/force-delete-agency/{id}', [AgencyController::class, 'forceDeleteAgency'])->name('force-delete-agency');
 
 
     Route::get('show-agent', [AgentController::class, 'index'])->name('show-agent');
@@ -58,6 +61,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('agent/{id}/edit', [AgentController::class, 'edit'])->name('edit-agent');
     Route::put('update-agent{id}', [AgentController::class, 'update'])->name('update-agent');
     Route::post('destroy-agent', [AgentController::class, 'destroy'])->name('destroy-agent');
+    Route::get('agents/trashed', [AgentController::class, 'trashed'])->name('trashed-agents');
+    Route::post('agents/restore/{id}', [AgentController::class, 'restore'])->name('restore-agent');
+    Route::delete('agents/force-delete/{id}', [AgentController::class, 'forceDelete'])->name('force-delete-agent');
 
     Route::get('show-company', [InsuranceCompanyController::class, 'index'])->name('show-company');
     Route::get('add-company', [InsuranceCompanyController::class, 'create'])->name('add-company');
@@ -65,7 +71,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('company/{id}/edit', [InsuranceCompanyController::class, 'edit'])->name('edit-company');
     Route::put('update-company{id}', [InsuranceCompanyController::class, 'update'])->name('update-company');
     Route::post('destroy-company', [InsuranceCompanyController::class, 'destroy'])->name('destroy-company');
-
+    Route::get('company/trashed', [InsuranceCompanyController::class, 'trashed'])->name('company.trashed');
+    Route::get('company/restore/{id}', [InsuranceCompanyController::class, 'restore'])->name('company.restore');
+    Route::delete('company/delete-permanent/{id}', [InsuranceCompanyController::class, 'forceDelete'])->name('company.forceDelete');
 });
 
 

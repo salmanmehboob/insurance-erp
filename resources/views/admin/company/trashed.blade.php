@@ -21,19 +21,12 @@
             <div class="card-header header-elements-inline">
                 <h5 class="card-title"></h5>
                 <div class="header-elements">
-                        <div class="col-md-12 mt-5">
-                            @can('create-company')
-                            <a href="{{ route('add-company') }}" class="btn btn-outline-primary float-end">
-                                <b><i class="fas fa-plus"></i></b> {{ $title }}
-                            </a>
-                            @endcan
-
-                                <a href="{{ route('company.trashed') }}" class="btn btn-outline-danger float-end me-4">
-                                    <b><i class="fas fa-trash-alt"></i></b> View Deleted Companies
-                                </a>
-
+                         <div class="col-md-12 mt-5">
+                             <a href="{{ route('show-company') }}" class="btn btn-outline-success float-end me-4">
+                                 <b><i class="fas fa-eye"></i></b> View Active Companies
+                             </a>
                         </div>
-                </div>
+                 </div>
             </div>
 
             <div class="card-body">
@@ -49,7 +42,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($insuranceCompanies as $company)
+                    @foreach($trashedCompanies as $company)
                         <tr>
                             <td data-bs-toggle="modal" data-bs-target="#companyModal" class="clickable-row"
                                 data-id="{{ $company->id }}"
@@ -71,26 +64,16 @@
                             <td>{{ $company->agency_code }}</td>
                             <td>{{ $company->commission_in_percentage }}</td>
                             <td>
-                                <div class="d-flex action-buttons">
-                                    @can('edit-company')
-                                        <a title="Edit" href="{{ route('edit-company', $company->id) }}"
-                                           class="text-primary me-2 action-buttons">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    @endcan
-
-                                    @can('delete-company')
-                                        <a href="javascript:void(0)"
-                                           data-url="{{ route('destroy-company') }}"
-                                           data-status="0"
-                                           data-label="delete"
-                                           data-id="{{ $company->id }}"
-                                           class="text-danger me-1 change-status-record action-buttons"
-                                           title="Suspend Record">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    @endcan
-                                </div>
+                                <a href="{{ route('company.restore', $company->id) }}" class="btn btn-success btn-sm">
+                                    Restore
+                                </a>
+                                <form action="{{ route('company.forceDelete', $company->id) }}" method="POST" style="display: inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure? This action is irreversible!');">
+                                        Delete Permanently
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach

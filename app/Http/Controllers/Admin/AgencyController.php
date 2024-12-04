@@ -189,4 +189,29 @@ class AgencyController extends Controller
             return response()->json(['error' => 'Something went wrong: ' . $e->getMessage()], 500);
         }
     }
+
+
+    public function trashedIndex()
+    {
+        $trashedAgencies = Agency::onlyTrashed()->with('state', 'bank')->orderBy('deleted_at', 'DESC')->get();
+        $title = 'Trashed Agencies';
+
+        return view('admin.agency.trashed_index', compact('title', 'trashedAgencies'));
+    }
+
+    public function restoreAgency($id)
+    {
+        $agency = Agency::onlyTrashed()->findOrFail($id);
+        $agency->restore();
+
+        return redirect()->route('trashed-agencies')->with('success', 'Agency restored successfully.');
+    }
+
+    public function forceDeleteAgency($id)
+    {
+        $agency = Agency::onlyTrashed()->findOrFail($id);
+        $agency->forceDelete();
+
+        return redirect()->route('trashed-agencies')->with('success', 'Agency permanently deleted successfully.');
+    }
 }
