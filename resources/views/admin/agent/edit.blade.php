@@ -175,9 +175,10 @@
                                     <div class="col-md-6">
                                         <label class="col-form-label">Flat Fee</label>
                                         <div class="form-group">
-                                            <input type="number" name="commission_fee" class="form-control"
+                                            <input type="text" name="commission_fee" class="form-control"
                                                    value="{{ old('commission_fee', $agent->commission_fee) }}"
-                                                   placeholder="Flat Fee">
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                            >
                                             @error('commission_fee') <span
                                                 class="text-danger">{{ $message }}</span> @enderror
                                         </div>

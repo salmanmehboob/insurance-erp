@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AgencyController;
 use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\Admin\Dashboard\SuperAdminDashboardController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\GeneralAgentController;
 use App\Http\Controllers\Admin\InsuranceCompanyController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
@@ -74,7 +75,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('company/trashed', [InsuranceCompanyController::class, 'trashed'])->name('company.trashed');
     Route::get('company/restore/{id}', [InsuranceCompanyController::class, 'restore'])->name('company.restore');
     Route::delete('company/delete-permanent/{id}', [InsuranceCompanyController::class, 'forceDelete'])->name('company.forceDelete');
+
+    Route::get('show-general-agent', [GeneralAgentController::class, 'index'])->name('show-general-agent');
+    Route::get('add-general-agent', [GeneralAgentController::class, 'create'])->name('add-general-agent');
+    Route::post('store-general-agent', [GeneralAgentController::class, 'store'])->name('store-general-agent');
+    Route::get('general-agent/{id}/edit', [GeneralAgentController::class, 'edit'])->name('edit-general-agent');
+    Route::put('update-general-agent{id}', [GeneralAgentController::class, 'update'])->name('update-general-agent');
+    Route::post('destroy-general-agent', [GeneralAgentController::class, 'destroy'])->name('destroy-general-agent');
+    Route::get('general-agent/trashed', [GeneralAgentController::class, 'trashed'])->name('general-agent.trashed');
+    Route::get('general-agent/restore/{id}', [GeneralAgentController::class, 'restore'])->name('general-agent.restore');
+    Route::delete('general-agent/delete-permanent/{id}', [GeneralAgentController::class, 'forceDelete'])->name('general-agent.forceDelete');
 });
-
-
-

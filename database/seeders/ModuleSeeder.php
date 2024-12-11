@@ -20,6 +20,7 @@ class ModuleSeeder extends Seeder
             'Agencies',
             'Agent',
             'Company',
+            'General Agent',
 
         );
 

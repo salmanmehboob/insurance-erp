@@ -124,7 +124,7 @@
                                         <label class="col-form-label">Phone <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="phone_no" class="form-control"
-                                                   placeholder="(999) 999-9999" data-inputmask="'mask': '(999) 999-9999'"value="{{ old('phone_no') }}">
+                                                   placeholder="(999) 999-9999" data-inputmask="'mask': '(999) 999-9999'" value="{{ old('phone_no') }}">
                                             @if ($errors->has('phone_no'))
                                                 <span class="text-danger">{{ $errors->first('phone_no') }}</span>
                                             @endif
@@ -211,9 +211,9 @@
                                     <div class="col-md-6">
                                         <label class="col-form-label">Flat Fee</label>
                                         <div class="form-group">
-                                            <input type="number" name="commission_fee" class="form-control"
-                                                   placeholder="Flat Fee"
-                                                   value="{{ old('commission_fee') }}">
+                                            <input type="text" name="commission_fee" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('commission_fee') }}">
                                             @if ($errors->has('commission_fee'))
                                                 <span
                                                     class="text-danger">{{ $errors->first('commission_fee') }}</span>

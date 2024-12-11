@@ -101,6 +101,12 @@
                                 <span class="align-middle">Insurance Company</span>
                             </a>
                         </li>
+                        <li class="sidebar-item  ">
+                            <a class="sidebar-link" href="{{ route('show-general-agent') }}">
+                                <i class="fas fa-user-astronaut"></i>
+                                <span class="align-middle">General Agent</span>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>

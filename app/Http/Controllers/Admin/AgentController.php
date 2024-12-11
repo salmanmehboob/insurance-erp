@@ -70,6 +70,7 @@ class AgentController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'address' => 'nullable|string',
@@ -83,7 +84,7 @@ class AgentController extends Controller
             'password' => 'required|string|min:8',
             'bank_id' => 'nullable|exists:bank_accounts,id',
             'commission_in_percentage' => 'nullable|numeric',
-            'commission_fee' => 'nullable|numeric',
+            'commission_fee' => 'nullable|string',
             'selected_location_ids' => 'nullable|array',
             'selected_location_names' => 'nullable|array',
             'permissions' => 'nullable|array',  // ensure permissions are passed as an array
@@ -141,7 +142,7 @@ class AgentController extends Controller
                 'note' => $data['notes'],
                 'bank_id' => $data['bank_id'] ?? null,
                 'commission_in_percentage' => $data['commission_in_percentage'] ?? null,
-                'commission_fee' => $data['commission_fee'] ?? null,
+                'commission_fee' => str_replace(['$', ' '], '', $data['commission_fee'] )?? null,
             ]);
 
 //            dd($agent);
@@ -223,7 +224,7 @@ class AgentController extends Controller
             'username' => 'required|string|max:255',
             'password' => 'nullable|string|min:8', // Only update if provided
             'commission_in_percentage' => 'nullable|numeric',
-            'commission_fee' => 'nullable|numeric',
+            'commission_fee' => 'nullable|string',
             'selected_location_ids' => 'nullable|array',
             'permissions' => 'nullable|array',
             'permissions.*' => 'exists:permissions,id',
@@ -278,7 +279,7 @@ class AgentController extends Controller
                 'email' => $data['email'],
                 'note' => $data['notes'],
                 'commission_in_percentage' => $data['commission_in_percentage'] ?? null,
-                'commission_fee' => $data['commission_fee'] ?? null,
+                'commission_fee' => str_replace(['$', ' '], '', $data['commission_fee'] )?? null,
             ]);
 
 

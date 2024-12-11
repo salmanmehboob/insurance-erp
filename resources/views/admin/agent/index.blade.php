@@ -63,7 +63,7 @@
                                 data-address="{{ $agent->address }}"
                                 data-bank_name="{{ $agent->bank->bank_name ?? 'N/A' }}"
                                 data-commission_percentage="{{ $agent->commission_in_percentage }}"
-                                data-commission_fee="{{ $agent->commission_fee }}"
+                                data-commission_fee="$ {{ $agent->commission_fee }}"
                                 data-notes="{{ $agent->note}}"
                                 data-locations="{{ $agent->assignedLocations ?? 'No Locations' }}"
                                 data-permissions="{{ $agent->user->getAllPermissions()->pluck('id')->join(',') }}"
