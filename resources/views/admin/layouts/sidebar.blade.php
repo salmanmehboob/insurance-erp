@@ -74,6 +74,15 @@
                     </a>
                 </li>
             @endcan
+            @can('view-client')
+
+                <li class="sidebar-item {{ request()->routeIs('show-client') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ route('show-client') }}">
+                        <i class="align-middle" data-feather="user"></i>
+                        <span class="align-middle">Client</span>
+                    </a>
+                </li>
+            @endcan
 
             @can('view-agencies')
 

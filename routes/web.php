@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AgencyController;
 use App\Http\Controllers\Admin\AgentController;
+use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\Dashboard\SuperAdminDashboardController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GeneralAgentController;
@@ -85,4 +86,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('general-agent/trashed', [GeneralAgentController::class, 'trashed'])->name('general-agent.trashed');
     Route::get('general-agent/restore/{id}', [GeneralAgentController::class, 'restore'])->name('general-agent.restore');
     Route::delete('general-agent/delete-permanent/{id}', [GeneralAgentController::class, 'forceDelete'])->name('general-agent.forceDelete');
+
+    Route::get('show-client', [ClientController::class, 'index'])->name('show-client');
+    Route::get('add-client', [ClientController::class, 'create'])->name('add-client');
+    Route::post('store-client', [ClientController::class, 'store'])->name('store-client');
+    Route::get('client/{id}/edit', [ClientController::class, 'edit'])->name('edit-client');
+    Route::put('update-client{id}', [ClientController::class, 'update'])->name('update-client');
+    Route::post('destroy-client', [ClientController::class, 'destroy'])->name('destroy-client');
+    Route::get('clients/trashed', [ClientController::class, 'trashed'])->name('trashed-clients');
+    Route::post('clients/restore/{id}', [ClientController::class, 'restore'])->name('restore-client');
+    Route::delete('clients/force-delete/{id}', [ClientController::class, 'forceDelete'])->name('force-delete-client');
+
+
+
+
 });

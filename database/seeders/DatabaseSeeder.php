@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             VehicleMakesSeeder::class,
             VehicleModelsSeeder::class,
             YearsSeeder::class,
+            PolicyTypesTableSeeder::class,
         ]);
 
         $this->runPermissionUpdateCommand();

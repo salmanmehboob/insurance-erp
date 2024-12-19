@@ -21,6 +21,7 @@ class ModuleSeeder extends Seeder
             'Agent',
             'Company',
             'General Agent',
+            'Client',
 
         );
 
