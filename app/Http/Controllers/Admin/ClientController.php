@@ -7,15 +7,21 @@ use App\Models\Agency;
 use App\Models\Agent;
 use App\Models\Client;
  use App\Models\BankAccount;
+use App\Models\EducationLevel;
 use App\Models\EmailStatus;
+use App\Models\Gender;
 use App\Models\InsuranceCompany;
+use App\Models\MaritalStatus;
 use App\Models\Permission;
 use App\Models\PolicyStatus;
 use App\Models\PolicyType;
 use App\Models\PrimaryLanguage;
+use App\Models\Relationship;
 use App\Models\Term;
 use App\Models\User;
 use App\Models\UsState;
+use App\Models\Year;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -78,11 +84,15 @@ class ClientController extends Controller
         $insuranceCompanies = InsuranceCompany::all();
         $agents = Agent::all();
         $locations = Agency::all();
+        $genders = Gender::all();
+        $maritalStatus = MaritalStatus::all();
+        $relationships = Relationship::all();
+        $educationLevels = EducationLevel::all();
 
         $policyType = PolicyType::find($request->policy_type_id);
         return view('admin.client.create', compact('title',
             'policyType' ,'states' ,'emailStatues' , 'languages' ,
-            'policyStatuses','terms','insuranceCompanies','agents' ,'locations'));
+            'policyStatuses','terms','insuranceCompanies','agents' ,'locations','genders','maritalStatus','relationships','educationLevels'));
     }
 
     /**
