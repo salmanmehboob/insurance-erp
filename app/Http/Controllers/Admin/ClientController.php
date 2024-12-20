@@ -4,9 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
+use App\Models\Agent;
 use App\Models\Client;
  use App\Models\BankAccount;
+use App\Models\EmailStatus;
+use App\Models\InsuranceCompany;
 use App\Models\Permission;
+use App\Models\PolicyStatus;
+use App\Models\PolicyType;
+use App\Models\PrimaryLanguage;
+use App\Models\Term;
 use App\Models\User;
 use App\Models\UsState;
 use Illuminate\Http\Request;
@@ -51,17 +58,31 @@ class ClientController extends Controller
     }
 
 
+    public function showPolicyType()
+    {
+        $title = 'Create a New Policy';
+        $types = PolicyType::all();
+        return view('admin.client.type', compact('title', 'types'));
+    }
     /**
      * Show the form for creating a new client.
      */
-    public function create()
+    public function create(Request $request)
     {
         $title = 'Add Client';
         $states = UsState::all();
-        $banks = BankAccount::all();
-        $agencies = Agency::all();
-        $permissions = Permission::where('module', 4)->get();
-        return view('admin.client.create', compact('title', 'states', 'banks', 'agencies', 'permissions'));
+        $emailStatues = EmailStatus::all();
+        $languages = PrimaryLanguage::all();
+        $policyStatuses = PolicyStatus::all();
+        $terms = Term::all();
+        $insuranceCompanies = InsuranceCompany::all();
+        $agents = Agent::all();
+        $locations = Agency::all();
+
+        $policyType = PolicyType::find($request->policy_type_id);
+        return view('admin.client.create', compact('title',
+            'policyType' ,'states' ,'emailStatues' , 'languages' ,
+            'policyStatuses','terms','insuranceCompanies','agents' ,'locations'));
     }
 
     /**

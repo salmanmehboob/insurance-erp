@@ -88,6 +88,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('general-agent/delete-permanent/{id}', [GeneralAgentController::class, 'forceDelete'])->name('general-agent.forceDelete');
 
     Route::get('show-client', [ClientController::class, 'index'])->name('show-client');
+    Route::get('policy-type-client', [ClientController::class, 'showPolicyType'])->name('policy-type-client');
     Route::get('add-client', [ClientController::class, 'create'])->name('add-client');
     Route::post('store-client', [ClientController::class, 'store'])->name('store-client');
     Route::get('client/{id}/edit', [ClientController::class, 'edit'])->name('edit-client');
