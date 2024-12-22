@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AgencyController;
 use App\Http\Controllers\Admin\AgentController;
+use App\Http\Controllers\Admin\AjaxController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\Dashboard\SuperAdminDashboardController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -20,6 +21,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('get-make-by-model', [AjaxController::class, 'getMakeByModel']);
 
 Route::middleware(['auth'])->group(function () {
 

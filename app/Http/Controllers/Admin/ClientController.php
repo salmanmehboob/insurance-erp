@@ -20,6 +20,8 @@ use App\Models\Relationship;
 use App\Models\Term;
 use App\Models\User;
 use App\Models\UsState;
+use App\Models\VehicleMake;
+use App\Models\VehicleModel;
 use App\Models\Year;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
@@ -88,11 +90,17 @@ class ClientController extends Controller
         $maritalStatus = MaritalStatus::all();
         $relationships = Relationship::all();
         $educationLevels = EducationLevel::all();
+        $years = Year::orderBy('year', 'asc')->get();
+        $vehicleMakes = VehicleMake::all();
+        $vehicleModels = VehicleModel::all();
 
         $policyType = PolicyType::find($request->policy_type_id);
+
         return view('admin.client.create', compact('title',
             'policyType' ,'states' ,'emailStatues' , 'languages' ,
-            'policyStatuses','terms','insuranceCompanies','agents' ,'locations','genders','maritalStatus','relationships','educationLevels'));
+            'policyStatuses','terms','insuranceCompanies','agents' ,'locations',
+            'genders','maritalStatus','relationships','educationLevels' ,'years',
+            'vehicleMakes','vehicleModels'));
     }
 
     /**

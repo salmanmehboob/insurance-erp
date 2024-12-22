@@ -463,7 +463,8 @@
                                     <div class="col-md-4">
                                         <label class="col-form-label">Marital Status</label>
                                         <div class="form-group">
-                                            <select name="marital_status_id" class="form-control select2" style="width: 100%"
+                                            <select name="marital_status_id" class="form-control select2"
+                                                    style="width: 100%"
                                                     data-placeholder="Select Status">
                                                 <option></option>
                                                 @foreach($maritalStatus as $state)
@@ -472,14 +473,16 @@
                                                 @endforeach
                                             </select>
                                             @if ($errors->has('marital_status_id'))
-                                                <span class="text-danger">{{ $errors->first('marital_status_id') }}</span>
+                                                <span
+                                                    class="text-danger">{{ $errors->first('marital_status_id') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="col-form-label">Relation to Insured</label>
                                         <div class="form-group">
-                                            <select name="relationship_id" class="form-control select2" style="width: 100%"
+                                            <select name="relationship_id" class="form-control select2"
+                                                    style="width: 100%"
                                                     data-placeholder="Select Status">
                                                 <option></option>
                                                 @foreach($relationships as $state)
@@ -531,7 +534,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="col-form-label">Cell Phone <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Cell Phone <span
+                                                class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="cell_no" class="form-control"
                                                    placeholder="(999) 999-9999"
@@ -545,7 +549,8 @@
                                     <div class="col-md-4">
                                         <label class="col-form-label">Education Level</label>
                                         <div class="form-group">
-                                            <select name="education_level_id" class="form-control select2" style="width: 100%"
+                                            <select name="education_level_id" class="form-control select2"
+                                                    style="width: 100%"
                                                     data-placeholder="Select Education Level">
                                                 <option></option>
                                                 @foreach($educationLevels as $state)
@@ -554,7 +559,8 @@
                                                 @endforeach
                                             </select>
                                             @if ($errors->has('education_level_id'))
-                                                <span class="text-danger">{{ $errors->first('education_level_id') }}</span>
+                                                <span
+                                                    class="text-danger">{{ $errors->first('education_level_id') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -585,26 +591,638 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="coverage-tab">
+                        <fieldset class="border p-3 mb-4">
+                            <h3>Choose the coverage options for this policy below</h3>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input type="checkbox" class="form-check-inline" name="" id="">
+                                        Check here if this is a Non-Owner Policy
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Bodily Injury</label>
+                                    <div class="form-group">
+                                        <select name="body_injury" class="form-control select2" style="width: 100%"
+                                                data-placeholder="Select Option">
+                                            <option></option>
+                                            <option value="10/10">10/10</option>
+                                            <option value="1020">10/20</option>
+                                            <option value="15/30">15/30</option>
+                                            <option value="20/40">20/40</option>
+                                            <option value="25/50">25/50</option>
+                                            <option value="25/65">25/65</option>
+                                            <option value="30/60">30/60</option>
+                                            <option value="50/100">50/100</option>
+                                            <option value="100/300">100/300</option>
+                                            <option value="250/500">250/500</option>
+                                            <option value="50 CSL">50 CSL</option>
+                                            <option value="100 CSL">100 CSL</option>
+                                            <option value="300 CSL">300 CSL</option>
+                                            <option value="500 CSL">500 CSL</option>
+                                        </select>
+                                        @if ($errors->has('body_injury'))
+                                            <span class="text-danger">{{ $errors->first('body_injury') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Property Damage</label>
+                                    <div class="form-group">
+                                        <select name="property_damage" class="form-control select2" style="width: 100%"
+                                                data-placeholder="Select Option">
+                                            <option></option>
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="15">15</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                            <option value="250">250</option>
 
+                                        </select>
+                                        @if ($errors->has('property_damage'))
+                                            <span class="text-danger">{{ $errors->first('property_damage') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Medical Payment</label>
+                                    <div class="form-group">
+                                        <select name="medical_payments" class="form-control select2" style="width: 100%"
+                                                data-placeholder="Select Option">
+                                            <option></option>
+                                            <option value="None">None</option>
+                                            <option value="500">500</option>
+                                            <option value="1000">1000</option>
+                                            <option value="2000">2000</option>
+                                            <option value="5000">5000</option>
+
+                                        </select>
+                                        @if ($errors->has('medical_payments'))
+                                            <span class="text-danger">{{ $errors->first('medical_payments') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-form-label">PIP</label>
+                                    <div class="form-group">
+                                        <select name="pip" class="form-control select2" style="width: 100%"
+                                                data-placeholder="Select Option">
+                                            <option></option>
+                                            <option value="None">None</option>
+                                            <option value="500">500</option>
+                                            <option value="1000">1000</option>
+                                            <option value="2000">2000</option>
+                                            <option value="5000">5000</option>
+                                            <option value="10000">10000</option>
+
+                                        </select>
+                                        @if ($errors->has('pip'))
+                                            <span class="text-danger">{{ $errors->first('pip') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Uninsured Bodily Injury</label>
+                                    <div class="form-group">
+                                        <select name="uninsured_body_injury" class="form-control select2"
+                                                style="width: 100%"
+                                                data-placeholder="Select Option">
+                                            <option></option>
+                                            <option value="10/10">10/10</option>
+                                            <option value="1020">10/20</option>
+                                            <option value="15/30">15/30</option>
+                                            <option value="20/40">20/40</option>
+                                            <option value="25/50">25/50</option>
+                                            <option value="25/65">25/65</option>
+                                            <option value="30/60">30/60</option>
+                                            <option value="50/100">50/100</option>
+                                            <option value="100/300">100/300</option>
+                                            <option value="250/500">250/500</option>
+                                            <option value="50 CSL">50 CSL</option>
+                                            <option value="100 CSL">100 CSL</option>
+                                            <option value="300 CSL">300 CSL</option>
+                                            <option value="500 CSL">500 CSL</option>
+                                        </select>
+                                        @if ($errors->has('uninsured_body_injury'))
+                                            <span
+                                                class="text-danger">{{ $errors->first('uninsured_body_injury') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Uninsured Property Damage</label>
+                                    <div class="form-group">
+                                        <select name="uninsured_property_damage" class="form-control select2"
+                                                style="width: 100%"
+                                                data-placeholder="Select Option">
+                                            <option></option>
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="15">15</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                            <option value="250">250</option>
+
+                                        </select>
+                                        @if ($errors->has('uninsured_property_damage'))
+                                            <span
+                                                class="text-danger">{{ $errors->first('uninsured_property_damage') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Under Insured Bodily Injury</label>
+                                    <div class="form-group">
+                                        <select name="under_insured_body_injury" class="form-control select2"
+                                                style="width: 100%"
+                                                data-placeholder="Select Option">
+                                            <option></option>
+                                            <option value="10/10">10/10</option>
+                                            <option value="1020">10/20</option>
+                                            <option value="15/30">15/30</option>
+                                            <option value="20/40">20/40</option>
+                                            <option value="25/50">25/50</option>
+                                            <option value="25/65">25/65</option>
+                                            <option value="30/60">30/60</option>
+                                            <option value="50/100">50/100</option>
+                                            <option value="100/300">100/300</option>
+                                            <option value="250/500">250/500</option>
+                                            <option value="50 CSL">50 CSL</option>
+                                            <option value="100 CSL">100 CSL</option>
+                                            <option value="300 CSL">300 CSL</option>
+                                            <option value="500 CSL">500 CSL</option>
+                                        </select>
+                                        @if ($errors->has('under_insured_body_injury'))
+                                            <span
+                                                class="text-danger">{{ $errors->first('under_insured_body_injury') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Under Insured Property Damage</label>
+                                    <div class="form-group">
+                                        <select name="under_insured_property_damage" class="form-control select2"
+                                                style="width: 100%"
+                                                data-placeholder="Select Option">
+                                            <option></option>
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="15">15</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                            <option value="250">250</option>
+
+                                        </select>
+                                        @if ($errors->has('under_insured_property_damage'))
+                                            <span
+                                                class="text-danger">{{ $errors->first('under_insured_property_damage') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
                     <div class="tab-pane fade" id="vehicle-tab">
+                        <fieldset class="border p-3 mb-4">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <fieldset class="border p-3 mb-4">
+                                    </fieldset>
+                                    <button type="button" class="btn btn-success">Add</button>
+                                    <button type="button" class="btn btn-danger">Remove</button>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">VIN</label>
+                                            <div class="form-group">
+                                                <input type="text" name="vin" class="form-control"
+                                                       placeholder="VIN"
+                                                       value="{{ old('vin') }}">
+                                                @if ($errors->has('vin'))
+                                                    <span class="text-danger">{{ $errors->first('vin') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Year</label>
+                                            <div class="form-group">
+                                                <select name="year_id" class="form-control select2" style="width: 100%"
+                                                        data-placeholder="Select Gender">
+                                                    <option></option>
+                                                    @foreach($years as $row)
+                                                        <option
+                                                            value="{{ $row->id }}" {{ old('year_id') == $row->id ? 'selected' : '' }}>
+                                                            {{ $row->year }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @if ($errors->has('year_id'))
+                                                    <span class="text-danger">{{ $errors->first('year_id') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
 
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Make</label>
+                                            <div class="form-group">
+                                                <select name="vehicle_make_id" class="form-control select2 vehicle-make"
+                                                        style="width: 100%"
+                                                        data-placeholder="Select Option">
+                                                    <option></option>
+                                                    @foreach($vehicleMakes as $row)
+                                                        <option
+                                                            value="{{ $row->id }}" {{ old('vehicle_make_id') == $row->id ? 'selected' : '' }}>
+                                                            {{ $row->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @if ($errors->has('vehicle_make_id'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('vehicle_make_id') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Make</label>
+                                            <div class="form-group">
+                                                <select name="vehicle_model_id" id="vehicle_model_id"
+                                                        class="form-control select2 vehicle-model" style="width: 100%"
+                                                        data-placeholder="Select Option">
+                                                    <option></option>
+
+                                                </select>
+                                                @if ($errors->has('vehicle_model_id'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('vehicle_model_id') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="col-form-label">Comprehensive</label>
+                                            <div class="form-group">
+                                                <select name="comprehensive" class="form-control select2"
+                                                        style="width: 100%"
+                                                        data-placeholder="Select Option">
+                                                    <option></option>
+                                                    <option value="None">None</option>
+                                                    <option value="250">250</option>
+                                                    <option value="500">500</option>
+                                                    <option value="750">750</option>
+                                                    <option value="1000">1000</option>
+
+
+                                                </select>
+                                                @if ($errors->has('comprehensive'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('comprehensive') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-6">
+                                            <label class="col-form-label">Collision</label>
+                                            <div class="form-group">
+                                                <select name="collision" class="form-control select2"
+                                                        style="width: 100%"
+                                                        data-placeholder="Select Option">
+                                                    <option></option>
+                                                    <option value="None">None</option>
+                                                    <option value="250">250</option>
+                                                    <option value="500">500</option>
+                                                    <option value="750">750</option>
+                                                    <option value="1000">1000</option>
+                                                </select>
+                                                @if ($errors->has('collision'))
+                                                    <span class="text-danger">{{ $errors->first('collision') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="col-form-label">Rental</label>
+                                            <div class="form-group">
+                                                <select name="rental" class="form-control select2" style="width: 100%"
+                                                        data-placeholder="Select Option">
+                                                    <option></option>
+                                                    <option value="20">20</option>
+                                                    <option value="30">30</option>
+                                                    <option value="50">50</option>
+                                                </select>
+                                                @if ($errors->has('rental'))
+                                                    <span class="text-danger">{{ $errors->first('rental') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="col-form-label">Towing</label>
+                                            <div class="form-group">
+                                                <select name="towing" class="form-control select2" style="width: 100%"
+                                                        data-placeholder="Select Option">
+                                                    <option></option>
+                                                    <option value="None">None</option>
+                                                    <option value="50">50</option>
+                                                    <option value="75">75</option>
+                                                </select>
+                                                @if ($errors->has('towing'))
+                                                    <span class="text-danger">{{ $errors->first('towing') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="col-form-label">Custom Equipment</label>
+                                            <div class="form-group">
+                                                <input type="text" name="custom_equipment" class="form-control"
+                                                       data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                       value="${{ old('custom_equipment') }}">
+                                                @if ($errors->has('custom_equipment'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('custom_equipment') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
                     <div class="tab-pane fade" id="payment-tab">
+                        <fieldset class="border p-3 mb-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Initial Premium</label>
+                                        <div class="form-group">
+                                            <input type="text" name="initial_premium" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('initial_premium') }}">
+                                            @if ($errors->has('initial_premium'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('initial_premium') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Prorated Endorsement</label>
+                                        <div class="form-group">
+                                            <input type="text" name="prorated_endorsement" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('prorated_endorsement') }}">
+                                            @if ($errors->has('prorated_endorsement'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('prorated_endorsement') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Premium Add Ons</label>
+                                        <div class="form-group">
+                                            <input type="text" name="premium_addon" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('premium_addon') }}">
+                                            @if ($errors->has('premium_addon'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('premium_addon') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Company Fees + Taxes</label>
+                                        <div class="form-group">
+                                            <input type="text" name="company_fee" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('company_fee') }}">
+                                            @if ($errors->has('company_fee'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('company_fee') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Agency Fee</label>
+                                        <div class="form-group">
+                                            <input type="text" name="agency_fee" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('agency_fee') }}">
+                                            @if ($errors->has('agency_fee'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('agency_fee') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label fw-bold">PRORATED TOTAL</label>
+                                        <div class="form-group">
+                                            <input type="text" name="total_prorated" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('total_prorated') }}">
+                                            @if ($errors->has('total_prorated'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('total_prorated') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Down Payment</label>
+                                        <div class="form-group">
+                                            <input type="text" name="down_payment" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('down_payment') }}">
+                                            @if ($errors->has('down_payment'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('down_payment') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Monthly Payment</label>
+                                        <div class="form-group">
+                                            <input type="text" name="monthly_payment" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('monthly_payment') }}">
+                                            @if ($errors->has('monthly_payment'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('monthly_payment') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Initial Agency Commission</label>
+                                        <div class="form-group">
+                                            <input type="text" name="initial_agency_commission" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('initial_agency_commission') }}">
+                                            @if ($errors->has('initial_agency_commission'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('initial_agency_commission') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Primary Agency Commission</label>
+                                        <div class="form-group">
+                                            <input type="text" name="primary_agency_commission" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('primary_agency_commission') }}">
+                                            @if ($errors->has('primary_agency_commission'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('primary_agency_commission') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Secondary Agency Commission</label>
+                                        <div class="form-group">
+                                            <input type="text" name="secondary_agency_commission" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('secondary_agency_commission') }}">
+                                            @if ($errors->has('secondary_agency_commission'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('secondary_agency_commission') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
 
-                    </div>
-                    <div class="tab-pane fade" id="notes-tab">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Total Premium</label>
+                                        <div class="form-group">
+                                            <input type="text" name="total_premium" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('total_premium') }}">
+                                            @if ($errors->has('total_premium'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('total_premium') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Company Fees + Taxes</label>
+                                        <div class="form-group">
+                                            <input type="text" name="total_company_fee" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('total_company_fee') }}">
+                                            @if ($errors->has('total_company_fee'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('total_company_fee') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Total Agency Fee</label>
+                                        <div class="form-group">
+                                            <input type="text" name="total_agency_fee" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('total_agency_fee') }}">
+                                            @if ($errors->has('total_agency_fee'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('total_agency_fee') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
 
+                                    <hr>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label fw-bold">TOTAL</label>
+                                        <div class="form-group">
+                                            <input type="text" name="total" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('total') }}">
+                                            @if ($errors->has('total'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('total') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Payment Option</label>
+                                        <div class="form-group">
+                                            <select name="comprehensive" class="form-control select2"
+                                                    style="width: 100%"
+                                                    data-placeholder="Select Option">
+                                                <option></option>
+                                                <option value="monthly">Paid Monthly</option>
+                                                <option value="quarterly">Paid Quarterly</option>
+                                                <option value="semi">Paid Semi Annually</option>
+                                                <option value="full">Paid in Full</option>
+                                            </select>
+                                            @if ($errors->has('comprehensive'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('comprehensive') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Payment Due Day</label>
+                                        <div class="form-group">
+                                            <select name="payment_due_days" class="form-control select2"
+                                                    style="width: 100%"
+                                                    data-placeholder="Select Option">
+                                                <option></option>
+                                                @for($i=1; $i<=31; $i++)
+                                                <option value="{{$i}}">{{$i}}</option>
+                                                @endfor
+
+                                            </select>
+                                            @if ($errors->has('payment_due_days'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('payment_due_days') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Financial Company</label>
+                                        <div class="form-group">
+                                            <select name="insurance_company_id" class="form-control select2"
+                                                    style="width: 100%"
+                                                    data-placeholder="Select Option">
+                                                <option></option>
+                                                @foreach($insuranceCompanies as $state)
+                                                    <option
+                                                        value="{{ $state->id }}" {{ old('insurance_company_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
+                                                @endforeach
+
+                                            </select>
+                                            @if ($errors->has('insurance_company_id'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('insurance_company_id') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
+                    </fieldset>
+                </div>
+                <div class="tab-pane fade" id="notes-tab">
+
                 </div>
             </div>
+    </div>
 
-            <!-- Submit button -->
-            <div class="card-footer">
-                <button type="submit" class="btn btn-primary float-end m-5">Save</button>
-            </div>
-        </form>
-        <!-- /agent form -->
+    <!-- Submit button -->
+    <div class="card-footer">
+        <button type="submit" class="btn btn-primary float-end m-5">Save</button>
+    </div>
+    </form>
+    <!-- /agent form -->
     </div>
     <!-- /form validation -->
 

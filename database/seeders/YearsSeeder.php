@@ -11,7 +11,7 @@ class YearsSeeder extends Seeder
     {
         $currentYear = now()->year;
 
-        for ($year = 2010; $year <= $currentYear; $year++) {
+        for ($year = 1980; $year <= $currentYear; $year++) {
             Year::firstOrCreate(['year' => $year]);
         }
     }
