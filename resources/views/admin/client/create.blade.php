@@ -202,15 +202,30 @@
                     <li class="nav-item">
                         <a href="#policy-tab" class="nav-link active" data-bs-toggle="tab">Policy</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="#driver-tab" class="nav-link" data-bs-toggle="tab">Driver</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#coverage-tab" class="nav-link" data-bs-toggle="tab">Coverage</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#vehicle-tab" class="nav-link" data-bs-toggle="tab">Vehicles</a>
-                    </li>
+                    @if($policyType->id == 1 || $policyType->id == 2 )
+                        <li class="nav-item">
+                            <a href="#driver-tab" class="nav-link" data-bs-toggle="tab">
+                                @if($policyType->id == 1)
+                                    Driver
+                                @elseif($policyType->id == 2)
+                                    Contact Info
+                                @endif
+                            </a>
+                        </li>
+                    @endif
+                    @if($policyType->id == 3)
+                        <li class="nav-item">
+                            <a href="#details-tab" class="nav-link" data-bs-toggle="tab">Details</a>
+                        </li>
+                    @endif
+                    @if($policyType->id == 1)
+                        <li class="nav-item">
+                            <a href="#coverage-tab" class="nav-link" data-bs-toggle="tab">Coverage</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#vehicle-tab" class="nav-link" data-bs-toggle="tab">Vehicles</a>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <a href="#payment-tab" class="nav-link" data-bs-toggle="tab">Premium / Payment Info</a>
                     </li>
@@ -589,6 +604,398 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="tab-pane fade" id="details-tab">
+                        <fieldset class="border p-3 mb-4">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Type of Business</label>
+                                        <div class="form-group">
+                                            <input type="text" name="type_of_business" class="form-control"
+                                                   value="{{ old('type_of_business') }}">
+                                            @if ($errors->has('type_of_business'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('type_of_business') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Year Of Experience</label>
+                                        <div class="form-group">
+                                            <input type="text" name="year_of_experience" class="form-control"
+                                                   value="{{ old('year_of_experience') }}">
+                                            @if ($errors->has('year_of_experience'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('year_of_experience') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Special License?</label>
+                                        <div class="form-group">
+                                            <input type="text" name="special_license" class="form-control"
+                                                   value="{{ old('special_license') }}">
+                                            @if ($errors->has('special_license'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('special_license') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Employment #</label>
+                                        <div class="form-group">
+                                            <input type="number" name="employment_number" class="form-control"
+                                                   value="{{ old('employment_number') }}">
+                                            @if ($errors->has('employment_number'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('employment_number') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Payroll</label>
+                                        <div class="form-group">
+                                            <input type="text" name="employment_payroll" class="form-control"
+                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                   value="${{ old('employment_payroll') }}">
+                                            @if ($errors->has('employment_payroll'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('employment_payroll') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <fieldset class="border p-3 mb-4">
+                                        <h5><span class="font-weight-semibold"></span>Quotes Only</h5>
+
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Current Inst</label>
+                                            <div class="form-group">
+                                                <input type="text" name="current_inst" class="form-control"
+                                                       value="${{ old('current_inst') }}">
+                                                @if ($errors->has('current_inst'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('current_inst') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Expiring</label>
+                                            <div class="form-group">
+                                                <input type="text" name="quote_expiry"
+                                                       class="form-control flatpickr-minimum"
+                                                       value="{{ old('quote_expiry') }}">
+                                                @if ($errors->has('quote_expiry'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('quote_expiry') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+
+                                </div>
+
+                                <div class="col-md-4">
+                                    <fieldset class="border p-3">
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="checkbox" class="form-check-inline" name="" id="">
+                                                Commercial General Liability
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">General Aggregate</label>
+                                            <div class="form-group">
+                                                <select name="general_aggregate" class="form-control select2"
+                                                        style="width: 100%"
+                                                        data-placeholder="Select Option">
+                                                    <option></option>
+                                                    <option value="2000000">$2,000,000.00</option>
+                                                    <option value="1000000">$1,000,000.00</option>
+                                                    <option value="500000">$500,000.00</option>
+                                                    <option value="300000">$300,000.00</option>
+                                                    <option value="100000">$100,000.00</option>
+                                                </select>
+                                                @if ($errors->has('general_aggregate'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('general_aggregate') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Products Aggregate</label>
+                                            <div class="form-group">
+                                                <select name="product_aggregate" class="form-control select2"
+                                                        style="width: 100%"
+                                                        data-placeholder="Select Option">
+                                                    <option></option>
+                                                    <option value="2000000">$2,000,000.00</option>
+                                                    <option value="1000000">$1,000,000.00</option>
+                                                    <option value="500000">$500,000.00</option>
+                                                    <option value="300000">$300,000.00</option>
+                                                    <option value="100000">$100,000.00</option>
+                                                </select>
+                                                @if ($errors->has('product_aggregate'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('product_aggregate') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Personal & Advertising Injury</label>
+                                            <div class="form-group">
+                                                <select name="personal_injury" class="form-control select2"
+                                                        style="width: 100%"
+                                                        data-placeholder="Select Option">
+                                                    <option></option>
+                                                    <option value="2000000">$2,000,000.00</option>
+                                                    <option value="1000000">$1,000,000.00</option>
+                                                    <option value="500000">$500,000.00</option>
+                                                    <option value="300000">$300,000.00</option>
+                                                    <option value="100000">$100,000.00</option>
+                                                </select>
+                                                @if ($errors->has('personal_injury'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('personal_injury') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Each Occurrence</label>
+                                            <div class="form-group">
+                                                <select name="each_occurrence" class="form-control select2"
+                                                        style="width: 100%"
+                                                        data-placeholder="Select Option">
+                                                    <option></option>
+                                                    <option value="2000000">$2,000,000.00</option>
+                                                    <option value="1000000">$1,000,000.00</option>
+                                                    <option value="500000">$500,000.00</option>
+                                                    <option value="300000">$300,000.00</option>
+                                                    <option value="100000">$100,000.00</option>
+                                                </select>
+                                                @if ($errors->has('each_occurrence'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('each_occurrence') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Fire Damage</label>
+                                            <div class="form-group">
+                                                <select name="fire_damage" class="form-control select2"
+                                                        style="width: 100%"
+                                                        data-placeholder="Select Option">
+                                                    <option></option>
+                                                    <option value="2000000">$2,000,000.00</option>
+                                                    <option value="1000000">$1,000,000.00</option>
+                                                    <option value="500000">$500,000.00</option>
+                                                    <option value="300000">$300,000.00</option>
+                                                    <option value="100000">$100,000.00</option>
+                                                </select>
+                                                @if ($errors->has('fire_damage'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('fire_damage') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Medical Expenses</label>
+                                            <div class="form-group">
+                                                <select name="medical_expense" class="form-control select2"
+                                                        style="width: 100%"
+                                                        data-placeholder="Select Option">
+                                                    <option></option>
+                                                    <option value="2000000">$2,000,000.00</option>
+                                                    <option value="1000000">$1,000,000.00</option>
+                                                    <option value="500000">$500,000.00</option>
+                                                    <option value="300000">$300,000.00</option>
+                                                    <option value="100000">$100,000.00</option>
+                                                </select>
+                                                @if ($errors->has('medical_expense'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('medical_expense') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Annual Receipt</label>
+                                            <div class="form-group">
+                                                <input type="text" name="annual_receipt" class="form-control"
+                                                       data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                       value="${{ old('annual_receipt') }}">
+                                                @if ($errors->has('annual_receipt'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('annual_receipt') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-4">
+                                    <fieldset class="border p-3">
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="checkbox" class="form-check-inline" name="" id="">
+                                                Commercial Property
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Building</label>
+                                            <div class="form-group">
+                                                <input type="text" name="building" class="form-control"
+                                                       data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                       value="${{ old('building') }}">
+                                                @if ($errors->has('building'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('building') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Contents</label>
+                                            <div class="form-group">
+                                                <input type="text" name="contents" class="form-control"
+                                                       data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                       value="${{ old('contents') }}">
+                                                @if ($errors->has('contents'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('contents') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Loss Of Earning</label>
+                                            <div class="form-group">
+                                                <input type="text" name="loss_of_earning" class="form-control"
+                                                       data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                       value="${{ old('loss_of_earning') }}">
+                                                @if ($errors->has('loss_of_earning'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('loss_of_earning') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Pump / Canopy</label>
+                                            <div class="form-group">
+                                                <input type="text" name="pump" class="form-control"
+                                                       data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                       value="${{ old('pump') }}">
+                                                @if ($errors->has('pump'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('pump') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Sign</label>
+                                            <div class="form-group">
+                                                <input type="text" name="sign" class="form-control"
+                                                       data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                       value="${{ old('sign') }}">
+                                                @if ($errors->has('sign'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('sign') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Glass</label>
+                                            <div class="form-group">
+                                                <input type="text" name="glass" class="form-control"
+                                                       data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                       value="${{ old('glass') }}">
+                                                @if ($errors->has('glass'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('glass') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-4">
+                                    <fieldset class="border p-3">
+
+                                        <h4><span class="font-weight-semibold"></span> Property Detail</h4>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Owned / Leased</label>
+                                            <div class="form-group">
+                                                <select name="property_owner" class="form-control select2"
+                                                        style="width: 100%"
+                                                        data-placeholder="Select Option">
+                                                    <option></option>
+                                                    <option value="1">YES</option>
+                                                    <option value="0">NO</option>
+
+                                                </select>
+                                                @if ($errors->has('property_owner'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('property_owner') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Year Built</label>
+                                            <div class="form-group">
+                                                <input type="text" name="built_year" class="form-control"
+                                                       value="{{ old('built_year') }}">
+                                                @if ($errors->has('built_year'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('built_year') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Area</label>
+                                            <div class="form-group">
+                                                <input type="text" name="property_area" class="form-control"
+                                                       value="{{ old('property_area') }}">
+                                                @if ($errors->has('property_area'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('property_area') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Age Of Roof</label>
+                                            <div class="form-group">
+                                                <input type="text" name="age_of_roof" class="form-control"
+                                                       value="{{ old('age_of_roof') }}">
+                                                @if ($errors->has('age_of_roof'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('age_of_roof') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="col-form-label">Construction</label>
+                                            <div class="form-group">
+                                                <input type="text" name="construction" class="form-control"
+                                                       value="{{ old('construction') }}">
+                                                @if ($errors->has('construction'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('construction') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="checkbox" class="form-check-inline" name="is_alarm_system"
+                                                       id="">
+                                                Is Alarm System?
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
                     <div class="tab-pane fade" id="coverage-tab">
                         <fieldset class="border p-3 mb-4">
@@ -1177,7 +1584,7 @@
                                                     data-placeholder="Select Option">
                                                 <option></option>
                                                 @for($i=1; $i<=31; $i++)
-                                                <option value="{{$i}}">{{$i}}</option>
+                                                    <option value="{{$i}}">{{$i}}</option>
                                                 @endfor
 
                                             </select>
@@ -1208,6 +1615,52 @@
                                     </div>
                                 </div>
                             </div>
+                    </div>
+                    <div class="tab-pane fade" id="notes-tab">
+                        <fieldset class="border p-3 mb-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Coverage</label>
+                                        <div class="form-group">
+                                            <input type="text" name="coverage" class="form-control"
+                                                   value="{{ old('coverage') }}">
+                                            @if ($errors->has('coverage'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('coverage') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Referral Resource</label>
+                                        <div class="form-group">
+                                            <input type="text" name="referral_resource" class="form-control"
+                                                   value="{{ old('referral_resource') }}">
+                                            @if ($errors->has('referral_resource'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('referral_resource') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Memo / Notes</label>
+                                        <div class="form-group">
+                                            <textarea class="form-control" rows="10" name="notes"></textarea>
+                                            @if ($errors->has('notes'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('notes') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
                     </div>
                     </fieldset>
                 </div>

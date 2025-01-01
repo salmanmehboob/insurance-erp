@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\Agent;
 use App\Models\Client;
- use App\Models\BankAccount;
+use App\Models\BankAccount;
 use App\Models\EducationLevel;
 use App\Models\EmailStatus;
 use App\Models\Gender;
@@ -54,7 +54,7 @@ class ClientController extends Controller
                 $assignedLocations = [];
                 foreach ($client->agencies as $agency) {
                     $location = $agency->locations;
-                          $assignedLocations[] = $location->agency_name;
+                    $assignedLocations[] = $location->agency_name;
 
                 }
                 // Remove duplicates and convert to a string
@@ -72,6 +72,7 @@ class ClientController extends Controller
         $types = PolicyType::all();
         return view('admin.client.type', compact('title', 'types'));
     }
+
     /**
      * Show the form for creating a new client.
      */
@@ -97,10 +98,10 @@ class ClientController extends Controller
         $policyType = PolicyType::find($request->policy_type_id);
 
         return view('admin.client.create', compact('title',
-            'policyType' ,'states' ,'emailStatues' , 'languages' ,
-            'policyStatuses','terms','insuranceCompanies','agents' ,'locations',
-            'genders','maritalStatus','relationships','educationLevels' ,'years',
-            'vehicleMakes','vehicleModels'));
+            'policyType', 'states', 'emailStatues', 'languages',
+            'policyStatuses', 'terms', 'insuranceCompanies', 'agents', 'locations',
+            'genders', 'maritalStatus', 'relationships', 'educationLevels', 'years',
+            'vehicleMakes', 'vehicleModels'));
     }
 
     /**
@@ -180,7 +181,7 @@ class ClientController extends Controller
                 'note' => $data['notes'],
                 'bank_id' => $data['bank_id'] ?? null,
                 'commission_in_percentage' => $data['commission_in_percentage'] ?? null,
-                'commission_fee' => str_replace(['$', ' '], '', $data['commission_fee'] )?? null,
+                'commission_fee' => str_replace(['$', ' '], '', $data['commission_fee']) ?? null,
             ]);
 
 //            dd($client);
@@ -317,7 +318,7 @@ class ClientController extends Controller
                 'email' => $data['email'],
                 'note' => $data['notes'],
                 'commission_in_percentage' => $data['commission_in_percentage'] ?? null,
-                'commission_fee' => str_replace(['$', ' '], '', $data['commission_fee'] )?? null,
+                'commission_fee' => str_replace(['$', ' '], '', $data['commission_fee']) ?? null,
             ]);
 
 
@@ -326,8 +327,8 @@ class ClientController extends Controller
             // Update permissions
             if ($request->has('permissions')) {
                 $validPermissionIds = Permission::whereIn('id', $data['permissions'])->pluck('id')->toArray();
-                 $role->syncPermissions($validPermissionIds);
-            }else{
+                $role->syncPermissions($validPermissionIds);
+            } else {
                 $role->syncPermissions([]);
 
             }
