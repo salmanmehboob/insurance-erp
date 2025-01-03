@@ -8,7 +8,7 @@
     <!-- Form validation -->
     <div class="card">
         <!-- Agent form -->
-        <form action="{{ route('store-agent') }}" method="POST" enctype="multipart/form-data"
+        <form action="{{ route('store-client') }}" method="POST" enctype="multipart/form-data"
               class="flex-fill form-validate-jquery">
             @csrf
             <input type="hidden" name="policy_type_id" value="{{$policyType->id}}">
@@ -2121,7 +2121,7 @@
                                     <div class="col-md-12">
                                         <label class="col-form-label">Payment Option</label>
                                         <div class="form-group">
-                                            <select name="comprehensive" class="form-control select2"
+                                            <select name="payment_option" class="form-control select2"
                                                     style="width: 100%"
                                                     data-placeholder="Select Option">
                                                 <option></option>
@@ -2130,9 +2130,9 @@
                                                 <option value="semi">Paid Semi Annually</option>
                                                 <option value="full">Paid in Full</option>
                                             </select>
-                                            @if ($errors->has('comprehensive'))
+                                            @if ($errors->has('payment_option'))
                                                 <span
-                                                    class="text-danger">{{ $errors->first('comprehensive') }}</span>
+                                                    class="text-danger">{{ $errors->first('payment_option') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -2249,8 +2249,7 @@
                 // Get the index from the id of the selected make
                 var index = $(this).attr('id').match(/\d+/)[0]; // Extract the index from the id, e.g., 0, 1, etc.
 
-                console.log(index)
-                var method = 'GET';
+                 var method = 'GET';
 
                 $.ajax({
                     type: method,
@@ -2283,6 +2282,12 @@
     </script>
     <script>
         $(document).ready(function () {
+            $('.select2').select2({
+                width: '100%',
+                placeholder: "Select an option",
+                allowClear: true
+            });
+            flatpickr(".flatpickr-minimum");
 
             // By default, hide the Remove button in the first form
             $('.driver-form:first').find('#count\\[0\\] .remove-form').hide();

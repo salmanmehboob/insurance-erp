@@ -7,6 +7,12 @@ use App\Models\Agency;
 use App\Models\Agent;
 use App\Models\Client;
 use App\Models\BankAccount;
+use App\Models\ClientCoverage;
+use App\Models\ClientDriver;
+use App\Models\ClientNotes;
+use App\Models\ClientPayment;
+use App\Models\ClientPolicy;
+use App\Models\ClientVehicle;
 use App\Models\EducationLevel;
 use App\Models\EmailStatus;
 use App\Models\Gender;
@@ -109,100 +115,193 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->all());
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'address' => 'nullable|string',
-            'city' => 'required|string|max:255',
-            'state_id' => 'required|exists:us_states,id',
-            'zip_code' => 'nullable|string|max:10',
-            'phone_no' => 'required|string',
-            'notes' => 'required|string',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'username' => 'required|string|max:255',
-            'password' => 'required|string|min:8',
-            'bank_id' => 'nullable|exists:bank_accounts,id',
-            'commission_in_percentage' => 'nullable|numeric',
-            'commission_fee' => 'nullable|string',
-            'selected_location_ids' => 'nullable|array',
-            'selected_location_names' => 'nullable|array',
-            'permissions' => 'nullable|array',  // ensure permissions are passed as an array
-            'permissions.*' => 'exists:permissions,id', // make sure each permission ID is valid
+            'policy_type_id' => 'required',
+            'applicant_name' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'state_id' => 'required',
+            'zip_code' => 'required',
+            'email' => 'required',
+            'email_status_id' => 'required',
+            'anniversary' => 'required',
+            'primary_language_id' => 'required',
+            'home_phone_no' => 'required',
+            'cell_phone_no' => 'required',
+            'work_phone_no' => 'required',
+            'fax_phone_no' => 'required',
+            'policy_status_id' => 'required',
+            'effective_date' => 'required',
+            'term_id' => 'required',
+            'expiration_date' => 'required',
+            'file_number' => 'required',
+            'sold_date' => 'required',
+            'policy_number' => 'required',
+            'insurance_company_id' => 'required',
+            'agent_id' => 'required',
+            'agency_id' => 'required',
+            'body_injury' => 'required',
+            'property_damage' => 'required',
+            'medical_payments' => 'required',
+            'pip' => 'required',
+            'uninsured_body_injury' => 'required',
+            'uninsured_property_damage' => 'required',
+            'under_insured_body_injury' => 'required',
+            'under_insured_property_damage' => 'required',
+            'initial_premium' => 'required',
+            'prorated_endorsement' => 'required',
+            'premium_addon' => 'required',
+            'company_fee' => 'required',
+            'agency_fee' => 'required',
+            'total_prorated' => 'required',
+            'down_payment' => 'required',
+            'monthly_payment' => 'required',
+            'initial_agency_commission' => 'required',
+            'primary_agency_commission' => 'required',
+            'secondary_agency_commission' => 'required',
+            'total_premium' => 'required',
+            'total_company_fee' => 'required',
+            'total_agency_fee' => 'required',
+            'total' => 'required',
+            'payment_due_days' => 'required',
+            'coverage' => 'required',
+            'referral_resource' => 'required',
+            'notes' => 'required',
         ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+         if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         DB::beginTransaction();
 
         try {
-            // Client data
-            $data = $validator->validated();
 
-            $roleName = $data['name']; // If you need just the first name as a string
+            // Create Client
+            $clientData = [
+                'user_id' => auth()->user()->id,
+                'policy_type_id' => $request->policy_type_id,
+                'applicant_name' => $request->applicant_name,
+                'address' => $request->address,
+                'city' => $request->city,
+                'state_id' => $request->state_id,
+                'zip_code' => $request->zip_code,
+                'email' => $request->email,
+                'home_phone_no' => $request->home_phone_no,
+                'cell_phone_no' => $request->cell_phone_no,
+                'work_phone_no' => $request->work_phone_no,
+                'fax_phone_no' => $request->fax_phone_no,
+                'email_status_id' => $request->email_status_id,
+                'primary_language_id' => $request->primary_language_id,
+                'anniversary' => $request->anniversary,
+            ];
 
-            $clientRole = Role::create(['name' => $roleName]);
+            $client = Client::create($clientData);
 
-            // Create the user associated with this client
-            $user = User::create([
-                'email' => $data['email'],
-                'name' => $data['username'],
-                'password' => ($data['password']),  // Encrypt password
-                'role' => '$roleName',  // Assuming a role 'client'
-            ]);
+            // Create Client Policy
+            $clientPolicyData = [
+                'client_id' => $client->id,
+                'policy_status_id' => $request->policy_status_id,
+                'term_id' => $request->term_id,
+                'effective_date' => $request->effective_date,
+                'expiration_date' => $request->expiration_date,
+                'sold_date' => $request->sold_date,
+                'file_number' => $request->file_number,
+                'policy_number' => $request->policy_number,
+                'insurance_company_id' => $request->insurance_company_id,
+                'agent_id' => $request->agent_id,
+                'agency_id' => $request->agency_id,
+            ];
 
+            $clientPolicy = ClientPolicy::create($clientPolicyData);
 
-            // If permissions are provided in the form
-            if ($request->has('permissions')) {
-                // Get the permissions based on the IDs provided in the form
-                $allPermissions = Permission::whereIn('id', $request->permissions)->get();
-
-                // Assign the 'Super Admin' role to the user
-                $user->assignRole($clientRole);
-
-                // Assign the selected permissions to the 'Super Admin' role
-                $clientRole->givePermissionTo($allPermissions);
+            // Create Client Drivers
+            foreach ($request->first_name as $key => $firstName) {
+                ClientDriver::create([
+                    'client_id' => $client->id,
+                    'first_name' => $firstName,
+                    'last_name' => $request->last_name[$key],
+                    'dob' => $request->dob[$key],
+                    'age' => $request->age[$key],
+                    'ssn_no' => $request->ssn_no[$key],
+                    'gender_id' => $request->gender_id[$key],
+                    'marital_status_id' => $request->marital_status_id[$key],
+                    'relationship_id' => $request->relationship_id[$key],
+                    'license_no' => $request->license_no[$key],
+                    'us_state_id' => $request->us_state_id[$key],
+                    'license_year' => $request->license_year[$key],
+                    'cell_no' => $request->cell_no[$key],
+                    'education_level_id' => $request->education_level_id[$key],
+                    'occupation' => $request->occupation[$key],
+                    'industry' => $request->industry[$key],
+                ]);
             }
 
-
-            // Create the client record
-            $client = Client::create([
-                'user_id' => $user->id,
-                'name' => $data['name'],
-                'address' => $data['address'],
-                'city' => $data['city'],
-                'state_id' => $data['state_id'],
-                'zip_code' => $data['zip_code'],
-                'phone_no' => $data['phone_no'],
-                'email' => $data['email'],
-                'note' => $data['notes'],
-                'bank_id' => $data['bank_id'] ?? null,
-                'commission_in_percentage' => $data['commission_in_percentage'] ?? null,
-                'commission_fee' => str_replace(['$', ' '], '', $data['commission_fee']) ?? null,
+            // Create Client Coverage
+            ClientCoverage::create([
+                'client_id' => $client->id,
+                'body_injury' => $request->body_injury,
+                'property_damage' => $request->property_damage,
+                'medical_payments' => $request->medical_payments,
+                'pip' => $request->pip,
+                'uninsured_body_injury' => $request->uninsured_body_injury,
+                'uninsured_property_damage' => $request->uninsured_property_damage,
+                'under_insured_body_injury' => $request->under_insured_body_injury,
+                'under_insured_property_damage' => $request->under_insured_property_damage,
             ]);
 
-//            dd($client);
-
-            // Handling selected location associations (client_agencies)
-            if (!empty($data['selected_location_ids'])) {
-                $locationIds = array_map('intval', explode(',', trim($data['selected_location_ids'][0], ',')));
-
-                foreach ($locationIds as $locationId) {
-                    // Add location to client_agencies (assumes you have a pivot table named client_agencies)
-                    ClientAgency::create([
-                        'client_id' => $client->id,
-                        'agency_id' => $locationId, // Assuming agency_id is the foreign key
-                    ]);
-                }
+            // Create Client Vehicles
+            foreach ($request->vin as $key => $vin) {
+                ClientVehicle::create([
+                    'client_id' => $client->id,
+                    'vin' => $vin,
+                    'year_id' => $request->year_id[$key],
+                    'vehicle_make_id' => $request->vehicle_make_id[$key],
+                    'vehicle_model_id' => $request->vehicle_model_id[$key],
+                    'comprehensive' => $request->comprehensive[$key],
+                    'collision' => $request->collision[$key],
+                    'rental' => $request->rental[$key],
+                    'towing' => $request->towing[$key],
+                    'custom_equipment' => removeDollarSign($request->custom_equipment[$key]),
+                ]);
             }
+
+            // Create Client Payments
+            ClientPayment::create([
+                'client_id' => $client->id,
+                'initial_premium' => removeDollarSign($request->initial_premium),
+                'prorated_endorsement' => removeDollarSign($request->prorated_endorsement),
+                'premium_addon' => removeDollarSign($request->premium_addon),
+                'company_fee' => removeDollarSign($request->company_fee),
+                'agency_fee' => removeDollarSign($request->agency_fee),
+                'total_prorated' => removeDollarSign($request->total_prorated),
+                'down_payment' => removeDollarSign($request->down_payment),
+                'monthly_payment' => removeDollarSign($request->monthly_payment),
+                'initial_agency_commission' => removeDollarSign($request->initial_agency_commission),
+                'primary_agency_commission' => removeDollarSign($request->primary_agency_commission),
+                'secondary_agency_commission' => removeDollarSign($request->secondary_agency_commission),
+                'total_premium' => removeDollarSign($request->total_premium),
+                'total_company_fee' => removeDollarSign($request->total_company_fee),
+                'total_agency_fee' => removeDollarSign($request->total_agency_fee),
+                'total' => removeDollarSign($request->total),
+                'payment_option' =>  ($request->payment_option),
+                'payment_due_days' =>  ($request->payment_due_days),
+                'insurance_company_id' => $request->insurance_company_id,
+            ]);
+
+            // Create Client Notes
+            ClientNotes::create([
+                'client_id' => $client->id,
+                'coverage' => $request->coverage,
+                'referral_resource' => $request->referral_resource,
+                'notes' => $request->notes,
+            ]);
 
             DB::commit();
-            return redirect()->route('show-client')->with('success', 'Client and User created successfully.');
+
+            return redirect()->route('show-client')->with('success', 'Client and related records created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
+
             return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
