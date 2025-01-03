@@ -53,20 +53,7 @@ class ClientController extends Controller
     public function index()
     {
         $title = 'Clients';
-        $clients = Client::with(['state', 'bank', 'user.permissions', 'agencies.locations'])
-            ->orderBy('created_at', 'DESC')
-            ->get()
-            ->map(function ($client) {
-                $assignedLocations = [];
-                foreach ($client->agencies as $agency) {
-                    $location = $agency->locations;
-                    $assignedLocations[] = $location->agency_name;
-
-                }
-                // Remove duplicates and convert to a string
-                $client->assignedLocations = implode(', ', array_unique($assignedLocations));
-                return $client;
-            });
+        $clients = Client::with('policyType')->orderBy('created_at', 'DESC')->get();
 
         return view('admin.client.index', compact('title', 'clients'));
     }
@@ -115,6 +102,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
         $validator = Validator::make($request->all(), [
             'policy_type_id' => 'required',
             'applicant_name' => 'required',
@@ -140,14 +128,8 @@ class ClientController extends Controller
             'insurance_company_id' => 'required',
             'agent_id' => 'required',
             'agency_id' => 'required',
-            'body_injury' => 'required',
-            'property_damage' => 'required',
-            'medical_payments' => 'required',
-            'pip' => 'required',
-            'uninsured_body_injury' => 'required',
-            'uninsured_property_damage' => 'required',
-            'under_insured_body_injury' => 'required',
-            'under_insured_property_damage' => 'required',
+
+
             'initial_premium' => 'required',
             'prorated_endorsement' => 'required',
             'premium_addon' => 'required',
@@ -168,14 +150,15 @@ class ClientController extends Controller
             'referral_resource' => 'required',
             'notes' => 'required',
         ]);
-         if ($validator->fails()) {
+//        dd($validator->errors());
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         DB::beginTransaction();
 
         try {
-
+//            dd($request->all());
             // Create Client
             $clientData = [
                 'user_id' => auth()->user()->id,
@@ -214,56 +197,78 @@ class ClientController extends Controller
 
             $clientPolicy = ClientPolicy::create($clientPolicyData);
 
+
+
+
+
+
+
+
+
+
+            
+
             // Create Client Drivers
-            foreach ($request->first_name as $key => $firstName) {
-                ClientDriver::create([
-                    'client_id' => $client->id,
-                    'first_name' => $firstName,
-                    'last_name' => $request->last_name[$key],
-                    'dob' => $request->dob[$key],
-                    'age' => $request->age[$key],
-                    'ssn_no' => $request->ssn_no[$key],
-                    'gender_id' => $request->gender_id[$key],
-                    'marital_status_id' => $request->marital_status_id[$key],
-                    'relationship_id' => $request->relationship_id[$key],
-                    'license_no' => $request->license_no[$key],
-                    'us_state_id' => $request->us_state_id[$key],
-                    'license_year' => $request->license_year[$key],
-                    'cell_no' => $request->cell_no[$key],
-                    'education_level_id' => $request->education_level_id[$key],
-                    'occupation' => $request->occupation[$key],
-                    'industry' => $request->industry[$key],
-                ]);
+            if (!empty($request->first_name) && is_array($request->first_name)) {
+                foreach ($request->first_name as $key => $firstName) {
+                    ClientDriver::create([
+                        'client_id' => $client->id,
+                        'first_name' => $firstName,
+                        'last_name' => $request->last_name[$key],
+                        'dob' => $request->dob[$key],
+                        'age' => $request->age[$key],
+                        'ssn_no' => $request->ssn_no[$key],
+                        'gender_id' => $request->gender_id[$key],
+                        'marital_status_id' => $request->marital_status_id[$key],
+                        'relationship_id' => $request->relationship_id[$key],
+                        'license_no' => $request->license_no[$key],
+                        'us_state_id' => $request->us_state_id[$key],
+                        'license_year' => $request->license_year[$key],
+                        'cell_no' => $request->cell_no[$key],
+                        'education_level_id' => $request->education_level_id[$key],
+                        'occupation' => $request->occupation[$key],
+                        'industry' => $request->industry[$key],
+                    ]);
+                }
             }
 
             // Create Client Coverage
-            ClientCoverage::create([
-                'client_id' => $client->id,
-                'body_injury' => $request->body_injury,
-                'property_damage' => $request->property_damage,
-                'medical_payments' => $request->medical_payments,
-                'pip' => $request->pip,
-                'uninsured_body_injury' => $request->uninsured_body_injury,
-                'uninsured_property_damage' => $request->uninsured_property_damage,
-                'under_insured_body_injury' => $request->under_insured_body_injury,
-                'under_insured_property_damage' => $request->under_insured_property_damage,
-            ]);
+            if (isset($request->body_injury)) {
 
-            // Create Client Vehicles
-            foreach ($request->vin as $key => $vin) {
-                ClientVehicle::create([
+                ClientCoverage::create([
                     'client_id' => $client->id,
-                    'vin' => $vin,
-                    'year_id' => $request->year_id[$key],
-                    'vehicle_make_id' => $request->vehicle_make_id[$key],
-                    'vehicle_model_id' => $request->vehicle_model_id[$key],
-                    'comprehensive' => $request->comprehensive[$key],
-                    'collision' => $request->collision[$key],
-                    'rental' => $request->rental[$key],
-                    'towing' => $request->towing[$key],
-                    'custom_equipment' => removeDollarSign($request->custom_equipment[$key]),
+                    'body_injury' => $request->body_injury,
+                    'property_damage' => $request->property_damage,
+                    'medical_payments' => $request->medical_payments,
+                    'pip' => $request->pip,
+                    'uninsured_body_injury' => $request->uninsured_body_injury,
+                    'uninsured_property_damage' => $request->uninsured_property_damage,
+                    'under_insured_body_injury' => $request->under_insured_body_injury,
+                    'under_insured_property_damage' => $request->under_insured_property_damage,
                 ]);
             }
+
+
+            // Create Client Vehicles
+            if ($request->vin[0] != null) {
+                foreach ($request->vin as $key => $vin) {
+                    ClientVehicle::create([
+                        'client_id' => $client->id,
+                        'vin' => $vin,
+                        'year_id' => $request->year_id[$key] ?? null,
+                        'vehicle_make_id' => $request->vehicle_make_id[$key] ?? null,
+                        'vehicle_model_id' => $request->vehicle_model_id[$key] ?? null,
+                        'comprehensive' => $request->comprehensive[$key] ?? null,
+                        'collision' => $request->collision[$key] ?? null,
+                        'rental' => $request->rental[$key] ?? null,
+                        'towing' => $request->towing[$key] ?? null,
+                        'custom_equipment' => isset($request->custom_equipment[$key])
+                            ? removeDollarSign($request->custom_equipment[$key])
+                            : null,
+                    ]);
+                }
+            }
+
 
             // Create Client Payments
             ClientPayment::create([
@@ -283,8 +288,8 @@ class ClientController extends Controller
                 'total_company_fee' => removeDollarSign($request->total_company_fee),
                 'total_agency_fee' => removeDollarSign($request->total_agency_fee),
                 'total' => removeDollarSign($request->total),
-                'payment_option' =>  ($request->payment_option),
-                'payment_due_days' =>  ($request->payment_due_days),
+                'payment_option' => ($request->payment_option),
+                'payment_due_days' => ($request->payment_due_days),
                 'insurance_company_id' => $request->insurance_company_id,
             ]);
 

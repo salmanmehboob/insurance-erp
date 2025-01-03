@@ -41,37 +41,22 @@
                 <table id="client-table" class="table table-striped datatables-reponsive">
                     <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>Policy Type</th>
+                        <th>Applicant Name</th>
                         <th>Email</th>
-                        <th>Phone</th>
+                        <th>Address</th>
                         <th>City</th>
-                        <th>Locations</th>
                         <th class="text-center">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($clients as $client)
                          <tr>
-                            <td data-bs-toggle="modal" data-bs-target="#clientModal" class="clickable-row"
-                                data-id="{{ $client->id }}"
-                                data-name="{{ $client->name }}"
-                                data-email="{{ $client->email }}"
-                                data-phone_no="{{ $client->phone_no }}"
-                                data-city="{{ $client->city }}"
-                                data-state="{{ $client->state->name }}"
-                                data-zip_code="{{ $client->zip_code }}"
-                                data-address="{{ $client->address }}"
-                                data-bank_name="{{ $client->bank->bank_name ?? 'N/A' }}"
-                                data-commission_percentage="{{ $client->commission_in_percentage }}"
-                                data-commission_fee="$ {{ $client->commission_fee }}"
-                                data-notes="{{ $client->note}}"
-                                data-locations="{{ $client->assignedLocations ?? 'No Locations' }}"
-                                data-permissions="{{ $client->user->getAllPermissions()->pluck('id')->join(',') }}"
-                                data-permission-names="{{ $client->user->getAllPermissions()->pluck('short_name')->join(',') }}">{{ $client->name }}</td>
-                            <td>{{ $client->email }}</td>
-                            <td>{{ $client->phone_no }}</td>
-                            <td>{{ $client->city }}</td>
-                            <td>{{ $client->assignedLocations ?? 'No Locations' }}</td>
+                            <td>{{ $client->policyType->name }}</td>
+                            <td>{{ $client->applicant_name }}</td>
+                             <td>{{ $client->email   }}</td>
+                             <td>{{ $client->address }}</td>
+                             <td>{{ $client->city }}</td>
                             <td>
                                 <div class="d-flex action-buttons">
                                     @can('edit-client')

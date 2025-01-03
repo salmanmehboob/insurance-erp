@@ -5,47 +5,73 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Symfony\Component\Mime\Email;
 
 class Client extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name',
         'user_id',
+        'policy_type_id',
+        'applicant_name',
         'address',
         'city',
         'state_id',
         'zip_code',
-        'phone_no',
-        'note',
         'email',
-        'username',
-        'password',
-        'bank_id',
-        'commission_in_percentage',
-        'commission_fee',
+        'home_phone_no',
+        'cell_phone_no',
+        'work_phone_no',
+        'fax_phone_no',
+        'email_status_id',
+        'primary_language_id',
+        'anniversary',
     ];
 
-    /**
-     * Relationship with ClientAgencies (One Client can have many Agencies)
-     */
 
-
-    public function bank()
+    public function policyType()
     {
-        return $this->belongsTo(BankAccount::class, 'bank_id');
+        return $this->belongsTo(PolicyType::class);
     }
 
-    public function state()
+    public function emailStatus()
     {
-        return $this->belongsTo(UsState::class, 'state_id');
+        return $this->belongsTo(EmailStatus::class);
     }
-    /**
-     * Relationship with User table (Client linked to User model)
-     */
-    public function user()
+
+    public function language()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(PrimaryLanguage::class);
+    }
+
+    public function coverage()
+    {
+        return $this->hasOne(ClientCoverage::class);
+    }
+
+    public function drivers()
+    {
+        return $this->hasMany(ClientDriver::class);
+    }
+
+    public function note()
+    {
+        return $this->hasOne(ClientNotes::class);
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(ClientPayment::class);
+    }
+
+    public function policy()
+    {
+        return $this->hasOne(ClientPolicy::class);
+    }
+
+    public function vehicles()
+    {
+        return $this->hasMany(ClientVehicle::class);
     }
 }
