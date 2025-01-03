@@ -401,218 +401,240 @@
                         </fieldset>
                     </div>
                     <div class="tab-pane fade" id="driver-tab">
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                <fieldset class="border p-3 mb-4">
-                                </fieldset>
-                                <button type="button" class="btn btn-success">Add</button>
-                                <button type="button" class="btn btn-danger">Remove</button>
-                            </div>
-                            <div class="col-md-8">
+                        <div class="driver-form-container">
+                            <div class="driver-form">
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <label class="col-form-label">First Name</label>
-                                        <div class="form-group">
-                                            <input type="text" name="first_name" class="form-control"
-                                                   placeholder="First Name"
-                                                   value="{{ old('first_name') }}">
-                                            @if ($errors->has('first_name'))
-                                                <span class="text-danger">{{ $errors->first('first_name') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="col-form-label">Last Name</label>
-                                        <div class="form-group">
-                                            <input type="text" name="last_name" class="form-control"
-                                                   placeholder="Last Name"
-                                                   value="{{ old('last_name') }}">
-                                            @if ($errors->has('last_name'))
-                                                <span class="text-danger">{{ $errors->first('last_name') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="col-form-label">Date Of Birth</label>
-                                        <div class="form-group">
-                                            <input type="text" name="dob" class="form-control flatpickr-minimum"
-                                                   placeholder="Select Date"
-                                                   value="{{ old('dob') }}">
-                                            @if ($errors->has('dob'))
-                                                <span class="text-danger">{{ $errors->first('dob') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label class="col-form-label">Age</label>
-                                        <div class="form-group">
-                                            <input type="number" name="age" class="form-control"
-                                                   placeholder="Age"
-                                                   value="{{ old('age') }}">
-                                            @if ($errors->has('age'))
-                                                <span class="text-danger">{{ $errors->first('age') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="col-form-label">SSN #<span class="text-danger">*</span></label>
-                                        <div class="form-group">
-                                            <input type="text" name="ssn_no" class="form-control"
-                                                   placeholder="999-99-9999"
-                                                   data-inputmask="'mask': '999-99-9999'"
-                                                   value="{{ old('ssn_no') }}">
-                                            @if ($errors->has('ssn_no'))
-                                                <span class="text-danger">{{ $errors->first('ssn_no') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <label class="col-form-label">Gender</label>
-                                        <div class="form-group">
-                                            <select name="gender_id" class="form-control select2" style="width: 100%"
-                                                    data-placeholder="Select Gender">
-                                                <option></option>
-                                                @foreach($genders as $state)
-                                                    <option
-                                                        value="{{ $state->id }}" {{ old('gender_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @if ($errors->has('gender_id'))
-                                                <span class="text-danger">{{ $errors->first('gender_id') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="col-form-label">Marital Status</label>
-                                        <div class="form-group">
-                                            <select name="marital_status_id" class="form-control select2"
-                                                    style="width: 100%"
-                                                    data-placeholder="Select Status">
-                                                <option></option>
-                                                @foreach($maritalStatus as $state)
-                                                    <option
-                                                        value="{{ $state->id }}" {{ old('marital_status_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @if ($errors->has('marital_status_id'))
-                                                <span
-                                                    class="text-danger">{{ $errors->first('marital_status_id') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="col-form-label">Relation to Insured</label>
-                                        <div class="form-group">
-                                            <select name="relationship_id" class="form-control select2"
-                                                    style="width: 100%"
-                                                    data-placeholder="Select Status">
-                                                <option></option>
-                                                @foreach($relationships as $state)
-                                                    <option
-                                                        value="{{ $state->id }}" {{ old('relationship_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @if ($errors->has('relationship_id'))
-                                                <span class="text-danger">{{ $errors->first('relationship_id') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="col-form-label">Driver License</label>
-                                        <div class="form-group">
-                                            <input type="text" name="license_no" class="form-control"
-                                                   placeholder="License No"
-                                                   value="{{ old('license_no') }}">
-                                            @if ($errors->has('license_no'))
-                                                <span class="text-danger">{{ $errors->first('license_no') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="col-form-label">License State</label>
-                                        <div class="form-group">
-                                            <select name="us_state_id" class="form-control select2" style="width: 100%"
-                                                    data-placeholder="Select State">
-                                                <option></option>
-                                                @foreach($states as $state)
-                                                    <option
-                                                        value="{{ $state->id }}" {{ old('us_state_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @if ($errors->has('us_state_id'))
-                                                <span class="text-danger">{{ $errors->first('us_state_id') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="col-form-label">License Year</label>
-                                        <div class="form-group">
-                                            <input type="number" name="license_year" class="form-control"
-                                                   placeholder="License Year"
-                                                   value="{{ old('license_year') }}">
-                                            @if ($errors->has('license_year'))
-                                                <span class="text-danger">{{ $errors->first('license_year') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
                                     <div class="col-md-12">
-                                        <label class="col-form-label">Cell Phone <span
-                                                class="text-danger">*</span></label>
-                                        <div class="form-group">
-                                            <input type="text" name="cell_no" class="form-control"
-                                                   placeholder="(999) 999-9999"
-                                                   data-inputmask="'mask': '(999) 999-9999'"
-                                                   value="{{ old('cell_no') }}">
-                                            @if ($errors->has('cell_no'))
-                                                <span class="text-danger">{{ $errors->first('cell_no') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="col-form-label">Education Level</label>
-                                        <div class="form-group">
-                                            <select name="education_level_id" class="form-control select2"
-                                                    style="width: 100%"
-                                                    data-placeholder="Select Education Level">
-                                                <option></option>
-                                                @foreach($educationLevels as $state)
-                                                    <option
-                                                        value="{{ $state->id }}" {{ old('education_level_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @if ($errors->has('education_level_id'))
-                                                <span
-                                                    class="text-danger">{{ $errors->first('education_level_id') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="col-form-label">Occupation</label>
-                                        <div class="form-group">
-                                            <input type="text" name="occupation" class="form-control"
-                                                   placeholder="Occupation"
-                                                   value="{{ old('occupation') }}">
-                                            @if ($errors->has('occupation'))
-                                                <span class="text-danger">{{ $errors->first('occupation') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="col-form-label">Industry</label>
-                                        <div class="form-group">
-                                            <input type="text" name="industry" class="form-control"
-                                                   placeholder="Industry"
-                                                   value="{{ old('industry') }}">
-                                            @if ($errors->has('industry'))
-                                                <span class="text-danger">{{ $errors->first('industry') }}</span>
-                                            @endif
+                                        <div class="row">
+                                            <div class="col-md-12 mt-3" id="count[0]">
+                                                <button type="button"
+                                                        class="btn btn-danger btn-sm float-end remove-form">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="col-form-label">First Name</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="first_name[0]" class="form-control"
+                                                           placeholder="First Name"
+                                                           value="{{ old('first_name[0]') }}">
+                                                    @if ($errors->has('first_name'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('first_name') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="col-form-label">Last Name</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="last_name[0]" class="form-control"
+                                                           placeholder="Last Name"
+                                                           value="{{ old('last_name') }}">
+                                                    @if ($errors->has('last_name'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('last_name') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="col-form-label">Date Of Birth</label>
+                                                <div class="form-group">
+                                                    <input type="date" name="dob[0]"
+                                                           class="form-control"
+                                                           placeholder="Select Date"
+                                                           value="{{ old('dob') }}">
+                                                    @if ($errors->has('dob'))
+                                                        <span class="text-danger">{{ $errors->first('dob') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="col-form-label">Age</label>
+                                                <div class="form-group">
+                                                    <input type="number" name="age[0]" class="form-control"
+                                                           placeholder="Age"
+                                                           value="{{ old('age') }}">
+                                                    @if ($errors->has('age'))
+                                                        <span class="text-danger">{{ $errors->first('age') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">SSN #<span
+                                                        class="text-danger">*</span></label>
+                                                <div class="form-group">
+                                                    <input type="text" name="ssn_no[0]" class="form-control"
+                                                           placeholder="999-99-9999"
+                                                           data-inputmask="'mask': '999-99-9999'"
+                                                           value="{{ old('ssn_no') }}">
+                                                    @if ($errors->has('ssn_no'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('ssn_no') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Gender</label>
+                                                <div class="form-group">
+                                                    <select name="gender_id[0]" class="form-control"
+                                                            style="width: 100%"
+                                                            data-placeholder="Select Gender">
+                                                        <option>Select Gender</option>
+                                                        @foreach($genders as $state)
+                                                            <option
+                                                                value="{{ $state->id }}" {{ old('gender_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @if ($errors->has('gender_id'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('gender_id') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Marital Status</label>
+                                                <div class="form-group">
+                                                    <select name="marital_status_id[0]" class="form-control"
+                                                            style="width: 100%"
+                                                            data-placeholder="Select Status">
+                                                        <option>Select Status</option>
+                                                        @foreach($maritalStatus as $state)
+                                                            <option
+                                                                value="{{ $state->id }}" {{ old('marital_status_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @if ($errors->has('marital_status_id'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('marital_status_id') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Relation to Insured</label>
+                                                <div class="form-group">
+                                                    <select name="relationship_id[0]" class="form-control"
+                                                            style="width: 100%"
+                                                            data-placeholder="Select Status">
+                                                        <option>Select Relation</option>
+                                                        @foreach($relationships as $state)
+                                                            <option
+                                                                value="{{ $state->id }}" {{ old('relationship_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @if ($errors->has('relationship_id'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('relationship_id') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Driver License</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="license_no[0]" class="form-control"
+                                                           placeholder="License No"
+                                                           value="{{ old('license_no') }}">
+                                                    @if ($errors->has('license_no'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('license_no') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">License State</label>
+                                                <div class="form-group">
+                                                    <select name="us_state_id[0]" class="form-control"
+                                                            style="width: 100%"
+                                                            data-placeholder="Select State">
+                                                        <option>Select State</option>
+                                                        @foreach($states as $state)
+                                                            <option
+                                                                value="{{ $state->id }}" {{ old('us_state_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @if ($errors->has('us_state_id'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('us_state_id') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">License Year</label>
+                                                <div class="form-group">
+                                                    <input type="number" name="license_year[0]" class="form-control"
+                                                           placeholder="License Year"
+                                                           value="{{ old('license_year') }}">
+                                                    @if ($errors->has('license_year'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('license_year') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="col-form-label">Cell Phone <span
+                                                        class="text-danger">*</span></label>
+                                                <div class="form-group">
+                                                    <input type="text" name="cell_no[0]" class="form-control"
+                                                           placeholder="(999) 999-9999"
+                                                           data-inputmask="'mask': '(999) 999-9999'"
+                                                           value="{{ old('cell_no') }}">
+                                                    @if ($errors->has('cell_no'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('cell_no') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Education Level</label>
+                                                <div class="form-group">
+                                                    <select name="education_level_id[0]" class="form-control"
+                                                            style="width: 100%"
+                                                            data-placeholder="Select Education Level">
+                                                        <option>Select Education Level</option>
+                                                        @foreach($educationLevels as $state)
+                                                            <option
+                                                                value="{{ $state->id }}" {{ old('education_level_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @if ($errors->has('education_level_id'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('education_level_id') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Occupation</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="occupation[0]" class="form-control"
+                                                           placeholder="Occupation"
+                                                           value="{{ old('occupation') }}">
+                                                    @if ($errors->has('occupation'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('occupation') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Industry</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="industry[0]" class="form-control"
+                                                           placeholder="Industry"
+                                                           value="{{ old('industry') }}">
+                                                    @if ($errors->has('industry'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('industry') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <hr>
                             </div>
                         </div>
+                        <button type="button" id="add-more-driver" class="btn btn-primary mt-3">Add More</button>
+
                     </div>
                     <div class="tab-pane fade" id="details-tab">
                         <fieldset class="border p-3 mb-4">
@@ -1721,170 +1743,184 @@
                         </fieldset>
                     </div>
                     <div class="tab-pane fade" id="vehicle-tab">
-                        <fieldset class="border p-3 mb-4">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <fieldset class="border p-3 mb-4">
-                                    </fieldset>
-                                    <button type="button" class="btn btn-success">Add</button>
-                                    <button type="button" class="btn btn-danger">Remove</button>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <label class="col-form-label">VIN</label>
-                                            <div class="form-group">
-                                                <input type="text" name="vin" class="form-control"
-                                                       placeholder="VIN"
-                                                       value="{{ old('vin') }}">
-                                                @if ($errors->has('vin'))
-                                                    <span class="text-danger">{{ $errors->first('vin') }}</span>
-                                                @endif
+                        <div class="vehicle-form-container">
+                            <div class="vehicle-form">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12 mt-3" id="vehicleCount[0]">
+                                                <button type="button"
+                                                        class="btn btn-danger btn-sm float-end remove-form-vehicle">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
                                             </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="col-form-label">Year</label>
-                                            <div class="form-group">
-                                                <select name="year_id" class="form-control select2" style="width: 100%"
-                                                        data-placeholder="Select Gender">
-                                                    <option></option>
-                                                    @foreach($years as $row)
-                                                        <option
-                                                            value="{{ $row->id }}" {{ old('year_id') == $row->id ? 'selected' : '' }}>
-                                                            {{ $row->year }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @if ($errors->has('year_id'))
-                                                    <span class="text-danger">{{ $errors->first('year_id') }}</span>
-                                                @endif
+                                            <div class="col-md-3">
+                                                <label class="col-form-label">VIN</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="vin[0]" class="form-control"
+                                                           placeholder="VIN"
+                                                           value="{{ old('vin') }}">
+                                                    @if ($errors->has('vin'))
+                                                        <span class="text-danger">{{ $errors->first('vin') }}</span>
+                                                    @endif
+                                                </div>
                                             </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <label class="col-form-label">Make</label>
-                                            <div class="form-group">
-                                                <select name="vehicle_make_id" class="form-control select2 vehicle-make"
-                                                        style="width: 100%"
-                                                        data-placeholder="Select Option">
-                                                    <option></option>
-                                                    @foreach($vehicleMakes as $row)
-                                                        <option
-                                                            value="{{ $row->id }}" {{ old('vehicle_make_id') == $row->id ? 'selected' : '' }}>
-                                                            {{ $row->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @if ($errors->has('vehicle_make_id'))
-                                                    <span
-                                                        class="text-danger">{{ $errors->first('vehicle_make_id') }}</span>
-                                                @endif
+                                            <div class="col-md-3">
+                                                <label class="col-form-label">Year</label>
+                                                <div class="form-group">
+                                                    <select name="year_id[0]" class="form-control"
+                                                            style="width: 100%"
+                                                            data-placeholder="Select Year">
+                                                        <option selected>Select Year</option>
+                                                        @foreach($years as $row)
+                                                            <option
+                                                                value="{{ $row->id }}" {{ old('year_id') == $row->id ? 'selected' : '' }}>
+                                                                {{ $row->year }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @if ($errors->has('year_id'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('year_id') }}</span>
+                                                    @endif
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-md-3">
-                                            <label class="col-form-label">Make</label>
-                                            <div class="form-group">
-                                                <select name="vehicle_model_id" id="vehicle_model_id"
-                                                        class="form-control select2 vehicle-model" style="width: 100%"
-                                                        data-placeholder="Select Option">
-                                                    <option></option>
-
-                                                </select>
-                                                @if ($errors->has('vehicle_model_id'))
-                                                    <span
-                                                        class="text-danger">{{ $errors->first('vehicle_model_id') }}</span>
-                                                @endif
+                                            <div class="col-md-3">
+                                                <label class="col-form-label">Make</label>
+                                                <div class="form-group">
+                                                    <select name="vehicle_make_id[0]" id="vehicle_make_id[0]"
+                                                            class="form-control  vehicle-make"
+                                                            style="width: 100%"
+                                                            data-placeholder="Select Option">
+                                                        <option selected>Select Make</option>
+                                                        @foreach($vehicleMakes as $row)
+                                                            <option
+                                                                value="{{ $row->id }}" {{ old('vehicle_make_id') == $row->id ? 'selected' : '' }}>
+                                                                {{ $row->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @if ($errors->has('vehicle_make_id'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('vehicle_make_id') }}</span>
+                                                    @endif
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="col-form-label">Comprehensive</label>
-                                            <div class="form-group">
-                                                <select name="comprehensive" class="form-control select2"
-                                                        style="width: 100%"
-                                                        data-placeholder="Select Option">
-                                                    <option></option>
-                                                    <option value="None">None</option>
-                                                    <option value="250">250</option>
-                                                    <option value="500">500</option>
-                                                    <option value="750">750</option>
-                                                    <option value="1000">1000</option>
 
+                                            <div class="col-md-3">
+                                                <label class="col-form-label">Model</label>
+                                                <div class="form-group">
+                                                    <select name="vehicle_model_id[0]" id="vehicle_model_id[0]"
+                                                            class="form-control"
+                                                            style="width: 100%"
+                                                            data-placeholder="Select Option">
+                                                        <option selected>Select Model</option>
 
-                                                </select>
-                                                @if ($errors->has('comprehensive'))
-                                                    <span
-                                                        class="text-danger">{{ $errors->first('comprehensive') }}</span>
-                                                @endif
+                                                    </select>
+                                                    @if ($errors->has('vehicle_model_id'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('vehicle_model_id') }}</span>
+                                                    @endif
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div class="col-md-6">
+                                                <label class="col-form-label">Comprehensive</label>
+                                                <div class="form-group">
+                                                    <select name="comprehensive[0]" class="form-control "
+                                                            style="width: 100%"
+                                                            data-placeholder="Select Option">
+                                                        <option selected>Select Comprehensive</option>
+                                                        <option value="None">None</option>
+                                                        <option value="250">250</option>
+                                                        <option value="500">500</option>
+                                                        <option value="750">750</option>
+                                                        <option value="1000">1000</option>
 
 
-                                        <div class="col-md-6">
-                                            <label class="col-form-label">Collision</label>
-                                            <div class="form-group">
-                                                <select name="collision" class="form-control select2"
-                                                        style="width: 100%"
-                                                        data-placeholder="Select Option">
-                                                    <option></option>
-                                                    <option value="None">None</option>
-                                                    <option value="250">250</option>
-                                                    <option value="500">500</option>
-                                                    <option value="750">750</option>
-                                                    <option value="1000">1000</option>
-                                                </select>
-                                                @if ($errors->has('collision'))
-                                                    <span class="text-danger">{{ $errors->first('collision') }}</span>
-                                                @endif
+                                                    </select>
+                                                    @if ($errors->has('comprehensive'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('comprehensive') }}</span>
+                                                    @endif
+                                                </div>
                                             </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label class="col-form-label">Rental</label>
-                                            <div class="form-group">
-                                                <select name="rental" class="form-control select2" style="width: 100%"
-                                                        data-placeholder="Select Option">
-                                                    <option></option>
-                                                    <option value="20">20</option>
-                                                    <option value="30">30</option>
-                                                    <option value="50">50</option>
-                                                </select>
-                                                @if ($errors->has('rental'))
-                                                    <span class="text-danger">{{ $errors->first('rental') }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="col-form-label">Towing</label>
-                                            <div class="form-group">
-                                                <select name="towing" class="form-control select2" style="width: 100%"
-                                                        data-placeholder="Select Option">
-                                                    <option></option>
-                                                    <option value="None">None</option>
-                                                    <option value="50">50</option>
-                                                    <option value="75">75</option>
-                                                </select>
-                                                @if ($errors->has('towing'))
-                                                    <span class="text-danger">{{ $errors->first('towing') }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="col-form-label">Custom Equipment</label>
-                                            <div class="form-group">
-                                                <input type="text" name="custom_equipment" class="form-control"
-                                                       data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
-                                                       value="${{ old('custom_equipment') }}">
-                                                @if ($errors->has('custom_equipment'))
-                                                    <span
-                                                        class="text-danger">{{ $errors->first('custom_equipment') }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
 
 
+                                            <div class="col-md-6">
+                                                <label class="col-form-label">Collision</label>
+                                                <div class="form-group">
+                                                    <select name="collision[0]" class="form-control "
+                                                            style="width: 100%"
+                                                            data-placeholder="Select Option">
+                                                        <option selected>Select Collision</option>
+                                                        <option value="None">None</option>
+                                                        <option value="250">250</option>
+                                                        <option value="500">500</option>
+                                                        <option value="750">750</option>
+                                                        <option value="1000">1000</option>
+                                                    </select>
+                                                    @if ($errors->has('collision'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('collision') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="col-form-label">Rental</label>
+                                                <div class="form-group">
+                                                    <select name="rental[0]" class="form-control"
+                                                            style="width: 100%"
+                                                            data-placeholder="Select Option">
+                                                        <option selected>Select Rental</option>
+                                                        <option value="20">20</option>
+                                                        <option value="30">30</option>
+                                                        <option value="50">50</option>
+                                                    </select>
+                                                    @if ($errors->has('rental'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('rental') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="col-form-label">Towing</label>
+                                                <div class="form-group">
+                                                    <select name="towing[0]" class="form-control"
+                                                            style="width: 100%"
+                                                            data-placeholder="Select Option">
+                                                        <option selected>Select Towing</option>
+                                                        <option value="None">None</option>
+                                                        <option value="50">50</option>
+                                                        <option value="75">75</option>
+                                                    </select>
+                                                    @if ($errors->has('towing'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('towing') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="col-form-label">Custom Equipment</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="custom_equipment[0]"
+                                                           class="form-control"
+                                                           data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                           value="${{ old('custom_equipment') }}">
+                                                    @if ($errors->has('custom_equipment'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('custom_equipment') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </fieldset>
+                        </div>
+                        <button type="button" id="add-more-vehicle" class="btn btn-primary mt-3">Add More Vehicle
+                        </button>
                     </div>
                     <div class="tab-pane fade" id="payment-tab">
                         <fieldset class="border p-3 mb-4">
@@ -2205,17 +2241,129 @@
 @push('script')
     <script>
         $(document).ready(function () {
-            $('.select2').select2({
-                width: '100%',
-                placeholder: "Select an option",
-                allowClear: true
+            // Use event delegation to handle dynamically added elements
+            $(document).on('change', '.vehicle-make', function () {
+                var selectedData = $(this).find('option:selected');
+                var makeID = selectedData.val();
+
+                // Get the index from the id of the selected make
+                var index = $(this).attr('id').match(/\d+/)[0]; // Extract the index from the id, e.g., 0, 1, etc.
+
+                console.log(index)
+                var method = 'GET';
+
+                $.ajax({
+                    type: method,
+                    url: getModelByMake,
+                    data: { makeID: makeID },
+                    dataType: 'json',
+                    success: function (data, status, xhr) {
+                        const responsedata = data;
+                        var modelSelect = $('#vehicle_model_id\\[' + index + '\\]'); // Target the corresponding model select box
+
+                         modelSelect.empty();
+                        modelSelect.append('<option>Select Model</option>');
+                        if (responsedata) {
+                            $.each(responsedata, function (key, value) {
+                                modelSelect.append($("<option/>", {
+                                    value: value.id,
+                                    text: value.name
+                                }));
+                            });
+                            modelSelect.focus();
+                        }
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        console.error(errorMessage); // Handle the error here
+                    }
+                });
             });
-            flatpickr(".flatpickr-minimum");
-
-
         });
 
     </script>
+    <script>
+        $(document).ready(function () {
 
+            // By default, hide the Remove button in the first form
+            $('.driver-form:first').find('#count\\[0\\] .remove-form').hide();
 
+            let driverFormIndex = 0; // To track the index for array names
+
+            // Add new driver form
+            $('#add-more-driver').click(function () {
+                driverFormIndex++;
+
+                // Clone the driver form
+                let newDriverForm = $('.driver-form:first').clone();
+
+                // Reset all input values and adjust names for array indexing
+                newDriverForm.find('input, select, div').each(function () {
+                    let oldName = $(this).attr('name') || $(this).attr('id'); // Handle both `name` and `id`
+                    if (oldName) {
+                        // Change the name or id to include the array index
+                        let newName = oldName.replace(/\[(\d+)\]/, '') + '[' + driverFormIndex + ']';
+                        $(this).attr('name', newName).attr('id', newName);
+                        if ($(this).is('input, select')) {
+                            $(this).val(''); // Clear the value for inputs and selects
+                        }
+                    }
+                });
+
+                newDriverForm.find('input[name^="ssn_no"]').attr('data-inputmask', "'mask': '999-99-9999'");
+
+                // Append the cloned driver form
+                $('.driver-form-container').append(newDriverForm);
+
+                // Show the remove button for the newly appended driver form
+                newDriverForm.find('.remove-form').show();
+            });
+
+            // Handle remove button click for driver form
+            $(document).on('click', '.remove-form', function () {
+                $(this).closest('.driver-form').remove();
+            });
+
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('.vehicle-form:first').find('#vehicleCount\\[0\\] .remove-form-vehicle').hide();
+
+            let vehicleFormIndex = 0; // To track the index for array names
+
+            // Add new vehicle form
+            $('#add-more-vehicle').click(function () {
+                vehicleFormIndex++;
+
+                // Clone the vehicle form
+                let newVehicleForm = $('.vehicle-form:first').clone();
+
+                // Reset input values and adjust names and IDs for array indexing
+                newVehicleForm.find('input, select').each(function () {
+                    let oldName = $(this).attr('name') || $(this).attr('id');
+                    if (oldName) {
+                        let newName = oldName.replace(/\[(\d+)\]/, '') + '[' + vehicleFormIndex + ']';
+                        $(this).attr('name', newName).attr('id', newName);
+                        if ($(this).is('input, select')) {
+                            $(this).val(''); // Clear the values for inputs and selects
+                        }
+                    }
+                });
+
+                // Append the cloned vehicle form to the container
+                $('.vehicle-form-container').append(newVehicleForm);
+
+                newVehicleForm.find('.remove-form-vehicle').show();
+
+            });
+
+            // Handle remove button click for vehicle form
+            $(document).on('click', '.remove-form-vehicle', function () {
+                $(this).closest('.vehicle-form').remove();
+            });
+
+        });
+    </script>
 @endpush

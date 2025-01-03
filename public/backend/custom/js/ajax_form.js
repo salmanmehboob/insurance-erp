@@ -50,37 +50,37 @@ $(document).ready(function () {
     });
 
 
-    $('.vehicle-make').on('select2:select', function (e) {
-        e.preventDefault();
-        var selectedData = e.params.data;
-        var makeID = selectedData.id
-        var method = 'GET';
-         $.ajax({
-            type: method,
-            url: getModelByMake,
-            data: {makeID: makeID},
-            dataType: 'json',
-            success: function (data, status, xhr) {
-                const responsedata = data;
-                $('#vehicle_model_id').empty();
-                $('#vehicle_model_id').append('<option></option>');
-                if (responsedata) {
-                    $.each(responsedata, function (key, value) {
-                        $('#vehicle_model_id').append($("<option/>", {
-                            value: value.id,
-                            text: value.name
-                        }));
-                    });
-                    $('#vehicle_model_id').focus();
-
-                }
-            },
-            error: function (jqXhr, textStatus, errorMessage) {
-            }
-        });
-
-
-    });
+    // $('.vehicle-make').on('select2:select', function (e) {
+    //     e.preventDefault();
+    //     var selectedData = e.params.data;
+    //     var makeID = selectedData.id
+    //     var method = 'GET';
+    //      $.ajax({
+    //         type: method,
+    //         url: getModelByMake,
+    //         data: {makeID: makeID},
+    //         dataType: 'json',
+    //         success: function (data, status, xhr) {
+    //             const responsedata = data;
+    //             $('#vehicle_model_id').empty();
+    //             $('#vehicle_model_id').append('<option></option>');
+    //             if (responsedata) {
+    //                 $.each(responsedata, function (key, value) {
+    //                     $('#vehicle_model_id').append($("<option/>", {
+    //                         value: value.id,
+    //                         text: value.name
+    //                     }));
+    //                 });
+    //                 $('#vehicle_model_id').focus();
+    //
+    //             }
+    //         },
+    //         error: function (jqXhr, textStatus, errorMessage) {
+    //         }
+    //     });
+    //
+    //
+    // });
 
 
 
