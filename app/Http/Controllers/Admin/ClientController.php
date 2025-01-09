@@ -7,6 +7,8 @@ use App\Models\Agency;
 use App\Models\Agent;
 use App\Models\Client;
 use App\Models\BankAccount;
+use App\Models\ClientCommercialDetail;
+use App\Models\ClientCommercialLiability;
 use App\Models\ClientCoverage;
 use App\Models\ClientDriver;
 use App\Models\ClientNotes;
@@ -158,7 +160,7 @@ class ClientController extends Controller
         DB::beginTransaction();
 
         try {
-//            dd($request->all());
+            dd($request->all());
             // Create Client
             $clientData = [
                 'user_id' => auth()->user()->id,
@@ -198,16 +200,6 @@ class ClientController extends Controller
             $clientPolicy = ClientPolicy::create($clientPolicyData);
 
 
-
-
-
-
-
-
-
-
-            
-
             // Create Client Drivers
             if (!empty($request->first_name) && is_array($request->first_name)) {
                 foreach ($request->first_name as $key => $firstName) {
@@ -245,6 +237,56 @@ class ClientController extends Controller
                     'uninsured_property_damage' => $request->uninsured_property_damage,
                     'under_insured_body_injury' => $request->under_insured_body_injury,
                     'under_insured_property_damage' => $request->under_insured_property_damage,
+                ]);
+            }
+
+            // Create Client Commercial Detail
+            if (isset($request->type_of_business)) {
+
+                ClientCommercialDetail::create([
+                    'client_id' => $client->id,
+                    'type_of_business' => $request->type_of_business,
+                    'year_of_experience' => $request->year_of_experience,
+                    'special_license' => $request->special_license,
+                    'employment_number' => $request->employment_number,
+                    'employment_payroll' => removeDollarSign($request->employment_payroll),
+                    'current_inst' => $request->current_inst,
+                    'quote_expiry' => $request->quote_expiry,
+                    'general_aggregate' => $request->general_aggregate,
+                    'product_aggregate' => $request->product_aggregate,
+                    'personal_injury' => $request->personal_injury,
+                    'each_occurrence' => $request->each_occurrence,
+                    'fire_damage' => $request->fire_damage,
+                    'medical_expense' => $request->medical_expense,
+                    'annual_receipt' => removeDollarSign($request->annual_receipt),
+                    'building' => removeDollarSign($request->building),
+                    'contents' => removeDollarSign($request->contents),
+                    'loss_of_earning' => removeDollarSign($request->loss_of_earning),
+                    'pump' => removeDollarSign($request->pump),
+                    'sign' => removeDollarSign($request->sign),
+                    'glass' => removeDollarSign($request->glass),
+                    'property_owner' => $request->property_owner,
+                    'built_year' => $request->built_year,
+                    'property_area' => $request->property_area,
+                    'age_of_roof' => $request->age_of_roof,
+                    'construction' => $request->construction,
+                    'is_alarm_system' => $request->is_alarm_system,
+                ]);
+            }
+
+            if (isset($request->general_liability)) {
+
+                ClientCommercialLiability::create([
+                    'client_id' => $client->id,
+                    'general_liability' => $request->general_liability,
+                    'general_aggregate' => $request->general_aggregate,
+                    'product_aggregate' => $request->product_aggregate,
+                    'personal_injury' => $request->personal_injury,
+                    'each_occurrence' => $request->each_occurrence,
+                    'fire_damage' => $request->fire_damage,
+                    'medical_expense' => $request->medical_expense,
+                    'annual_receipt' => removeDollarSign($request->annual_receipt),
+
                 ]);
             }
 
@@ -316,7 +358,7 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-        $client = Client::with(['agencies.locations', 'user.permissions'])->find($id);
+        $client = Client::with('policy')->find($id);
 
         if (!$client) {
             return redirect()->route('show-client')->with('error', 'Client not found.');
@@ -324,22 +366,31 @@ class ClientController extends Controller
 
         $title = 'Edit Client';
         $states = UsState::all();
-        $banks = BankAccount::all();
-        $permissions = Permission::where('module', 4)->get(); // Module 4 Permissions
-        $allAgencies = Agency::all(); // Assuming `Agency` model for locations
+        $emailStatues = EmailStatus::all();
+        $languages = PrimaryLanguage::all();
+        $policyStatuses = PolicyStatus::all();
+        $terms = Term::all();
+        $insuranceCompanies = InsuranceCompany::all();
+        $agents = Agent::all();
+        $locations = Agency::all();
+        $genders = Gender::all();
+        $maritalStatus = MaritalStatus::all();
+        $relationships = Relationship::all();
+        $educationLevels = EducationLevel::all();
+        $years = Year::orderBy('year', 'asc')->get();
+        $vehicleMakes = VehicleMake::all();
+        $vehicleModels = VehicleModel::all();
 
-        // Collect assigned agency IDs
-        $assignedLocationIds = $client->agencies->pluck('agency_id')->toArray();
+        $policyType = PolicyType::find($client->policy_type_id);
 
-//        dd($assignedLocationIds);
+//        dd($client->policy);
         return view('admin.client.edit', compact(
             'title',
             'client',
-            'states',
-            'banks',
-            'permissions',
-            'allAgencies',
-            'assignedLocationIds'
+            'policyType', 'states', 'emailStatues', 'languages',
+            'policyStatuses', 'terms', 'insuranceCompanies', 'agents', 'locations',
+            'genders', 'maritalStatus', 'relationships', 'educationLevels', 'years',
+            'vehicleMakes', 'vehicleModels'
         ));
     }
 

@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ClientPolicy extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
-        'client_id' ,
+        'client_id',
         'policy_status_id',
         'term_id',
         'effective_date',
-        'expiration_date' ,
-        'sold_date' ,
+        'expiration_date',
+        'sold_date',
         'file_number',
         'policy_number',
         'insurance_company_id',
@@ -25,6 +25,10 @@ class ClientPolicy extends Model
     ];
 
 
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 
 
 }

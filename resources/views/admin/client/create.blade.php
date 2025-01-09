@@ -737,7 +737,7 @@
 
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <input type="checkbox" class="form-check-inline" name="" id="">
+                                                    <input type="checkbox"  class="form-check-inline" value="1" name="general_liability" id="">
                                                     Commercial General Liability
                                                 </div>
                                             </div>
@@ -1023,7 +1023,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <input type="checkbox" class="form-check-inline"
-                                                           name="is_alarm_system"
+                                                           name="is_alarm_system" value="1"
                                                            id="">
                                                     Is Alarm System?
                                                 </div>

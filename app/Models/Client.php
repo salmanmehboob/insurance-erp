@@ -45,6 +45,11 @@ class Client extends Model
         return $this->belongsTo(PrimaryLanguage::class);
     }
 
+    public function commercial()
+    {
+        return $this->hasOne(ClientCoverage::class);
+    }
+
     public function coverage()
     {
         return $this->hasOne(ClientCoverage::class);
