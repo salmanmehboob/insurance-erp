@@ -11,6 +11,8 @@ use App\Models\ClientCommercialDetail;
 use App\Models\ClientCommercialLiability;
 use App\Models\ClientCoverage;
 use App\Models\ClientDriver;
+use App\Models\ClientHouseDetail;
+use App\Models\ClientMobileHomeDetail;
 use App\Models\ClientNotes;
 use App\Models\ClientPayment;
 use App\Models\ClientPolicy;
@@ -160,7 +162,7 @@ class ClientController extends Controller
         DB::beginTransaction();
 
         try {
-            dd($request->all());
+//            dd($request->all());
             // Create Client
             $clientData = [
                 'user_id' => auth()->user()->id,
@@ -270,11 +272,64 @@ class ClientController extends Controller
                     'property_area' => $request->property_area,
                     'age_of_roof' => $request->age_of_roof,
                     'construction' => $request->construction,
-                    'is_alarm_system' => $request->is_alarm_system,
+                    'is_alarm_system' => $request->is_alarm_system ?? 0,
                 ]);
             }
 
-            if (isset($request->general_liability)) {
+            // Create Client House Detail
+            if (isset($request->dwelling_building) && $request->dwelling_building != null) {
+
+                ClientHouseDetail::create([
+                    'client_id' => $client->id,
+                    'dwelling_building' => removeDollarSign($request->dwelling_building),
+                    'liability_limit' => $request->liability_limit,
+                    'contents' => removeDollarSign($request->contents),
+                    'medical_payment' => ($request->medical_payment),
+                    'additional_structure' => removeDollarSign($request->medical_payment),
+                    'deductible' => ($request->deductible),
+                    'loss_of_use' => removeDollarSign($request->loss_of_use),
+                    'usage' => ($request->usage),
+                    'construction' => ($request->construction),
+                    'built_year' => ($request->built_year),
+                    'square_footage' => ($request->square_footage),
+                    'rooms' => ($request->rooms),
+                    'age_of_roof' => ($request->age_of_roof),
+                    'is_intrusion_alarm' => $request->is_intrusion_alarm ?? 0,
+                    'is_fire_station' => $request->is_fire_station ?? 0,
+                    'is_swimming_pool' => $request->is_swimming_pool ?? 0,
+                    'is_replacement_cost' => $request->is_replacement_cost ?? 0,
+                ]);
+            }
+
+            // Create Client Mobile House Detail
+            if (isset($request->value) && $request->value != null) {
+
+                ClientMobileHomeDetail::create([
+                    'client_id' => $client->id,
+                    'value' => removeDollarSign($request->value),
+                    'liability_limit' => $request->liability_limit,
+                    'contents' => removeDollarSign($request->contents),
+                    'flood' => ($request->flood),
+                    'theft' => removeDollarSign($request->theft),
+                    'deductible' => ($request->deductible),
+                    'adjacent_structure' => removeDollarSign($request->adjacent_structure),
+                    'replacement_cost' => removeDollarSign($request->replacement_cost),
+                    'make' => ($request->make),
+                    'model' => ($request->model),
+                    'built_year' => ($request->built_year),
+                    'dimensions' => ($request->dimensions),
+                    'tied_down' => ($request->tied_down),
+                    'type_of_siding' => ($request->type_of_siding),
+                    'park_name' => ($request->park_name),
+                    'skirted' => ($request->skirted),
+                    'fire_place' => ($request->fire_place),
+                    'is_inside_city_limit' => $request->is_inside_city_limit ?? 0,
+
+                ]);
+            }
+
+
+            if (isset($request->general_liability) && $request->general_liability != null) {
 
                 ClientCommercialLiability::create([
                     'client_id' => $client->id,

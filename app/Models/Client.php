@@ -47,7 +47,12 @@ class Client extends Model
 
     public function commercial()
     {
-        return $this->hasOne(ClientCoverage::class);
+        return $this->hasOne(ClientCommercialDetail::class);
+    }
+
+    public function commercialLiability()
+    {
+        return $this->hasOne(ClientCommercialLiability::class);
     }
 
     public function coverage()
@@ -68,6 +73,16 @@ class Client extends Model
     public function payment()
     {
         return $this->hasOne(ClientPayment::class);
+    }
+
+    public function house()
+    {
+        return $this->hasOne(ClientHouseDetail::class);
+    }
+
+    public function mobileHome()
+    {
+        return $this->hasOne(ClientMobileHomeDetail::class);
     }
 
     public function policy()

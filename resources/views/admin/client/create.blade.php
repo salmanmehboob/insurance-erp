@@ -1248,28 +1248,28 @@
                                                 <div class="col-md-6 mt-3">
                                                     <div class="form-group">
                                                         <input type="checkbox" class="form-check-inline"
-                                                               name="is_intrusion_alarm" id="">
+                                                               name="is_intrusion_alarm" value="1" id="">
                                                         Intrusion Alarm
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 mt-3">
                                                     <div class="form-group">
                                                         <input type="checkbox" class="form-check-inline"
-                                                               name="is_fire_station" id="">
+                                                               name="is_fire_station" value="1" id="">
                                                         Fire Station
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 mt-3">
                                                     <div class="form-group">
                                                         <input type="checkbox" class="form-check-inline"
-                                                               name="is_swimming_pool" id="">
+                                                               name="is_swimming_pool" value="1" id="">
                                                         Swimming Pool
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 mt-3">
                                                     <div class="form-group">
                                                         <input type="checkbox" class="form-check-inline"
-                                                               name="is_replacement_cost" id="">
+                                                               name="is_replacement_cost" value="1" id="">
                                                         Replacement Cost
                                                     </div>
                                                 </div>
@@ -1290,7 +1290,7 @@
                                                 <div class="col-md-6">
                                                     <label class="col-form-label">Value</label>
                                                     <div class="form-group">
-                                                        <input type="text" name="dwelling_building" class="form-control"
+                                                        <input type="text" name="value" class="form-control"
                                                                data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                                value="{{ old('value') }}">
                                                         @if ($errors->has('value'))
@@ -1530,7 +1530,7 @@
                                                 <div class="col-md-6 mt-3">
                                                     <div class="form-group">
                                                         <input type="checkbox" class="form-check-inline"
-                                                               name="is_inside_city_limit" id="">
+                                                              value="1" name="is_inside_city_limit" id="">
                                                         Inside City Limit
                                                     </div>
                                                 </div>

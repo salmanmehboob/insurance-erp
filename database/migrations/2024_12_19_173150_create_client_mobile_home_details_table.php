@@ -30,9 +30,9 @@ return new class extends Migration
             $table->string('tied_down');
             $table->string('type_of_siding');
 
-            $table->boolean('park_name');
-            $table->boolean('skirted');
-            $table->boolean('fire_place');
+            $table->string('park_name');
+            $table->string('skirted');
+            $table->string('fire_place');
             $table->boolean('is_inside_city_limit');
             $table->timestamps();
 

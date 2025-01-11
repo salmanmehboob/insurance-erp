@@ -12,7 +12,7 @@ class ClientCommercialLiability extends Model
 
     protected $fillable = [
         'client_id',
-
+        'general_liability',
         'general_aggregate',
         'product_aggregate',
         'personal_injury',
@@ -20,7 +20,6 @@ class ClientCommercialLiability extends Model
         'fire_damage',
         'medical_expense',
         'annual_receipt',
-
     ];
 
 
