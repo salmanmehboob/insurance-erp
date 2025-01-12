@@ -737,7 +737,7 @@
 
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <input type="checkbox"  class="form-check-inline" value="1" name="general_liability" id="">
+                                                    <input type="checkbox"  class="form-check-inline" value="1" name="is_general_liability" id="">
                                                     Commercial General Liability
                                                 </div>
                                             </div>

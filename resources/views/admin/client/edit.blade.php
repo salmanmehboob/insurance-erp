@@ -21,6 +21,7 @@
             <!-- Agent form -->
             <form action="{{ route('update-client',$client->id) }}" method="POST" enctype="multipart/form-data"
                   class="flex-fill form-validate-jquery">
+                @method('PUT')
                 @csrf
                 <input type="hidden" name="policy_type_id" value="{{$policyType->id}}">
                 <div class="card-body">
@@ -759,16 +760,11 @@
 
                                         </div>
                                     @endif
-                                    @if($policyType->id == 3 || $policyType->id == 4 || $policyType->id == 5)
+                                    @if($policyType->id == 3 || $policyType->id == 4)
                                         <div class="col-md-4">
                                             <fieldset class="border p-3">
 
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <input type="checkbox" class="form-check-inline" name="" id="">
-                                                        Commercial General Liability
-                                                    </div>
-                                                </div>
+
                                                 <div class="col-md-12">
                                                     <label class="col-form-label">General Aggregate</label>
                                                     <div class="form-group">
@@ -777,23 +773,23 @@
                                                                 data-placeholder="Select Option">
                                                             <option></option>
                                                             <option
-                                                                {{isset($client->commercialLiability->general_aggregate) && $client->commercialLiability->general_aggregate == '2000000' ? 'selected' : ''}} value="2000000">
+                                                                {{isset($client->commercial->general_aggregate) && $client->commercial->general_aggregate == '2000000' ? 'selected' : ''}} value="2000000">
                                                                 $2,000,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->general_aggregate) && $client->commercialLiability->general_aggregate == '1000000' ? 'selected' : ''}}  value="1000000">
+                                                                {{isset($client->commercial->general_aggregate) && $client->commercial->general_aggregate == '1000000' ? 'selected' : ''}}  value="1000000">
                                                                 $1,000,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->general_aggregate) && $client->commercialLiability->general_aggregate == '500000' ? 'selected' : ''}}  value="500000">
+                                                                {{isset($client->commercial->general_aggregate) && $client->commercial->general_aggregate == '500000' ? 'selected' : ''}}  value="500000">
                                                                 $500,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->general_aggregate) && $client->commercialLiability->general_aggregate == '300000' ? 'selected' : ''}}  value="300000">
+                                                                {{isset($client->commercial->general_aggregate) && $client->commercial->general_aggregate == '300000' ? 'selected' : ''}}  value="300000">
                                                                 $300,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->general_aggregate) && $client->commercialLiability->general_aggregate == '100000' ? 'selected' : ''}}  value="100000">
+                                                                {{isset($client->commercial->general_aggregate) && $client->commercial->general_aggregate == '100000' ? 'selected' : ''}}  value="100000">
                                                                 $100,000.00
                                                             </option>
                                                         </select>
@@ -811,23 +807,23 @@
                                                                 data-placeholder="Select Option">
                                                             <option></option>
                                                             <option
-                                                                {{isset($client->commercialLiability->product_aggregate) && $client->commercialLiability->product_aggregate == '2000000' ? 'selected' : ''}} value="2000000">
+                                                                {{isset($client->commercial->product_aggregate) && $client->commercial->product_aggregate == '2000000' ? 'selected' : ''}} value="2000000">
                                                                 $2,000,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->product_aggregate) && $client->commercialLiability->product_aggregate == '1000000' ? 'selected' : ''}} value="1000000">
+                                                                {{isset($client->commercial->product_aggregate) && $client->commercial->product_aggregate == '1000000' ? 'selected' : ''}} value="1000000">
                                                                 $1,000,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->product_aggregate) && $client->commercialLiability->product_aggregate == '500000' ? 'selected' : ''}} value="500000">
+                                                                {{isset($client->commercial->product_aggregate) && $client->commercial->product_aggregate == '500000' ? 'selected' : ''}} value="500000">
                                                                 $500,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->product_aggregate) && $client->commercialLiability->product_aggregate == '300000' ? 'selected' : ''}} value="300000">
+                                                                {{isset($client->commercial->product_aggregate) && $client->commercial->product_aggregate == '300000' ? 'selected' : ''}} value="300000">
                                                                 $300,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->product_aggregate) && $client->commercialLiability->product_aggregate == '100000' ? 'selected' : ''}} value="100000">
+                                                                {{isset($client->commercial->product_aggregate) && $client->commercial->product_aggregate == '100000' ? 'selected' : ''}} value="100000">
                                                                 $100,000.00
                                                             </option>
                                                         </select>
@@ -845,23 +841,23 @@
                                                                 data-placeholder="Select Option">
                                                             <option></option>
                                                             <option
-                                                                {{isset($client->commercialLiability->personal_injury) && $client->commercialLiability->personal_injury == '2000000' ? 'selected' : ''}} value="2000000">
+                                                                {{isset($client->commercial->personal_injury) && $client->commercial->personal_injury == '2000000' ? 'selected' : ''}} value="2000000">
                                                                 $2,000,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->personal_injury) && $client->commercialLiability->personal_injury == '1000000' ? 'selected' : ''}} value="1000000">
+                                                                {{isset($client->commercial->personal_injury) && $client->commercial->personal_injury == '1000000' ? 'selected' : ''}} value="1000000">
                                                                 $1,000,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->personal_injury) && $client->commercialLiability->personal_injury == '500000' ? 'selected' : ''}} value="500000">
+                                                                {{isset($client->commercial->personal_injury) && $client->commercial->personal_injury == '500000' ? 'selected' : ''}} value="500000">
                                                                 $500,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->personal_injury) && $client->commercialLiability->personal_injury == '300000' ? 'selected' : ''}} value="300000">
+                                                                {{isset($client->commercial->personal_injury) && $client->commercial->personal_injury == '300000' ? 'selected' : ''}} value="300000">
                                                                 $300,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->personal_injury) && $client->commercialLiability->personal_injury == '100000' ? 'selected' : ''}} value="100000">
+                                                                {{isset($client->commercial->personal_injury) && $client->commercial->personal_injury == '100000' ? 'selected' : ''}} value="100000">
                                                                 $100,000.00
                                                             </option>
                                                         </select>
@@ -879,23 +875,23 @@
                                                                 data-placeholder="Select Option">
                                                             <option></option>
                                                             <option
-                                                                {{isset($client->commercialLiability->each_occurrence) && $client->commercialLiability->each_occurrence == '2000000' ? 'selected' : ''}} value="2000000">
+                                                                {{isset($client->commercial->each_occurrence) && $client->commercial->each_occurrence == '2000000' ? 'selected' : ''}} value="2000000">
                                                                 $2,000,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->each_occurrence) && $client->commercialLiability->each_occurrence == '1000000' ? 'selected' : ''}} value="1000000">
+                                                                {{isset($client->commercial->each_occurrence) && $client->commercial->each_occurrence == '1000000' ? 'selected' : ''}} value="1000000">
                                                                 $1,000,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->each_occurrence) && $client->commercialLiability->each_occurrence == '500000' ? 'selected' : ''}} value="500000">
+                                                                {{isset($client->commercial->each_occurrence) && $client->commercial->each_occurrence == '500000' ? 'selected' : ''}} value="500000">
                                                                 $500,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->each_occurrence) && $client->commercialLiability->each_occurrence == '300000' ? 'selected' : ''}} value="300000">
+                                                                {{isset($client->commercial->each_occurrence) && $client->commercial->each_occurrence == '300000' ? 'selected' : ''}} value="300000">
                                                                 $300,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->each_occurrence) && $client->commercialLiability->each_occurrence == '100000' ? 'selected' : ''}} value="100000">
+                                                                {{isset($client->commercial->each_occurrence) && $client->commercial->each_occurrence == '100000' ? 'selected' : ''}} value="100000">
                                                                 $100,000.00
                                                             </option>
                                                         </select>
@@ -913,23 +909,23 @@
                                                                 data-placeholder="Select Option">
                                                             <option></option>
                                                             <option
-                                                                {{isset($client->commercialLiability->fire_damage) && $client->commercialLiability->fire_damage == '2000000' ? 'selected' : ''}} value="2000000">
+                                                                {{isset($client->commercial->fire_damage) && $client->commercial->fire_damage == '2000000' ? 'selected' : ''}} value="2000000">
                                                                 $2,000,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->fire_damage) && $client->commercialLiability->fire_damage == '1000000' ? 'selected' : ''}} value="1000000">
+                                                                {{isset($client->commercial->fire_damage) && $client->commercial->fire_damage == '1000000' ? 'selected' : ''}} value="1000000">
                                                                 $1,000,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->fire_damage) && $client->commercialLiability->fire_damage == '500000' ? 'selected' : ''}} value="500000">
+                                                                {{isset($client->commercial->fire_damage) && $client->commercial->fire_damage == '500000' ? 'selected' : ''}} value="500000">
                                                                 $500,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->fire_damage) && $client->commercialLiability->fire_damage == '300000' ? 'selected' : ''}} value="300000">
+                                                                {{isset($client->commercial->fire_damage) && $client->commercial->fire_damage == '300000' ? 'selected' : ''}} value="300000">
                                                                 $300,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->fire_damage) && $client->commercialLiability->fire_damage == '100000' ? 'selected' : ''}} value="100000">
+                                                                {{isset($client->commercial->fire_damage) && $client->commercial->fire_damage == '100000' ? 'selected' : ''}} value="100000">
                                                                 $100,000.00
                                                             </option>
                                                         </select>
@@ -947,23 +943,23 @@
                                                                 data-placeholder="Select Option">
                                                             <option></option>
                                                             <option
-                                                                {{isset($client->commercialLiability->medical_expense) && $client->commercialLiability->medical_expense == '2000000' ? 'selected' : ''}} value="2000000">
+                                                                {{isset($client->commercial->medical_expense) && $client->commercial->medical_expense == '2000000' ? 'selected' : ''}} value="2000000">
                                                                 $2,000,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->medical_expense) && $client->commercialLiability->medical_expense == '1000000' ? 'selected' : ''}} value="1000000">
+                                                                {{isset($client->commercial->medical_expense) && $client->commercial->medical_expense == '1000000' ? 'selected' : ''}} value="1000000">
                                                                 $1,000,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->medical_expense) && $client->commercialLiability->medical_expense == '500000' ? 'selected' : ''}} value="500000">
+                                                                {{isset($client->commercial->medical_expense) && $client->commercial->medical_expense == '500000' ? 'selected' : ''}} value="500000">
                                                                 $500,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->medical_expense) && $client->commercialLiability->medical_expense == '300000' ? 'selected' : ''}} value="300000">
+                                                                {{isset($client->commercial->medical_expense) && $client->commercial->medical_expense == '300000' ? 'selected' : ''}} value="300000">
                                                                 $300,000.00
                                                             </option>
                                                             <option
-                                                                {{isset($client->commercialLiability->medical_expense) && $client->commercialLiability->medical_expense == '100000' ? 'selected' : ''}} value="100000">
+                                                                {{isset($client->commercial->medical_expense) && $client->commercial->medical_expense == '100000' ? 'selected' : ''}} value="100000">
                                                                 $100,000.00
                                                             </option>
                                                         </select>
@@ -978,7 +974,7 @@
                                                     <div class="form-group">
                                                         <input type="text" name="annual_receipt" class="form-control"
                                                                data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
-                                                               value="${{ old('annual_receipt',$client->commercialLiability->annual_receipt ?? '') }}">
+                                                               value="${{ old('annual_receipt',$client->commercial->annual_receipt ?? '') }}">
                                                         @if ($errors->has('annual_receipt'))
                                                             <span
                                                                 class="text-danger">{{ $errors->first('annual_receipt') }}</span>
@@ -988,6 +984,235 @@
                                             </fieldset>
                                         </div>
                                     @endif
+                                        @if($policyType->id == 5)
+                                            <div class="col-md-4">
+                                                <fieldset class="border p-3">
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <input type="checkbox" class="form-check-inline" name="is_general_liability" value="1" id="">
+                                                            Commercial General Liability
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label class="col-form-label">General Aggregate</label>
+                                                        <div class="form-group">
+                                                            <select name="general_aggregate" class="form-control select2"
+                                                                    style="width: 100%"
+                                                                    data-placeholder="Select Option">
+                                                                <option></option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->general_aggregate) && $client->commercialLiability->general_aggregate == '2000000' ? 'selected' : ''}} value="2000000">
+                                                                    $2,000,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->general_aggregate) && $client->commercialLiability->general_aggregate == '1000000' ? 'selected' : ''}}  value="1000000">
+                                                                    $1,000,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->general_aggregate) && $client->commercialLiability->general_aggregate == '500000' ? 'selected' : ''}}  value="500000">
+                                                                    $500,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->general_aggregate) && $client->commercialLiability->general_aggregate == '300000' ? 'selected' : ''}}  value="300000">
+                                                                    $300,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->general_aggregate) && $client->commercialLiability->general_aggregate == '100000' ? 'selected' : ''}}  value="100000">
+                                                                    $100,000.00
+                                                                </option>
+                                                            </select>
+                                                            @if ($errors->has('general_aggregate'))
+                                                                <span
+                                                                    class="text-danger">{{ $errors->first('general_aggregate') }}</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label class="col-form-label">Products Aggregate</label>
+                                                        <div class="form-group">
+                                                            <select name="product_aggregate" class="form-control select2"
+                                                                    style="width: 100%"
+                                                                    data-placeholder="Select Option">
+                                                                <option></option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->product_aggregate) && $client->commercialLiability->product_aggregate == '2000000' ? 'selected' : ''}} value="2000000">
+                                                                    $2,000,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->product_aggregate) && $client->commercialLiability->product_aggregate == '1000000' ? 'selected' : ''}} value="1000000">
+                                                                    $1,000,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->product_aggregate) && $client->commercialLiability->product_aggregate == '500000' ? 'selected' : ''}} value="500000">
+                                                                    $500,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->product_aggregate) && $client->commercialLiability->product_aggregate == '300000' ? 'selected' : ''}} value="300000">
+                                                                    $300,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->product_aggregate) && $client->commercialLiability->product_aggregate == '100000' ? 'selected' : ''}} value="100000">
+                                                                    $100,000.00
+                                                                </option>
+                                                            </select>
+                                                            @if ($errors->has('product_aggregate'))
+                                                                <span
+                                                                    class="text-danger">{{ $errors->first('product_aggregate') }}</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label class="col-form-label">Personal & Advertising Injury</label>
+                                                        <div class="form-group">
+                                                            <select name="personal_injury" class="form-control select2"
+                                                                    style="width: 100%"
+                                                                    data-placeholder="Select Option">
+                                                                <option></option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->personal_injury) && $client->commercialLiability->personal_injury == '2000000' ? 'selected' : ''}} value="2000000">
+                                                                    $2,000,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->personal_injury) && $client->commercialLiability->personal_injury == '1000000' ? 'selected' : ''}} value="1000000">
+                                                                    $1,000,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->personal_injury) && $client->commercialLiability->personal_injury == '500000' ? 'selected' : ''}} value="500000">
+                                                                    $500,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->personal_injury) && $client->commercialLiability->personal_injury == '300000' ? 'selected' : ''}} value="300000">
+                                                                    $300,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->personal_injury) && $client->commercialLiability->personal_injury == '100000' ? 'selected' : ''}} value="100000">
+                                                                    $100,000.00
+                                                                </option>
+                                                            </select>
+                                                            @if ($errors->has('personal_injury'))
+                                                                <span
+                                                                    class="text-danger">{{ $errors->first('personal_injury') }}</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label class="col-form-label">Each Occurrence</label>
+                                                        <div class="form-group">
+                                                            <select name="each_occurrence" class="form-control select2"
+                                                                    style="width: 100%"
+                                                                    data-placeholder="Select Option">
+                                                                <option></option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->each_occurrence) && $client->commercialLiability->each_occurrence == '2000000' ? 'selected' : ''}} value="2000000">
+                                                                    $2,000,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->each_occurrence) && $client->commercialLiability->each_occurrence == '1000000' ? 'selected' : ''}} value="1000000">
+                                                                    $1,000,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->each_occurrence) && $client->commercialLiability->each_occurrence == '500000' ? 'selected' : ''}} value="500000">
+                                                                    $500,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->each_occurrence) && $client->commercialLiability->each_occurrence == '300000' ? 'selected' : ''}} value="300000">
+                                                                    $300,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->each_occurrence) && $client->commercialLiability->each_occurrence == '100000' ? 'selected' : ''}} value="100000">
+                                                                    $100,000.00
+                                                                </option>
+                                                            </select>
+                                                            @if ($errors->has('each_occurrence'))
+                                                                <span
+                                                                    class="text-danger">{{ $errors->first('each_occurrence') }}</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label class="col-form-label">Fire Damage</label>
+                                                        <div class="form-group">
+                                                            <select name="fire_damage" class="form-control select2"
+                                                                    style="width: 100%"
+                                                                    data-placeholder="Select Option">
+                                                                <option></option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->fire_damage) && $client->commercialLiability->fire_damage == '2000000' ? 'selected' : ''}} value="2000000">
+                                                                    $2,000,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->fire_damage) && $client->commercialLiability->fire_damage == '1000000' ? 'selected' : ''}} value="1000000">
+                                                                    $1,000,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->fire_damage) && $client->commercialLiability->fire_damage == '500000' ? 'selected' : ''}} value="500000">
+                                                                    $500,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->fire_damage) && $client->commercialLiability->fire_damage == '300000' ? 'selected' : ''}} value="300000">
+                                                                    $300,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->fire_damage) && $client->commercialLiability->fire_damage == '100000' ? 'selected' : ''}} value="100000">
+                                                                    $100,000.00
+                                                                </option>
+                                                            </select>
+                                                            @if ($errors->has('fire_damage'))
+                                                                <span
+                                                                    class="text-danger">{{ $errors->first('fire_damage') }}</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label class="col-form-label">Medical Expenses</label>
+                                                        <div class="form-group">
+                                                            <select name="medical_expense" class="form-control select2"
+                                                                    style="width: 100%"
+                                                                    data-placeholder="Select Option">
+                                                                <option></option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->medical_expense) && $client->commercialLiability->medical_expense == '2000000' ? 'selected' : ''}} value="2000000">
+                                                                    $2,000,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->medical_expense) && $client->commercialLiability->medical_expense == '1000000' ? 'selected' : ''}} value="1000000">
+                                                                    $1,000,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->medical_expense) && $client->commercialLiability->medical_expense == '500000' ? 'selected' : ''}} value="500000">
+                                                                    $500,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->medical_expense) && $client->commercialLiability->medical_expense == '300000' ? 'selected' : ''}} value="300000">
+                                                                    $300,000.00
+                                                                </option>
+                                                                <option
+                                                                    {{isset($client->commercialLiability->medical_expense) && $client->commercialLiability->medical_expense == '100000' ? 'selected' : ''}} value="100000">
+                                                                    $100,000.00
+                                                                </option>
+                                                            </select>
+                                                            @if ($errors->has('medical_expense'))
+                                                                <span
+                                                                    class="text-danger">{{ $errors->first('medical_expense') }}</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label class="col-form-label">Annual Receipt</label>
+                                                        <div class="form-group">
+                                                            <input type="text" name="annual_receipt" class="form-control"
+                                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                                   value="${{ old('annual_receipt',$client->commercialLiability->annual_receipt ?? '') }}">
+                                                            @if ($errors->has('annual_receipt'))
+                                                                <span
+                                                                    class="text-danger">{{ $errors->first('annual_receipt') }}</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        @endif
                                     @if($policyType->id == 3 || $policyType->id == 4 )
                                         <div class="col-md-4">
                                             <fieldset class="border p-3">
@@ -1147,7 +1372,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <input type="checkbox"
-                                                               {{$client->commercial->is_alarm_system == '1' ? 'checked' : ''}} class="form-check-inline"
+                                                               {{$client->commercial->is_alarm_system == '1' ? 'checked' : ''}} class="form-check-inline" value="1"
                                                                name="is_alarm_system"
                                                                id="">
                                                         Is Alarm System?
@@ -1449,7 +1674,7 @@
 
                                                     <div class="col-md-6 mt-3">
                                                         <div class="form-group">
-                                                            <input type="checkbox" class="form-check-inline"
+                                                            <input type="checkbox" class="form-check-inline" value="1"
                                                                    {{$client->house->is_intrusion_alarm == '1' ? 'checked' : ''}}
                                                                    name="is_intrusion_alarm" id="">
                                                             Intrusion Alarm
@@ -1457,7 +1682,7 @@
                                                     </div>
                                                     <div class="col-md-6 mt-3">
                                                         <div class="form-group">
-                                                            <input type="checkbox" class="form-check-inline"
+                                                            <input type="checkbox" class="form-check-inline" value="1"
                                                                    {{$client->house->is_fire_station == '1' ? 'checked' : ''}}
                                                                    name="is_fire_station" id="">
                                                             Fire Station
@@ -1465,7 +1690,7 @@
                                                     </div>
                                                     <div class="col-md-6 mt-3">
                                                         <div class="form-group">
-                                                            <input type="checkbox" class="form-check-inline"
+                                                            <input type="checkbox" class="form-check-inline" value="1"
                                                                    {{$client->house->is_swimming_pool == '1' ? 'checked' : ''}}
                                                                    name="is_swimming_pool" id="">
                                                             Swimming Pool
@@ -1473,7 +1698,7 @@
                                                     </div>
                                                     <div class="col-md-6 mt-3">
                                                         <div class="form-group">
-                                                            <input type="checkbox" class="form-check-inline"
+                                                            <input type="checkbox" class="form-check-inline" value="1"
                                                                    {{$client->house->is_replacement_cost == '1' ? 'checked' : ''}}
                                                                    name="is_replacement_cost" id="">
                                                             Replacement Cost
@@ -1780,7 +2005,7 @@
 
                                                     <div class="col-md-6 mt-3">
                                                         <div class="form-group">
-                                                            <input type="checkbox" class="form-check-inline"
+                                                            <input type="checkbox" class="form-check-inline" value="1"
                                                                    {{$client->mobileHome->is_inside_city_limit == '1' ? 'checked' : ''}}
                                                                    name="is_inside_city_limit" id="">
                                                             Inside City Limit
@@ -2438,7 +2663,7 @@
                                                         <div class="col-md-6">
                                                             <label class="col-form-label">Custom Equipment</label>
                                                             <div class="form-group">
-                                                                <input type="text" name="custom_equipment[0]"
+                                                                <input type="text" name="custom_equipment[{{$key}}]"
                                                                        class="form-control"
                                                                        data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                                        value="${{ old('custom_equipment',$vehicle->custom_equipment) }}">
@@ -2782,7 +3007,7 @@
 
                 <!-- Submit button -->
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary float-end m-5">Save</button>
+                    <button type="submit" class="btn btn-primary float-end m-5">Update</button>
                 </div>
             </form>
             <!-- /agent form -->
