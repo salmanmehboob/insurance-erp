@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\Dashboard\SuperAdminDashboardController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GeneralAgentController;
 use App\Http\Controllers\Admin\InsuranceCompanyController;
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('get-make-by-model', [AjaxController::class, 'getMakeByModel']);
+Route::get('get-client-data', [AjaxController::class, 'getClientData']);
 
 Route::middleware(['auth'])->group(function () {
 
@@ -99,6 +101,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('clients/trashed', [ClientController::class, 'trashed'])->name('trashed-clients');
     Route::post('clients/restore/{id}', [ClientController::class, 'restore'])->name('restore-client');
     Route::delete('clients/force-delete/{id}', [ClientController::class, 'forceDelete'])->name('force-delete-client');
+
+
+    Route::get('show-payment', [PaymentController::class, 'index'])->name('show-payment');
+     Route::get('add-payment', [PaymentController::class, 'create'])->name('add-payment');
+    Route::post('store-payment', [PaymentController::class, 'store'])->name('store-payment');
+    Route::get('payment/{id}/edit', [PaymentController::class, 'edit'])->name('edit-payment');
+    Route::put('update-payment{id}', [PaymentController::class, 'update'])->name('update-payment');
+    Route::post('destroy-payment', [PaymentController::class, 'destroy'])->name('destroy-payment');
+    Route::get('payments/trashed', [PaymentController::class, 'trashed'])->name('trashed-payments');
+    Route::post('payments/restore/{id}', [PaymentController::class, 'restore'])->name('restore-payment');
+    Route::delete('payments/force-delete/{id}', [PaymentController::class, 'forceDelete'])->name('force-delete-payment');
 
 
 

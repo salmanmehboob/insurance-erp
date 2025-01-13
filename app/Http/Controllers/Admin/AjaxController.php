@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\City;
+use App\Models\Client;
 use App\Models\District;
 use App\Models\Province;
 use App\Models\VehicleModel;
@@ -18,6 +19,16 @@ class AjaxController extends Controller
          return response()->json($responseData);
     }
 
+    public function getClientData(Request $request): \Illuminate\Http\JsonResponse
+    {
+         $responseData = Client::with('policy')->find($request->clientID);
+
+         $clientData = [
+             'insurance_company_id' => $responseData->policy->insurance_company_id,
+             'policy_number' => $responseData->policy->policy_number,
+         ];
+          return response()->json($clientData);
+    }
 
 
 

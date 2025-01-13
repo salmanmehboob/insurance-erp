@@ -15,6 +15,7 @@
     var urlPath = '<?php echo url(""); ?>';
     var CSRF_TOKEN = '<?php echo csrf_token(); ?>';
     var getModelByMake = '<?php echo e(url('get-make-by-model')); ?>';
+    var getClientData = '<?php echo e(url('get-client-data')); ?>';
 
 
     window.sessionMessages = {
