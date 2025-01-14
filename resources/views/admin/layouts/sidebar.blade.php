@@ -132,6 +132,16 @@
                     </a>
                 </li>
             @endcan
+
+            @can('view-payment-check')
+
+                <li class="sidebar-item {{ request()->routeIs('show-payment-check') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ route('show-payment-check') }}">
+                        <i class="align-middle" data-feather="user"></i>
+                        <span class="align-middle">Write Check</span>
+                    </a>
+                </li>
+            @endcan
         </ul>
     </div>
 </nav>

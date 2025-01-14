@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\Dashboard\SuperAdminDashboardController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GeneralAgentController;
 use App\Http\Controllers\Admin\InsuranceCompanyController;
+use App\Http\Controllers\Admin\PaymentCheckController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
@@ -39,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('user/{id}/edit', [UserController::class, 'edit'])->name('edit-user');
     Route::put('update-user{id}', [UserController::class, 'update'])->name('update-user');
     Route::post('changeStatus-user', [UserController::class, 'destroy'])->name('changeStatus-user');
-     Route::post('changePassword', [UserController::class, 'changePassword'])->name('changePassword');
+    Route::post('changePassword', [UserController::class, 'changePassword'])->name('changePassword');
     Route::post('/user/restore', [UserController::class, 'restore'])->name('restore-user');
 
 
@@ -104,7 +105,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('show-payment', [PaymentController::class, 'index'])->name('show-payment');
-     Route::get('add-payment', [PaymentController::class, 'create'])->name('add-payment');
+    Route::get('add-payment', [PaymentController::class, 'create'])->name('add-payment');
     Route::post('store-payment', [PaymentController::class, 'store'])->name('store-payment');
     Route::get('payment/{id}/edit', [PaymentController::class, 'edit'])->name('edit-payment');
     Route::put('update-payment{id}', [PaymentController::class, 'update'])->name('update-payment');
@@ -113,7 +114,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('payments/restore/{id}', [PaymentController::class, 'restore'])->name('restore-payment');
     Route::delete('payments/force-delete/{id}', [PaymentController::class, 'forceDelete'])->name('force-delete-payment');
 
-
+    Route::get('show-payment-check', [PaymentCheckController::class, 'index'])->name('show-payment-check');
+    Route::get('add-payment-check', [PaymentCheckController::class, 'create'])->name('add-payment-check');
+    Route::post('store-payment-check', [PaymentCheckController::class, 'store'])->name('store-payment-check');
+    Route::get('payment-check/{id}/edit', [PaymentCheckController::class, 'edit'])->name('edit-payment-check');
+    Route::post('update-payment-check', [PaymentCheckController::class, 'update'])->name('update-payment-check');
+    Route::post('destroy-payment-check', [PaymentCheckController::class, 'destroy'])->name('destroy-payment-check');
+    Route::get('payment-check/trashed', [PaymentCheckController::class, 'trashed'])->name('trashed-payment-check');
+    Route::post('payment-check/restore/{id}', [PaymentCheckController::class, 'restore'])->name('restore-payment-check');
+    Route::delete('payment-check/force-delete/{id}', [PaymentCheckController::class, 'forceDelete'])->name('force-delete-payment-check');
 
 
 });

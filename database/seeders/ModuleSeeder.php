@@ -23,6 +23,7 @@ class ModuleSeeder extends Seeder
             'General Agent',
             'Client',
             'Payment',
+            'Payment Check',
 
         );
 
