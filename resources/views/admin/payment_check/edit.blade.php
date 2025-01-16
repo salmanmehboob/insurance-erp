@@ -121,7 +121,23 @@
                                         <select name="account" id="account" class="form-control select2"
                                                 data-placeholder="Select Account">
                                             <option></option>
-                                            <option {{$payment->account == 1 ? 'selected' : ''}} value="1">option1
+                                            <option
+                                                {{  $payment->payment_for == 'Balance Down Payment' ? 'selected' : '' }} value="Balance Down Payment">
+                                                Balance Down Payment
+                                            </option>
+                                            <option
+                                                {{  $payment->payment_for == 'Balance Fee' ? 'selected' : '' }} value="Balance Fee">
+                                                Balance Fee
+                                            </option>
+                                            <option
+                                                {{  $payment->payment_for == 'Agency Fee' ? 'selected' : '' }} value="Agency Fee">
+                                                Agency Fee
+                                            </option>
+                                            <option
+                                                {{  $payment->payment_for == 'Agent Fee' ? 'selected' : '' }} value="Agent Fee">
+                                                Agent Fee
+                                            </option>
+                                            <option {{  $payment->payment_for == 'Cash' ? 'selected' : '' }} value="Cash">Cash
                                             </option>
 
                                         </select>

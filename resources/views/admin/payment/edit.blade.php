@@ -163,10 +163,23 @@
                                 <select name="payment_for" class="form-control select2"
                                         data-placeholder="Select Option">
                                     <option></option>
-                                    <option {{  $payment->payment_for == 'bill' ? 'selected' : '' }} value="bill">Bill
+                                    <option
+                                        {{  $payment->payment_for == 'Balance Down Payment' ? 'selected' : '' }} value="Balance Down Payment">
+                                        Balance Down Payment
                                     </option>
-                                    <option {{  $payment->payment_for == 'policy' ? 'selected' : '' }} value="policy">
-                                        Policy
+                                    <option
+                                        {{  $payment->payment_for == 'Balance Fee' ? 'selected' : '' }} value="Balance Fee">
+                                        Balance Fee
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_for == 'Agency Fee' ? 'selected' : '' }} value="Agency Fee">
+                                        Agency Fee
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_for == 'Agent Fee' ? 'selected' : '' }} value="Agent Fee">
+                                        Agent Fee
+                                    </option>
+                                    <option {{  $payment->payment_for == 'Cash' ? 'selected' : '' }} value="Cash">Cash
                                     </option>
                                 </select>
                                 @if ($errors->has('payment_for'))
@@ -180,12 +193,72 @@
                                 <select name="payment_method" class="form-control select2"
                                         data-placeholder="Select Option">
                                     <option></option>
-                                    <option
-                                        {{  $payment->payment_method == 'online' ? 'selected' : '' }} value="online">
-                                        Online
-                                    </option>
+
+
                                     <option {{  $payment->payment_method == 'cash' ? 'selected' : '' }} value="cash">
                                         Cash
+                                    </option>
+                                    <option {{  $payment->payment_method == 'check' ? 'selected' : '' }}  value="check">
+                                        Check
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_method == 'check_cash' ? 'selected' : '' }}  value="check_cash">
+                                        Check+Cash
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_method == 'check_card' ? 'selected' : '' }}  value="check_card">
+                                        Check+Card
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_method == 'two_check' ? 'selected' : '' }}  value="two_check">
+                                        2 Check
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_method == 'card_cash' ? 'selected' : '' }}  value="card_cash">
+                                        Card+Cash
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_method == 'credit_card' ? 'selected' : '' }}  value="credit_card">
+                                        Credit Card
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_method == 'card_to_company' ? 'selected' : '' }}  value="card_to_company">
+                                        Card To Company
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_method == 'customer_eft' ? 'selected' : '' }}  value="customer_eft">
+                                        Customer EFT
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_method == 'customer_eft_cash' ? 'selected' : '' }}  value="customer_eft_cash">
+                                        Customer EFT+Cash
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_method == 'customer_eft_credit_card' ? 'selected' : '' }}  value="customer_eft_credit_card">
+                                        Customer EFT+Credit Card
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_method == 'e_check' ? 'selected' : '' }}  value="e_check">
+                                        E-Check
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_method == 'money_order' ? 'selected' : '' }}  value="money_order">
+                                        Money Order
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_method == 'money_order_cash' ? 'selected' : '' }}  value="money_order_cash">
+                                        Money Order+Cash
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_method == 'money_order_card' ? 'selected' : '' }}  value="money_order_card">
+                                        Money Order+Card
+                                    </option>
+                                    <option {{  $payment->payment_method == 'order' ? 'selected' : '' }}  value="order">
+                                        Other
+                                    </option>
+                                    <option
+                                        {{  $payment->payment_method == 'paypal' ? 'selected' : '' }}  value="paypal">
+                                        Paypal
                                     </option>
                                 </select>
                                 @if ($errors->has('payment_method'))

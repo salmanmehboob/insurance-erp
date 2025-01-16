@@ -88,7 +88,8 @@
 
                 <li class="sidebar-item">
                     <a data-bs-target="#agencySetting" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                        <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Agency Setting</span>
+                        <i class="align-middle" data-feather="sliders"></i> <span
+                            class="align-middle">Agency Setting</span>
                     </a>
                     <ul id="agencySetting" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
                         <li class="sidebar-item  ">
@@ -125,23 +126,41 @@
 
             @can('view-payment')
 
-                <li class="sidebar-item {{ request()->routeIs('show-payment') ? 'active' : '' }}">
-                    <a class="sidebar-link" href="{{ route('show-payment') }}">
-                        <i class="align-middle" data-feather="user"></i>
-                        <span class="align-middle">Receive Payment</span>
+                <li class="sidebar-item">
+                    <a data-bs-target="#paymentSetting" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                        <i class="align-middle" data-feather="sliders"></i> <span
+                            class="align-middle">Payments</span>
                     </a>
+                    <ul id="paymentSetting" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                        <li class="sidebar-item {{ request()->routeIs('show-payment') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('show-payment') }}">
+                                <i class="align-middle" data-feather="user"></i>
+                                <span class="align-middle">Receive Payment</span>
+                            </a>
+                        </li>
+
+
+                        @can('view-payment-check')
+
+                            <li class="sidebar-item {{ request()->routeIs('show-payment-check') ? 'active' : '' }}">
+                                <a class="sidebar-link" href="{{ route('show-payment-check') }}">
+                                    <i class="align-middle" data-feather="user"></i>
+                                    <span class="align-middle">Write Check</span>
+                                </a>
+                            </li>
+                        @endcan
+                        <li class="sidebar-item {{ request()->routeIs('find-payment') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('find-payment-check') }}">
+                                <i class="align-middle" data-feather="user"></i>
+                                <span class="align-middle">Find Payment</span>
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
             @endcan
 
-            @can('view-payment-check')
 
-                <li class="sidebar-item {{ request()->routeIs('show-payment-check') ? 'active' : '' }}">
-                    <a class="sidebar-link" href="{{ route('show-payment-check') }}">
-                        <i class="align-middle" data-feather="user"></i>
-                        <span class="align-middle">Write Check</span>
-                    </a>
-                </li>
-            @endcan
         </ul>
     </div>
 </nav>

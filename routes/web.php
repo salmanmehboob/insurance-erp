@@ -115,6 +115,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('payments/force-delete/{id}', [PaymentController::class, 'forceDelete'])->name('force-delete-payment');
 
     Route::get('show-payment-check', [PaymentCheckController::class, 'index'])->name('show-payment-check');
+    Route::get('find-payment-check', [PaymentCheckController::class, 'find'])->name('find-payment-check');
+    Route::post('get-payment-check', [PaymentCheckController::class, 'getPaymentCheck'])->name('get-payment-check');
+
     Route::get('add-payment-check', [PaymentCheckController::class, 'create'])->name('add-payment-check');
     Route::post('store-payment-check', [PaymentCheckController::class, 'store'])->name('store-payment-check');
     Route::get('payment-check/{id}/edit', [PaymentCheckController::class, 'edit'])->name('edit-payment-check');

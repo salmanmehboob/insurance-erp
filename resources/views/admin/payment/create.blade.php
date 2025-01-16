@@ -159,9 +159,12 @@
                                 <select name="payment_for" class="form-control select2"
                                         data-placeholder="Select Option">
                                     <option></option>
-                                    <option value="bill">Bill</option>
-                                    <option value="policy">Policy</option>
-                                </select>
+                                    <option value="Balance Down Payment">Balance Down Payment</option>
+                                    <option value="Balance Fee">Balance Fee</option>
+                                    <option value="Agency Fee">Agency Fee</option>
+                                    <option value="Agent Fee">Agent Fee</option>
+                                    <option value="Cash">Cash</option>
+                                 </select>
                                 @if ($errors->has('payment_for'))
                                     <span class="text-danger">{{ $errors->first('payment_for') }}</span>
                                 @endif
@@ -173,8 +176,23 @@
                                 <select name="payment_method" class="form-control select2"
                                         data-placeholder="Select Option">
                                     <option></option>
-                                    <option value="online">Online</option>
-                                    <option value="cash">Cash</option>
+                                     <option value="cash">Cash</option>
+                                     <option value="check">Check</option>
+                                     <option value="check_cash">Check+Cash</option>
+                                     <option value="check_card">Check+Card</option>
+                                     <option value="two_check">2 Check</option>
+                                     <option value="card_cash">Card+Cash</option>
+                                     <option value="credit_card">Credit Card</option>
+                                     <option value="card_to_company">Card To Company</option>
+                                     <option value="customer_eft">Customer EFT</option>
+                                     <option value="customer_eft_cash">Customer EFT+Cash</option>
+                                     <option value="customer_eft_credit_card">Customer EFT+Credit Card</option>
+                                     <option value="e_check">E-Check</option>
+                                     <option value="money_order">Money Order</option>
+                                     <option value="money_order_cash">Money Order+Cash</option>
+                                     <option value="money_order_card">Money Order+Card</option>
+                                     <option value="order">Other</option>
+                                     <option value="paypal">Paypal</option>
                                 </select>
                                 @if ($errors->has('payment_method'))
                                     <span class="text-danger">{{ $errors->first('payment_method') }}</span>

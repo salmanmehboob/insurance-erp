@@ -60,6 +60,19 @@ class PaymentCheckController extends Controller
         return view('admin.payment_check.index', compact('title', 'paymentChecks'));
     }
 
+    public function find()
+    {
+        $title = 'Find Payment Checks';
+        $clients = Client::all();
+        $insurance_companies = InsuranceCompany::all();
+        $agents = Agent::all();
+        $locations = Agency::all();
+        $banks = PaymentBank::all();
+        return view('admin.payment_check.find', compact('title',
+            'clients', 'insurance_companies', 'agents', 'banks',
+            'locations'));
+    }
+
 
     /**
      * Show the form for creating a new payment.
@@ -160,7 +173,7 @@ class PaymentCheckController extends Controller
     public function update(Request $request)
     {
 
-         $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'payment_bank_id' => 'required|exists:payment_banks,id',
             'check_no' => 'required|string',
             'payment_date' => 'required|date',
@@ -271,5 +284,73 @@ class PaymentCheckController extends Controller
 
         return redirect()->route('trashed-payment-check')->with('success', 'Check permanently deleted.');
     }
+
+    public function getPaymentCheck(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'client_id' => 'required|exists:clients,id',
+                'date_from' => 'nullable|date',
+                'date_to' => 'nullable|date',
+                'receipt_no' => 'nullable|integer',
+                'check_no' => 'nullable|integer',
+                'account' => 'nullable|string',
+            ],
+            [
+                'client_id.required' => 'The   client selection is required for payment',
+                'client_id.exists' => 'The selected client does not exist in our records. Please choose a valid client.',
+                'date_from.date' => 'The "Date From" must be a valid date.',
+                'date_to.date' => 'The "Date To" must be a valid date.',
+                'receipt_no.integer' => 'The receipt number must be a valid integer.',
+                'check_no.integer' => 'The check number must be a valid integer.',
+                'account.string' => 'The account field must be a valid string.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $payment = Payment::with('client', 'receivedBy')
+            ->where('client_id', $request->client_id)
+            ->when($request->date_from && $request->date_to, function ($query) use ($request) {
+                $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            })
+            ->when($request->receipt_no, function ($query) use ($request) {
+                $query->where('id', $request->receipt_no);
+            })
+            ->first();
+
+        $paymentCheck = PaymentCheck::where('client_id', $request->client_id)
+            ->when($request->check_no, function ($query) use ($request) {
+                $query->where('check_no', $request->check_no);
+            })
+            ->first();
+
+        if (!$payment) {
+            return response()->json(['success' => false, 'message' => 'Payment not found.'], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'receipt_no' => $payment->id,
+                'client' => $payment->client->applicant_name ?? 'N/A',
+                'agent' => $payment->receivedBy->name ?? 'N/A',
+                'payment_for' => $payment->payment_for ?? 'N/A',
+                'payment_method' => $payment->payment_method ?? 'N/A',
+                'total' => $payment->total ?? 'N/A',
+                'paid' => $payment->paid ?? 'N/A',
+                'balance' => $payment->balance ?? 'N/A',
+                'check_no' => $paymentCheck->check_no ?? 'N/A',
+                'notes' => $payment->notes ?? 'N/A',
+            ],
+        ]);
+    }
+
 
 }
