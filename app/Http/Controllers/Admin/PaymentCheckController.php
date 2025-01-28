@@ -316,7 +316,9 @@ class PaymentCheckController extends Controller
         }
 
         $payment = Payment::with('client', 'receivedBy')
-            ->where('client_id', $request->client_id)
+            ->when($request->client_id, function ($query) use ($request) {
+                $query->where('client_id', $request->client_id);
+            })
             ->when($request->date_from && $request->date_to, function ($query) use ($request) {
                 $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
             })
@@ -328,6 +330,9 @@ class PaymentCheckController extends Controller
         $paymentCheck = PaymentCheck::where('client_id', $request->client_id)
             ->when($request->check_no, function ($query) use ($request) {
                 $query->where('check_no', $request->check_no);
+            })
+            ->when($request->account, function ($query) use ($request) {
+                $query->where('account', $request->account);
             })
             ->first();
 

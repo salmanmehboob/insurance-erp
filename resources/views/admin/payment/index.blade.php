@@ -41,6 +41,7 @@
                 <table id="payment-table" class="table table-striped datatables-reponsive">
                     <thead>
                     <tr>
+                        <th>Reciept #</th>
                         <th>Client</th>
                         <th>Payment Date</th>
                         <th>Amount</th>
@@ -52,6 +53,7 @@
                     <tbody>
                     @foreach($payments as $payment)
                          <tr>
+                            <td>RECP-{{ $payment->id}}</td>
                             <td>{{ $payment->client->applicant_name }}</td>
                             <td>{{ $payment->payment_date }}</td>
                              <td>{{ $payment->amount   }}</td>
