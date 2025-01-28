@@ -27,7 +27,7 @@ class Payment extends Model
         'check_to_finance',
         'payment_send_to_insurance_company',
         'notes',
-        'payment_bank_id',
+        'bank_id',
         'next_payment',
     ];
 
@@ -48,6 +48,6 @@ class Payment extends Model
 
     public function bank()
     {
-        return $this->belongsTo(PaymentBank::class);
+        return $this->belongsTo(BankAccount::class);
     }
 }

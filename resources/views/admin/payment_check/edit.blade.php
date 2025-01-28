@@ -22,16 +22,16 @@
                         <div class="col-md-4">
                             <label class="col-form-label">Bank Account</label>
                             <div class="form-group">
-                                <select name="payment_bank_id" class="form-control select2"
+                                <select name="bank_id" class="form-control select2"
                                         data-placeholder="Select Bank Account">
                                     <option></option>
                                     @foreach($banks as $row)
-                                        <option {{$payment->payment_bank_id == $row->id ? 'selected' : ''}}
+                                        <option {{$payment->bank_id == $row->id ? 'selected' : ''}}
                                                 value="{{ $row->id }}">{{ $row->bank_name }}</option>
                                     @endforeach
                                 </select>
-                                @if ($errors->has('payment_bank_id'))
-                                    <span class="text-danger">{{ $errors->first('payment_bank_id') }}</span>
+                                @if ($errors->has('bank_id'))
+                                    <span class="text-danger">{{ $errors->first('bank_id') }}</span>
                                 @endif
                             </div>
                         </div>
@@ -121,24 +121,24 @@
                                         <select name="account" id="account" class="form-control select2"
                                                 data-placeholder="Select Account">
                                             <option></option>
-                                            <option
-                                                {{  $payment->payment_for == 'Balance Down Payment' ? 'selected' : '' }} value="Balance Down Payment">
-                                                Balance Down Payment
-                                            </option>
-                                            <option
-                                                {{  $payment->payment_for == 'Balance Fee' ? 'selected' : '' }} value="Balance Fee">
-                                                Balance Fee
-                                            </option>
-                                            <option
-                                                {{  $payment->payment_for == 'Agency Fee' ? 'selected' : '' }} value="Agency Fee">
-                                                Agency Fee
-                                            </option>
-                                            <option
-                                                {{  $payment->payment_for == 'Agent Fee' ? 'selected' : '' }} value="Agent Fee">
-                                                Agent Fee
-                                            </option>
-                                            <option {{  $payment->payment_for == 'Cash' ? 'selected' : '' }} value="Cash">Cash
-                                            </option>
+                                            <option {{  $payment->account == 'cash' ? 'selected' : '' }} value="cash">Cash</option>
+                                            <option {{  $payment->account == 'check' ? 'selected' : '' }} value="check">Check</option>
+                                            <option {{  $payment->account == 'check_cash' ? 'selected' : '' }} value="check_cash">Check+Cash</option>
+                                            <option {{  $payment->account == 'check_card' ? 'selected' : '' }} value="check_card">Check+Card</option>
+                                            <option {{  $payment->account == 'two_check' ? 'selected' : '' }} value="two_check">2 Check</option>
+                                            <option {{  $payment->account == 'card_cash' ? 'selected' : '' }} value="card_cash">Card+Cash</option>
+                                            <option {{  $payment->account == 'credit_card' ? 'selected' : '' }} value="credit_card">Credit Card</option>
+                                            <option {{  $payment->account == 'card_to_company' ? 'selected' : '' }} value="card_to_company">Card To Company</option>
+                                            <option {{  $payment->account == 'customer_eft' ? 'selected' : '' }} value="customer_eft">Customer EFT</option>
+                                            <option {{  $payment->account == 'customer_eft_cash' ? 'selected' : '' }} value="customer_eft_cash">Customer EFT+Cash</option>
+                                            <option {{  $payment->account == 'customer_eft_credit_card' ? 'selected' : '' }} value="customer_eft_credit_card">Customer EFT+Credit Card</option>
+                                            <option {{  $payment->account == 'e_check' ? 'selected' : '' }} value="e_check">E-Check</option>
+                                            <option {{  $payment->account == 'money_order' ? 'selected' : '' }} value="money_order">Money Order</option>
+                                            <option {{  $payment->account == 'money_order_cash' ? 'selected' : '' }} value="money_order_cash">Money Order+Cash</option>
+                                            <option {{  $payment->account == 'money_order_card' ? 'selected' : '' }} value="money_order_card">Money Order+Card</option>
+                                            <option {{  $payment->account == 'order' ? 'selected' : '' }} value="order">Other</option>
+                                            <option {{  $payment->account == 'paypal' ? 'selected' : '' }} value="paypal">Paypal</option>
+
 
                                         </select>
                                         @if ($errors->has('account'))

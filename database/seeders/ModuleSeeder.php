@@ -24,6 +24,7 @@ class ModuleSeeder extends Seeder
             'Client',
             'Payment',
             'Payment Check',
+            'Bank',
 
         );
 

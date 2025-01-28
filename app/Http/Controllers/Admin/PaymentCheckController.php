@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\Agent;
+use App\Models\BankAccount;
 use App\Models\Client;
 use App\Models\Payment;
 use App\Models\PaymentBank;
@@ -84,7 +85,7 @@ class PaymentCheckController extends Controller
         $insurance_companies = InsuranceCompany::all();
         $agents = Agent::all();
         $locations = Agency::all();
-        $banks = PaymentBank::all();
+        $banks = BankAccount::all();
         return view('admin.payment_check.create', compact('title',
             'clients', 'insurance_companies', 'agents', 'banks',
             'locations'));
@@ -96,7 +97,7 @@ class PaymentCheckController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'payment_bank_id' => 'required|exists:payment_banks,id',
+            'bank_id' => 'required|exists:bank_accounts,id',
             'check_no' => 'required|string',
             'payment_date' => 'required|date',
             'pay_to' => 'required|exists:insurance_companies,id',
@@ -121,7 +122,7 @@ class PaymentCheckController extends Controller
             // Create Payment record
             $payment = PaymentCheck::create([
 
-                'payment_bank_id' => $request->payment_bank_id,
+                'bank_id' => $request->bank_id,
                 'check_no' => $request->check_no,
                 'payment_date' => $request->payment_date,
                 'pay_to' => $request->pay_to,
@@ -159,7 +160,7 @@ class PaymentCheckController extends Controller
         $insurance_companies = InsuranceCompany::all();
         $agents = Agent::all();
         $locations = Agency::all();
-        $banks = PaymentBank::all();
+        $banks = BankAccount::all();
         return view('admin.payment_check.edit', compact('title', 'payment',
             'clients', 'insurance_companies', 'agents', 'banks',
             'locations'));
@@ -172,9 +173,8 @@ class PaymentCheckController extends Controller
      */
     public function update(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
-            'payment_bank_id' => 'required|exists:payment_banks,id',
+            'bank_id' => 'required|exists:bank_accounts,id',
             'check_no' => 'required|string',
             'payment_date' => 'required|date',
             'pay_to' => 'required|exists:insurance_companies,id',
@@ -209,7 +209,7 @@ class PaymentCheckController extends Controller
             // Update payment details
             $payment->update([
 
-                'payment_bank_id' => $request->payment_bank_id,
+                'bank_id' => $request->bank_id,
                 'check_no' => $request->check_no,
                 'payment_date' => $request->payment_date,
                 'pay_to' => $request->pay_to,

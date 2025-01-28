@@ -267,7 +267,7 @@
                         <div class="col-md-12">
                             <label class="col-form-label">Bank Account</label>
                             <div class="form-group">
-                                <select name="payment_bank_id" class="form-control select2"
+                                <select name="bank_id" class="form-control select2"
                                         data-placeholder="Select Bank Account">
                                     <option></option>
                                     @foreach($banks as $row)
@@ -275,8 +275,8 @@
                                             value="{{ $row->id }}">{{ $row->bank_name }}</option>
                                     @endforeach
                                 </select>
-                                @if ($errors->has('payment_bank_id'))
-                                    <span class="text-danger">{{ $errors->first('payment_bank_id') }}</span>
+                                @if ($errors->has('bank_id'))
+                                    <span class="text-danger">{{ $errors->first('bank_id') }}</span>
                                 @endif
                             </div>
                         </div>

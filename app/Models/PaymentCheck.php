@@ -11,7 +11,7 @@ class PaymentCheck extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'payment_bank_id',
+        'bank_id',
         'check_no',
         'payment_date',
         'pay_to',
@@ -30,7 +30,7 @@ class PaymentCheck extends Model
 
     public function bank()
     {
-        return $this->belongsTo(PaymentBank::class);
+        return $this->belongsTo(BankAccount::class);
     }
 
     public function payTo()

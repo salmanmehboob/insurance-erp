@@ -156,6 +156,16 @@
                             </a>
                         </li>
 
+                        @can('view-bank')
+
+                            <li class="sidebar-item {{ request()->routeIs('show-bank') ? 'active' : '' }}">
+                                <a class="sidebar-link" href="{{ route('show-bank') }}">
+                                    <i class="align-middle" data-feather="user"></i>
+                                    <span class="align-middle">Setup Bank Account</span>
+                                </a>
+                            </li>
+                        @endcan
+
                     </ul>
                 </li>
             @endcan

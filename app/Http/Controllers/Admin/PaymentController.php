@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\Agent;
+use App\Models\BankAccount;
 use App\Models\Client;
 use App\Models\Payment;
 use App\Models\PaymentBank;
@@ -70,7 +71,7 @@ class PaymentController extends Controller
         $insurance_companies = InsuranceCompany::all();
         $agents = Agent::all();
         $locations = Agency::all();
-        $banks = PaymentBank::all();
+        $banks = BankAccount::all();
         return view('admin.payment.create', compact('title',
             'clients', 'insurance_companies', 'agents', 'banks',
             'locations'));
@@ -81,6 +82,7 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
         $validator = Validator::make($request->all(), [
             'payment_date' => 'required|date',
             'client_id' => 'required|exists:clients,id',
@@ -93,7 +95,7 @@ class PaymentController extends Controller
             'total' => 'required',
             'paid' => 'required',
             'balance' => 'required',
-            'payment_bank_id' => 'required|exists:payment_banks,id',
+            'bank_id' => 'required|exists:bank_accounts,id',
             'next_payment' => 'nullable|date',
             'notes' => 'nullable|string|max:500',
         ]);
@@ -112,6 +114,7 @@ class PaymentController extends Controller
             $paid = removeDollarSign($request->paid);
             $balance = removeDollarSign($request->balance);
 
+
             // Create Payment record
             $payment = Payment::create([
 
@@ -126,11 +129,11 @@ class PaymentController extends Controller
                 'total' => $total,
                 'paid' => $paid,
                 'balance' => $balance,
-                'payment_bank_id' => $request->payment_bank_id,
+                'bank_id' => $request->bank_id,
                 'next_payment' => $request->next_payment,
                 'notes' => $request->notes,
-                'received_at' => $request->has('received_at'),
-                'received_by' => $request->has('received_by'),
+                'received_at' => $request->received_at,
+                'received_by' => $request->received_by,
                 'check_to_finance' => $request->has('check_to_finance'),
                 'payment_send_to_insurance_company' => $request->has('payment_send_to_insurance_company'),
             ]);
@@ -161,7 +164,7 @@ class PaymentController extends Controller
         $insurance_companies = InsuranceCompany::all();
         $agents = Agent::all();
         $locations = Agency::all();
-        $banks = PaymentBank::all();
+        $banks = BankAccount::all();
         return view('admin.payment.edit', compact('title', 'payment',
             'clients', 'insurance_companies', 'agents', 'banks',
             'locations'));
@@ -186,12 +189,12 @@ class PaymentController extends Controller
             'total' => 'required',
             'paid' => 'required',
             'balance' => 'required',
-            'payment_bank_id' => 'nullable|exists:payment_banks,id',
+            'bank_id' => 'required|exists:bank_accounts,id',
             'notes' => 'nullable|string',
             'next_payment' => 'nullable|date',
         ]);
 
-        if ($validator->fails()) {
+         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -227,15 +230,16 @@ class PaymentController extends Controller
                 'total' => $total,
                 'paid' => $paid,
                 'balance' => $balance,
-                'payment_bank_id' => $request->payment_bank_id,
+                'bank_id' => $request->bank_id,
                 'next_payment' => $request->next_payment,
                 'notes' => $request->notes,
-                'received_at' => $request->has('received_at'),
-                'received_by' => $request->has('received_by'),
+                'received_at' => $request->received_at,
+                'received_by' => $request->received_by,
                 'check_to_finance' => $request->has('check_to_finance'),
                 'payment_send_to_insurance_company' => $request->has('payment_send_to_insurance_company'),
             ]);
 
+//            dd($payment);
 
             DB::commit();
             return redirect()->route('show-payment')->with('success', 'Payment updated successfully.');

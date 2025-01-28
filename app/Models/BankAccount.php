@@ -16,7 +16,16 @@ class BankAccount extends Model
         'bank_name',
         'branch_name',
         'ifsc_code',
+        'current_balance',
+        'current_check',
+        'agency_id',
         'account_type',
         'is_active',
     ];
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class,  'agency_id');
+    }
+
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AgencyController;
 use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\Admin\AjaxController;
+use App\Http\Controllers\Admin\BankController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\Dashboard\SuperAdminDashboardController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -126,6 +127,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('payment-check/trashed', [PaymentCheckController::class, 'trashed'])->name('trashed-payment-check');
     Route::post('payment-check/restore/{id}', [PaymentCheckController::class, 'restore'])->name('restore-payment-check');
     Route::delete('payment-check/force-delete/{id}', [PaymentCheckController::class, 'forceDelete'])->name('force-delete-payment-check');
+
+    Route::get('show-bank', [BankController::class, 'index'])->name('show-bank');
+    Route::get('add-bank', [BankController::class, 'create'])->name('add-bank');
+    Route::post('store-bank', [BankController::class, 'store'])->name('store-bank');
+    Route::get('bank/{id}/edit', [BankController::class, 'edit'])->name('edit-bank');
+    Route::put('update-bank{id}', [BankController::class, 'update'])->name('update-bank');
+    Route::post('destroy-bank', [BankController::class, 'destroy'])->name('destroy-bank');
+    Route::get('banks/trashed', [BankController::class, 'trashed'])->name('trashed-banks');
+    Route::post('banks/restore/{id}', [BankController::class, 'restore'])->name('restore-bank');
+    Route::delete('banks/force-delete/{id}', [BankController::class, 'forceDelete'])->name('force-delete-bank');
 
 
 });
