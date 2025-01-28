@@ -165,6 +165,16 @@
                                 </a>
                             </li>
                         @endcan
+                        @can('view-commission')
+
+                            <li class="sidebar-item {{ request()->routeIs('show-commission') ? 'active' : '' }}">
+                                <a class="sidebar-link" href="{{ route('show-commission') }}">
+                                    <i class="align-middle" data-feather="user"></i>
+                                    <span class="align-middle">Agency Commission</span>
+                                </a>
+                            </li>
+                        @endcan
+
 
                     </ul>
                 </li>

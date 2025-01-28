@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\Admin\AjaxController;
 use App\Http\Controllers\Admin\BankController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\CommissionController;
 use App\Http\Controllers\Admin\Dashboard\SuperAdminDashboardController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GeneralAgentController;
@@ -137,6 +138,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('banks/trashed', [BankController::class, 'trashed'])->name('trashed-banks');
     Route::post('banks/restore/{id}', [BankController::class, 'restore'])->name('restore-bank');
     Route::delete('banks/force-delete/{id}', [BankController::class, 'forceDelete'])->name('force-delete-bank');
+
+    Route::get('show-commission', [CommissionController::class, 'index'])->name('show-commission');
+    Route::get('add-commission', [CommissionController::class, 'create'])->name('add-commission');
+    Route::post('store-commission', [CommissionController::class, 'store'])->name('store-commission');
+    Route::get('commission/{id}/edit', [CommissionController::class, 'edit'])->name('edit-commission');
+    Route::put('update-commission{id}', [CommissionController::class, 'update'])->name('update-commission');
+    Route::post('destroy-commission', [CommissionController::class, 'destroy'])->name('destroy-commission');
+    Route::get('commissions/trashed', [CommissionController::class, 'trashed'])->name('trashed-commissions');
+    Route::post('commissions/restore/{id}', [CommissionController::class, 'restore'])->name('restore-commission');
+    Route::delete('commissions/force-delete/{id}', [CommissionController::class, 'forceDelete'])->name('force-delete-commission');
+
 
 
 });
