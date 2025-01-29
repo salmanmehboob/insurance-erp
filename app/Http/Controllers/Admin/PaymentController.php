@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\Agent;
@@ -56,6 +57,7 @@ class PaymentController extends Controller
     {
         $title = 'Payments';
         $payments = Payment::with('client')->orderBy('created_at', 'DESC')->get();
+        LogActivity::addToLog('Payments  Listing View');
 
         return view('admin.payment.index', compact('title', 'payments'));
     }
@@ -139,6 +141,7 @@ class PaymentController extends Controller
             ]);
 
             DB::commit();
+            LogActivity::addToLog('Payment '.$request->policy_number.' Created');
 
             return redirect()->route('show-payment')->with('success', 'Payment created successfully.');
         } catch (\Exception $e) {
@@ -242,6 +245,8 @@ class PaymentController extends Controller
 //            dd($payment);
 
             DB::commit();
+            LogActivity::addToLog('Payment '.$request->policy_number.' Updated');
+
             return redirect()->route('show-payment')->with('success', 'Payment updated successfully.');
 
         } catch (\Exception $e) {
@@ -268,6 +273,7 @@ class PaymentController extends Controller
             // Delete the payment
             $payment->delete();
             DB::commit();
+            LogActivity::addToLog('Payment '.$payment->policy_number.' Deleted');
 
             return response()->json(['success' => 'Payment deleted successfully.']);
         } catch (\Exception $e) {
@@ -284,6 +290,7 @@ class PaymentController extends Controller
             ->orderBy('deleted_at', 'DESC')
             ->get();
 
+        LogActivity::addToLog('Payments trashed Listing View');
 
         return view('admin.payment.trashed', compact('title', 'payments'));
     }
@@ -292,7 +299,7 @@ class PaymentController extends Controller
     {
         $payment = Payment::onlyTrashed()->findOrFail($id);
         $payment->restore();
-
+        LogActivity::addToLog('Payment '.$payment->policy_number.' Restored');
         return redirect()->route('trashed-payments')->with('success', 'Payment restored successfully.');
     }
 
@@ -300,6 +307,7 @@ class PaymentController extends Controller
     {
         $payment = Payment::onlyTrashed()->findOrFail($id);
         $payment->forceDelete();
+        LogActivity::addToLog('Payment '.$payment->policy_number.' Forced Deleted');
 
         return redirect()->route('trashed-payments')->with('success', 'Payment permanently deleted.');
     }

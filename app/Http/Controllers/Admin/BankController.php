@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\BankAccount;
@@ -32,6 +33,7 @@ class BankController extends Controller
     {
         $title = 'Banks';
         $banks = BankAccount::orderBy('created_at', 'DESC')->get();
+        LogActivity::addToLog('Bank  Listing View');
 
 //        dd($banks);
         return view('admin.bank.index', compact('title', 'banks'));
@@ -81,6 +83,7 @@ class BankController extends Controller
             BankAccount::create($data);
 
             DB::commit();
+            LogActivity::addToLog('Bank '.$data['bank_name'].' Created');
 
             return redirect()->route('show-bank')->with('success', 'Bank created successfully.');
 
@@ -154,6 +157,8 @@ class BankController extends Controller
 
 
             DB::commit();
+            LogActivity::addToLog('Bank '.$data['bank_name'].' Updated');
+
             return redirect()->route('show-bank')->with('success', 'Bank and User updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -179,6 +184,7 @@ class BankController extends Controller
             // Delete the bank
             $bank->delete();
             DB::commit();
+            LogActivity::addToLog('Bank '.$bank->bank_name.' deleted');
 
             return response()->json(['success' => 'Bank deleted successfully.']);
         } catch (\Exception $e) {
@@ -194,6 +200,7 @@ class BankController extends Controller
         $banks = BankAccount::onlyTrashed()
              ->orderBy('deleted_at', 'DESC')
             ->get();
+        LogActivity::addToLog('Bank Trashed Listing View');
 
         return view('admin.bank.trashed', compact('title', 'banks'));
     }
@@ -202,6 +209,7 @@ class BankController extends Controller
     {
         $bank = BankAccount::onlyTrashed()->findOrFail($id);
         $bank->restore();
+        LogActivity::addToLog('Bank '.$bank->bank_name.' restored');
 
         return redirect()->route('trashed-banks')->with('success', 'Bank restored successfully.');
     }
@@ -210,6 +218,7 @@ class BankController extends Controller
     {
         $bank = BankAccount::onlyTrashed()->findOrFail($id);
         $bank->forceDelete();
+        LogActivity::addToLog('Bank '.$bank->bank_name.' permanently deleted');
 
         return redirect()->route('trashed-banks')->with('success', 'Bank permanently deleted.');
     }

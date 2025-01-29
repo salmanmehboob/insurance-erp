@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\AgencyCommission;
@@ -33,6 +34,7 @@ class CommissionController extends Controller
     {
         $title = 'Commissions';
         $commissions = AgencyCommission::orderBy('created_at', 'DESC')->get();
+        LogActivity::addToLog('Agency Commissions Listing Viewed');
 
 //        dd($commissions);
         return view('admin.agency_commission.index', compact('title', 'commissions'));
@@ -85,6 +87,7 @@ class CommissionController extends Controller
             AgencyCommission::create($data);
 
             DB::commit();
+            LogActivity::addToLog('Agency Commissions '.$data['policy_number'].' Created');
 
             return redirect()->route('show-commission')->with('success', 'Commission created successfully.');
 
@@ -162,6 +165,9 @@ class CommissionController extends Controller
 
 
             DB::commit();
+            LogActivity::addToLog('Agency Commissions '.$data['policy_number'].' Updated');
+
+
             return redirect()->route('show-commission')->with('success', 'Commission and User updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -187,6 +193,7 @@ class CommissionController extends Controller
             // Delete the commission
             $commission->delete();
             DB::commit();
+            LogActivity::addToLog('Agency Commissions '.$commission->policy_number.' deleted');
 
             return response()->json(['success' => 'Commission deleted successfully.']);
         } catch (\Exception $e) {
@@ -202,6 +209,7 @@ class CommissionController extends Controller
         $commissions = AgencyCommission::onlyTrashed()
              ->orderBy('deleted_at', 'DESC')
             ->get();
+        LogActivity::addToLog('Agency Commissions Trashed Listing Viewed');
 
         return view('admin.agency_commission.trashed', compact('title', 'commissions'));
     }
@@ -210,6 +218,7 @@ class CommissionController extends Controller
     {
         $commission = AgencyCommission::onlyTrashed()->findOrFail($id);
         $commission->restore();
+        LogActivity::addToLog('Agency Commissions '.$commission->policy_number.' restored');
 
         return redirect()->route('trashed-commissions')->with('success', 'Commission restored successfully.');
     }
@@ -218,6 +227,7 @@ class CommissionController extends Controller
     {
         $commission = AgencyCommission::onlyTrashed()->findOrFail($id);
         $commission->forceDelete();
+        LogActivity::addToLog('Agency Commissions '.$commission->policy_number.' permanently deleted');
 
         return redirect()->route('trashed-commissions')->with('success', 'Commission permanently deleted.');
     }

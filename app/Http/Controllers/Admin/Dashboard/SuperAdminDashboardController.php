@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Dashboard;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Allotee;
 use App\Models\Bill;
@@ -29,7 +30,7 @@ class SuperAdminDashboardController extends Controller
      */
     public function index()
     {
-
+        LogActivity::addToLog('Viewed Dashboard');
 
         return view('home');
     }

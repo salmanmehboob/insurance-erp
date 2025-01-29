@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Carbon\Carbon;
@@ -43,6 +44,7 @@ class UserController extends Controller
             ->orderBy('created_at', 'DESC')
             ->get();
 
+        LogActivity::addToLog('User Viewed');
 
 //        dd($users);
 
@@ -97,14 +99,16 @@ class UserController extends Controller
                 if ($role) {
                     $user->assignRole($role);
 
-                 } else {
-                     DB::rollBack();
+                } else {
+                    DB::rollBack();
                     return redirect()->route('show-user')->with('error', 'Role not found.');
                 }
             }
 
 
             DB::commit();
+            LogActivity::addToLog('User Created');
+
             return redirect()->route('show-user')->with('success', 'User Created Successfully');
 
         } catch (\Exception $e) {
@@ -132,6 +136,8 @@ class UserController extends Controller
         $title = 'Edit User';
         $user = User::with('roles')->find($id);
         $roles = Role::where('id', '!=', 1)->get();
+        LogActivity::addToLog('User Edit');
+
         return view('admin.user.edit', compact('title', 'user', 'roles'));
     }
 
@@ -195,6 +201,8 @@ class UserController extends Controller
             }
 
             DB::commit();
+            LogActivity::addToLog('User Updated');
+
             return redirect()->route('show-user')->with('success', 'User Updated Successfully');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -207,6 +215,7 @@ class UserController extends Controller
     {
         $user = User::find($request->id);
         $user->delete();
+        LogActivity::addToLog('User ' . $user->id . ' Deleted');
 
         return response()->json(['success' => 'User has been suspended successfully.']);
     }
@@ -215,6 +224,7 @@ class UserController extends Controller
     {
         $user = User::withTrashed()->findOrFail($request->id);
         $user->restore();
+        LogActivity::addToLog('User ' . $user->id . ' restored');
 
         return response()->json(['success' => 'User has been restored successfully.']);
     }

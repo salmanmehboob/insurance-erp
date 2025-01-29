@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\Agent;
@@ -40,13 +41,14 @@ class AgentController extends Controller
                 $assignedLocations = [];
                 foreach ($agent->agencies as $agency) {
                     $location = $agency->locations;
-                          $assignedLocations[] = $location->agency_name;
+                    $assignedLocations[] = $location->agency_name;
 
                 }
                 // Remove duplicates and convert to a string
                 $agent->assignedLocations = implode(', ', array_unique($assignedLocations));
                 return $agent;
             });
+        LogActivity::addToLog('Agents Listing View');
 
         return view('admin.agent.index', compact('title', 'agents'));
     }
@@ -142,7 +144,7 @@ class AgentController extends Controller
                 'note' => $data['notes'],
                 'bank_id' => $data['bank_id'] ?? null,
                 'commission_in_percentage' => $data['commission_in_percentage'] ?? null,
-                'commission_fee' => str_replace(['$', ' '], '', $data['commission_fee'] )?? null,
+                'commission_fee' => str_replace(['$', ' '], '', $data['commission_fee']) ?? null,
             ]);
 
 //            dd($agent);
@@ -161,6 +163,9 @@ class AgentController extends Controller
             }
 
             DB::commit();
+
+            LogActivity::addToLog('Agency ' . $data['name'] . ' Created');
+
             return redirect()->route('show-agent')->with('success', 'Agent and User created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -279,7 +284,7 @@ class AgentController extends Controller
                 'email' => $data['email'],
                 'note' => $data['notes'],
                 'commission_in_percentage' => $data['commission_in_percentage'] ?? null,
-                'commission_fee' => str_replace(['$', ' '], '', $data['commission_fee'] )?? null,
+                'commission_fee' => str_replace(['$', ' '], '', $data['commission_fee']) ?? null,
             ]);
 
 
@@ -288,8 +293,8 @@ class AgentController extends Controller
             // Update permissions
             if ($request->has('permissions')) {
                 $validPermissionIds = Permission::whereIn('id', $data['permissions'])->pluck('id')->toArray();
-                 $role->syncPermissions($validPermissionIds);
-            }else{
+                $role->syncPermissions($validPermissionIds);
+            } else {
                 $role->syncPermissions([]);
 
             }
@@ -322,6 +327,9 @@ class AgentController extends Controller
 
 
             DB::commit();
+
+            LogActivity::addToLog('Agency ' . $data['name'] . ' Updated');
+
             return redirect()->route('show-agent')->with('success', 'Agent and User updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -347,6 +355,7 @@ class AgentController extends Controller
             // Delete the agent
             $agent->delete();
             DB::commit();
+            LogActivity::addToLog('Agent ' . $agent->name . ' Deleted');
 
             return response()->json(['success' => 'Agent deleted successfully.']);
         } catch (\Exception $e) {
@@ -372,6 +381,7 @@ class AgentController extends Controller
                 $agent->assignedLocations = implode(', ', array_unique($assignedLocations));
                 return $agent;
             });
+        LogActivity::addToLog('Agent Trashed Viewed');
 
         return view('admin.agent.trashed', compact('title', 'agents'));
     }
@@ -380,6 +390,7 @@ class AgentController extends Controller
     {
         $agent = Agent::onlyTrashed()->findOrFail($id);
         $agent->restore();
+        LogActivity::addToLog('Agent ' . $agent->name . ' Restored');
 
         return redirect()->route('trashed-agents')->with('success', 'Agent restored successfully.');
     }
@@ -388,6 +399,7 @@ class AgentController extends Controller
     {
         $agent = Agent::onlyTrashed()->findOrFail($id);
         $agent->forceDelete();
+        LogActivity::addToLog('Agent ' . $agent->name . ' Forced Deleted');
 
         return redirect()->route('trashed-agents')->with('success', 'Agent permanently deleted.');
     }

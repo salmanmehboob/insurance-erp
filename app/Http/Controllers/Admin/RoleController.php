@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Module;
 use App\Models\User;
@@ -23,8 +24,10 @@ class RoleController extends Controller
 
     public function show()
     {
-         $title = 'Roles';
+        $title = 'Roles';
         $roles = Role::all();
+        LogActivity::addToLog('Role Listing View');
+
         return view("admin.role.index", compact('roles', 'title'));
     }
 
@@ -88,7 +91,9 @@ class RoleController extends Controller
         }
 
         $permissionsID = array_map(
-            function($value) { return (int)$value; },
+            function ($value) {
+                return (int)$value;
+            },
             $request->input('permission')
         );
 
@@ -97,6 +102,7 @@ class RoleController extends Controller
         $role->syncPermissions($permissionsID);
 
         if ($role) {
+            LogActivity::addToLog('Role Created');
 
             return redirect()->route('show-role')->with('success', 'Role and Permission added Successfully');
 
@@ -149,8 +155,9 @@ class RoleController extends Controller
         }
 
 //        dd($permissions);
+        LogActivity::addToLog('Role Edited');
 
-        return view('admin.role.edit', compact('title','roles','permissions','role', 'rolePermissions'));
+        return view('admin.role.edit', compact('title', 'roles', 'permissions', 'role', 'rolePermissions'));
     }
 
     /**
@@ -179,15 +186,18 @@ class RoleController extends Controller
         $role->save();
 
         $permissionsID = array_map(
-            function($value) { return (int)$value; },
+            function ($value) {
+                return (int)$value;
+            },
             $request->input('permission')
         );
 
         $role->syncPermissions($permissionsID);
 
         if ($role) {
+            LogActivity::addToLog('Role Updated');
 
-                        return redirect()->route('show-role')->with('success', 'Role and Permission Updated Successfully');
+            return redirect()->route('show-role')->with('success', 'Role and Permission Updated Successfully');
 
         } else {
 
@@ -201,6 +211,7 @@ class RoleController extends Controller
     {
         $role = Role::find($request->id);
         $role->delete();
+        LogActivity::addToLog('Role' . $role->id . ' Deleted');
 
         return response()->json(['success' => 'Role Deleted Successfully']);
     }

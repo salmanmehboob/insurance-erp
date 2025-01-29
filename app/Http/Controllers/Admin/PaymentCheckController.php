@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\Agent;
@@ -57,6 +58,7 @@ class PaymentCheckController extends Controller
     {
         $title = 'Payment Checks';
         $paymentChecks = PaymentCheck::with('client')->orderBy('created_at', 'DESC')->get();
+        LogActivity::addToLog('Payment Checks  Listing View');
 
         return view('admin.payment_check.index', compact('title', 'paymentChecks'));
     }
@@ -69,6 +71,10 @@ class PaymentCheckController extends Controller
         $agents = Agent::all();
         $locations = Agency::all();
         $banks = PaymentBank::all();
+
+        LogActivity::addToLog('Payment Checks searching View');
+
+
         return view('admin.payment_check.find', compact('title',
             'clients', 'insurance_companies', 'agents', 'banks',
             'locations'));
@@ -135,6 +141,7 @@ class PaymentCheckController extends Controller
             ]);
 
             DB::commit();
+            LogActivity::addToLog('Payment Checks Created for' . $request->policy_number);
 
             return redirect()->route('show-payment-check')->with('success', 'Check created successfully.');
         } catch (\Exception $e) {
@@ -223,6 +230,8 @@ class PaymentCheckController extends Controller
 
 
             DB::commit();
+            LogActivity::addToLog('Payment Checks Updated for' . $request->policy_number);
+
             return redirect()->route('show-payment-check')->with('success', 'Check updated successfully.');
 
         } catch (\Exception $e) {
@@ -249,6 +258,7 @@ class PaymentCheckController extends Controller
             // Delete the payment
             $payment->delete();
             DB::commit();
+            LogActivity::addToLog('Payment Checks '. $payment->policy_number.' Deleted ' );
 
             return response()->json(['success' => 'Check deleted successfully.']);
         } catch (\Exception $e) {
@@ -265,6 +275,7 @@ class PaymentCheckController extends Controller
             ->orderBy('deleted_at', 'DESC')
             ->get();
 
+        LogActivity::addToLog('Payment Checks Trashed Listing View');
 
         return view('admin.payment_check.trashed', compact('title', 'paymentChecks'));
     }
@@ -273,6 +284,7 @@ class PaymentCheckController extends Controller
     {
         $payment = PaymentCheck::onlyTrashed()->findOrFail($id);
         $payment->restore();
+        LogActivity::addToLog('Payment Checks '. $payment->policy_number.' Restored ' );
 
         return redirect()->route('trashed-payment-check')->with('success', 'Check restored successfully.');
     }
@@ -281,6 +293,7 @@ class PaymentCheckController extends Controller
     {
         $payment = PaymentCheck::onlyTrashed()->findOrFail($id);
         $payment->forceDelete();
+        LogActivity::addToLog('Payment Checks '. $payment->policy_number.'forced Deleted ' );
 
         return redirect()->route('trashed-payment-check')->with('success', 'Check permanently deleted.');
     }
@@ -339,6 +352,8 @@ class PaymentCheckController extends Controller
         if (!$payment) {
             return response()->json(['success' => false, 'message' => 'Payment not found.'], 404);
         }
+
+        LogActivity::addToLog('Payment Checks data get for  '.  $payment->client->applicant_name.' searching ' );
 
         return response()->json([
             'success' => true,

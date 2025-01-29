@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\BankAccount;
@@ -28,6 +29,8 @@ class AgencyController extends Controller
     {
         $agencies = Agency::with('state', 'bank')->orderBy('created_at', 'DESC')->get();
         $title = 'Agencies';
+        LogActivity::addToLog('Agency Listing View');
+
         return view('admin.agency.index', compact('title', 'agencies'));
     }
 
@@ -47,7 +50,7 @@ class AgencyController extends Controller
      */
     public function store(Request $request)
     {
-         $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'agency_name' => 'required|string|max:255',
             'address' => 'nullable|string',
             'city' => 'required|string|max:255',
@@ -82,6 +85,9 @@ class AgencyController extends Controller
             Agency::create($data);
 
             DB::commit();
+
+            LogActivity::addToLog('Agency' . $data['agency_name'] . 'Created');
+
             return redirect()->route('show-agency')->with('success', 'Agency created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -157,6 +163,9 @@ class AgencyController extends Controller
             $agency->update($data);
 
             DB::commit();
+
+            LogActivity::addToLog('Agency ' . $data['agency_name'] . ' Updated');
+
             return redirect()->route('show-agency')->with('success', 'Agency updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -170,7 +179,7 @@ class AgencyController extends Controller
     public function destroy(Request $request)
     {
 
-         $agency = Agency::find($request->id);
+        $agency = Agency::find($request->id);
 
         if (!$agency) {
             return response()->json(['error' => 'Agency not found.'], 404);
@@ -182,6 +191,7 @@ class AgencyController extends Controller
             // Delete the agency
             $agency->delete();
             DB::commit();
+            LogActivity::addToLog('Agency ' . $agency->agency_name . ' Deleted');
 
             return response()->json(['success' => 'Agency deleted successfully.']);
         } catch (\Exception $e) {
@@ -195,6 +205,7 @@ class AgencyController extends Controller
     {
         $trashedAgencies = Agency::onlyTrashed()->with('state', 'bank')->orderBy('deleted_at', 'DESC')->get();
         $title = 'Trashed Agencies';
+        LogActivity::addToLog('Agency Trashed View');
 
         return view('admin.agency.trashed_index', compact('title', 'trashedAgencies'));
     }
@@ -203,6 +214,7 @@ class AgencyController extends Controller
     {
         $agency = Agency::onlyTrashed()->findOrFail($id);
         $agency->restore();
+        LogActivity::addToLog('Agency ' . $agency->agency_name . ' Restored');
 
         return redirect()->route('trashed-agencies')->with('success', 'Agency restored successfully.');
     }
@@ -211,6 +223,7 @@ class AgencyController extends Controller
     {
         $agency = Agency::onlyTrashed()->findOrFail($id);
         $agency->forceDelete();
+        LogActivity::addToLog('Agency ' . $agency->agency_name . ' Forece Deleted');
 
         return redirect()->route('trashed-agencies')->with('success', 'Agency permanently deleted successfully.');
     }

@@ -52,8 +52,14 @@
                     <span class="align-middle">Dashboard</span>
                 </a>
             </li>
-
-
+            @if(Auth::user()->roles->pluck('name')->first() == 'Super Admin')
+                <li class="sidebar-item {{ request()->routeIs('activity-logs') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ route('activity-logs') }}">
+                        <i class="align-middle" data-feather="user"></i>
+                        <span class="align-middle">Activity Logs</span>
+                    </a>
+                </li>
+            @endif
             @can('view-roles')
 
                 <li class="sidebar-item {{ request()->routeIs('show-role') ? 'active' : '' }}">

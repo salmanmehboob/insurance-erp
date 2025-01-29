@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\Company;
@@ -38,6 +39,8 @@ class GeneralAgentController extends Controller
     {
         $generalAgents = GeneralAgent::orderBy('created_at', 'DESC')->get();
         $title = 'General Agent';
+        LogActivity::addToLog('GeneralAgent  Listing View');
+
         return view('admin.general_agent.index', compact('title', 'generalAgents'));
     }
 
@@ -125,6 +128,8 @@ class GeneralAgentController extends Controller
             }
 
             DB::commit();
+            LogActivity::addToLog('GeneralAgent ' . $data['name'] . ' Created');
+
             return redirect()->route('show-general-agent')->with('success', 'General Agent and User created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -257,6 +262,8 @@ class GeneralAgentController extends Controller
             }
 
             DB::commit();
+            LogActivity::addToLog('GeneralAgent ' . $data['name'] . ' Updated');
+
             return redirect()->route('show-general-agent')->with('success', 'General Agent updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -282,6 +289,7 @@ class GeneralAgentController extends Controller
             // Delete the company
             $company->delete();
             DB::commit();
+            LogActivity::addToLog('GeneralAgent ' . $company->name . ' deleted');
 
             return response()->json(['success' => 'General Agent deleted successfully.']);
         } catch (\Exception $e) {
@@ -294,6 +302,8 @@ class GeneralAgentController extends Controller
     {
         $trashedCompanies = GeneralAgent::onlyTrashed()->orderBy('deleted_at', 'DESC')->get();
         $title = 'Trashed Companies';
+        LogActivity::addToLog('GeneralAgent  trashed Listing View');
+
         return view('admin.general_agent.trashed', compact('title', 'trashedCompanies'));
     }
 
@@ -301,6 +311,7 @@ class GeneralAgentController extends Controller
     {
         $company = GeneralAgent::withTrashed()->findOrFail($id);
         $company->restore();
+        LogActivity::addToLog('GeneralAgent ' . $company->name . ' restored');
 
         return redirect()->route('show-general-agent')->with('success', 'General Agent restored successfully.');
     }
@@ -309,6 +320,7 @@ class GeneralAgentController extends Controller
     {
         $company = GeneralAgent::withTrashed()->findOrFail($id);
         $company->forceDelete();
+        LogActivity::addToLog('GeneralAgent ' . $company->name . ' force deleted');
 
         return redirect()->route('show-general-agent')->with('success', 'General Agent permanently deleted.');
     }

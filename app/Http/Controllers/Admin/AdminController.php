@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCandidate;
 use App\Http\Traits\CandidateTrait;
@@ -10,8 +11,7 @@ use App\Http\Traits\MentorTrait;
 use App\Models\Complaint;
 use App\Models\Intern;
 use App\Models\User;
-use Ichtrojan\Otp\Otp;
-use Illuminate\Auth\Events\Registered;
+ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -24,12 +24,7 @@ use Yajra\DataTables\DataTables;
 class AdminController extends Controller
 {
 
-    private $otp;
 
-    public function __construct(Otp $Otp)
-    {
-        $this->otp = $Otp;
-    }
 
 
     public function updatePassword()
@@ -67,6 +62,39 @@ class AdminController extends Controller
         } else {
             return redirect()->back()->with('error', "Old password doesnt matched");
         }
+    }
+
+
+    public function logActivityLists(Request $request)
+    {
+        $title = 'Activity Logs';
+
+        if ($request->ajax()) {
+            $logs = LogActivity::logActivityLists();
+
+            return DataTables::of($logs)
+                ->addColumn('user', function ($log) {
+                    return $log->user->name;
+                })->addColumn('subject', function ($log) {
+                    return $log->subject;
+                })->addColumn('url', function ($log) {
+                    return '<a href="'.$log->url.'" target="_blank">URL</a>';;
+                })->addColumn('method', function ($log) {
+                    return $log->method;
+                })->addColumn('ip', function ($log) {
+                    return $log->ip;
+                })->addColumn('agent', function ($log) {
+                    return $log->agent;
+                })
+                ->addColumn('created_at', function ($log) {
+                    return showDateTime($log->created_at);
+                })
+                ->rawColumns(['url'])
+
+                ->make(true);
+        }
+
+        return view('auth.activity_logs', compact('title'));
     }
 }
 

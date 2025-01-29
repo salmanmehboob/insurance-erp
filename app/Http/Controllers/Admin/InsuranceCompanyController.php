@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\Company;
@@ -36,6 +37,8 @@ class InsuranceCompanyController extends Controller
     {
         $insuranceCompanies = InsuranceCompany::orderBy('created_at', 'DESC')->get();
         $title = 'Companies';
+        LogActivity::addToLog('Insurance Companies Listing View');
+
         return view('admin.company.index', compact('title', 'insuranceCompanies'));
     }
 
@@ -123,6 +126,9 @@ class InsuranceCompanyController extends Controller
             }
 
             DB::commit();
+            LogActivity::addToLog('Insurance Companies' . $data['name'] . ' Created');
+
+
             return redirect()->route('show-company')->with('success', 'Company and User created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -255,6 +261,9 @@ class InsuranceCompanyController extends Controller
             }
 
             DB::commit();
+
+            LogActivity::addToLog('Insurance Companies' . $data['name'] . ' Updated');
+
             return redirect()->route('show-company')->with('success', 'Company updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -280,6 +289,7 @@ class InsuranceCompanyController extends Controller
             // Delete the company
             $company->delete();
             DB::commit();
+            LogActivity::addToLog('Insurance Companies' . $company->name . ' deleted');
 
             return response()->json(['success' => 'Company deleted successfully.']);
         } catch (\Exception $e) {
@@ -292,6 +302,8 @@ class InsuranceCompanyController extends Controller
     {
         $trashedCompanies = InsuranceCompany::onlyTrashed()->orderBy('deleted_at', 'DESC')->get();
         $title = 'Trashed Companies';
+        LogActivity::addToLog('Insurance Companies Trashed Listing View');
+
         return view('admin.company.trashed', compact('title', 'trashedCompanies'));
     }
 
@@ -299,6 +311,7 @@ class InsuranceCompanyController extends Controller
     {
         $company = InsuranceCompany::withTrashed()->findOrFail($id);
         $company->restore();
+        LogActivity::addToLog('Insurance Companies' . $company->name . ' restored');
 
         return redirect()->route('show-company')->with('success', 'Company restored successfully.');
     }
@@ -307,6 +320,7 @@ class InsuranceCompanyController extends Controller
     {
         $company = InsuranceCompany::withTrashed()->findOrFail($id);
         $company->forceDelete();
+        LogActivity::addToLog('Insurance Companies' . $company->name . ' force deleted');
 
         return redirect()->route('show-company')->with('success', 'Company permanently deleted.');
     }

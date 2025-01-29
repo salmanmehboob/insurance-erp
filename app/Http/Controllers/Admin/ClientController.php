@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\Agent;
@@ -52,6 +53,7 @@ class ClientController extends Controller
     {
         $title = 'Clients';
         $clients = Client::with('policyType')->orderBy('created_at', 'DESC')->get();
+        LogActivity::addToLog('Clients  Listing View');
 
         return view('admin.client.index', compact('title', 'clients'));
     }
@@ -393,6 +395,7 @@ class ClientController extends Controller
             ]);
 
             DB::commit();
+            LogActivity::addToLog('Clients ' . $request->applicant_name . ' Created');
 
             return redirect()->route('show-client')->with('success', 'Client and related records created successfully.');
         } catch (\Exception $e) {
@@ -699,7 +702,7 @@ class ClientController extends Controller
 
             }
 
-             // Create Client Vehicles
+            // Create Client Vehicles
 //            dd($request->all());
             if (isset($request->vin) && $request->vin[0] != null) {
                 // Delete old records
@@ -723,7 +726,6 @@ class ClientController extends Controller
                     ]);
                 }
             }
-
 
 
             // Update Client Payments
@@ -763,6 +765,7 @@ class ClientController extends Controller
 
 
             DB::commit();
+            LogActivity::addToLog('Clients ' . $request->applicant_name . ' Updated');
 
             return redirect()->route('show-client')->with('success', 'Client updated successfully.');
         } catch (\Exception $e) {
@@ -791,6 +794,7 @@ class ClientController extends Controller
             // Delete the client
             $client->delete();
             DB::commit();
+            LogActivity::addToLog('Clients ' . $client->applicant_name . ' Deleted');
 
             return response()->json(['success' => 'Client deleted successfully.']);
         } catch (\Exception $e) {
@@ -816,6 +820,7 @@ class ClientController extends Controller
                 $client->assignedLocations = implode(', ', array_unique($assignedLocations));
                 return $client;
             });
+        LogActivity::addToLog('Clients Trashed Listing View');
 
         return view('admin.client.trashed', compact('title', 'clients'));
     }
@@ -824,6 +829,7 @@ class ClientController extends Controller
     {
         $client = Client::onlyTrashed()->findOrFail($id);
         $client->restore();
+        LogActivity::addToLog('Clients ' . $client->applicant_name . ' Restored');
 
         return redirect()->route('trashed-clients')->with('success', 'Client restored successfully.');
     }
@@ -832,6 +838,7 @@ class ClientController extends Controller
     {
         $client = Client::onlyTrashed()->findOrFail($id);
         $client->forceDelete();
+        LogActivity::addToLog('Clients ' . $client->applicant_name . ' Force Deleted');
 
         return redirect()->route('trashed-clients')->with('success', 'Client permanently deleted.');
     }
