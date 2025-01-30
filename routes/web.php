@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\GeneralAgentController;
 use App\Http\Controllers\Admin\InsuranceCompanyController;
 use App\Http\Controllers\Admin\PaymentCheckController;
 use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\ReminderController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -150,6 +151,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('commissions/restore/{id}', [CommissionController::class, 'restore'])->name('restore-commission');
     Route::delete('commissions/force-delete/{id}', [CommissionController::class, 'forceDelete'])->name('force-delete-commission');
 
+    Route::get('show-reminder', [ReminderController::class, 'index'])->name('show-reminder');
+    Route::get('add-reminder', [ReminderController::class, 'create'])->name('add-reminder');
+    Route::post('store-reminder', [ReminderController::class, 'store'])->name('store-reminder');
+    Route::get('reminder/{id}/edit', [ReminderController::class, 'edit'])->name('edit-reminder');
+    Route::put('update-reminder{id}', [ReminderController::class, 'update'])->name('update-reminder');
+    Route::post('destroy-reminder', [ReminderController::class, 'destroy'])->name('destroy-reminder');
+    Route::get('reminders/trashed', [ReminderController::class, 'trashed'])->name('trashed-reminders');
+    Route::post('reminders/restore/{id}', [ReminderController::class, 'restore'])->name('restore-reminder');
+    Route::delete('reminders/force-delete/{id}', [ReminderController::class, 'forceDelete'])->name('force-delete-reminder');
 
 
 });

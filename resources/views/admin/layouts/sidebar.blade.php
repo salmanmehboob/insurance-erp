@@ -186,6 +186,17 @@
                 </li>
             @endcan
 
+            @can('view-reminder')
+
+                <li class="sidebar-item {{ request()->routeIs('show-reminder') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ route('show-reminder') }}">
+                        <i class="align-middle" data-feather="user"></i>
+                        <span class="align-middle">Notes/Reminder</span>
+                    </a>
+                </li>
+            @endcan
+
+
 
         </ul>
     </div>

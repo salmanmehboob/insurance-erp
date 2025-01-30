@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('agency_commissions', function (Blueprint $table) {
-            $table->id();
+                $table->id();
             $table->unsignedBigInteger('client_id');
             $table->string('policy_number');
             $table->date('date');
