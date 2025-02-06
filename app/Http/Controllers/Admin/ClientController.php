@@ -843,4 +843,39 @@ class ClientController extends Controller
         return redirect()->route('trashed-clients')->with('success', 'Client permanently deleted.');
     }
 
+
+    public function showQuotePolicyType()
+    {
+        $title = 'Create a New Policy';
+        $types = PolicyType::whereIn('id', [1, 3, 4, 7, 9])->get();
+        return view('admin.client.quote.type', compact('title', 'types'));
+    }
+
+    public function createQuote(Request $request)
+    {
+        $title = 'Add Client Quote Sheet';
+        $states = UsState::all();
+        $emailStatues = EmailStatus::all();
+        $languages = PrimaryLanguage::all();
+        $policyStatuses = PolicyStatus::all();
+        $terms = Term::all();
+        $insuranceCompanies = InsuranceCompany::all();
+        $agents = Agent::all();
+        $locations = Agency::all();
+        $genders = Gender::all();
+        $maritalStatus = MaritalStatus::all();
+        $relationships = Relationship::all();
+        $educationLevels = EducationLevel::all();
+        $years = Year::orderBy('year', 'asc')->get();
+        $vehicleMakes = VehicleMake::all();
+        $vehicleModels = VehicleModel::all();
+
+        $policyType = PolicyType::find($request->policy_type_id);
+
+        return view('admin.client.quote.create', compact('title',
+            'policyType', 'states', 'emailStatues', 'languages',
+            'policyStatuses', 'terms', 'insuranceCompanies', 'agents', 'locations',
+            'genders', 'maritalStatus', 'relationships', 'educationLevels', 'years',
+            'vehicleMakes', 'vehicleModels'));
+    }
 }

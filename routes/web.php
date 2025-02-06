@@ -161,9 +161,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('reminders/restore/{id}', [ReminderController::class, 'restore'])->name('restore-reminder');
     Route::delete('reminders/force-delete/{id}', [ReminderController::class, 'forceDelete'])->name('force-delete-reminder');
 
-
+    // Check Register
     Route::get('check-register', [PaymentCheckController::class, 'checkRegister'])->name('check-register');
     Route::get('get-check-register', [PaymentCheckController::class, 'getCheckRegister'])->name('get-check-register');
+
+    // Quote Sheet
+    Route::get('policy-type-quote', [ClientController::class, 'showQuotePolicyType'])->name('policy-type-quote');
+    Route::get('add-client-quote', [ClientController::class, 'createQuote'])->name('add-client-quote');
 
 
 });

@@ -204,6 +204,14 @@
                 </li>
             @endcan
 
+            @can('view-client')
+                <li class="sidebar-item {{ request()->routeIs('policy-type-quote') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ route('policy-type-quote') }}">
+                        <i class="align-middle" data-feather="user"></i>
+                        <span class="align-middle">Quote Sheet</span>
+                    </a>
+                </li>
+            @endcan
 
 
         </ul>
