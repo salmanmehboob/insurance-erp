@@ -258,7 +258,7 @@ class PaymentCheckController extends Controller
             // Delete the payment
             $payment->delete();
             DB::commit();
-            LogActivity::addToLog('Payment Checks '. $payment->policy_number.' Deleted ' );
+            LogActivity::addToLog('Payment Checks ' . $payment->policy_number . ' Deleted ');
 
             return response()->json(['success' => 'Check deleted successfully.']);
         } catch (\Exception $e) {
@@ -284,7 +284,7 @@ class PaymentCheckController extends Controller
     {
         $payment = PaymentCheck::onlyTrashed()->findOrFail($id);
         $payment->restore();
-        LogActivity::addToLog('Payment Checks '. $payment->policy_number.' Restored ' );
+        LogActivity::addToLog('Payment Checks ' . $payment->policy_number . ' Restored ');
 
         return redirect()->route('trashed-payment-check')->with('success', 'Check restored successfully.');
     }
@@ -293,7 +293,7 @@ class PaymentCheckController extends Controller
     {
         $payment = PaymentCheck::onlyTrashed()->findOrFail($id);
         $payment->forceDelete();
-        LogActivity::addToLog('Payment Checks '. $payment->policy_number.'forced Deleted ' );
+        LogActivity::addToLog('Payment Checks ' . $payment->policy_number . 'forced Deleted ');
 
         return redirect()->route('trashed-payment-check')->with('success', 'Check permanently deleted.');
     }
@@ -353,7 +353,7 @@ class PaymentCheckController extends Controller
             return response()->json(['success' => false, 'message' => 'Payment not found.'], 404);
         }
 
-        LogActivity::addToLog('Payment Checks data get for  '.  $payment->client->applicant_name.' searching ' );
+        LogActivity::addToLog('Payment Checks data get for  ' . $payment->client->applicant_name . ' searching ');
 
         return response()->json([
             'success' => true,
@@ -370,6 +370,66 @@ class PaymentCheckController extends Controller
                 'notes' => $payment->notes ?? 'N/A',
             ],
         ]);
+    }
+
+    public function checkRegister()
+    {
+        $title = 'Check Register';
+        $clients = Client::all();
+        $insurance_companies = InsuranceCompany::all();
+        $agents = Agent::all();
+        $locations = Agency::all();
+        $banks = BankAccount::all();
+        $request = [];
+
+        LogActivity::addToLog('Payment Checks searching View');
+
+
+        return view('admin.payment_check.check_register', compact('title',
+            'clients', 'insurance_companies', 'agents', 'banks', 'request',
+            'locations'));
+    }
+
+    public function getCheckRegister(Request $request)
+    {
+        $title = 'Check Register';
+        $clients = Client::all();
+        $insurance_companies = InsuranceCompany::all();
+        $agents = Agent::all();
+        $locations = Agency::all();
+        $banks = BankAccount::all();
+
+
+        $paymentChecks = PaymentCheck::with('client', 'bank', 'payTo', 'insuranceCompany')
+            ->when($request->client_id, function ($query) use ($request) {
+                $query->where('client_id', $request->client_id);
+            })
+            ->when($request->date_from && $request->date_to, function ($query) use ($request) {
+                $query->whereBetween('payment_date', [$request->date_from, $request->date_to]);
+            })
+            ->when($request->insurance_company_id, function ($query) use ($request) {
+                $query->where('insurance_company_id', $request->insurance_company_id);
+            })
+            ->when($request->bank_id, function ($query) use ($request) {
+                $query->where('bank_id', $request->bank_id);
+            })
+            ->when($request->check_no, function ($query) use ($request) {
+                $query->where('check_no', $request->check_no);
+            })
+            ->when($request->pay_to, function ($query) use ($request) {
+                $query->where('pay_to', $request->pay_to);
+            })
+            ->when($request->account, function ($query) use ($request) {
+                $query->where('account', $request->account);
+            })
+            ->get();
+
+//        dd($paymentChecks);
+        LogActivity::addToLog('Register Checks data retrieved.');
+
+        return view('admin.payment_check.check_register', compact(
+            'title', 'clients', 'insurance_companies', 'agents', 'banks', 'locations', 'paymentChecks', 'request'
+        ));
     }
 
 

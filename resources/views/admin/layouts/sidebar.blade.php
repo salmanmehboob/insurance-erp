@@ -181,7 +181,6 @@
                             </li>
                         @endcan
 
-
                     </ul>
                 </li>
             @endcan
@@ -192,6 +191,15 @@
                     <a class="sidebar-link" href="{{ route('show-reminder') }}">
                         <i class="align-middle" data-feather="user"></i>
                         <span class="align-middle">Notes/Reminder</span>
+                    </a>
+                </li>
+            @endcan
+
+            @can('view-payment')
+                <li class="sidebar-item {{ request()->routeIs('check-register') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ route('check-register') }}">
+                        <i class="align-middle" data-feather="user"></i>
+                        <span class="align-middle">Check Register</span>
                     </a>
                 </li>
             @endcan

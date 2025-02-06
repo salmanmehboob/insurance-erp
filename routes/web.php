@@ -162,4 +162,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('reminders/force-delete/{id}', [ReminderController::class, 'forceDelete'])->name('force-delete-reminder');
 
 
+    Route::get('check-register', [PaymentCheckController::class, 'checkRegister'])->name('check-register');
+    Route::get('get-check-register', [PaymentCheckController::class, 'getCheckRegister'])->name('get-check-register');
+
+
 });

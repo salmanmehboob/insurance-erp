@@ -37,4 +37,9 @@ class PaymentCheck extends Model
     {
         return $this->belongsTo(InsuranceCompany::class, 'pay_to');
     }
+    public function insuranceCompany()
+    {
+        return $this->belongsTo(InsuranceCompany::class);
+    }
+
 }
