@@ -15,6 +15,69 @@
             <div class="card-body">
                 <h4><span class="font-weight-semibold"></span>{{ $policyType->name }} Policy</h4>
 
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="col-form-label">Quote Date</label>
+                        <div class="form-group">
+                            <input type="date" name="quote_date"
+                                   class="form-control flatpickr-minimum"
+                                   placeholder="Select Date"
+                                   value="{{ old('quote_date') }}">
+                            @if ($errors->has('quote_date'))
+                                <span class="text-danger">{{ $errors->first('quote_date') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    @if($policyType->id == 1 || $policyType->id == 3 ||  $policyType->id == 7 )
+                        <div class="col-md-4">
+                            <label class="col-form-label">Current Carrier</label>
+                            <div class="form-group">
+                                <input type="text" name="current_carrier"
+                                       class="form-control"
+                                       value="{{ old('current_carrier') }}">
+                                @if ($errors->has('current_carrier'))
+                                    <span class="text-danger">{{ $errors->first('current_carrier') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="col-form-label">Expiration</label>
+                            <div class="form-group">
+                                <input type="date" name="current_carrier_expiration"
+                                       class="form-control flatpickr-minimum"
+                                       placeholder="Select Date"
+                                       value="{{ old('current_carrier_expiration') }}">
+                                @if ($errors->has('current_carrier_expiration'))
+                                    <span class="text-danger">{{ $errors->first('current_carrier_expiration') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+
+
+
+                    @if($policyType->id == 7 )
+                        <div class="col-md-4">
+                            <label class="col-form-label">Insurance Company</label>
+                            <div class="form-group">
+                                <select name="insurance_company_id" class="form-control select2"
+                                        data-placeholder="Select Insurance Company">
+                                    <option></option>
+                                    @foreach($insuranceCompanies as $row)
+                                        <option
+                                            value="{{ $row->id }}" {{ old('insurance_company_id') == $row->id ? 'selected' : '' }}>{{ $row->name }}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('insurance_company_id'))
+                                    <span class="text-danger">{{ $errors->first('insurance_company_id') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
                 <div class="row mt-3 mb-3">
                     <div class="col-md-8">
                         <div class="row">
@@ -197,8 +260,218 @@
                     </div>
                 </div>
 
+                @if($policyType->id == 3 )
+                    <div class="row mt-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="col-form-label">DBA</label>
+                            <div class="form-group">
+                                <input type="text" name="dba"
+                                       class="form-control"
+                                       value="{{ old('dba') }}">
+                                @if ($errors->has('dba'))
+                                    <span class="text-danger">{{ $errors->first('dba') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Corp If Any</label>
+                            <div class="form-group">
+                                <input type="text" name="corp_if_any"
+                                       class="form-control"
+                                       value="{{ old('corp_if_any') }}">
+                                @if ($errors->has('corp_if_any'))
+                                    <span class="text-danger">{{ $errors->first('corp_if_any') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Type Of Insurance Needed</label>
+                            <div class="form-group">
+                                <input type="text" name="type_of_insurance"
+                                       class="form-control"
+                                       value="{{ old('type_of_insurance') }}">
+                                @if ($errors->has('type_of_insurance'))
+                                    <span class="text-danger">{{ $errors->first('type_of_insurance') }}</span>
+                                @endif
+                            </div>
+                        </div>
 
-                <!-- Tab content -->
+                        <div class="col-md-12">
+                            <label class="col-form-label">Loss / Claim of History</label>
+                            <div class="form-group">
+                                <textarea class="form-control" name="loss_history"></textarea>
+                                @if ($errors->has('loss_history'))
+                                    <span
+                                        class="text-danger">{{ $errors->first('loss_history') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                @if($policyType->id == 4 )
+                    <div class="row mt-3 mb-3">
+                        <div class="col-md-12">
+                            <label class="col-form-label">Describe Business</label>
+                            <div class="form-group">
+                                <textarea class="form-control" name="business_description"></textarea>
+                                @if ($errors->has('business_description'))
+                                    <span
+                                        class="text-danger">{{ $errors->first('business_description') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="col-form-label">Describe Use Of each Vehicle</label>
+                            <div class="form-group">
+                                <textarea class="form-control" name="use_each_vehicle"></textarea>
+                                @if ($errors->has('use_each_vehicle'))
+                                    <span
+                                        class="text-danger">{{ $errors->first('use_each_vehicle') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="col-form-label">Radius Of Operation</label>
+                            <div class="form-group">
+                                <input type="text" name="radius_operation"
+                                       class="form-control"
+                                       value="{{ old('radius_operation') }}">
+                                @if ($errors->has('radius_operation'))
+                                    <span class="text-danger">{{ $errors->first('radius_operation') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">All States Driven to :</label>
+                            <div class="form-group">
+                                <input type="text" name="states_driven"
+                                       class="form-control"
+                                       value="{{ old('states_driven') }}">
+                                @if ($errors->has('states_driven'))
+                                    <span class="text-danger">{{ $errors->first('states_driven') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="col-form-label">Is Owner Operated for hire OR are they contracted to 1
+                                company :</label>
+                            <div class="form-group">
+                                <input type="text" name="owner_operated_for_hire"
+                                       class="form-control"
+                                       value="{{ old('owner_operated_for_hire') }}">
+                                @if ($errors->has('owner_operated_for_hire'))
+                                    <span class="text-danger">{{ $errors->first('owner_operated_for_hire') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="col-form-label">If Contracted, Name of </label>
+                            <div class="form-group">
+                                <input type="text" name="contract_name"
+                                       class="form-control"
+                                       value="{{ old('contract_name') }}">
+                                @if ($errors->has('contract_name'))
+                                    <span class="text-danger">{{ $errors->first('contract_name') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Is There Comm Cov in Force </label>
+                            <div class="form-group">
+                                <select name="common_coverage" class="form-control select2"
+                                        data-placeholder="Select Status">
+                                    <option></option>
+                                    <option value="1">YES</option>
+                                    <option value="0">No</option>
+
+                                </select>
+                                @if ($errors->has('common_coverage'))
+                                    <span class="text-danger">{{ $errors->first('common_coverage') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="col-form-label">If Yes Effective Date </label>
+                            <div class="form-group">
+                                <input type="text" name="common_coverage_effective_date"
+                                       class="form-control flatpickr-minimum"
+                                       placeholder="Select Date"
+                                       value="{{ old('common_coverage_effective_date') }}">
+                                @if ($errors->has('common_coverage_effective_date'))
+                                    <span
+                                        class="text-danger">{{ $errors->first('common_coverage_effective_date') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">If Yes Expiry Date </label>
+                            <div class="form-group">
+                                <input type="text" name="common_coverage_expiry_date"
+                                       class="form-control flatpickr-minimum"
+                                       placeholder="Select Date"
+                                       value="{{ old('common_coverage_expiry_date') }}">
+                                @if ($errors->has('common_coverage_expiry_date'))
+                                    <span class="text-danger">{{ $errors->first('common_coverage_expiry_date') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="col-form-label">When Coverage Needed </label>
+                            <div class="form-group">
+                                <input type="text" name="coverage_needed"
+                                       class="form-control"
+                                       value="{{ old('coverage_needed') }}">
+                                @if ($errors->has('coverage_needed'))
+                                    <span class="text-danger">{{ $errors->first('coverage_needed') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Liability Limit Needed </label>
+                            <div class="form-group">
+                                <input type="text" name="liability_limit_needed"
+                                       class="form-control"
+                                       value="{{ old('liability_limit_needed') }}">
+                                @if ($errors->has('liability_limit_needed'))
+                                    <span class="text-danger">{{ $errors->first('liability_limit_needed') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="col-form-label">UIM </label>
+                            <div class="form-group">
+                                <input type="text" name="uim"
+                                       class="form-control"
+                                       value="{{ old('uim') }}">
+                                @if ($errors->has('uim'))
+                                    <span class="text-danger">{{ $errors->first('uim') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">PIP </label>
+                            <div class="form-group">
+                                <input type="text" name="pip"
+                                       class="form-control"
+                                       value="{{ old('pip') }}">
+                                @if ($errors->has('pip'))
+                                    <span class="text-danger">{{ $errors->first('pip') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+
+                    </div>
+                @endif
+            <!-- Tab content -->
                 <h5><span class="font-weight-semibold"></span>Policy Information</h5>
                 <fieldset class="border p-3 mb-4">
                     <div class="row">
@@ -355,17 +628,17 @@
                 </fieldset>
 
                 @if($policyType->id == 1 || $policyType->id == 2 || $policyType->id == 3
-  || $policyType->id == 4 || $policyType->id == 5 || $policyType->id == 6 || $policyType->id == 7
-  || $policyType->id == 8 || $policyType->id == 9 || $policyType->id == 10 || $policyType->id == 11 || $policyType->id == 12)
+            || $policyType->id == 4 || $policyType->id == 5 || $policyType->id == 6 || $policyType->id == 7
+            || $policyType->id == 8 || $policyType->id == 9 || $policyType->id == 10 || $policyType->id == 11 || $policyType->id == 12)
                     <h5><span class="font-weight-semibold"></span>
-                        @if($policyType->id == 1)
+                        @if($policyType->id == 1 || $policyType->id == 4)
                             Driver Information
                         @elseif($policyType->id == 6 || $policyType->id == 8 )
                             Household Information
                         @elseif($policyType->id == 7 || $policyType->id == 9)
                             Owners Information
-                        @elseif($policyType->id == 2 || $policyType->id == 3 || $policyType->id == 4
-|| $policyType->id == 5 || $policyType->id == 10 || $policyType->id == 11 || $policyType->id == 12)
+                        @elseif($policyType->id == 2 || $policyType->id == 3
+            || $policyType->id == 5 || $policyType->id == 10 || $policyType->id == 11 || $policyType->id == 12)
                             Contact Info Information
                         @endif
                     </h5>
@@ -603,14 +876,14 @@
                             </div>
                         </div>
                         <button type="button" id="add-more-driver" class="btn btn-primary mt-3">Add More
-                            @if($policyType->id == 1)
+                            @if($policyType->id == 1 || $policyType->id == 4)
                                 Driver
                             @elseif($policyType->id == 6 || $policyType->id == 8 )
                                 Household
                             @elseif($policyType->id == 7 || $policyType->id == 9)
                                 Owners
-                            @elseif($policyType->id == 2 || $policyType->id == 3 || $policyType->id == 4
-    || $policyType->id == 5 || $policyType->id == 10 || $policyType->id == 11 || $policyType->id == 12)
+                            @elseif($policyType->id == 2 || $policyType->id == 3
+            || $policyType->id == 5 || $policyType->id == 10 || $policyType->id == 11 || $policyType->id == 12)
                                 Contact Info
                             @endif
                         </button>
@@ -857,17 +1130,17 @@
                                     </div>
                                 @endif
                                 @if($policyType->id == 3 || $policyType->id == 4 )
-                                    <div class="col-md-4">
-                                        <fieldset class="border p-3">
+                                    <div class="col-md-6">
+                                        <div class="row border p-3">
 
-                                            <div class="col-md-12">
+                                            <div class="col-md-4">
                                                 <div class="form-group">
                                                     <input type="checkbox" class="form-check-inline" name="" id="">
                                                     Commercial Property
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-12">
+                                            <div class="col-md-4">
                                                 <label class="col-form-label">Building</label>
                                                 <div class="form-group">
                                                     <input type="text" name="building" class="form-control"
@@ -879,7 +1152,7 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-4">
                                                 <label class="col-form-label">Contents</label>
                                                 <div class="form-group">
                                                     <input type="text" name="contents" class="form-control"
@@ -891,7 +1164,7 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-4">
                                                 <label class="col-form-label">Loss Of Earning</label>
                                                 <div class="form-group">
                                                     <input type="text" name="loss_of_earning" class="form-control"
@@ -903,7 +1176,7 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-4">
                                                 <label class="col-form-label">Pump / Canopy</label>
                                                 <div class="form-group">
                                                     <input type="text" name="pump" class="form-control"
@@ -915,7 +1188,7 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-4">
                                                 <label class="col-form-label">Sign</label>
                                                 <div class="form-group">
                                                     <input type="text" name="sign" class="form-control"
@@ -927,7 +1200,7 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-4">
                                                 <label class="col-form-label">Glass</label>
                                                 <div class="form-group">
                                                     <input type="text" name="glass" class="form-control"
@@ -939,13 +1212,47 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                        </fieldset>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Workers Compensation Needed Limit</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="workers_compensation" class="form-control"
+                                                           value="{{ old('workers_compensation') }}">
+                                                    @if ($errors->has('workers_compensation'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('workers_compensation') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">No Of Additional Insured</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="no_of_additional_insured"
+                                                           class="form-control"
+                                                           value="{{ old('no_of_additional_insured') }}">
+                                                    @if ($errors->has('no_of_additional_insured'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('no_of_additional_insured') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Waiver of subrogation</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="waiver_of_subrogation" class="form-control"
+                                                           value="{{ old('waiver_of_subrogation') }}">
+                                                    @if ($errors->has('waiver_of_subrogation'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('waiver_of_subrogation') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <fieldset class="border p-3">
+                                    <div class="col-md-6">
 
-                                            <h4><span class="font-weight-semibold"></span> Property Detail</h4>
-                                            <div class="col-md-12">
+                                        <div class="row border p-3">
+                                            <h4><span class="font-weight-semibold"></span> Property Information</h4>
+                                            <div class="col-md-4">
                                                 <label class="col-form-label">Owned / Leased</label>
                                                 <div class="form-group">
                                                     <select name="property_owner" class="form-control select2"
@@ -962,8 +1269,8 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
-                                                <label class="col-form-label">Year Built</label>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Year Constructed</label>
                                                 <div class="form-group">
                                                     <input type="text" name="built_year" class="form-control"
                                                            value="{{ old('built_year') }}">
@@ -973,7 +1280,18 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Structure</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="structure" class="form-control"
+                                                           value="{{ old('structure') }}">
+                                                    @if ($errors->has('structure'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('structure') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
                                                 <label class="col-form-label">Area</label>
                                                 <div class="form-group">
                                                     <input type="text" name="property_area" class="form-control"
@@ -984,7 +1302,40 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Wiring</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="wiring" class="form-control"
+                                                           value="{{ old('wiring') }}">
+                                                    @if ($errors->has('wiring'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('wiring') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Heating</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="heating" class="form-control"
+                                                           value="{{ old('heating') }}">
+                                                    @if ($errors->has('heating'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('heating') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Plumbing</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="plumbing" class="form-control"
+                                                           value="{{ old('plumbing') }}">
+                                                    @if ($errors->has('plumbing'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('plumbing') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
                                                 <label class="col-form-label">Age Of Roof</label>
                                                 <div class="form-group">
                                                     <input type="text" name="age_of_roof" class="form-control"
@@ -995,7 +1346,7 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-4">
                                                 <label class="col-form-label">Construction</label>
                                                 <div class="form-group">
                                                     <input type="text" name="construction" class="form-control"
@@ -1006,15 +1357,46 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">No Of Employee</label>
                                                 <div class="form-group">
-                                                    <input type="checkbox" class="form-check-inline"
-                                                           name="is_alarm_system" value="1"
-                                                           id="">
-                                                    Is Alarm System?
+                                                    <input type="text" name="no_of_employee" class="form-control"
+                                                           value="{{ old('no_of_employee') }}">
+                                                    @if ($errors->has('no_of_employee'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('no_of_employee') }}</span>
+                                                    @endif
                                                 </div>
                                             </div>
-                                        </fieldset>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Estimated Annually Payroll</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="estimated_annually_payroll"
+                                                           class="form-control"
+                                                           value="{{ old('estimated_annually_payroll') }}">
+                                                    @if ($errors->has('estimated_annually_payroll'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('estimated_annually_payroll') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-form-label">Estimated Annually Receipts</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="estimated_annually_receipts"
+                                                           class="form-control"
+                                                           value="{{ old('estimated_annually_receipts') }}">
+                                                    @if ($errors->has('estimated_annually_receipts'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('estimated_annually_receipts') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+
+
+
+                                        </div>
                                     </div>
                                 @endif
 
@@ -1134,6 +1516,18 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="col-md-12">
+                                                    <label class="col-form-label">Loss of History</label>
+                                                    <div class="form-group">
+                                                        <textarea class="form-control" name="loss_history"></textarea>
+                                                        @if ($errors->has('loss_history'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('loss_history') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+
                                             </div>
                                         </fieldset>
                                     </div>
@@ -1143,7 +1537,7 @@
                                             <h3>Rating Information</h3>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Usage</label>
+                                                    <label class="col-form-label">Usage / Occupancy</label>
                                                     <div class="form-group">
                                                         <select name="usage" class="form-control select2"
                                                                 style="width: 100%"
@@ -1182,7 +1576,70 @@
                                                         @endif
                                                     </div>
                                                 </div>
+                                                @if($policyType->id == 7 )
+                                                    <div class="col-md-6">
+                                                        <label class="col-form-label">Purchase Date</label>
+                                                        <div class="form-group">
+                                                            <input type="date" name="purchase_date"
+                                                                   class="form-control flatpickr-minimum"
+                                                                   placeholder="Select Date"
+                                                                   value="{{ old('purchase_date') }}">
+                                                            @if ($errors->has('purchase_date'))
+                                                                <span
+                                                                    class="text-danger">{{ $errors->first('purchase_date') }}</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
 
+                                                    <div class="col-md-6">
+                                                        <label class="col-form-label">Purchase Price</label>
+                                                        <div class="form-group">
+                                                            <input type="text" name="purchase_price"
+                                                                   class="form-control"
+                                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                                   value="{{ old('purchase_price') }}">
+                                                            @if ($errors->has('purchase_price'))
+                                                                <span
+                                                                    class="text-danger">{{ $errors->first('purchase_price') }}</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="col-form-label">Date Cov Needed</label>
+                                                        <div class="form-group">
+                                                            <input type="date" name="date_cov_needed"
+                                                                   class="form-control flatpickr-minimum"
+                                                                   placeholder="Select Date"
+                                                                   value="{{ old('date_cov_needed') }}">
+                                                            @if ($errors->has('date_cov_needed'))
+                                                                <span
+                                                                    class="text-danger">{{ $errors->first('date_cov_needed') }}</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="col-form-label">City Limit</label>
+
+                                                        <div class="form-group">
+                                                            <select name="city_limit" class="form-control select2"
+                                                                    style="width: 100%"
+                                                                    data-placeholder="Select Option">
+                                                                <option></option>
+                                                                <option value="inside">Inside City Limit</option>
+                                                                <option value="outside">Outside City Limit</option>
+
+                                                            </select>
+                                                            @if ($errors->has('city_limit'))
+                                                                <span
+                                                                    class="text-danger">{{ $errors->first('city_limit') }}</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+
+
+                                                @endif
 
                                                 <div class="col-md-6">
                                                     <label class="col-form-label">Year Built</label>
@@ -1206,9 +1663,20 @@
                                                         @endif
                                                     </div>
                                                 </div>
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Stories</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="stories" class="form-control"
+                                                               value="{{ old('stories') }}">
+                                                        @if ($errors->has('stories'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('stories') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
 
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Rooms</label>
+                                                    <label class="col-form-label">No of Rooms</label>
                                                     <div class="form-group">
                                                         <input type="number" name="rooms" class="form-control"
                                                                value="{{ old('rooms') }}">
@@ -1219,10 +1687,46 @@
                                                     </div>
                                                 </div>
 
+
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Heating</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="heating" class="form-control"
+                                                               value="{{ old('heating') }}">
+                                                        @if ($errors->has('heating'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('heating') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Wiring</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="wiring" class="form-control"
+                                                               value="{{ old('wiring') }}">
+                                                        @if ($errors->has('wiring'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('wiring') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Plumbing</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="plumbing" class="form-control"
+                                                               value="{{ old('plumbing') }}">
+                                                        @if ($errors->has('plumbing'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('plumbing') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
                                                 <div class="col-md-6">
                                                     <label class="col-form-label">Age Of Roof</label>
                                                     <div class="form-group">
-                                                        <input type="number" name="age_of_roof" class="form-control"
+                                                        <input type="text" name="age_of_roof" class="form-control"
                                                                value="{{ old('age_of_roof') }}">
                                                         @if ($errors->has('age_of_roof'))
                                                             <span
@@ -1230,6 +1734,57 @@
                                                         @endif
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Any Business on Premisis</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="any_business_on_premises"
+                                                               class="form-control"
+                                                               value="{{ old('any_business_on_premises') }}">
+                                                        @if ($errors->has('any_business_on_premises'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('any_business_on_premises') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Swimming Pool / Hot Tubs</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="swimming_pool_tubs"
+                                                               class="form-control"
+                                                               value="{{ old('swimming_pool_tubs') }}">
+                                                        @if ($errors->has('swimming_pool_tubs'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('swimming_pool_tubs') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">is There a Trampoline</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="trampoline" class="form-control"
+                                                               value="{{ old('trampoline') }}">
+                                                        @if ($errors->has('trampoline'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('trampoline') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Animal On Premises</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="animal_on_premises"
+                                                               class="form-control"
+                                                               value="{{ old('animal_on_premises') }}">
+                                                        @if ($errors->has('animal_on_premises'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('animal_on_premises') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
 
                                                 <div class="col-md-6 mt-3">
                                                     <div class="form-group">
@@ -1398,6 +1953,83 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">City Limit</label>
+
+                                                    <div class="form-group">
+                                                        <select name="city_limit" class="form-control select2"
+                                                                style="width: 100%"
+                                                                data-placeholder="Select Option">
+                                                            <option></option>
+                                                            <option value="inside">Inside City Limit</option>
+                                                            <option value="outside">Outside City Limit</option>
+
+                                                        </select>
+                                                        @if ($errors->has('city_limit'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('city_limit') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Coverage Request</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="coverage_request" class="form-control"
+                                                               value="{{ old('coverage_request') }}">
+                                                        @if ($errors->has('coverage_request'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('coverage_request') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Prior Coverage</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="prior_coverage" class="form-control"
+                                                               value="{{ old('prior_coverage') }}">
+                                                        @if ($errors->has('prior_coverage'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('prior_coverage') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Coverage Expiration</label>
+                                                    <div class="form-group">
+                                                        <input type="date" name="coverage_expiration"
+                                                               class="form-control flatpickr-minimum"
+                                                               placeholder="Select Date"
+                                                               value="{{ old('coverage_expiration') }}">
+                                                        @if ($errors->has('coverage_expiration'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('coverage_expiration') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <label class="col-form-label">Loss / Claim of History</label>
+                                                    <div class="form-group">
+                                                        <textarea class="form-control" name="loss_history"></textarea>
+                                                        @if ($errors->has('loss_history'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('loss_history') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Claim Amount If Yes</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="claim_amount" class="form-control"
+                                                               data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                                                               value="{{ old('claim_amount') }}">
+                                                        @if ($errors->has('claim_amount'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('claim_amount') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
                                             </div>
                                         </fieldset>
                                     </div>
@@ -1469,12 +2101,21 @@
                                                 <div class="col-md-6">
                                                     <label class="col-form-label">Type Of Siding</label>
                                                     <div class="form-group">
-                                                        <input type="text" name="type_of_siding" class="form-control"
-                                                               value="{{ old('type_of_siding') }}">
-                                                        @if ($errors->has('type_of_siding'))
-                                                            <span
-                                                                class="text-danger">{{ $errors->first('type_of_siding') }}</span>
-                                                        @endif
+
+                                                        <div class="form-group">
+                                                            <select name="type_of_siding" class="form-control select2"
+                                                                    style="width: 100%"
+                                                                    data-placeholder="Select Option">
+                                                                <option></option>
+                                                                <option value="aluminium">Aluminium</option>
+                                                                <option value="hard_board">Hard Boardt</option>
+
+                                                            </select>
+                                                            @if ($errors->has('type_of_siding'))
+                                                                <span
+                                                                    class="text-danger">{{ $errors->first('type_of_siding') }}</span>
+                                                            @endif
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -1512,6 +2153,62 @@
                                                         @endif
                                                     </div>
                                                 </div>
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Owner</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="owner" class="form-control"
+                                                               value="{{ old('owner') }}">
+                                                        @if ($errors->has('owner'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('owner') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Tenant</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="tenant" class="form-control"
+                                                               value="{{ old('tenant') }}">
+                                                        @if ($errors->has('tenant'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('tenant') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 mt-3">
+                                                    <div class="form-group">
+                                                        <input type="checkbox" class="form-check-inline"
+                                                               value="1" name="is_any_pet" id="">
+                                                        Any Pets
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Has Applicant field Bankruptcy or
+                                                        foreclosure</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="bankruptcy" class="form-control"
+                                                               value="{{ old('bankruptcy') }}">
+                                                        @if ($errors->has('bankruptcy'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('bankruptcy') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="col-form-label">Company</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="company" class="form-control"
+                                                               value="{{ old('company') }}">
+                                                        @if ($errors->has('company'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('company') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
 
                                                 <div class="col-md-6 mt-3">
                                                     <div class="form-group">
@@ -1530,8 +2227,9 @@
                         </fieldset>
                     </div>
                 @endif
-<br>
+                <br>
                 @if($policyType->id == 1)
+
                     <h5><span class="font-weight-semibold"></span>Coverage Information</h5>
                     <div id="coverage-tab">
                         <fieldset class="border p-3 mb-4">
@@ -1733,6 +2431,9 @@
                         </fieldset>
                     </div>
                     <br>
+                @endif
+                @if($policyType->id == 1 || $policyType->id == 4 )
+
                     <h5><span class="font-weight-semibold"></span>Vehicles Information</h5>
                     <div id="vehicle-tab">
                         <div class="vehicle-form-container">
@@ -1917,7 +2618,7 @@
                 @endif
                 <br>
                 <h5><span class="font-weight-semibold"></span>Premium / Payment Info</h5>
-                <div  id="payment-tab">
+                <div id="payment-tab">
                     <fieldset class="border p-3 mb-4">
                         <div class="row">
                             <div class="col-md-6">
@@ -2171,14 +2872,123 @@
                             </div>
                         </div>
                 </div>
-                <br>
+
+                @if($policyType->id == 4 )
+                    <div class="row mt-3 mb-3">
+                        <div class="col-md-12">
+                            <label class="col-form-label">List of Losses, Claim , Violation or license Suspension for
+                                company or drivers in the last 3 years</label>
+                            <div class="form-group">
+                                <textarea class="form-control" name="loss_history"></textarea>
+                                @if ($errors->has('loss_history'))
+                                    <span
+                                        class="text-danger">{{ $errors->first('loss_history') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Is Cargo Insurance Needed </label>
+                            <div class="form-group">
+                                <select name="is_cargo_needed_insured" class="form-control select2"
+                                        data-placeholder="Select Status">
+                                    <option></option>
+                                    <option value="1">YES</option>
+                                    <option value="0">No</option>
+
+                                </select>
+                                @if ($errors->has('is_cargo_needed_insured'))
+                                    <span class="text-danger">{{ $errors->first('is_cargo_needed_insured') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="col-form-label">If Yes Describe in detail and percentage of each
+                                cargo </label>
+                            <div class="form-group">
+                                <textarea class="form-control" name="cargo_needed_insured_detail"></textarea>
+                                @if ($errors->has('cargo_needed_insured_detail'))
+                                    <span
+                                        class="text-danger">{{ $errors->first('cargo_needed_insured_detail') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Is Cargo Kept in truck overnight?</label>
+                            <div class="form-group">
+                                <select name="is_truck_overnight" class="form-control select2"
+                                        data-placeholder="Select Status">
+                                    <option></option>
+                                    <option value="1">YES</option>
+                                    <option value="0">No</option>
+
+                                </select>
+                                @if ($errors->has('is_truck_overnight'))
+                                    <span class="text-danger">{{ $errors->first('is_truck_overnight') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Is Alarm System?</label>
+                            <div class="form-group">
+                                <select name="is_alarm_system" class="form-control select2"
+                                        data-placeholder="Select Status">
+                                    <option></option>
+                                    <option value="1">YES</option>
+                                    <option value="0">No</option>
+
+                                </select>
+                                @if ($errors->has('is_alarm_system'))
+                                    <span class="text-danger">{{ $errors->first('is_alarm_system') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label">Is Trailer Kept Locked at </label>
+                            <div class="form-group">
+                                <select name="is_trailer_lock" class="form-control select2"
+                                        data-placeholder="Select Status">
+                                    <option></option>
+                                    <option value="1">YES</option>
+                                    <option value="0">No</option>
+
+                                </select>
+                                @if ($errors->has('is_trailer_lock'))
+                                    <span class="text-danger">{{ $errors->first('is_trailer_lock') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 <h5><span class="font-weight-semibold"></span>Notes</h5>
-                <div  id="notes-tab">
+                <div id="notes-tab">
                     <fieldset class="border p-3 mb-4">
                         <div class="row">
                             <div class="col-md-6">
+                                @if($policyType->id == 7 )
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">Coverage Type</label>
+                                        <div class="form-group">
+                                            <select name="coverage_type" class="form-control select2"
+                                                    style="width: 100%"
+                                                    data-placeholder="Select Option">
+                                                <option></option>
+                                                <option value="hob">HO-B</option>
+                                                <option value="hoa">HO-A</option>
+                                                <option value="tdp1">TDP-1</option>
+                                                <option value="tdp2">TDP-2</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                            @if ($errors->has('coverage_type'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('coverage_type') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
+
                                 <div class="col-md-12">
                                     <label class="col-form-label">Coverage</label>
+
                                     <div class="form-group">
                                         <input type="text" name="coverage" class="form-control"
                                                value="{{ old('coverage') }}">
@@ -2238,7 +3048,7 @@
 @push('script')
     <script>
         $(document).ready(function () {
-            // Use event delegation to handle dynamically added elements
+// Use event delegation to handle dynamically added elements
             $(document).on('change', '.vehicle-make', function () {
                 var selectedData = $(this).find('option:selected');
                 var makeID = selectedData.val();
@@ -2286,12 +3096,12 @@
             });
             flatpickr(".flatpickr-minimum");
 
-            // By default, hide the Remove button in the first form
+// By default, hide the Remove button in the first form
             $('.driver-form:first').find('#count\\[0\\] .remove-form').hide();
 
             let driverFormIndex = 0; // To track the index for array names
 
-            // Add new driver form
+// Add new driver form
             $('#add-more-driver').click(function () {
                 driverFormIndex++;
 
@@ -2320,7 +3130,7 @@
                 newDriverForm.find('.remove-form').show();
             });
 
-            // Handle remove button click for driver form
+// Handle remove button click for driver form
             $(document).on('click', '.remove-form', function () {
                 $(this).closest('.driver-form').remove();
             });
@@ -2335,7 +3145,7 @@
 
             let vehicleFormIndex = 0; // To track the index for array names
 
-            // Add new vehicle form
+// Add new vehicle form
             $('#add-more-vehicle').click(function () {
                 vehicleFormIndex++;
 
@@ -2361,7 +3171,7 @@
 
             });
 
-            // Handle remove button click for vehicle form
+// Handle remove button click for vehicle form
             $(document).on('click', '.remove-form-vehicle', function () {
                 $(this).closest('.vehicle-form').remove();
             });
