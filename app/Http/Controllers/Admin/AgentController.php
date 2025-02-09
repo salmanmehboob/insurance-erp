@@ -367,7 +367,7 @@ class AgentController extends Controller
 
     public function trashed()
     {
-        $title = 'Trashed Agents';
+        $title = 'Deleted Agents';
         $agents = Agent::onlyTrashed()
             ->with(['state', 'bank', 'user.permissions', 'agencies.locations'])
             ->orderBy('deleted_at', 'DESC')

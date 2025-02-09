@@ -204,7 +204,7 @@ class AgencyController extends Controller
     public function trashedIndex()
     {
         $trashedAgencies = Agency::onlyTrashed()->with('state', 'bank')->orderBy('deleted_at', 'DESC')->get();
-        $title = 'Trashed Agencies';
+        $title = 'Deleted Agencies';
         LogActivity::addToLog('Agency Trashed View');
 
         return view('admin.agency.trashed_index', compact('title', 'trashedAgencies'));

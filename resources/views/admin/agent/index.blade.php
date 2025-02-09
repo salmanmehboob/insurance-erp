@@ -29,7 +29,7 @@
                             @endcan
 
                             <a href="{{ route('trashed-agents') }}" class="btn btn-outline-danger float-end me-4">
-                                <i class="fas fa-trash-restore"></i> View Trashed Agents
+                                <i class="fas fa-trash-restore"></i> View Deleted Agents
                             </a>
 
 

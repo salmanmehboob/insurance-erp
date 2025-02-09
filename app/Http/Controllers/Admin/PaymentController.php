@@ -285,7 +285,7 @@ class PaymentController extends Controller
 
     public function trashed()
     {
-        $title = 'Trashed Payments';
+        $title = 'Deleted Payments';
         $payments = Payment::onlyTrashed()
             ->orderBy('deleted_at', 'DESC')
             ->get();

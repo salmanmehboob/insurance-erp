@@ -29,7 +29,7 @@
                             @endcan
 
                             <a href="{{ route('trashed-commissions') }}" class="btn btn-outline-danger float-end me-4">
-                                <i class="fas fa-trash-restore"></i> View Trashed Commissions
+                                <i class="fas fa-trash-restore"></i> View Deleted Commissions
                             </a>
 
 

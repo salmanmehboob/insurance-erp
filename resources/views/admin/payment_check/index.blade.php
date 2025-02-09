@@ -29,7 +29,7 @@
                             @endcan
 
                             <a href="{{ route('trashed-payment-check') }}" class="btn btn-outline-danger float-end me-4">
-                                <i class="fas fa-trash-restore"></i> View Trashed Check
+                                <i class="fas fa-trash-restore"></i> View Deleted Check
                             </a>
 
 

@@ -301,7 +301,7 @@ class InsuranceCompanyController extends Controller
     public function trashed()
     {
         $trashedCompanies = InsuranceCompany::onlyTrashed()->orderBy('deleted_at', 'DESC')->get();
-        $title = 'Trashed Companies';
+        $title = 'Deleted Companies';
         LogActivity::addToLog('Insurance Companies Trashed Listing View');
 
         return view('admin.company.trashed', compact('title', 'trashedCompanies'));

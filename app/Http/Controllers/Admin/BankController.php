@@ -196,7 +196,7 @@ class BankController extends Controller
 
     public function trashed()
     {
-        $title = 'Trashed Banks';
+        $title = 'Deleted Banks';
         $banks = BankAccount::onlyTrashed()
              ->orderBy('deleted_at', 'DESC')
             ->get();

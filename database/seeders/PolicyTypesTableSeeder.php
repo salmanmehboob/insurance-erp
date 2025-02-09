@@ -15,8 +15,8 @@ class PolicyTypesTableSeeder extends Seeder
     {
         $policyTypes = [
             'Auto', 'Bond', 'Commercial', 'Commercial Auto',
-            'Gen Liab', 'Health', 'Home Owner', 'Life',
-            'Mobile Home', 'Pollution', 'Umbrella', 'Work Comp'
+            'General Liability', 'Health', 'Home Owner', 'Life',
+            'Mobile Home', 'Pollution', 'Umbrella', 'Work Comp', 'Package'
         ];
 
         foreach ($policyTypes as $type) {

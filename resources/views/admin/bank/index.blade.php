@@ -29,7 +29,7 @@
                             @endcan
 
                             <a href="{{ route('trashed-banks') }}" class="btn btn-outline-danger float-end me-4">
-                                <i class="fas fa-trash-restore"></i> View Trashed Banks
+                                <i class="fas fa-trash-restore"></i> View Deleted Banks
                             </a>
 
 

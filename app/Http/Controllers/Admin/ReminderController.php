@@ -201,7 +201,7 @@ class ReminderController extends Controller
 
     public function trashed()
     {
-        $title = 'Trashed Reminders';
+        $title = 'Deleted Reminders';
         $reminders = Reminder::onlyTrashed()
             ->orderBy('deleted_at', 'DESC')
             ->get();

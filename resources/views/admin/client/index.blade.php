@@ -32,7 +32,7 @@
                         </a>
 
                         <a href="{{ route('trashed-clients') }}" class="btn btn-outline-danger float-end me-4">
-                            <i class="fas fa-trash-restore"></i> View Trashed Clients
+                            <i class="fas fa-trash-restore"></i> View Deleted Clients
                         </a>
 
 

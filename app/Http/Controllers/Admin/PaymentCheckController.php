@@ -270,7 +270,7 @@ class PaymentCheckController extends Controller
 
     public function trashed()
     {
-        $title = 'Trashed Payments';
+        $title = 'Deleted Payments';
         $paymentChecks = PaymentCheck::onlyTrashed()
             ->orderBy('deleted_at', 'DESC')
             ->get();

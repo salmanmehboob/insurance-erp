@@ -301,7 +301,7 @@ class GeneralAgentController extends Controller
     public function trashed()
     {
         $trashedCompanies = GeneralAgent::onlyTrashed()->orderBy('deleted_at', 'DESC')->get();
-        $title = 'Trashed Companies';
+        $title = 'Deleted Companies';
         LogActivity::addToLog('GeneralAgent  trashed Listing View');
 
         return view('admin.general_agent.trashed', compact('title', 'trashedCompanies'));

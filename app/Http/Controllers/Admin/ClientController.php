@@ -143,8 +143,8 @@ class ClientController extends Controller
             'primary_agency_commission' => 'required',
             'secondary_agency_commission' => 'required',
             'total_premium' => 'required',
-            'total_company_fee' => 'required',
-            'total_agency_fee' => 'required',
+//            'total_company_fee' => 'required',
+//            'total_agency_fee' => 'required',
             'total' => 'required',
             'payment_due_days' => 'required',
             'coverage' => 'required',
@@ -379,12 +379,12 @@ class ClientController extends Controller
                 'primary_agency_commission' => removeDollarSign($request->primary_agency_commission),
                 'secondary_agency_commission' => removeDollarSign($request->secondary_agency_commission),
                 'total_premium' => removeDollarSign($request->total_premium),
-                'total_company_fee' => removeDollarSign($request->total_company_fee),
-                'total_agency_fee' => removeDollarSign($request->total_agency_fee),
+                'total_company_fee' => 0,
+                'total_agency_fee' => 0,
                 'total' => removeDollarSign($request->total),
                 'payment_option' => ($request->payment_option),
                 'payment_due_days' => ($request->payment_due_days),
-                'insurance_company_id' => $request->insurance_company_id,
+                'financial_company' => $request->financial_company,
             ]);
 
             // Create Client Notes
@@ -807,7 +807,7 @@ class ClientController extends Controller
 
     public function trashed()
     {
-        $title = 'Trashed Clients';
+        $title = 'Deleted Clients';
         $clients = Client::onlyTrashed()
             ->with(['state', 'bank', 'user.permissions', 'agencies.locations'])
             ->orderBy('deleted_at', 'DESC')

@@ -205,7 +205,7 @@ class CommissionController extends Controller
 
     public function trashed()
     {
-        $title = 'Trashed Commissions';
+        $title = 'Deleted Commissions';
         $commissions = AgencyCommission::onlyTrashed()
              ->orderBy('deleted_at', 'DESC')
             ->get();
