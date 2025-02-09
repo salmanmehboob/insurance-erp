@@ -38,7 +38,6 @@ return new class extends Migration {
             $table->string('estimated_annually_receipts')->nullable();
             $table->string('workers_compensation')->nullable();
             $table->string('no_of_additional_insured')->nullable();
-            $table->string('waiver_of_subrogation')->nullable();
 
             $table->string('coverage_request')->nullable();
             $table->string('prior_coverage')->nullable();
@@ -68,7 +67,6 @@ return new class extends Migration {
             $table->text('cargo_needed_insured_detail')->nullable();
             $table->tinyInteger('is_truck_overnight')->nullable();
             $table->tinyInteger('is_trailer_lock')->nullable();
-            $table->tinyInteger('is_alarm_system')->nullable();
 
             $table->foreign('insurance_company_id')->references('id')->on('insurance_companies')->onDelete('cascade');
         });

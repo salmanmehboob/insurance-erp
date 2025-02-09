@@ -1,0 +1,31 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('clients', static function (Blueprint $table) {
+
+            $table->string('waiver_of_subrogation')->nullable();
+            $table->tinyInteger('is_alarm_system')->nullable();
+
+            $table->foreign('insurance_company_id')->references('id')->on('insurance_companies')->onDelete('cascade');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('clients', function (Blueprint $table) {
+            //
+        });
+    }
+};
