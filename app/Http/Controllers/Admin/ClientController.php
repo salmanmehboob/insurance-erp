@@ -53,7 +53,7 @@ class ClientController extends Controller
     public function index()
     {
         $title = 'Clients';
-        $clients = Client::with('policyType')->where('is_quote_sheet',0)->orderBy('created_at', 'DESC')->get();
+        $clients = Client::with('policyType')->where('is_quote_sheet', 0)->orderBy('created_at', 'DESC')->get();
         LogActivity::addToLog('Clients  Listing View');
 
         return view('admin.client.index', compact('title', 'clients'));
@@ -855,7 +855,7 @@ class ClientController extends Controller
     public function indexQuote()
     {
         $title = 'Quote Clients';
-        $clients = Client::with('policyType')->where('is_quote_sheet',1)->orderBy('created_at', 'DESC')->get();
+        $clients = Client::with('policyType')->where('is_quote_sheet', 1)->orderBy('created_at', 'DESC')->get();
         LogActivity::addToLog('Quote Clients  Listing View');
 
         return view('admin.client.index_quote', compact('title', 'clients'));
@@ -887,7 +887,7 @@ class ClientController extends Controller
             'policyType', 'states', 'emailStatues', 'languages',
             'policyStatuses', 'terms', 'insuranceCompanies', 'agents', 'locations',
             'genders', 'maritalStatus', 'relationships', 'educationLevels', 'years',
-            'vehicleMakes', 'vehicleModels','drivers'));
+            'vehicleMakes', 'vehicleModels', 'drivers'));
     }
 
     public function storeQuote(Request $request)
@@ -986,10 +986,53 @@ class ClientController extends Controller
                 'workers_compensation' => $request->workers_compensation,
                 'no_of_additional_insured' => $request->no_of_additional_insured,
                 'waiver_of_subrogation' => $request->waiver_of_subrogation,
-            ];
 
+
+                'business_description' => $request->business_description,
+                'use_each_vehicle' => $request->use_each_vehicle,
+                'radius_operation' => $request->radius_operation,
+                'states_driven' => $request->states_driven,
+                'owner_operated_for_hire' => $request->owner_operated_for_hire,
+                'contract_name' => $request->contract_name,
+                'common_coverage' => $request->common_coverage,
+                'common_coverage_effective_date' => $request->common_coverage_effective_date,
+                'common_coverage_expiry_date' => $request->common_coverage_expiry_date,
+                'coverage_needed' => $request->coverage_needed,
+                'liability_limit_needed' => $request->liability_limit_needed,
+                'uim' => $request->uim,
+                'pip' => $request->pip,
+                'is_cargo_needed_insured' => $request->is_cargo_needed_insured,
+                'cargo_needed_insured_detail' => $request->cargo_needed_insured_detail,
+                'is_truck_overnight' => $request->is_truck_overnight,
+                'is_alarm_system' => $request->is_alarm_system,
+                'is_trailer_lock' => $request->is_trailer_lock,
+
+
+                'insurance_company_id' => $request->insurance_company_id,
+                'purchase_date' => $request->purchase_date,
+                'purchase_price' => removeDollarSign($request->purchase_price),
+                'date_cov_needed' => $request->date_cov_needed,
+                'city_limit' => $request->city_limit,
+                'stories' => $request->stories,
+                'any_business_on_premises' => $request->any_business_on_premises,
+                'swimming_pool_tubs' => $request->swimming_pool_tubs,
+                'trampoline' => $request->trampoline,
+                'animal_on_premises' => $request->animal_on_premises,
+                'coverage_type' => $request->coverage_type,
+
+                'coverage_request' => $request->coverage_request,
+                'prior_coverage' => $request->prior_coverage,
+                'coverage_expiration' => $request->coverage_expiration,
+                'claim_amount' => $request->claim_amount,
+                'owner' => $request->owner,
+                'tenant' => $request->tenant,
+                'is_any_pet' => $request->is_any_pet,
+                'bankruptcy' => $request->bankruptcy,
+                'company' => $request->company,
+             ];
+
+//            dd($clientData);
             $client = Client::create($clientData);
-//            dd($client);
 
             // Create Client Policy
             $clientPolicyData = [
@@ -1038,7 +1081,7 @@ class ClientController extends Controller
                     ClientAccident::create([
                         'client_id' => $client->id,
                         'client_driver_id' => $driver,
-                         'date' => $request->date[$key],
+                        'date' => $request->date[$key],
                         'violation' => $request->violation[$key],
                     ]);
                 }
@@ -1119,7 +1162,6 @@ class ClientController extends Controller
                     'is_replacement_cost' => $request->is_replacement_cost ?? 0,
                 ]);
             }
-
 
 
             // Create Client Mobile House Detail
@@ -1217,10 +1259,10 @@ class ClientController extends Controller
                 'referral_resource' => $request->referral_resource,
                 'notes' => $request->notes,
             ]);
-             DB::commit();
+            DB::commit();
             LogActivity::addToLog('Clients ' . $request->applicant_name . ' Created');
 
-            return redirect()->route('show-client')->with('success', 'Client and related records created successfully.');
+            return redirect()->route('show-client-quote')->with('success', 'Client and related records created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
 

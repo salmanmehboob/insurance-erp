@@ -2616,6 +2616,8 @@
                         </button>
                     </div>
                 <br>
+                @endif
+                    @if($policyType->id == 1 )
                     <h5><span class="font-weight-semibold"></span>Accident Information</h5>
                     <div id="accident-tab">
                         <div class="accident-form-container">
