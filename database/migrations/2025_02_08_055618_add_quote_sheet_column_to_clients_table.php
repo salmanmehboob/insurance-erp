@@ -14,8 +14,6 @@ return new class extends Migration {
 
             $table->string('waiver_of_subrogation')->nullable();
             $table->tinyInteger('is_alarm_system')->nullable();
-
-            $table->foreign('insurance_company_id')->references('id')->on('insurance_companies')->onDelete('cascade');
         });
     }
 
