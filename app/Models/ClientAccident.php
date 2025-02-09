@@ -11,6 +11,7 @@ class ClientAccident extends Model
     use HasFactory;
 
     protected $fillable = [
+        'client_id',
         'client_driver_id',
         'date',
         'violation',

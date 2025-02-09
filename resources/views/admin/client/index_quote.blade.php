@@ -23,19 +23,13 @@
                 <div class="header-elements">
                     <div class="col-md-12 mt-5">
                         @can('create-client')
-                            <a href="{{ route('policy-type-client') }}" class="btn btn-outline-primary float-end">
+                            <a href="{{ route('policy-type-quote') }}" class="btn btn-outline-primary float-end">
                                 <b><i class="fas fa-plus"></i></b> {{ $title }}
                             </a>
                         @endcan
-                        <a href="{{ route('show-client-quote') }}" class="btn btn-success float-end me-4">
-                            <b><i class="fas fa-eye"></i></b> View Quote Sheet Clients
+                        <a href="{{ route('show-client') }}" class="btn btn-success float-end me-4">
+                            <b><i class="fas fa-eye"></i></b> View All Clients
                         </a>
-
-                        <a href="{{ route('trashed-clients') }}" class="btn btn-outline-danger float-end me-4">
-                            <i class="fas fa-trash-restore"></i> View Trashed Clients
-                        </a>
-
-
                     </div>
                 </div>
             </div>
@@ -62,12 +56,12 @@
                             <td>{{ $client->city }}</td>
                             <td>
                                 <div class="d-flex action-buttons">
-                                    @can('edit-client')
-                                        <a title="Edit" href="{{ route('edit-client', $client->id) }}"
-                                           class="text-primary me-2 action-buttons">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    @endcan
+{{--                                    @can('edit-client')--}}
+{{--                                        <a title="Edit" href="{{ route('edit-client', $client->id) }}"--}}
+{{--                                           class="text-primary me-2 action-buttons">--}}
+{{--                                            <i class="fas fa-edit"></i>--}}
+{{--                                        </a>--}}
+{{--                                    @endcan--}}
 
                                     @can('delete-client')
                                         <a href="javascript:void(0)"

@@ -167,7 +167,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Quote Sheet
     Route::get('policy-type-quote', [ClientController::class, 'showQuotePolicyType'])->name('policy-type-quote');
+    Route::get('show-client-quote', [ClientController::class, 'indexQuote'])->name('show-client-quote');
     Route::get('add-client-quote', [ClientController::class, 'createQuote'])->name('add-client-quote');
+    Route::post('store-client-quote', [ClientController::class, 'storeQuote'])->name('store-client-quote');
 
 
 });

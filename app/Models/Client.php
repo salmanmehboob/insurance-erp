@@ -27,6 +27,11 @@ class Client extends Model
         'email_status_id',
         'primary_language_id',
         'anniversary',
+
+        'is_quote_sheet' ,
+        'quote_date' ,
+        'current_carrier' ,
+        'current_carrier_expiration',
     ];
 
 

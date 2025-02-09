@@ -8,7 +8,7 @@
     <!-- Form validation -->
     <div class="card">
         <!-- Agent form -->
-        <form action="{{ route('store-client') }}" method="POST" enctype="multipart/form-data"
+        <form action="{{ route('store-client-quote') }}" method="POST" enctype="multipart/form-data"
               class="flex-fill form-validate-jquery">
             @csrf
             <input type="hidden" name="policy_type_id" value="{{$policyType->id}}">
@@ -2615,6 +2615,69 @@
                         <button type="button" id="add-more-vehicle" class="btn btn-primary mt-3">Add More Vehicle
                         </button>
                     </div>
+                <br>
+                    <h5><span class="font-weight-semibold"></span>Accident Information</h5>
+                    <div id="accident-tab">
+                        <div class="accident-form-container">
+                            <div class="accident-form">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12 mt-3" id="accidentCount[0]">
+                                                <button type="button"
+                                                        class="btn btn-danger btn-sm float-end remove-form-accident">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="col-form-label">Driver</label>
+                                                <div class="form-group">
+                                                    <select name="client_driver_id[0]" class="form-control select2" style="width: 100%"
+                                                            data-placeholder="Select Option">
+                                                        <option></option>
+                                                        @foreach($drivers as $row)
+                                                            <option value="{{$row->id}}">{{$row->first_name . ' ' . $row->last_name}}</option>
+                                                        @endforeach
+
+                                                    </select>
+                                                    @if ($errors->has('client_driver_id'))
+                                                        <span class="text-danger">{{ $errors->first('client_driver_id') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="col-form-label">Date</label>
+                                                <div class="form-group">
+                                                    <input type="date" name="date[0]" class="form-control"
+                                                           placeholder="VIN"
+                                                           value="{{ old('date') }}">
+                                                    @if ($errors->has('date'))
+                                                        <span class="text-danger">{{ $errors->first('date') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <label class="col-form-label">Violation Detail</label>
+                                                <div class="form-group">
+                                                    <textarea class="form-control" name="violation[0]"></textarea>
+                                                    @if ($errors->has('violation'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('violation') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" id="add-more-accident" class="btn btn-primary mt-3">Add More Accident
+                        </button>
+                    </div>
+
                 @endif
                 <br>
                 <h5><span class="font-weight-semibold"></span>Premium / Payment Info</h5>
@@ -3174,6 +3237,45 @@
 // Handle remove button click for vehicle form
             $(document).on('click', '.remove-form-vehicle', function () {
                 $(this).closest('.vehicle-form').remove();
+            });
+
+        });
+
+        $(document).ready(function () {
+
+            $('.accident-form:first').find('#accidentCount\\[0\\] .remove-form-accident').hide();
+
+            let accidentFormIndex = 0; // To track the index for array names
+
+// Add new accident form
+            $('#add-more-accident').click(function () {
+                accidentFormIndex++;
+
+                // Clone the accident form
+                let newAccidentForm = $('.accident-form:first').clone();
+
+                // Reset input values and adjust names and IDs for array indexing
+                newAccidentForm.find('input, select').each(function () {
+                    let oldName = $(this).attr('name') || $(this).attr('id');
+                    if (oldName) {
+                        let newName = oldName.replace(/\[(\d+)\]/, '') + '[' + accidentFormIndex + ']';
+                        $(this).attr('name', newName).attr('id', newName);
+                        if ($(this).is('input, select')) {
+                            $(this).val(''); // Clear the values for inputs and selects
+                        }
+                    }
+                });
+
+                // Append the cloned accident form to the container
+                $('.accident-form-container').append(newAccidentForm);
+
+                newAccidentForm.find('.remove-form-accident').show();
+
+            });
+
+// Handle remove button click for accident form
+            $(document).on('click', '.remove-form-accident', function () {
+                $(this).closest('.accident-form').remove();
             });
 
         });

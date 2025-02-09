@@ -12,11 +12,13 @@ return new class extends Migration {
     {
         Schema::create('client_accidents', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('client_driver_id');
             $table->date('date');
             $table->text('violation');
             $table->timestamps();
 
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->foreign('client_driver_id')->references('id')->on('client_drivers')->onDelete('cascade');
 
         });
