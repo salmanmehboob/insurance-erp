@@ -56,7 +56,7 @@ class PaymentController extends Controller
     public function index()
     {
         $title = 'Payments';
-        $payments = Payment::with('client')->orderBy('created_at', 'DESC')->get();
+        $payments = Payment::with('client','insuranceCompany')->orderBy('created_at', 'DESC')->get();
         LogActivity::addToLog('Payments  Listing View');
 
         return view('admin.payment.index', compact('title', 'payments'));
@@ -150,6 +150,27 @@ class PaymentController extends Controller
             return redirect()->back()->with('error', 'An error occurred while creating the payment.')->withInput();
         }
     }
+
+    public function view($id)
+    {
+        $payment = Payment::find($id);
+
+        if (!$payment) {
+            return redirect()->route('show-payment')->with('error', 'Payment not found.');
+        }
+
+        $title = 'Edit Payment';
+        $clients = Client::all();
+        $insurance_companies = InsuranceCompany::all();
+        $agents = Agent::all();
+        $locations = Agency::all();
+        $banks = BankAccount::all();
+        return view('admin.payment.view', compact('title', 'payment',
+            'clients', 'insurance_companies', 'agents', 'banks',
+            'locations'));
+
+    }
+
 
     /**
      * Show the form for editing an payment.

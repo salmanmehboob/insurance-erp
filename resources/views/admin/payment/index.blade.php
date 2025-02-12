@@ -41,9 +41,13 @@
                 <table id="payment-table" class="table table-striped datatables-reponsive">
                     <thead>
                     <tr>
-                        <th>Reciept #</th>
+                        <th>Receipt #</th>
+                        <th>Insurance Company</th>
+                        <th>Policy #</th>
+                        <th>Policy Type</th>
                         <th>Client</th>
                         <th>Payment Date</th>
+                        <th>Payment Method</th>
                         <th>Amount</th>
                         <th>Received By</th>
                         <th>Received At Location</th>
@@ -54,13 +58,22 @@
                     @foreach($payments as $payment)
                          <tr>
                             <td>RECP-{{ $payment->id}}</td>
+                            <td>{{ $payment->insuranceCompany->name }}</td>
+                            <td>{{ $payment->policy_number }}</td>
+                            <td>{{ $payment->client->policyType->name }}</td>
                             <td>{{ $payment->client->applicant_name }}</td>
                             <td>{{ $payment->payment_date }}</td>
+                            <td>{{ str_replace('_', ' ',strtoupper($payment->payment_method)) }}</td>
                              <td>{{ $payment->amount   }}</td>
                              <td>{{ $payment->receivedBy->name }}</td>
                              <td>{{ $payment->location->agency_name }}</td>
                             <td>
                                 <div class="d-flex action-buttons">
+                                    <a title="View" href="{{ route('view-payment', $payment->id) }}"
+                                       class="text-primary me-2 action-buttons">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+
                                     @can('edit-payment')
                                         <a title="Edit" href="{{ route('edit-payment', $payment->id) }}"
                                            class="text-primary me-2 action-buttons">

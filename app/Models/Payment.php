@@ -36,6 +36,11 @@ class Payment extends Model
         return $this->belongsTo(Client::class);
     }
 
+    public function insuranceCompany()
+    {
+        return $this->belongsTo(InsuranceCompany::class);
+    }
+
     public function receivedBy()
     {
         return $this->belongsTo(Agent::class,'received_by');

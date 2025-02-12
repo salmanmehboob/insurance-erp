@@ -111,6 +111,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('show-payment', [PaymentController::class, 'index'])->name('show-payment');
     Route::get('add-payment', [PaymentController::class, 'create'])->name('add-payment');
     Route::post('store-payment', [PaymentController::class, 'store'])->name('store-payment');
+    Route::get('payment/{id}/view', [PaymentController::class, 'view'])->name('view-payment');
     Route::get('payment/{id}/edit', [PaymentController::class, 'edit'])->name('edit-payment');
     Route::put('update-payment{id}', [PaymentController::class, 'update'])->name('update-payment');
     Route::post('destroy-payment', [PaymentController::class, 'destroy'])->name('destroy-payment');
