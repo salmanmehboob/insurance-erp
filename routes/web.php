@@ -173,4 +173,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('store-client-quote', [ClientController::class, 'storeQuote'])->name('store-client-quote');
 
 
+
+
+
+
+
 });

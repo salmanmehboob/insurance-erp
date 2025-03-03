@@ -29,6 +29,22 @@ class ClientPolicy extends Model
     {
         return $this->belongsTo(Client::class);
     }
+    public function insuranceCompany()
+    {
+        return $this->belongsTo(InsuranceCompany::class);
+    }
 
 
+    public function policyStatus()
+    {
+        return $this->belongsTo(PolicyStatus::class);
+    }
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
+    public function agent()
+    {
+        return $this->belongsTo(Agent::class);
+    }
 }
