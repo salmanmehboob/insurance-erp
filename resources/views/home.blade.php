@@ -87,10 +87,16 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-4 d-flex align-items-end">
-                        <button class="btn btn-primary w-100">Search</button>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button class="btn btn-info w-100">Search</button>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <a href="{{route('dashboard')}}" class="btn btn-dark w-100">Reset</a>
                     </div>
                 </div>
+                    <div class="row mt-3">
+
+                    </div>
                 </form>
             </div>
 
@@ -112,7 +118,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @forelse ($policies as $policy)
+                    @if(isset($policies))
+                    @foreach ($policies as $policy)
                         <tr class="nav-link-active" data-bs-toggle="modal" data-bs-target="#policyModal-{{ $policy->id }}" style="cursor: pointer;">
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $policy->effective_date }}</td>
@@ -126,17 +133,11 @@
                             <td>{{ $policy->file_number }}</td>
                             <td>{{ $policy->client->cell_phone_no ?? 'N/A' }}</td>
                         </tr>
-
                         @include('admin.client.client_policy_modal')
-                    @empty
-                        <tr>
-                            <td colspan="11">No records found</td>
-                        </tr>
-                    @endforelse
+                        @endforeach
                     </tbody>
-                    </tbody>
+                    @endif
                 </table>
-
             </div>
         </div>
     </div>
@@ -145,17 +146,6 @@
 
 @push('script')
     <script src="{{asset('backend/js/datatables.js')}}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("tbody tr").click(function () {
-                // Remove 'active' class from all rows
-                $("tbody tr").removeClass("table-active");
 
-                // Add 'active' class to clicked row
-                $(this).addClass("table-active");
-            });
-        });
-    </script>
 
 @endpush

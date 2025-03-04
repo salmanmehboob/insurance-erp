@@ -33,7 +33,10 @@ class ClientPolicy extends Model
     {
         return $this->belongsTo(InsuranceCompany::class);
     }
-
+    public function language()
+    {
+        return $this->belongsTo(PrimaryLanguage::class);
+    }
 
     public function policyStatus()
     {
