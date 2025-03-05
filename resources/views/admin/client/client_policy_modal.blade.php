@@ -28,40 +28,89 @@
                     </div>
                     <div class="col-md-9">
                         <div class="tab-content" id="v-pills-tabContent">
-                            <div class="tab-pane fade show active text-black" id="v-pills-summary" role="tabpanel" aria-labelledby="v-pills-summary-tab ">
+                            <div class="tab-pane fade show active text-black" id="v-pills-summary" role="tabpanel" aria-labelledby="v-pills-summary-tab">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3 class="mb-3"><strong>Name:</strong> {{ optional($policy->client)->applicant_name ?? 'N/A' }}</h3>
+                                        </div>
+                                    </div>
 
-                                    <h3 style="margin-bottom: 10px;"><strong>Name:</strong> {{ optional($policy->client)->applicant_name ?? 'N/A' }}</h3>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p><strong>Physical Address:</strong> {{ optional($policy->client)->address ?? 'N/A' }}</p>
+                                        </div>
+                                    </div>
 
-                                    <p><strong>Physical Address:</strong> {{ optional($policy->client)->address ?? 'N/A' }}</p>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <p><strong>Home Phone:</strong> {{ optional($policy->client)->home_phone_no ?? 'N/A' }}</p>
-                                    <p><strong>Work Phone:</strong> {{ optional($policy->client)->work_phone_no ?? 'N/A' }}</p>
-                                    <p><strong>Cell Phone:</strong> {{ optional($policy->client)->cell_phone_no ?? 'N/A' }}</p>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <p><strong>Home Phone:</strong> {{ optional($policy->client)->home_phone_no ?? 'N/A' }}</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p><strong>Work Phone:</strong> {{ optional($policy->client)->work_phone_no ?? 'N/A' }}</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p><strong>Cell Phone:</strong> {{ optional($policy->client)->cell_phone_no ?? 'N/A' }}</p>
+                                        </div>
+                                    </div>
 
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p><strong>Email:</strong> <a href="mailto:{{ optional($policy->client)->email }}">{{ optional($policy->client)->email ?? 'N/A' }}</a></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>Effective Date:</strong> {{ $policy->effective_date }}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Expiration Date:</strong> {{ $policy->expiration_date }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>Policy Status:</strong> {{ optional($policy->policyStatus)->name ?? 'N/A' }}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Company:</strong> {{ optional($policy->insuranceCompany)->name ?? 'No Company Selected' }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>Agent:</strong> {{ optional($policy->agent)->name ?? 'N/A' }}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Policy Number:</strong> {{ $policy->policy_number }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>Policy Type:</strong> {{ optional($policy->client->policyType)->name ?? 'N/A' }}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Coverage:</strong> {{ optional($policy->coverage)->name ?? 'Property' }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>File Number:</strong> {{ $policy->file_number }}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Location:</strong> {{ $policy->agency->agency_name ?? 'N/A' }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p><strong>Primary Language:</strong> {{ $policy->client->language->name ?? 'N/A' }}</p>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <p><strong>Email:</strong> <a href="mailto:{{ optional($policy->client)->email }}">{{ optional($policy->client)->email ?? 'N/A' }}</a></p>
-
-                                <div style="display: flex; justify-content: space-between">
-                                    <p><strong>Effective Date:</strong> {{ $policy->effective_date }}</p>
-                                    <p><strong>Expiration Date:</strong> {{ $policy->expiration_date }}</p>
-                                </div>
-
-                                    <p><strong>Policy Status:</strong> {{ optional($policy->policyStatus)->name ?? 'N/A' }}</p>
-                                    <p><strong>Company:</strong> {{ optional($policy->insuranceCompany)->name ?? 'No Company Selected' }}</p>
-
-                                    <p><strong>Agent:</strong> {{ optional($policy->agent)->name ?? 'N/A' }}</p>
-
-                                    <p><strong>Policy Number:</strong> {{ $policy->policy_number }}</p>
-                                    <p><strong>Policy Type:</strong> {{ optional($policy->client->policyType)->name ?? 'N/A' }}</p>
-                                    <p><strong>Coverage:</strong> {{ optional($policy->coverage)->name ?? 'Property' }}</p>
-
-                                    <p><strong>File Number:</strong> {{ $policy->file_number }}</p>
-                                    <p><strong>Location:</strong> {{ $policy->agency->agency_name ?? 'N/A' }}</p>
-
-                                    <p><strong>Primary Language:</strong> {{ $policy->client->language->name ?? 'N/A' }}</p>
-
-
                             </div>
                             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
                             <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
