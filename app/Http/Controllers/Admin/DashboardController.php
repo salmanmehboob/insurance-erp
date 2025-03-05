@@ -63,7 +63,7 @@ class DashboardController extends Controller
         }
 
         // Query policies with relationships
-        $query = ClientPolicy::with('client', 'insuranceCompany', 'policyStatus', 'agency', 'agent');
+        $query = ClientPolicy::with('client.language', 'insuranceCompany', 'policyStatus', 'agency', 'agent');
 
         if ($request->filled('client_name')) {
             $query->whereHas('client', function ($q) use ($request) {
@@ -110,6 +110,7 @@ class DashboardController extends Controller
 
         // Paginate policies
         $policies = $query->paginate(10);
+
 
         return view('home', [
             'policies' => $policies,

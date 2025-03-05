@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Forms\AgentBrokerForm;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -39,6 +40,11 @@ class InsuranceCompany extends Model
     public function attachments()
     {
         return $this->hasMany(InsuranceCompanyAttachment::class, 'insurance_company_id');
+    }
+
+    public function agentBrokerForms()
+    {
+        return $this->hasMany(AgentBrokerForm::class, 'insurance_company_id');
     }
 }
 

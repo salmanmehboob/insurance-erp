@@ -1,34 +1,51 @@
 <!-- Bootstrap Modal for Each Policy -->
-<div class="modal fade" id="policyModal-{{ $policy->id }}" tabindex="-1" aria-labelledby="policyModalLabel" aria-hidden="true">
+<div class="modal fade" id="policyModal-{{ $policy->id }}" tabindex="-1" aria-labelledby="policyModalLabel-{{ $policy->id }}" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="policyModalLabel">Policy Details</h5>
+                <h5 class="modal-title" id="policyModalLabel-{{ $policy->id }}">Policy Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+
                 <div class="row">
+                    <!-- Sidebar Navigation -->
                     <div class="col-md-3">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                            <a  class="nav-link active fa-solid fa fa-user" id="v-pills-summary-tab" data-toggle="pill" href="#v-pills-summary" role="tab" aria-controls="v-pills-summary" aria-selected="true">Summary</a>
-                            <a class="nav-link" id="v-pills-Edit-Details-tab" data-toggle="pill" href="{{route('edit-client',$policy->client->id)}}" target="_blank"  role="tab" aria-controls="v-pills-Edit-Details" aria-selected="false">Edit-Details</a>
+                            <a class="nav-link active" id="v-pills-summary-tab-{{ $policy->id }}" data-bs-toggle="pill" href="#v-pills-summary-{{ $policy->id }}" role="tab" aria-controls="v-pills-summary-{{ $policy->id }}" aria-selected="true">Summary</a>
+
+                            <a class="nav-link" href="{{ route('edit-client', $policy->client->id) }}" target="_blank">Edit Details</a>
+
+                            <!-- Dropdown for Policy Accounting -->
                             <div class="nav-item dropdown">
-                                <button class="nav-link dropdown-toggle" id="v-pills-Policy-Accounting-tab" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Policy-Accounting
+                                <button class="nav-link dropdown-toggle" id="v-pills-Policy-Accounting-tab-{{ $policy->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Policy Accounting
                                 </button>
-                                <ul class="dropdown-menu" aria-labelledby="v-pills-Policy-Accounting-tab">
-                                    <li><button class="dropdown-item" onclick="window.open('{{ route('add-payment') }}', '_blank')">Receive Payment</button></li>
-                                    <li><button class="dropdown-item" data-bs-toggle="pill" data-bs-target="#v-pills-payment-history" type="button">Payment History</button></li>
-                                    <li><button onclick="window.location.href='{{ route('add-payment-check') }}'" class="dropdown-item" data-bs-toggle="pill" data-bs-target="#v-pills-write-a-check" type="button">Write a Check</button></li>
+                                <ul class="dropdown-menu" aria-labelledby="v-pills-Policy-Accounting-tab-{{ $policy->id }}">
+                                    <li><button class="dropdown-item" onclick="window.open('{{ route('add-payment') }}', '_blank')" type="button">Receive Payment</button></li>
+                                    <li><button class="dropdown-item" type="button">Payment History</button></li>
+                                    <li><button class="dropdown-item" onclick="window.open('{{ route('add-payment-check') }}', '_blank')" type="button">Write a Check</button></li>
                                 </ul>
                             </div>
-                            <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
-                        </div>
 
+                            <a class="nav-link" id="v-pills-settings-tab-{{ $policy->id }}" data-bs-toggle="pill" href="#v-pills-settings-{{ $policy->id }}" role="tab" aria-controls="v-pills-settings-{{ $policy->id }}" aria-selected="false">Settings</a>
+                            <a class="nav-link" id="v-pills-notes-tab-{{ $policy->id }}" data-bs-toggle="pill" href="#v-pills-notes-{{ $policy->id }}" role="tab" aria-controls="v-pills-notes-{{ $policy->id }}" aria-selected="false">Notes</a>
+                            <div class="nav-item dropdown">
+                                <button class="nav-link dropdown-toggle" id="v-pills-forms-tab-{{ $policy->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                   Forms & Letters
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="v-pills-forms-tab-{{ $policy->id }}">
+                                    <li><button class="dropdown-item" onclick="window.open('{{ route('create-agent/broker-form', $policy->client->id) }}', '_blank')" type="button">Agent/Broker Form</button></li>
+
+                                </ul>
+                            </div>                        </div>
                     </div>
+
+                    <!-- Content Section -->
                     <div class="col-md-9">
-                        <div class="tab-content" id="v-pills-tabContent">
-                            <div class="tab-pane fade show active text-black" id="v-pills-summary" role="tabpanel" aria-labelledby="v-pills-summary-tab">
+                        <div class="tab-content" id="v-pills-tabContent-{{ $policy->id }}">
+                            <!-- Summary Tab -->
+                            <div class="tab-pane fade show active text-black" id="v-pills-summary-{{ $policy->id }}" role="tabpanel" aria-labelledby="v-pills-summary-tab-{{ $policy->id }}">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -107,16 +124,23 @@
 
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <p><strong>Primary Language:</strong> {{ $policy->client->language->name ?? 'N/A' }}</p>
+                                            <p><strong>Primary Language:</strong> {{ optional($policy->client->language)->name ?? 'N/A' }}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
-                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
-                            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
-                        </div>
 
+                            <!-- Notes Tab -->
+                            <div class="tab-pane fade text-black" id="v-pills-notes-{{ $policy->id }}" role="tabpanel" aria-labelledby="v-pills-notes-tab-{{ $policy->id }}">
+                                <div class="container">
+                                    <div class="row">
+                                    <div class="col-md-10">
+                                    <p>{{$policy->client->note->notes}}</p>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

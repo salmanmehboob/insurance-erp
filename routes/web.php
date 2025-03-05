@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\CommissionController;
 use App\Http\Controllers\Admin\Dashboard\SuperAdminDashboardController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FormsController;
 use App\Http\Controllers\Admin\GeneralAgentController;
 use App\Http\Controllers\Admin\InsuranceCompanyController;
 use App\Http\Controllers\Admin\PaymentCheckController;
@@ -174,6 +175,8 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+    Route::get('agent/broker/form/{id}/add', [FormsController::class, 'create'])->name('create-agent/broker-form');
+    Route::post('store-agentBrokerForm', [FormsController::class, 'store'])->name('store-agentBrokerForm');
 
 
 

@@ -11,4 +11,10 @@ class PrimaryLanguage extends Model
     use HasFactory , SoftDeletes;
 
     protected $fillable = ['name', 'code'];
+
+    public function client()
+    {
+        return $this->hasOne(Client::class);
+    }
 }
+

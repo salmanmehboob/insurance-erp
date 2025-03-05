@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Forms\AgentBrokerForm;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -63,5 +64,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);
+    }
+    public function agentBrokerForms()
+    {
+        return $this->hasMany(AgentBrokerForm::class, 'created_by');
     }
 }
