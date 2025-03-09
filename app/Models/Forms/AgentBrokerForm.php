@@ -3,6 +3,7 @@
 namespace App\Models\Forms;
 
 use App\Models\Agent;
+use App\Models\Client;
 use App\Models\InsuranceCompany;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,13 +17,13 @@ class AgentBrokerForm extends Model
 
     protected $fillable = [
         'agent_id',
+        'agency_id',
+        'client_id',
         'insurance_company_id',
         'code',
         'sub_code',
-        'current_agency',
         'current_producer',
         'agency_customer_id',
-        'clients_ids',
         'created_by',
         'creation_date',
         'insured_signature',
@@ -38,29 +39,27 @@ class AgentBrokerForm extends Model
     // Relationships
     public function agent()
     {
-        return $this->belongsTo(Agent::class);
+        return $this->hasOne(Agent::class);
     }
+//    public function agency()
+//    {
+//        return $this->hasOne(Agent::class);
+//    }
 
     public function insuranceCompany()
     {
-        return $this->belongsTo(InsuranceCompany::class);
+        return $this->hasOne(InsuranceCompany::class);
     }
 
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-
-    // Get Clients as an Array
-    public function getClientsArrayAttribute()
+    public function client()
     {
-        return explode(',', $this->clients_ids);
+        return $this->hasOne(Client::class);
     }
 
-    // Set Clients from an Array
-    public function setClientsArrayAttribute($clients)
-    {
-        $this->attributes['clients_ids'] = implode(',', $clients);
-    }
+
 }
 

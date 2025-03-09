@@ -31,7 +31,7 @@ class Agent extends Model
     /**
      * Relationship with AgentAgencies (One Agent can have many Agencies)
      */
-    public function agencies()
+    public function agentAgencies()
     {
         return $this->hasMany(AgentAgency::class);
     }
@@ -56,4 +56,11 @@ class Agent extends Model
     {
         return $this->hasMany(AgentBrokerForm::class, 'agent_id');
     }
+
+
+    public function agencies()
+    {
+        return $this->belongsToMany(Agency::class, 'agent_agencies', 'agent_id', 'agency_id');
+    }
+
 }

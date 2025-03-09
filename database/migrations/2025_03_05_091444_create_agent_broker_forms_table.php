@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('agent_broker_forms', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('agent_id');
+            $table->unsignedBigInteger('agency_id');
+            $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('insurance_company_id');
             $table->string('code')->nullable();
             $table->string('sub_code')->nullable();
-            $table->string('current_agency')->nullable();
             $table->string('current_producer')->nullable();
             $table->string('agency_customer_id')->nullable();
-            $table->string('clients_ids');
             $table->unsignedBigInteger('created_by');
             $table->date('creation_date');
             $table->string('insured_signature')->nullable();
@@ -38,6 +38,8 @@ return new class extends Migration
             $table->foreign('agent_id')->references('id')->on('agents')->onDelete('cascade');
             $table->foreign('insurance_company_id')->references('id')->on('insurance_companies')->onDelete('cascade');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('agency_id')->references('id')->on('agencies')->onDelete('cascade');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
         });
     }
 
