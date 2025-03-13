@@ -2,6 +2,7 @@
 
 namespace App\Models\Forms;
 
+use App\Models\Agency;
 use App\Models\Agent;
 use App\Models\Client;
 use App\Models\InsuranceCompany;
@@ -39,25 +40,27 @@ class AgentBrokerForm extends Model
     // Relationships
     public function agent()
     {
-        return $this->hasOne(Agent::class);
+        return $this->belongsTo(Agent::class);
     }
-//    public function agency()
-//    {
-//        return $this->hasOne(Agent::class);
-//    }
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
 
     public function insuranceCompany()
     {
-        return $this->hasOne(InsuranceCompany::class);
+        return $this->belongsTo(InsuranceCompany::class);
     }
 
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
     public function client()
     {
-        return $this->hasOne(Client::class);
+        return $this->belongsTo(Client::class);
     }
 
 

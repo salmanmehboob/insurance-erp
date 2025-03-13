@@ -191,6 +191,20 @@ function inputMaskDash($obj)
     return str_replace('-', '', $obj);
 }
 
+function formatText($text)
+{
+    // Remove all non-alphanumeric characters except spaces
+    $cleanText = preg_replace('/[^a-zA-Z0-9]/', ' ', $text);
+
+    // Replace multiple spaces with a single space
+    $cleanText = preg_replace('/\s+/', ' ', $cleanText);
+
+    // Capitalize the first letter of each word
+    return ucwords(strtolower(trim($cleanText)));
+}
+
+
+
 function validateTimeStamp($datetime, $full = false)
 {
     $now = new DateTime;

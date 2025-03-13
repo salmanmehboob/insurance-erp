@@ -175,8 +175,11 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    Route::get('agent/broker/form/{id}/add', [FormsController::class, 'create'])->name('create-agent/broker-form');
-    Route::post('store-agentBrokerForm', [FormsController::class, 'store'])->name('store-agentBrokerForm');
+    Route::get('view/form/{type}', [FormsController::class, 'viewForm'])->name('view.form');
+    Route::get('show/form/{id}/{type}', [FormsController::class, 'showForm'])->name('show.form');
+    // Agent Broker Form
+    Route::get('agent/broker/form/{id}/add', [FormsController::class, 'createAgentBrokerForm'])->name('create-agent/broker-form');
+    Route::post('store-agentBrokerForm', [FormsController::class, 'storeAgentBrokerForm'])->name('store-agentBrokerForm');
 
 
 

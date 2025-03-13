@@ -15,55 +15,39 @@ use function Laravel\Prompts\error;
 
 class FormsController extends Controller
 {
-    public function create($id)
+    public function viewForm($type)
     {
-        $clientPolicy = ClientPolicy::with('client','insuranceCompany','agent.agencies')->where('client_id', $id)->first();
+        $title = formatText($type) . ' Forms';
+        $forms = [];
+        if ($type === 'agent_broker') {
+            $forms = AgentBrokerForm::all();
+        }
 
-        return view('admin.clientForms.create_agent_broker_form', compact(  'clientPolicy'));
+        return view('admin.clientForms.index', compact('title', 'forms', 'type'));
+
     }
-//    public function store(Request $request)
-//    {
-//        $request->validate([
-//            'agent_id' => 'required',
-//            'agent_id' => 'required',
-//            'agent_id' => 'required',
-//            'insurance_company_id' => 'required',
-//            'code' => 'required',
-//            'insured_signature' => 'nullable|image|max:2048',
-//        ]);
-//
-//        // Upload signature file if exists
-//        $filePath = null;
-//        if ($request->hasFile('insured_signature')) {
-//            $filePath = $request->file('insured_signature')->store('signatures', 'public');
-//        }
-//        $user_id = auth()->user()->id;
-//
-//        // Create the form entry
-//        AgentBrokerForm::create([
-//            'agent_id' => $request->agent_id,
-//            'insurance_company_id' => $request->insurance_company_id,
-//            'code' => $request->code,
-//            'sub_code' => $request->sub_code,
-//            'current_agency' => $request->current_agency,
-//            'current_producer' => $request->current_producer,
-//            'agency_customer_id' => $request->agency_customer_id,
-//            'clients_ids' => implode(',', $request->clients_ids),
-//            'created_by' => $user_id,
-//            'creation_date' => $request->creation_date,
-//            'insured_signature' => $filePath,
-//            'issued_date' => $request->issued_date,
-//            'insured_title' => $request->insured_title,
-//            'insured_company_name' => $request->insured_company_name,
-//            'insured_company_address' => $request->insured_company_address,
-//            'insured_company_city' => $request->insured_company_city,
-//            'insured_company_state' => $request->insured_company_state,
-//            'insured_company_zipcode' => $request->insured_company_zipcode,
-//        ]);
-//
-//        return redirect()->route('dashboard')->with('success', 'Agent Broker Form submitted successfully!');
-//    }
-    public function store(Request $request)
+
+    public function showForm($id, $type)
+    {
+        $title = 'Forms';
+        $form = [];
+        if ($type === 'agent_broker') {
+            $form = AgentBrokerForm::find($id);
+        }
+
+        return view('admin.clientForms.forms.agent_broker_show', compact('title', 'form', 'type'));
+
+    }
+
+
+    public function createAgentBrokerForm($id)
+    {
+        $clientPolicy = ClientPolicy::with('client', 'insuranceCompany', 'agent.agencies')->where('client_id', $id)->first();
+
+        return view('admin.clientForms.create_agent_broker_form', compact('clientPolicy'));
+    }
+
+    public function storeAgentBrokerForm(Request $request)
     {
 
 
@@ -92,30 +76,30 @@ class FormsController extends Controller
             ]);
 
             $filePath = null;
-        if ($request->hasFile('insured_signature')) {
-            $filePath = $request->file('insured_signature')->store('signatures', 'public');
-        }
+            if ($request->hasFile('insured_signature')) {
+                $filePath = $request->file('insured_signature')->store('signatures', 'public');
+            }
             $user_id = auth()->user()->id;
 
             $agentBrokerForm = AgentBrokerForm::create([
                 'agent_id' => $request->agent_id,
-            'insurance_company_id' => $request->insurance_company_id,
-            'client_id' => $request->client_id,
-            'code' => $request->code,
-            'sub_code' => $request->sub_code,
-            'agency_id' => $request->agency_id,
-            'current_producer' => $request->current_producer,
-            'agency_customer_id' => $request->agency_customer_id,
-            'created_by' => $user_id,
-            'creation_date' => $request->creation_date,
-            'insured_signature' => $filePath,
-            'issued_date' => $request->issued_date,
-            'insured_title' => $request->insured_title,
-            'insured_company_name' => $request->insured_company_name,
-            'insured_company_address' => $request->insured_company_address,
-            'insured_company_city' => $request->insured_company_city,
-            'insured_company_state' => $request->insured_company_state,
-            'insured_company_zipcode' => $request->insured_company_zipcode,
+                'insurance_company_id' => $request->insurance_company_id,
+                'client_id' => $request->client_id,
+                'code' => $request->code,
+                'sub_code' => $request->sub_code,
+                'agency_id' => $request->agency_id,
+                'current_producer' => $request->current_producer,
+                'agency_customer_id' => $request->agency_customer_id,
+                'created_by' => $user_id,
+                'creation_date' => $request->creation_date,
+                'insured_signature' => $filePath,
+                'issued_date' => $request->issued_date,
+                'insured_title' => $request->insured_title,
+                'insured_company_name' => $request->insured_company_name,
+                'insured_company_address' => $request->insured_company_address,
+                'insured_company_city' => $request->insured_company_city,
+                'insured_company_state' => $request->insured_company_state,
+                'insured_company_zipcode' => $request->insured_company_zipcode,
 
             ]);
 
