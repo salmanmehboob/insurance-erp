@@ -24,6 +24,12 @@
                     @include('admin.clientForms.forms.agent_broker_index')
                 @endif
             </div>
+
+            <div class="card-body">
+                @if($type === 'additional_remarks')
+                    @include('admin.clientForms.forms.additional_remarks_index')
+                @endif
+            </div>
         </div>
         <!-- /basic datatable -->
 

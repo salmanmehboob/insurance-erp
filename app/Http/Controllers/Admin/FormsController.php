@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Agent;
-use App\Models\Client;
 use App\Models\ClientPolicy;
+use App\Models\Forms\AdditionalRemarkForm;
 use App\Models\Forms\AgentBrokerForm;
 use App\Models\InsuranceCompany;
-use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Log;
 use function Laravel\Prompts\error;
 
 class FormsController extends Controller
@@ -22,7 +23,9 @@ class FormsController extends Controller
         if ($type === 'agent_broker') {
             $forms = AgentBrokerForm::all();
         }
-
+        if ($type === 'additional_remarks') {
+            $forms = AdditionalRemarkForm::all();
+        }
         return view('admin.clientForms.index', compact('title', 'forms', 'type'));
 
     }
@@ -33,12 +36,17 @@ class FormsController extends Controller
         $form = [];
         if ($type === 'agent_broker') {
             $form = AgentBrokerForm::find($id);
+            return view('admin.clientForms.forms.agent_broker_show', compact('title', 'form', 'type'));
+
+        }
+        if ($type === 'additional_remarks') {
+            $form = AdditionalRemarkForm::find($id);
+            return view('admin.clientForms.forms.additional_remarks_show', compact('title', 'form', 'type'));
+
         }
 
-        return view('admin.clientForms.forms.agent_broker_show', compact('title', 'form', 'type'));
 
     }
-
 
     public function createAgentBrokerForm($id)
     {
@@ -109,13 +117,77 @@ class FormsController extends Controller
 
             return redirect()->route('dashboard')->with('success', 'Client policy added successfully.');
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
 
             //
-            \Log::error('Error saving client policy: ' . $e->getMessage());
+            Log::error('Error saving client policy: ' . $e->getMessage());
 
             return redirect()->back()->with('error', 'An error occurred while saving the Form Data. Please try again.' . $e->getMessage());
         }
     }
+
+    public function CreateAdditionalRemarksForm($id)
+    {
+        $clientPolicy = ClientPolicy::with('client', 'insuranceCompany', 'agency')->where('client_id', $id)->first();
+        $insuranceCompanies = InsuranceCompany::all();
+
+        return view('admin.clientForms.create_additional_remarks_form', compact('clientPolicy','insuranceCompanies'));
+    }
+
+    public function storeAdditionalRemarksForm(Request $request)
+    {
+        // Validate the incoming request data
+        $validator = Validator::make($request->all(), [
+            'client_id' => 'required|integer|exists:clients,id',
+            'agency_id' => 'nullable|integer|exists:agencies,id',  // Updated: agency_id should be nullable
+            'insurance_company_id' => 'required|integer|exists:insurance_companies,id',
+            'form_no' => 'required|string|max:50',
+            'form_title' => 'required|string|max:100',
+            'description' => 'nullable|string',
+            'naic_code' => 'nullable|string|max:20',
+            'agency_customer_id' => 'nullable|string|max:50',
+            'loc' => 'nullable|string|max:50',
+        ]);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Start database transaction
+        DB::beginTransaction();
+
+        try {
+            $user_id = auth()->user()->id;
+
+            $additionalRemarksForm = AdditionalRemarkForm::create([
+                'client_id' => $request->client_id,
+                'agency_id' => $request->agency_id ?: null,  // Handle null value
+                'insurance_company_id' => $request->insurance_company_id,
+                'created_by' => $user_id,
+                'form_no' => $request->form_no,
+                'form_title' => $request->form_title,
+                'agency_customer_id' => $request->agency_customer_id,
+                'loc' => $request->loc,
+                'naic_code' => $request->naic_code,
+                'description' => $request->description,
+            ]);
+
+            // Check if the data was successfully created
+            if ($additionalRemarksForm) {
+                DB::commit();
+                return redirect()->back()->with('success', 'Form submitted successfully!');
+            } else {
+                DB::rollback();
+                return redirect()->back()->withErrors(['error' => 'Failed to create the record.']);
+            }
+
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            DB::rollback();
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
 }

@@ -178,8 +178,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('view/form/{type}', [FormsController::class, 'viewForm'])->name('view.form');
     Route::get('show/form/{id}/{type}', [FormsController::class, 'showForm'])->name('show.form');
     // Agent Broker Form
-    Route::get('agent/broker/form/{id}/add', [FormsController::class, 'createAgentBrokerForm'])->name('create-agent/broker-form');
+    Route::get('agent/broker/form/{id}/create', [FormsController::class, 'createAgentBrokerForm'])->name('create-agent/broker-form');
     Route::post('store-agentBrokerForm', [FormsController::class, 'storeAgentBrokerForm'])->name('store-agentBrokerForm');
+    // Additional Remarks From
+    Route::get('additional/remarks/form/{id}/create', [FormsController::class, 'CreateAdditionalRemarksForm'])->name('create-additional/remarks-form');
+    Route::post('store-additionalRemarks', [FormsController::class, 'storeAdditionalRemarksForm'])->name('store-additionalRemarks');
 
 
 
