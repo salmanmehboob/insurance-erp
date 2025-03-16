@@ -30,6 +30,11 @@
                     @include('admin.clientForms.forms.additional_remarks_index')
                 @endif
             </div>
+            <div class="card-body">
+                @if($type === 'evidenceOfProperty')
+                    @include('admin.clientForms.forms.evidence_of_property_index')
+                @endif
+            </div>
         </div>
         <!-- /basic datatable -->
 

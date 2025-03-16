@@ -115,7 +115,7 @@
 
         </div>
 {{--        <div>--}}
-            <table>
+            <table class="mt-3 ">
                 <tr>
                     <th colspan="2">NAMED INSURED<br>(AS IT APPEARS ON POLICY)</th>
                     <th>POLICY NUMBER(S)</th>

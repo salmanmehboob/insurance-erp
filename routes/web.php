@@ -183,7 +183,9 @@ Route::middleware(['auth'])->group(function () {
     // Additional Remarks From
     Route::get('additional/remarks/form/{id}/create', [FormsController::class, 'CreateAdditionalRemarksForm'])->name('create-additional/remarks-form');
     Route::post('store-additionalRemarks', [FormsController::class, 'storeAdditionalRemarksForm'])->name('store-additionalRemarks');
-
+// Additional Remarks From
+    Route::get('evidence/of/property/form/{id}/create', [FormsController::class, 'CreateEvidenceOfPropertyForm'])->name('create-evidence/of/property-form');
+    Route::post('store-evidence/of/property', [FormsController::class, 'storeEvidenceOfProperty'])->name('store-evidence/of/property');
 
 
 

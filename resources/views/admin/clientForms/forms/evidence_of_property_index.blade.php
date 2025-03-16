@@ -1,7 +1,8 @@
-<table id="additional-remarks-table" class="table table-striped datatables-reponsive">
+<table id="agent-broker-table" class="table table-striped datatables-reponsive">
     <thead>
     <tr>
         <th>Client</th>
+        <th>Agent</th>
         <th>Agency</th>
         <th>Insurance Company</th>
         <th class="text-center">Actions</th>
@@ -11,6 +12,7 @@
     @foreach($forms as $row)
         <tr>
             <td>{{ $row->client->applicant_name ?? '' }}</td>
+            <td>{{ $row->agent->name ?? '' }}</td>
             <td>{{ $row->agency->agency_name ?? ''   }}</td>
             <td>{{ $row->insuranceCompany->name ?? '' }}</td>
             <td>
