@@ -69,8 +69,8 @@
             </table>
         </div>
 
-        <div class="row ml-5">
-            <table class="col-md-6">
+        <div class="row">
+            <table class="col-md-6 ">
                 <tr>
                     <th rowspan="5"  class="text-start vertical-align: top; ">New Agency </th>
 
@@ -100,9 +100,21 @@
                 <tr>
                     <th colspan="3" class="text-start" >Agency Customer ID:  {{$form->agency_customer_id ?? ''}}
                     </th>
+
+                </tr>
+                <tr>
+                    <th colspan="3"  class="text-start" >INSURED
+                        <br>
+                        {{$form->client->policy->insuranceCompany->name}}
+                        <br>
+                        {{$form->client->policy->insuranceCompany->address}}
+                        <br><br>
+                        {{$form->client->policy->insuranceCompany->city}} <span class="mx-5">{{$form->client->policy->insuranceCompany->state->name}} {{$form->client->policy->insuranceCompany->zip_code}}</span>
+                    </th>
+
                 </tr>
             </table>
-            <table class="col-md-6 ">
+            <table class="col-md-6">
                 <tr>
                     <th colspan="3" class="text-start">Insured Company Name
                         <br>
@@ -110,20 +122,25 @@
                         <br>
                         {{$form->insuranceCompany->address}}
                         <br><br>
-                        {{$form->insuranceCompany->city}} <span class="mx-5">{{$form->insuranceCompany->state->name}} {{$form->insuranceCompany->zip_code}}</span>
+                        {{$form->insuranceCompany->city}} <span class="mx-5">{{$form->insuranceCompany->state->name}} {{$form->insuranceCompany->zip_code}} <br><br><br></span>
                     </th>
                 </tr>
                 <tr>
-                    <th class="text-start">LOAN NUMBER:  </th>
-                    <th colspan="2"  class="text-start">POLICY NUMBER:   </th>
+                    <th class="text-start">LOAN NUMBER: {{$form->loan_no}} </th>
+                    <th colspan="2"  class="text-start">POLICY NUMBER: {{$form->client->policy->policy_nu}}  </th>
                 </tr>
                 <tr>
-                    <th class="text-start">EFFECTIVE DATE:  </th>
-                    <th class="text-start">EXPIRATION DATE:  </th>
-                    <th class="text-start"><input type="checkbox" class="custom-checkbox"> CONTINUED UNTIL <br> TERMINATED IF CHECKED</th>
+                    <th class="text-start">EFFECTIVE DATE: {{$form->client->policy->effective_date}}  </th>
+                    <th class="text-start">EXPIRATION DATE: {{$form->client->policy->expiration_date}} </th>
+                 @if($form->is_terminated === '1')
+                    <th class="text-start"><input type="checkbox" class="custom-checkbox" checked disabled> CONTINUED UNTIL <br> TERMINATED IF CHECKED</th>
+
+                    @else()
+                    <th class="text-start"><input type="checkbox" class="custom-checkbox" disabled > CONTINUED UNTIL <br> TERMINATED IF CHECKED</th>
+@endif
                 </tr>
                 <tr>
-                    <th colspan="3" class="text-start" style="border: 2px solid black;"> THIS REPLACES PRIOR EVIDENCE DATE:  </th>
+                    <th colspan="3" class="text-start" style="border: 2px solid black;"> THIS REPLACES PRIOR EVIDENCE DATE: {{$form->evidence_date}} </th>
                 </tr>
             </table>
         </div>
@@ -132,7 +149,8 @@
         <div>
             <table class="table w-100 ">
                 <tr>
-                    <th colspan="2" class="text-start">LOCATION/DESCRIPTION</th>
+                    <th colspan="2" class="text-start">LOCATION/DESCRIPTION :  {{$form->property_description}}</th>
+
 
                 </tr>
                 <tr>
@@ -147,15 +165,26 @@
         </div>
         <div class="col-md-6">
             <strong>
-                PERILS INSURED <input type="checkbox" class="custom-checkbox">
-
-
-                BASIC  <input type="checkbox" class="custom-checkbox">
-
-
-                BROAD <input type="checkbox" class="custom-checkbox">
-
-                SPECIAL<input type="checkbox" class="custom-checkbox">
+                @if($form->is_perils_insured === '1')
+                PERILS INSURED <input type="checkbox" class="custom-checkbox" checked disabled>
+                @else()
+                    PERILS INSURED <input type="checkbox" class="custom-checkbox" checked disabled>
+                    @endif
+                @if($form->is_basic === '1')
+                BASIC  <input type="checkbox" class="custom-checkbox" checked disabled>
+                    @else()
+                        BASIC  <input type="checkbox" class="custom-checkbox" disabled>
+                    @endif
+                    @if($form->is_broad === '1')
+                BROAD <input type="checkbox" class="custom-checkbox " checked disabled>
+                    @else()
+                        BROAD <input type="checkbox" class="custom-checkbox" disabled>
+                    @endif
+@if($form->is_special === '1')
+                SPECIAL<input type="checkbox" class="custom-checkbox" checked disabled>
+                    @else()
+                        SPECIAL<input type="checkbox" class="custom-checkbox" disabled>
+    @endif
             </strong>
 
 
@@ -169,9 +198,9 @@
                     <th>DEDUCTIBLE</th>
                 </tr>
                 <tr>
-                    <th>dfgs</th>
-                    <th>dfgs</th>
-                    <th>sdfgs</th>
+                    <th>{{$form->coverage_description}}</th>
+                    <th>{{$form->insurance_amount}}</th>
+                    <th>{{$form->deductible}}</th>
                 </tr>
             </table>
         </div>
@@ -180,7 +209,7 @@
             <h4>REMARKS (INCLUDING SPECIAL CONDITIONS)</h4>
             <table class="col-md-12 ">
                 <tr>
-                    <th  style="width: 100%;"><br><br><br><br><br>  </th>
+                    <th  style="width: 100%;" class="text-start">{{$form->remarks}}<br><br><br><br>  </th>
 
                 </tr>
 
@@ -200,11 +229,38 @@
             <h4>ADDITIONAL INTEREST</h4>
             <table class="col-md-12 ">
                 <tr>
-                    <th   class="text-start" rowspan="3" style="width: 58%;">NAME AND ADDRESS</th>
-                    <th  class="text-start"> <input type="checkbox" class="custom-checkbox"> ADDITIONAL INSURED
-                        <input type="checkbox" class="custom-checkbox">LENDER'S LOSS PAYABLE
-                        <input type="checkbox" class="custom-checkbox">LOSS PAYEE
-                        <input type="checkbox" class="custom-checkbox"> MURTAGAGEE
+                    <th   class="text-start" rowspan="3" style="width: 58%;">{{$form->name}} <br> <br> {{$form->address}}</th>
+                    <th class="text-start">
+                        @if($form->is_additional_insured === '1')
+                            <input type="checkbox" class="custom-checkbox" checked disabled> ADDITIONAL INSURED
+                        @else()
+                            <input type="checkbox" class="custom-checkbox" disabled> ADDITIONAL INSURED
+                        @endif
+
+                        @if($form->is_lenders_loss_payable === '1')
+                            <input type="checkbox" class="custom-checkbox" checked disabled> LENDER'S LOSS PAYABLE
+                            @else()
+                                <input type="checkbox" class="custom-checkbox" disabled> LENDER'S LOSS PAYABLE
+                            @endif
+
+                        @if($form->is_loss_payee === '1')
+                            <input type="checkbox" class="custom-checkbox" checked disabled> LOSS PAYEE
+                            @else()
+                                <input type="checkbox" class="custom-checkbox" disabled> LOSS PAYEE
+
+                            @endif
+
+                        @if($form->is_murtagagee === '1')
+                            <input type="checkbox" class="custom-checkbox" checked disabled> MURTAGAGEE
+                            @else()
+                            <input type="checkbox" class="custom-checkbox" disabled> MURTAGAGEE
+                        @endif
+
+
+                    </th>
+
+
+
                     </th>
 
                 </tr>
@@ -212,7 +268,7 @@
                     <th class="text-start">LOAN #</th>
                 </tr>
                 <tr>
-                    <th class="text-start">AUTHORIZED REPRESENTATIVE</th>
+                    <th class="text-start">AUTHORIZED REPRESENTATIVE : {{$form->representative_name}}</th>
                 </tr>
 
             </table>
