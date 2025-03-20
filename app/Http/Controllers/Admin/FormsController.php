@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Agency;
 use App\Models\ClientPolicy;
 use App\Models\Forms\AdditionalRemarkForm;
 use App\Models\Forms\AgentBrokerForm;
 use App\Models\Forms\EvidenceOfPropertyForm;
 use App\Models\InsuranceCompany;
+use App\Models\PolicyType;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +25,7 @@ class FormsController extends Controller
         $forms = [];
         if ($type === 'agent_broker') {
             $forms = AgentBrokerForm::all();
+
         }
         if ($type === 'additional_remarks') {
             $forms = AdditionalRemarkForm::all();
@@ -40,7 +43,9 @@ class FormsController extends Controller
         $form = [];
         if ($type === 'agent_broker') {
             $form = AgentBrokerForm::find($id);
-            return view('admin.clientForms.forms.agent_broker_show', compact('title', 'form', 'type'));
+            $agencies = Agency::all();
+            $policyTypes = PolicyType::all();
+            return view('admin.clientForms.forms.agent_broker_show', compact('title', 'form', 'type','agencies','policyTypes'));
 
         }
         if ($type === 'additional_remarks') {
@@ -59,8 +64,9 @@ class FormsController extends Controller
     public function createAgentBrokerForm($id)
     {
         $clientPolicy = ClientPolicy::with('client', 'insuranceCompany', 'agent.agencies')->where('client_id', $id)->first();
+        $agencies = Agency::all();
 
-        return view('admin.clientForms.create_agent_broker_form', compact('clientPolicy'));
+        return view('admin.clientForms.create_agent_broker_form', compact('clientPolicy','agencies'));
     }
 
     public function storeAgentBrokerForm(Request $request)

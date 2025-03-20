@@ -47,6 +47,11 @@
             transform: scale(1.5); /* Makes the checkbox bigger */
             margin: 8px; /* Adds some space between the checkbox and the text */
         }
+        input {
+            border: none;
+            background: lightgoldenrodyellow;
+
+        }
     </style>
 </head>
 <body>
@@ -94,7 +99,7 @@
                     <th class="text-start" style="width: 50%;">FAX (A/C, No):{{$form->agency->fax}} </th>
                 </tr>
                 <tr>
-                    <th class="text-start" style="width: 50%;">Code:  {{$form->code ?? ''}} </th>
+                    <th class="text-start" style="width: 50%;">Code:   <input type="text" class="form control" value="{{$form->code ?? ''}}"> </th>
                     <th class="text-start" colspan="2">Sub Code:  {{$form->sub_code ?? ''}} </th>
                 </tr>
                 <tr>

@@ -6,6 +6,7 @@ use App\Models\Agency;
 use App\Models\Agent;
 use App\Models\Client;
 use App\Models\InsuranceCompany;
+use App\Models\PolicyType;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -61,6 +62,10 @@ class AgentBrokerForm extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+    public function policyType()
+    {
+        return $this->belongsTo(PolicyType::class);
     }
 
 
