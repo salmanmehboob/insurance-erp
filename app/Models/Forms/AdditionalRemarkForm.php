@@ -13,46 +13,29 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AdditionalRemarkForm extends Model
 {
-    use HasFactory, SoftDeletes;
-
     protected $fillable = [
-        'client_id',
-        'agency_id',
-        'created_by',
-        'insurance_company_id',
-        'agent_id',
-        'form_no',
-        'form_title',
-        'description',
         'agency_customer_id',
         'loc',
+        'agency_name',
+        'name_insured',
+        'policy_number',
+        'carrier',
         'naic_code',
+        'effective_date',
+        'form_no',
+        'form_title',
+        'created_by',
+        'description',
     ];
+
+    use HasFactory, SoftDeletes;
 
     /**
      * Relationships
      */
-    public function client()
-    {
-        return $this->belongsTo(Client::class);
-    }
 
-    public function agency()
+    public function createdBy()
     {
-        return $this->belongsTo(Agency::class);
-    }
-
-    public function insuranceCompany()
-    {
-        return $this->belongsTo(InsuranceCompany::class);
-    }
-
-    public function agent()
-    {
-        return $this->belongsTo(Agent::class);
-    }
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'created_by');
     }
 }

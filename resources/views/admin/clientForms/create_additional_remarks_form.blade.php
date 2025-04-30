@@ -1,181 +1,123 @@
 @extends('admin.layouts.app')
+@push('styles')
+    <style>
+
+        /* Ensure editable content is visible by default */
+        #editableContent {
+            display: block;
+        }
+    </style>
+@endpush
 @section('content')
 
     <form action="{{ route('store-additionalRemarks') }}" method="POST">
         @csrf
         <div class="container">
-            <div class="row">
-                <!--client -->
-                <div class="col-md-3 ">
-                    <label for="client_id" class="form-label">Client</label>
-                    <input type="hidden" name="client_id" value="{{ $clientPolicy->client->id }}">
-                    <select class="form-control" disabled>
-                        <option
-                            value="{{ $clientPolicy->client->id }}">{{ $clientPolicy->client->applicant_name }}</option>
-                    </select>
-                </div>
+            <!-- Editable Form (Visible by Default) -->
+            <div style="max-width: 800px; width: 100%; height: 80%;">
+                <div id="editableContent">
+                    <div id="editableForm" style="border: 1px solid #000; padding: 10px; box-sizing: border-box; width: 100%; height: 100%;">
+                        <div style="text-align: center; font-size: 16px; font-weight: bold; margin-bottom: 10px; text-transform: uppercase;">
+                            ADDITIONAL REMARKS SCHEDULE
+                        </div>
 
-                <!-- Agent -->
-                <div class="col-md-3">
-                    <label for="agency_id" class="form-label">Agency</label>
-                    <input type="text" class="form-control" value="{{ $clientPolicy->agency->agency_name }}" readonly>
-                    <input type="hidden" name="agency_id" id="agency_id" value="{{ $clientPolicy->agency->id }}">
-                </div>
-
-                <!-- Insurance Company -->
-                <div class="col-md-4">
-                    <label for="insurance_company" class="form-label">Insurance Company</label>
-                    <input name="insurance_company" id="insurance_company" class="form-control"
-                           value="{{$clientPolicy->insuranceCompany->name}}" readonly>
-
-                </div>
-                <div class="col-md-4">
-                    <label for="insurance_company_id" class="form-label">Insurance Company</label>
-                    <select name="insurance_company_id" id="insurance_company_id" class="form-control">
-                        <option value="">Select Insurance Company</option>
-                        @foreach($insuranceCompanies as $company)
-                            <option value="{{ $company->id }}"
-                                {{ old('insurance_company_id', $clientPolicy->insurance_company_id ?? '') == $company->id ? 'selected' : '' }}>
-                                {{ $company->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="col-md-2 mt-2">
-                    <label for="policy_number" class="form-label">Policy Number</label>
-                    <input type="number" name="policy_number" id="policy_number" class="form-control"
-                           value="{{$clientPolicy->policy_number}}" readonly>
-                </div>
-
-                <div class="col-md-4 mt-2">
-                    <label for="effective_date" class="form-label">Effective Date</label>
-                    <input type="text" name="effective_date" id="effective_date" class="form-control"
-                           value="{{$clientPolicy->effective_date}}" readonly>
-                </div>
-
-
-                <div class="col-md-3 mt-2">
-                    <label for="naic_code" class="form-label">NAIC Code</label>
-                    <input type="text" name="naic_code" id="naic_code" class="form-control"
-                           placeholder="Enter NAIC Code">
-                </div>
-
-                <div class="col-md-4 mt-2">
-                    <label  class="form-label">Form No</label>
-                    <input type="text" name="form_no"  class="form-control" placeholder="Enter Form No">
-                </div>
-
-                <div class="col-md-4 mt-2">
-                    <label for="form_title" class="form-label">Form Title</label>
-                    <input type="text" name="form_title" id="form_title" class="form-control"
-                           placeholder="Enter Form Title">
-                </div>
-
-                <div class="col-md-4 mt-2">
-                    <label for="agency_customer_id" class="form-label">Agency Customer ID</label>
-                    <input type="text" name="agency_customer_id" id="agency_customer_id" class="form-control"
-                           placeholder="Enter Agency Customer ID">
-                </div>
-
-                <div class="col-md-4 mt-2">
-                    <label for="loc" class="form-label">LOC</label>
-                    <input type="text" name="loc" id="loc" class="form-control" placeholder="Enter LOC">
-                </div>
-                <div class=" mt-4">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="card-title"></h5>
-                                <h6 class="card-subtitle text-muted">Write Your Description In The Below Editor
-                                </h6>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <div style="flex: 1; margin-right: 10px;">
+                                <label style="font-size: 12px; font-weight: bold;">AGENCY CUSTOMER ID:</label><br>
+                                <input type="text" id="customerId" name="agency_customer_id" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px;">
                             </div>
-                            <div class="card-body">
-                                <div class="clearfix">
-                                    <div id="quill-toolbar">
-											<span class="ql-formats">
-												<select class="ql-font"></select>
-												<select class="ql-size"></select>
-											</span>
-                                        <span class="ql-formats">
-												<button class="ql-bold"></button>
-												<button class="ql-italic"></button>
-												<button class="ql-underline"></button>
-												<button class="ql-strike"></button>
-											</span>
-                                        <span class="ql-formats">
-												<select class="ql-color"></select>
-												<select class="ql-background"></select>
-											</span>
-                                        <span class="ql-formats">
-												<button class="ql-script" value="sub"></button>
-												<button class="ql-script" value="super"></button>
-											</span>
-                                        <span class="ql-formats">
-												<button class="ql-header" value="1"></button>
-												<button class="ql-header" value="2"></button>
-												<button class="ql-blockquote"></button>
-												<button class="ql-code-block"></button>
-											</span>
-                                        <span class="ql-formats">
-												<button class="ql-list" value="ordered"></button>
-												<button class="ql-list" value="bullet"></button>
-												<button class="ql-indent" value="-1"></button>
-												<button class="ql-indent" value="+1"></button>
-											</span>
-                                        <span class="ql-formats">
-												<button class="ql-direction" value="rtl"></button>
-												<select class="ql-align"></select>
-											</span>
-                                        <span class="ql-formats">
-												<button class="ql-link"></button>
-												<button class="ql-image"></button>
-												<button class="ql-video"></button>
-											</span>
-                                        <span class="ql-formats">
-												<button class="ql-clean"></button>
-											</span>
-                                    </div>
-                                    <input type="hidden" name="description" id="description">
-                                    <div id="quill-editor"></div>
-                                </div>
+                            <div style="flex: 1;">
+                                <label style="font-size: 12px; font-weight: bold;">LOC #:</label><br>
+                                <input type="text" id="locNum" name="loc" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px;">
                             </div>
                         </div>
+
+
+
+
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+                            <tr>
+                                <td style="width: 50%; padding: 5px; font-size: 12px; vertical-align: top;">
+                                    <strong style="font-size: 12px;">AGENCY</strong><br>
+                                    <input type="text" id="agency" name="agency_name" value="Aim Insurance Of Texas" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                </td>
+                                <td style="width: 50%; padding: 5px; font-size: 12px; vertical-align: top;">
+                                    <strong style="font-size: 12px;">NAMED INSURED</strong><br>
+                                    <input type="text" id="namedInsured" name="name_insured" value="JJH CONSTRUCTION LLC" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%; padding: 5px; font-size: 12px; vertical-align: top;">
+                                    <strong style="font-size: 12px;">POLICY NUMBER</strong><br>
+                                    <input type="text" id="policyNumber" name="policy_number" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                </td>
+                                <td style="width: 50%; padding: 5px; font-size: 12px; vertical-align: top;">
+                                    <table style="width: 100%; border-collapse: collapse;">
+                                        <tr>
+                                            <td style="width: 70%; border: none; padding-right: 5px;">
+                                                <strong style="font-size: 12px;">CARRIER</strong><br>
+                                                <input type="text" id="carrier" name="carrier" value="" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                            </td>
+                                            <td style="width: 30%; border: none;">
+                                                <strong style="font-size: 12px;">NAIC CODE</strong><br>
+                                                <input type="text" id="naicCode" name="naic_code" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="padding: 5px; font-size: 12px; vertical-align: top;">
+                                    <strong style="font-size: 12px;">EFFECTIVE DATE:</strong>
+                                    <input type="date" id="effectiveDate" name="effective_date" value="" style="width: 120px; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div style="margin-bottom: 5px; font-size: 12px; font-weight: bold;">
+                            <strong>ADDITIONAL REMARKS</strong>
+                        </div>
+
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 5px; font-size: 12px;">
+                                    THIS ADDITIONAL REMARKS FORM IS A SCHEDULE TO ACORD FORM,
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px; font-size: 12px;">
+                                    FORM NUMBER:
+                                    <input type="text" id="formNumber" name="form_no" style="width: 80px; display: inline-block; margin-right: 5px; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                    FORM TITLE:
+                                    <input type="text" id="formTitle" name="form_title" style="width: 300px; display: inline-block; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px;">
+                                    <textarea id="additionalRemarks" name="description" placeholder="Enter Additional Remarks Here..." style="width: 100%; height: 300px; border: 1px solid #000; padding: 5px; resize: none; font-size: 12px; box-sizing: border-box;"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+
+
                     </div>
 
-                </div>
 
-                <div class="row mt-12 mt-3 ">
-                    <div class="col-md-12 text-center">
-                        <button type="submit" class="btn btn-primary float-end m-1">Submit</button>
-                        <button type="reset" class="btn btn-secondary float-end m-1">Reset</button>
-                    </div>
                 </div>
             </div>
         </div>
-
+        <div class="row mt-12 mt-3 ">
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-primary   m-1">Submit</button>
+                <button type="reset" class="btn btn-secondary   m-1">Reset</button>
+            </div>
+        </div>
     </form>
 
 
 
 @endsection
 @push('script')
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Initialize Quill editor and assign it to a variable
-            var quill = new Quill("#quill-editor", {
-                modules: {
-                    toolbar: "#quill-toolbar"
-                },
-                placeholder: "Write your description here...",
-                theme: "snow"
-            });
 
-            // Event listener to update the hidden input with the HTML content
-            quill.on("text-change", function () {
-                document.getElementById("description").value = quill.root.innerHTML;
-            });
-        });
-    </script>
 
 @endpush

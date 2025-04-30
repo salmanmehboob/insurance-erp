@@ -13,16 +13,32 @@ return new class extends Migration
     {
         Schema::create('agent_broker_forms', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('agent_id');
-            $table->unsignedBigInteger('agency_id');
-            $table->unsignedBigInteger('client_id');
-            $table->unsignedBigInteger('insurance_company_id');
+            $table->date('creation_date');
+
+            $table->string('agency_name');
+            $table->string('agency_phone');
+            $table->string('agency_fax');
+            $table->string('agency_address');
+            $table->string('agency_city');
+            $table->string('agency_state');
+            $table->string('agency_zipcode');
+
+            $table->string('insurance_company_name');
+             $table->string('insurance_company_address');
+            $table->string('insurance_company_city');
+            $table->string('insurance_company_state');
+            $table->string('insurance_company_zipcode');
+            $table->string('current_agency')->nullable();
+            $table->string('current_producer')->nullable();
+
+            $table->string('email')->nullable();
             $table->string('code')->nullable();
             $table->string('sub_code')->nullable();
-            $table->string('current_producer')->nullable();
             $table->string('agency_customer_id')->nullable();
-            $table->unsignedBigInteger('created_by');
-            $table->date('creation_date');
+
+            $table->string('advice_producer_name');
+            $table->date('advice_producer_effective_date');
+
             $table->string('insured_signature')->nullable();
             $table->date('issued_date');
             $table->string('insured_title')->nullable();
@@ -31,16 +47,12 @@ return new class extends Migration
             $table->string('insured_company_city')->nullable();
             $table->string('insured_company_state')->nullable();
             $table->string('insured_company_zipcode')->nullable();
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+
             $table->softDeletes();
             $table->timestamps();
 
-            // Foreign Keys
-            $table->foreign('agent_id')->references('id')->on('agents')->onDelete('cascade');
-            $table->foreign('insurance_company_id')->references('id')->on('insurance_companies')->onDelete('cascade');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('agency_id')->references('id')->on('agencies')->onDelete('cascade');
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
-        });
+         });
     }
 
     /**

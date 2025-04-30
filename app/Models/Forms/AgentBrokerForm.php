@@ -18,16 +18,33 @@ class AgentBrokerForm extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'agent_id',
-        'agency_id',
-        'client_id',
-        'insurance_company_id',
+        'creation_date',
+
+        'agency_name',
+        'agency_phone',
+        'agency_fax',
+        'agency_address',
+        'agency_city',
+        'agency_state',
+        'agency_zipcode',
+
+        'insurance_company_name',
+        'insurance_company_address',
+        'insurance_company_city',
+        'insurance_company_state',
+        'insurance_company_zipcode',
+
+        'current_agency',
+        'current_producer',
+
+        'email',
         'code',
         'sub_code',
-        'current_producer',
         'agency_customer_id',
-        'created_by',
-        'creation_date',
+
+        'advice_producer_name',
+        'advice_producer_effective_date',
+
         'insured_signature',
         'issued_date',
         'insured_title',
@@ -35,37 +52,20 @@ class AgentBrokerForm extends Model
         'insured_company_address',
         'insured_company_city',
         'insured_company_state',
-        'insured_company_zipcode'
+        'insured_company_zipcode',
+
+        'created_by',
     ];
 
-    // Relationships
-    public function agent()
-    {
-        return $this->belongsTo(Agent::class);
-    }
-
-    public function agency()
-    {
-        return $this->belongsTo(Agency::class);
-    }
-
-    public function insuranceCompany()
-    {
-        return $this->belongsTo(InsuranceCompany::class);
-    }
 
     public function createdBy()
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->hasMany(User::class, 'created_by');
     }
 
-    public function client()
+    public function companies()
     {
-        return $this->belongsTo(Client::class);
-    }
-    public function policyType()
-    {
-        return $this->belongsTo(PolicyType::class);
+        return $this->hasMany(AgentBrokerCompany::class, 'agent_broker_form_id');
     }
 
 

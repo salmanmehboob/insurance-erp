@@ -201,7 +201,7 @@
                                                class="text-primary w-100">Agent/Broker Form</a>
                                         </div>
                                         <div class="col-md-6">
-                                            <a href="{{route('view.form',['type' => 'agent_broker'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                            <a target="_blank" href="{{route('view.form',['type' => 'agent_broker'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
                                         </div>
                                         <div class="col-md-6">
                                             <a href="{{ route('create-additional/remarks-form', $policy->client->id) }}"
@@ -209,7 +209,7 @@
                                         </div>
 
                                         <div class="col-md-6">
-                                            <a href="{{route('view.form',['type' => 'additional_remarks'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                            <a target="_blank" href="{{route('view.form',['type' => 'additional_remarks'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
                                         </div>
 
                                         <div class="col-md-6">
@@ -218,7 +218,7 @@
                                         </div>
 
                                         <div class="col-md-6">
-                                            <a href="{{route('view.form',['type' => 'evidenceOfProperty'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                            <a target="_blank" href="{{route('view.form',['type' => 'evidenceOfProperty'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
                                         </div>
                                     </div>
                                 </div>

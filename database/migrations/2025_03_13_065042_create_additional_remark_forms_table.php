@@ -13,16 +13,17 @@ return new class extends Migration
     {
         Schema::create('additional_remark_forms', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
-            $table->foreignId('agency_id')->constrained('agencies')->onDelete('cascade');
-            $table->foreignId('insurance_company_id')->constrained('insurance_companies')->onDelete('cascade');
-            $table->foreignId('agent_id')->nullable()->constrained('agents')->onDelete('cascade');
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->string('agency_customer_id');
+            $table->string('loc');
+            $table->string('agency_name');
+            $table->string('name_insured');
+            $table->string('policy_number');
+            $table->string('carrier');
+            $table->string('naic_code');
+            $table->date('effective_date');
             $table->string('form_no')->unique();
             $table->string('form_title');
-            $table->string('loc');
-            $table->string('naic_code');
-            $table->string('agency_customer_id');
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();

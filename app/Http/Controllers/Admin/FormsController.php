@@ -43,9 +43,7 @@ class FormsController extends Controller
         $form = [];
         if ($type === 'agent_broker') {
             $form = AgentBrokerForm::find($id);
-            $agencies = Agency::all();
-            $policyTypes = PolicyType::all();
-            return view('admin.clientForms.forms.agent_broker_show', compact('title', 'form', 'type','agencies','policyTypes'));
+            return view('admin.clientForms.forms.agent_broker_show', compact('title', 'form', 'type'));
 
         }
         if ($type === 'additional_remarks') {
@@ -66,55 +64,75 @@ class FormsController extends Controller
         $clientPolicy = ClientPolicy::with('client', 'insuranceCompany', 'agent.agencies')->where('client_id', $id)->first();
         $agencies = Agency::all();
 
-        return view('admin.clientForms.create_agent_broker_form', compact('clientPolicy','agencies'));
+        return view('admin.clientForms.create_agent_broker_form', compact('clientPolicy', 'agencies'));
     }
 
     public function storeAgentBrokerForm(Request $request)
     {
-
-
         DB::beginTransaction();
 
         try {
-            // Validate the request
-            $validatedData = $request->validate([
-                'client_id' => 'required|exists:clients,id',
-                'agent_id' => 'required|exists:agents,id',
-                'insurance_company_id' => 'required|exists:insurance_companies,id',
-                'agency_id' => 'required|exists:agencies,id',
+            $validator = Validator::make($request->all(), [
+                'creation_date' => 'nullable|date',
+                'agency_phone' => 'nullable|string|max:255',
+                'agency_fax' => 'nullable|string|max:255',
+                'agency_name' => 'nullable|string|max:255',
+                'agency_address' => 'nullable|string|max:255',
+                'agency_city' => 'nullable|string|max:255',
+                'agency_state' => 'nullable|string|max:255',
+                'agency_zipcode' => 'nullable|string|max:20',
+                'email' => 'nullable|email|max:255',
                 'code' => 'required|string|max:255',
                 'sub_code' => 'nullable|string|max:255',
-                'current_producer' => 'nullable|string|max:255',
                 'agency_customer_id' => 'nullable|string|max:255',
-                'creation_date' => 'nullable|date',
+                'insurance_company_name' => 'nullable|string|max:255',
+                'insurance_company_address' => 'nullable|string|max:255',
+                'insurance_company_city' => 'nullable|string|max:255',
+                'insurance_company_state' => 'nullable|string|max:255',
+                'insurance_company_zipcode' => 'nullable|string|max:255',
+                'current_agency' => 'nullable|string|max:255',
+                'current_producer' => 'nullable|string|max:255',
+                'advice_producer_name' => 'nullable|string|max:255',
+                'advice_producer_effective_date' => 'nullable|date',
+                'insured_signature' => 'nullable|string|max:255',
                 'issued_date' => 'nullable|date',
-                'insured_signature' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
                 'insured_title' => 'nullable|string|max:255',
                 'insured_company_name' => 'nullable|string|max:255',
                 'insured_company_address' => 'nullable|string|max:255',
                 'insured_company_city' => 'nullable|string|max:255',
                 'insured_company_state' => 'nullable|string|max:255',
-                'insured_company_zipcode' => 'nullable|string|max:20',
+                'insured_company_zipcode' => 'nullable|string|max:255',
+
+                // Array validations for AgentBrokerCompany
+                'name' => 'nullable|array',
+                'name.*' => 'nullable|string|max:255',
+                'policy_number' => 'nullable|array',
+                'policy_number.*' => 'nullable|string|max:255',
+                'effective_date' => 'nullable|array',
+                'effective_date.*' => 'nullable|date',
+                'expiration_date' => 'nullable|array',
+                'expiration_date.*' => 'nullable|date',
+                'line_of_business' => 'nullable|array',
+                'line_of_business.*' => 'nullable|string|max:255',
             ]);
 
-            $filePath = null;
-            if ($request->hasFile('insured_signature')) {
-                $filePath = $request->file('insured_signature')->store('signatures', 'public');
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
             }
-            $user_id = auth()->user()->id;
+
+            $user_id = auth()->id();
 
             $agentBrokerForm = AgentBrokerForm::create([
-                'agent_id' => $request->agent_id,
-                'insurance_company_id' => $request->insurance_company_id,
-                'client_id' => $request->client_id,
                 'code' => $request->code,
                 'sub_code' => $request->sub_code,
-                'agency_id' => $request->agency_id,
                 'current_producer' => $request->current_producer,
                 'agency_customer_id' => $request->agency_customer_id,
                 'created_by' => $user_id,
                 'creation_date' => $request->creation_date,
-                'insured_signature' => $filePath,
+                'insured_signature' => $request->insured_signature,
                 'issued_date' => $request->issued_date,
                 'insured_title' => $request->insured_title,
                 'insured_company_name' => $request->insured_company_name,
@@ -123,45 +141,78 @@ class FormsController extends Controller
                 'insured_company_state' => $request->insured_company_state,
                 'insured_company_zipcode' => $request->insured_company_zipcode,
 
+                'agency_name' => $request->agency_name,
+                'agency_phone' => $request->agency_phone,
+                'agency_fax' => $request->agency_fax,
+                'agency_address' => $request->agency_address,
+                'agency_city' => $request->agency_city,
+                'agency_state' => $request->agency_state,
+                'agency_zipcode' => $request->agency_zipcode,
+
+                'insurance_company_name' => $request->insurance_company_name,
+                'insurance_company_address' => $request->insurance_company_address,
+                'insurance_company_city' => $request->insurance_company_city,
+                'insurance_company_state' => $request->insurance_company_state,
+                'insurance_company_zipcode' => $request->insurance_company_zipcode,
+
+                'current_agency' => $request->current_agency,
+                'email' => $request->email,
+
+                'advice_producer_name' => $request->advice_producer_name,
+                'advice_producer_effective_date' => $request->advice_producer_effective_date,
             ]);
 
 
+            // Store company rows
+            foreach ($request->name as $index => $value) {
+                if (isset($request->name[$index])) {
+                    $agentBrokerForm->companies()->create([
+                        'name' => $request->name[$index],
+                        'policy_number' => $request->policy_number[$index],
+                        'effective_date' => $request->effective_date[$index],
+                        'expiration_date' => $request->expiration_date[$index],
+                        'line_of_business' => $request->line_of_business[$index],
+                    ]);
+                }
+
+            }
+
             DB::commit();
 
-
-            return redirect()->route('dashboard')->with('success', 'Client policy added successfully.');
-
-        } catch (Exception $e) {
+            return redirect()->route('dashboard')->with('success', 'Agent Broker added successfully.');
+        } catch (\Exception $e) {
             DB::rollBack();
-
-            //
-            Log::error('Error saving client policy: ' . $e->getMessage());
-
-            return redirect()->back()->with('error', 'An error occurred while saving the Form Data. Please try again.' . $e->getMessage());
+            \Log::error('Error saving agent broker form: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while saving the Form. ' . $e->getMessage());
         }
     }
 
+
     public function CreateAdditionalRemarksForm($id)
     {
-        $clientPolicy = ClientPolicy::with('client.policy.agency', 'insuranceCompany', 'agency','agent')->where('client_id', $id)->first();
+        $clientPolicy = ClientPolicy::with('client.policy.agency', 'insuranceCompany', 'agency', 'agent')->where('client_id', $id)->first();
         $insuranceCompanies = InsuranceCompany::all();
 
-        return view('admin.clientForms.create_additional_remarks_form', compact('clientPolicy','insuranceCompanies'));
+        return view('admin.clientForms.create_additional_remarks_form', compact('clientPolicy', 'insuranceCompanies'));
     }
 
     public function storeAdditionalRemarksForm(Request $request)
     {
+
         // Validate the incoming request data
         $validator = Validator::make($request->all(), [
-            'client_id' => 'required|integer|exists:clients,id',
-            'agency_id' => 'nullable|integer|exists:agencies,id',  // Updated: agency_id should be nullable
-            'insurance_company_id' => 'required|integer|exists:insurance_companies,id',
-            'form_no' => 'required|string|max:50',
-            'form_title' => 'required|string|max:100',
-            'description' => 'nullable|string',
-            'naic_code' => 'nullable|string|max:20',
-            'agency_customer_id' => 'nullable|string|max:50',
-            'loc' => 'nullable|string|max:50',
+            'agency_customer_id' => 'required',
+            'loc' => 'required',
+            'agency_name' => 'required',
+            'name_insured' => 'required',
+            'policy_number' => 'required',
+            'carrier' => 'required',
+            'naic_code' => 'required',
+            'effective_date' => 'required',
+            'form_no' => 'required',
+            'form_title' => 'required',
+            'description' => 'required',
+
         ]);
 
         // Check if validation fails
@@ -173,18 +224,19 @@ class FormsController extends Controller
         DB::beginTransaction();
 
         try {
-            $user_id = auth()->user()->id;
 
             $additionalRemarksForm = AdditionalRemarkForm::create([
-                'client_id' => $request->client_id,
-                'agency_id' => $request->agency_id ?: null,  // Handle null value
-                'insurance_company_id' => $request->insurance_company_id,
-                'created_by' => $user_id,
+                'agency_customer_id' => $request->agency_customer_id,
+                'loc' => $request->loc,  // Handle null value
+                'agency_name' => $request->agency_name,
+                'name_insured' => $request->name_insured,
+                'policy_number' => $request->policy_number,
+                'carrier' => $request->carrier,
+                'naic_code' => $request->naic_code,
+                'effective_date' => $request->effective_date,
                 'form_no' => $request->form_no,
                 'form_title' => $request->form_title,
-                'agency_customer_id' => $request->agency_customer_id,
-                'loc' => $request->loc,
-                'naic_code' => $request->naic_code,
+                'created_by' => auth()->user()->id,
                 'description' => $request->description,
             ]);
 
@@ -203,12 +255,13 @@ class FormsController extends Controller
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
+
     public function CreateEvidenceOfPropertyForm($id)
     {
-        $clientPolicy = ClientPolicy::with('client.policy.agency', 'insuranceCompany', 'agency','agent')->where('client_id', $id)->first();
+        $clientPolicy = ClientPolicy::with('client.policy.agency', 'insuranceCompany', 'agency', 'agent')->where('client_id', $id)->first();
         $insuranceCompanies = InsuranceCompany::all();
 
-        return view('admin.clientForms.create_evidence_of_property_form', compact('clientPolicy','insuranceCompanies'));
+        return view('admin.clientForms.create_evidence_of_property_form', compact('clientPolicy', 'insuranceCompanies'));
     }
 
     public function storeEvidenceOfProperty(Request $request)
@@ -285,7 +338,7 @@ class FormsController extends Controller
             // Check if the data was successfully created
             if ($evidence) {
                 DB::commit();
-                return redirect()->back()->with('success', 'Evidence of Property Form created successfully for '. $evidence->client->applicant_name);
+                return redirect()->back()->with('success', 'Evidence of Property Form created successfully for ' . $evidence->client->applicant_name);
             } else {
                 DB::rollback();
                 return redirect()->back()->withErrors(['error' => 'Failed to create the record.']);
