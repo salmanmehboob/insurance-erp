@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('invoice_payment_forms', function (Blueprint $table) {
+        Schema::create('invoice_payments', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_no');
             $table->string('agency_name');
@@ -36,6 +36,7 @@ return new class extends Migration
             $table->longText('note');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

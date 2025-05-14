@@ -1,20 +1,18 @@
 <table id="agent-broker-table" class="table table-striped datatables-reponsive">
     <thead>
     <tr>
-        <th>Client</th>
-        <th>Agent</th>
         <th>Agency</th>
-        <th>Insurance Company</th>
+         <th>Insured Company</th>
+         <th>Policy Number</th>
         <th class="text-center">Actions</th>
     </tr>
     </thead>
     <tbody>
     @foreach($forms as $row)
         <tr>
-            <td>{{ $row->client->applicant_name ?? '' }}</td>
-            <td>{{ $row->agent->name ?? '' }}</td>
-            <td>{{ $row->agency->agency_name ?? ''   }}</td>
-            <td>{{ $row->insuranceCompany->name ?? '' }}</td>
+            <td>{{ $row->agency_name . ' ' . $row->agency_address  }}</td>
+            <td>{{ $row->insured_company_name  }}</td>
+            <td>{{ $row->policy_number  }}</td>
             <td>
                 <div class="d-flex action-buttons">
 

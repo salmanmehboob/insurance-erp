@@ -183,7 +183,7 @@
 
         <hr>
 
-        <div class="invoice-title">Invoice</div>
+        <div class="invoice-title">Invoice : <input type="text" name="invoice_no" value="" style="width: 150px;"></div>
 
         <div class="invoice-meta-container">
             <div class="invoice-meta">
@@ -208,7 +208,7 @@
             <br>
              <div class="info-row">
                 <div class="label">Company:</div>
-                <div class="input-line"><input type="text" name="company_name" value="" placeholder="EnterCOmpany"></div>
+                <div class="input-line"><input type="text" name="company_name" value="" placeholder="Enter Company"></div>
             </div>
             <div class="info-row">
                 <div class="label">Fax:</div>
@@ -238,9 +238,9 @@
 
         <hr style="border-top: 1px solid black; margin-top:40px;">
 
-        <div class="total-amount">
-            <span>TOTAL AMOUNT:</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" value="$0.00" style="width:100px;text-align:right;">
-        </div>
+{{--        <div class="total-amount">--}}
+{{--            <span>TOTAL AMOUNT:</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" value="$0.00" style="width:100px;text-align:right;">--}}
+{{--        </div>--}}
 
         <div class="notes">NOTES:</div>
         <textarea name="note" placeholder="Add any relevant notes here..." style="width: 623px;

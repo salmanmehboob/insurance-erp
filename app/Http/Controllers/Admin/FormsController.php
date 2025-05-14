@@ -8,7 +8,8 @@ use App\Models\ClientPolicy;
 use App\Models\Forms\AdditionalRemarkForm;
 use App\Models\Forms\AgentBrokerForm;
 use App\Models\Forms\EvidenceOfPropertyForm;
-use App\Models\Forms\InvoicePaymentForm;
+use App\Models\Forms\InvoicePayment;
+use App\Models\Forms\InvoicePaymentItem;
 use App\Models\InsuranceCompany;
 use App\Models\PolicyType;
 use Exception;
@@ -36,7 +37,7 @@ class FormsController extends Controller
         }
 
         if ($type === 'invoiceForPayment') {
-            $forms = InvoicePaymentForm::all();
+            $forms = InvoicePayment::all();
         }
         return view('admin.clientForms.index', compact('title', 'forms', 'type'));
 
@@ -63,7 +64,7 @@ class FormsController extends Controller
         }
 
         if ($type === 'invoiceForPayment') {
-            $form = InvoicePaymentForm::find($id);
+            $form = InvoicePayment::find($id);
             return view('admin.clientForms.invoice_payment.show', compact('title', 'form', 'type'));
 
         }
@@ -377,88 +378,84 @@ class FormsController extends Controller
     {
         // Validate the incoming request data
         $validator = Validator::make($request->all(), [
-            'client_id' => 'required|integer|exists:clients,id',
-            'agency_id' => 'nullable|integer|exists:agencies,id',
-            'insurance_company_id' => 'nullable|integer|exists:insurance_companies,id',
-            'loan_no' => 'nullable|string|max:50',
-            'code' => 'nullable|string|max:50',
-            'sub_code' => 'nullable|string|max:50',
-            'agency_customer_id' => 'nullable|string|max:50',
-            'is_terminated' => 'nullable|in:0,1',
-            'evidence_date' => 'nullable|date',
-            'property_description' => 'nullable|string|max:255',
-            'is_perils_insured' => 'nullable|in:0,1',
-            'is_basic' => 'nullable|in:0,1',
-            'is_broad' => 'nullable|in:0,1',
-            'is_special' => 'nullable|in:0,1',
-            'coverage_description' => 'nullable|string|max:255',
-            'insurance_amount' => 'nullable|numeric',
-            'deductible' => 'nullable|numeric',
-            'remarks' => 'nullable|string|max:255',
-            'name' => 'nullable|string|max:100',
-            'address' => 'nullable|string|max:255',
-            'is_additional_insured' => 'nullable|in:0,1',
-            'is_murtagagee' => 'nullable|in:0,1',
-            'is_lenders_loss_payable' => 'nullable|in:0,1',
-            'is_loss_payee' => 'nullable|in:0,1',
-            'representative_name' => 'nullable|string|max:100',
+            'invoice_no' => 'required',
+            'agency_name' => 'required',
+            'agency_phone' => 'required',
+            'agency_fax' => 'required',
+            'agency_address' => 'required',
+            'agency_city' => 'required',
+            'agency_state' => 'required',
+            'agency_zipcode' => 'required',
+            'insured_company_name' => 'required',
+            'insured_company_address' => 'required',
+            'insured_company_city' => 'required',
+            'insured_company_state' => 'required',
+            'insured_company_zipcode' => 'required',
+            'company_name' => 'required',
+            'company_fax' => 'required',
+            'policy_number' => 'required',
+            'invoice_date' => 'required',
+             'note' => 'required',
         ]);
-//dd($validator);
-        // Check if validation fails
+
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->back()->withErrors($validator->errors())->withInput();
         }
 
-        // Start database transaction
         DB::beginTransaction();
 
         try {
-//            $user_id = auth()->user()->id;
 
-            $evidence = EvidenceOfPropertyForm::create([
-                'client_id' => $request->client_id,
-                'agency_id' => $request->agency_id ?: null,
-                'insurance_company_id' => $request->insurance_company_id ?: null,
-//                'created_by' => $user_id,
-                'loan_no' => $request->loan_no,
-                'code' => $request->code,
-                'sub_code' => $request->sub_code,
-                'agency_customer_id' => $request->agency_customer_id,
-                'is_terminated' => $request->is_terminated,
-                'evidence_date' => $request->evidence_date,
-                'property_description' => $request->property_description,
-                'is_perils_insured' => $request->is_perils_insured,
-                'is_basic' => $request->is_basic,
-                'is_broad' => $request->is_broad,
-                'is_special' => $request->is_special,
-                'coverage_description' => $request->coverage_description,
-                'insurance_amount' => $request->insurance_amount,
-                'deductible' => $request->deductible,
-                'remarks' => $request->remarks,
-                'name' => $request->name,
-                'address' => $request->address,
-                'is_additional_insured' => $request->is_additional_insured,
-                'is_murtagagee' => $request->is_murtagagee,
-                'is_lenders_loss_payable' => $request->is_lenders_loss_payable,
-                'is_loss_payee' => $request->is_loss_payee,
-                'representative_name' => $request->representative_name,
-            ]);
-
-            // Check if the data was successfully created
-            if ($evidence) {
-                DB::commit();
-                return redirect()->back()->with('success', 'Evidence of Property Form created successfully for ' . $evidence->client->applicant_name);
-            } else {
-                DB::rollback();
-                return redirect()->back()->withErrors(['error' => 'Failed to create the record.']);
+            // Calculate total amount from the 'amount' array
+            $totalAmount = 0;
+            foreach ($request->amount as $index => $amt) {
+                if (!empty($amt) && is_numeric($amt)) {
+                    $totalAmount += floatval($amt);
+                }
             }
 
+
+            // Store main invoice payment
+            $invoicePayment = InvoicePayment::create([
+                'invoice_no' => $request->invoice_no,
+                'agency_name' => $request->agency_name,
+                'agency_phone' => $request->agency_phone,
+                'agency_fax' => $request->agency_fax,
+                'agency_address' => $request->agency_address,
+                'agency_city' => $request->agency_city,
+                'agency_state' => $request->agency_state,
+                'agency_zipcode' => $request->agency_zipcode,
+                'insured_company_name' => $request->insured_company_name,
+                'insured_company_address' => $request->insured_company_address,
+                'insured_company_city' => $request->insured_company_city,
+                'insured_company_state' => $request->insured_company_state,
+                'insured_company_zipcode' => $request->insured_company_zipcode,
+                'company_name' => $request->company_name,
+                'company_fax' => $request->company_fax,
+                'policy_number' => $request->policy_number,
+                'invoice_date' => $request->invoice_date,
+                'total_amount' => $totalAmount,
+                'note' => $request->note,
+            ]);
+
+            // Save item details
+            foreach ($request->item_name as $index => $itemName) {
+                if (!empty($itemName) && !empty($request->description[$index]) && !empty($request->amount[$index])) {
+                    InvoicePaymentItem::create([
+                        'invoice_payment_id' => $invoicePayment->id,
+                        'item_name' => $itemName,
+                        'description' => $request->description[$index],
+                        'amount' => $request->amount[$index],
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Invoice Payment created successfully.');
         } catch (\Exception $e) {
             dd($e->getMessage());
             DB::rollback();
-
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
-
 }
