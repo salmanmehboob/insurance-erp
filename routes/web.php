@@ -187,6 +187,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('evidence/of/property/form/{id}/create', [FormsController::class, 'CreateEvidenceOfPropertyForm'])->name('create-evidence/of/property-form');
     Route::post('store-evidence/of/property', [FormsController::class, 'storeEvidenceOfProperty'])->name('store-evidence/of/property');
 
+    // Invoice Fro Payment
+    Route::get('invoice/for/payment/form/{id}/create', [FormsController::class, 'CreateInvoiceForPaymentForm'])->name('create-invoice-for-payment-form');
+    Route::post('store/invoice/for/payment', [FormsController::class, 'storeInvoiceForPayment'])->name('store-invoice-for-payment');
+
 
 
 });

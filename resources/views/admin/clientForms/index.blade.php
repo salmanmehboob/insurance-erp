@@ -21,18 +21,24 @@
 
             <div class="card-body">
                 @if($type === 'agent_broker')
-                    @include('admin.clientForms.forms.agent_broker_index')
+                    @include('admin.clientForms.agent_broker.index')
                 @endif
             </div>
 
             <div class="card-body">
                 @if($type === 'additional_remarks')
-                    @include('admin.clientForms.forms.additional_remarks_index')
+                    @include('admin.clientForms.additional_remarks.index')
                 @endif
             </div>
             <div class="card-body">
                 @if($type === 'evidenceOfProperty')
-                    @include('admin.clientForms.forms.evidence_of_property_index')
+                    @include('admin.clientForms.evidence_property.index')
+                @endif
+            </div>
+
+            <div class="card-body">
+                @if($type === 'invoiceForPayment')
+                    @include('admin.clientForms.invoice_payment.index')
                 @endif
             </div>
         </div>
