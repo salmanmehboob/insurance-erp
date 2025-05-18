@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('additional_remark_forms', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
             $table->string('agency_customer_id');
             $table->string('loc');
             $table->string('agency_name');
@@ -20,7 +21,7 @@ return new class extends Migration
             $table->string('policy_number');
             $table->string('carrier');
             $table->string('naic_code');
-            $table->date('effective_date');
+            $table->string('effective_date');
             $table->string('form_no')->unique();
             $table->string('form_title');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');

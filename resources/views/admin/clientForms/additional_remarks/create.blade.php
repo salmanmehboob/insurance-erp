@@ -12,6 +12,8 @@
 
     <form action="{{ route('store-additionalRemarks') }}" method="POST">
         @csrf
+        <input type="hidden" name="client_id" value="{{ $clientPolicy->client_id }}">
+
         <div class="container">
             <!-- Editable Form (Visible by Default) -->
             <div style="max-width: 800px; width: 100%; height: 80%;">
@@ -24,11 +26,11 @@
                         <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                             <div style="flex: 1; margin-right: 10px;">
                                 <label style="font-size: 12px; font-weight: bold;">AGENCY CUSTOMER ID:</label><br>
-                                <input type="text" id="customerId" name="agency_customer_id" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px;">
+                                <input type="text" id="customerId" name="agency_customer_id" placeholder="AGENCY CUSTOMER ID" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px;">
                             </div>
                             <div style="flex: 1;">
                                 <label style="font-size: 12px; font-weight: bold;">LOC #:</label><br>
-                                <input type="text" id="locNum" name="loc" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px;">
+                                <input type="text" id="locNum" name="loc" placeholder="LOC #" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px;">
                             </div>
                         </div>
 
@@ -39,28 +41,28 @@
                             <tr>
                                 <td style="width: 50%; padding: 5px; font-size: 12px; vertical-align: top;">
                                     <strong style="font-size: 12px;">AGENCY</strong><br>
-                                    <input type="text" id="agency" name="agency_name" value="Aim Insurance Of Texas" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                    <input type="text" id="agency" name="agency_name" value="Aim Insurance Of Texas" placeholder="Name" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
                                 </td>
                                 <td style="width: 50%; padding: 5px; font-size: 12px; vertical-align: top;">
                                     <strong style="font-size: 12px;">NAMED INSURED</strong><br>
-                                    <input type="text" id="namedInsured" name="name_insured" value="JJH CONSTRUCTION LLC" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                    <input type="text" id="namedInsured" name="name_insured" value="JJH CONSTRUCTION LLC" placeholder="Name Isured" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
                                 </td>
                             </tr>
                             <tr>
                                 <td style="width: 50%; padding: 5px; font-size: 12px; vertical-align: top;">
                                     <strong style="font-size: 12px;">POLICY NUMBER</strong><br>
-                                    <input type="text" id="policyNumber" name="policy_number" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                    <input type="text" id="policyNumber" name="policy_number" placeholder="Policy #" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
                                 </td>
                                 <td style="width: 50%; padding: 5px; font-size: 12px; vertical-align: top;">
                                     <table style="width: 100%; border-collapse: collapse;">
                                         <tr>
                                             <td style="width: 70%; border: none; padding-right: 5px;">
                                                 <strong style="font-size: 12px;">CARRIER</strong><br>
-                                                <input type="text" id="carrier" name="carrier" value="" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                                <input type="text" id="carrier" name="carrier" value="" placeholder="Carrier" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
                                             </td>
                                             <td style="width: 30%; border: none;">
                                                 <strong style="font-size: 12px;">NAIC CODE</strong><br>
-                                                <input type="text" id="naicCode" name="naic_code" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                                <input type="text" id="naicCode" name="naic_code" placeholder="NAIC COde" style="width: 100%; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
                                             </td>
                                         </tr>
                                     </table>
@@ -68,8 +70,8 @@
                             </tr>
                             <tr>
                                 <td colspan="2" style="padding: 5px; font-size: 12px; vertical-align: top;">
-                                    <strong style="font-size: 12px;">EFFECTIVE DATE:</strong>
-                                    <input type="date" id="effectiveDate" name="effective_date" value="" style="width: 120px; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                    <strong style="font-size: 12px;">EFFECTIVE DATE  (MM/DD/YYYY):</strong>
+                                    <input type="text" id="effectiveDate" name="effective_date" placeholder="Effective Dates" value="" style="width: 120px; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
                                 </td>
                             </tr>
                         </table>
@@ -87,9 +89,9 @@
                             <tr>
                                 <td style="padding: 5px; font-size: 12px;">
                                     FORM NUMBER:
-                                    <input type="text" id="formNumber" name="form_no" style="width: 80px; display: inline-block; margin-right: 5px; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                    <input type="text" id="formNumber" name="form_no" placeholder="Form #" style="width: 80px; display: inline-block; margin-right: 5px; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
                                     FORM TITLE:
-                                    <input type="text" id="formTitle" name="form_title" style="width: 300px; display: inline-block; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
+                                    <input type="text" id="formTitle" name="form_title" placeholder="Title" style="width: 300px; display: inline-block; border: none; border-bottom: 1px solid #000; padding: 2px; font-size: 12px; box-sizing: border-box;">
                                 </td>
                             </tr>
                             <tr>

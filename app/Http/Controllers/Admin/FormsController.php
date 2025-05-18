@@ -253,6 +253,7 @@ class FormsController extends Controller
         try {
 
             $additionalRemarksForm = AdditionalRemarkForm::create([
+                'client_id' => $request->client_id,
                 'agency_customer_id' => $request->agency_customer_id,
                 'loc' => $request->loc,  // Handle null value
                 'agency_name' => $request->agency_name,

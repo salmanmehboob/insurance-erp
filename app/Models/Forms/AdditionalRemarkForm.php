@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class AdditionalRemarkForm extends Model
 {
     protected $fillable = [
+        'client_id',
         'agency_customer_id',
         'loc',
         'agency_name',
@@ -37,5 +38,11 @@ class AdditionalRemarkForm extends Model
     public function createdBy()
     {
         return $this->belongsTo(User::class,'created_by');
+    }
+
+    // Relationship with Client
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
     }
 }
