@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,30 +13,56 @@ return new class extends Migration
         Schema::create('evidence_of_property_forms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
-            $table->foreignId('agency_id')->constrained('agencies')->onDelete('cascade');
-            $table->foreignId('insurance_company_id')->constrained('insurance_companies')->onDelete('cascade');
-            $table->string('loan_no')->nullable();
-            $table->string('code')->nullable();
-            $table->string('sub_code')->nullable();
+            $table->string('invoice_date');
+
+            $table->string('agency_name');
+            $table->string('agency_address');
+            $table->string('agency_city');
+            $table->string('agency_state');
+            $table->string('agency_zipcode');
+            $table->string('company_name');
+            $table->string('agency_phone');
+            $table->string('agency_fax');
+            $table->string('agency_email');
+            $table->string('agency_code')->nullable();
+            $table->string('agency_subcode')->nullable();
             $table->string('agency_customer_id')->nullable();
-            $table->enum('is_terminated', ['0', '1'])->default('0');
-            $table->date('evidence_date')->nullable();
-            $table->text('property_description')->nullable();
-            $table->enum('is_perils_insured', ['0', '1'])->default('0');
-            $table->enum('is_basic', ['0', '1'])->default('0');
-            $table->enum('is_broad', ['0', '1'])->default('0');
-            $table->enum('is_special', ['0', '1'])->default('0');
-            $table->text('coverage_description')->nullable();
-            $table->decimal('insurance_amount', 15, 2)->nullable();
-            $table->decimal('deductible', 15, 2)->nullable();
-            $table->text('remarks')->nullable();
-            $table->string('name')->nullable();
-            $table->string('address')->nullable();
-            $table->enum('is_additional_insured', ['0', '1'])->default('0');
-            $table->enum('is_murtagagee', ['0', '1'])->default('0');
-            $table->enum('is_lenders_loss_payable', ['0', '1'])->default('0');
-            $table->enum('is_loss_payee', ['0', '1'])->default('0');
-            $table->string('representative_name')->nullable();
+
+            $table->string('loan_no')->nullable();
+            $table->string('policy_number')->nullable();
+
+            $table->string('insured_name');
+            $table->string('insured_address');
+            $table->string('insured_city');
+            $table->string('insured_state');
+            $table->string('insured_zipcode');
+
+            $table->string('effective_date');
+            $table->string('expiration_date');
+            $table->string('is_terminated');
+            $table->string('evidence_date');
+
+            $table->longText('property_information')->nullable();
+            $table->string('is_basic');
+            $table->string('is_broad');
+            $table->string('is_special');
+            $table->longText('coverage_description')->nullable();
+            $table->string('coverage');
+            $table->string('amount');
+            $table->string('deductible');
+            $table->longText('remarks')->nullable();
+
+            $table->string('additional_interest_name');
+            $table->string('additional_interest_address');
+            $table->string('additional_interest_city');
+            $table->string('additional_interest_state');
+            $table->string('additional_interest_zipcode');
+            $table->string('additional_insured');
+            $table->string('lenders_loss_payable');
+            $table->string('loss_payee');
+            $table->string('mortgagee');
+            $table->string('additional_interest_loan');
+            $table->string('representative_name');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('agent_broker_form_id')->constrained('agent_broker_forms')->onDelete('cascade');
             $table->string('name');
             $table->string('policy_number');
-            $table->date('effective_date');
-            $table->date('expiration_date');
+            $table->string('effective_date');
+            $table->string('expiration_date');
             $table->string('line_of_business');
             $table->timestamps();
         });

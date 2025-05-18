@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('agent_broker_forms', function (Blueprint $table) {
             $table->id();
-            $table->date('creation_date');
+            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
+            $table->string('creation_date');
 
             $table->string('agency_name');
             $table->string('agency_phone');
@@ -37,10 +38,10 @@ return new class extends Migration
             $table->string('agency_customer_id')->nullable();
 
             $table->string('advice_producer_name');
-            $table->date('advice_producer_effective_date');
+            $table->string('advice_producer_effective_date');
 
             $table->string('insured_signature')->nullable();
-            $table->date('issued_date');
+            $table->string('issued_date');
             $table->string('insured_title')->nullable();
             $table->string('insured_company_name')->nullable();
             $table->string('insured_company_address')->nullable();

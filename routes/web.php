@@ -177,6 +177,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('view/form/{type}', [FormsController::class, 'viewForm'])->name('view.form');
     Route::get('show/form/{id}/{type}', [FormsController::class, 'showForm'])->name('show.form');
+
     // Agent Broker Form
     Route::get('agent/broker/form/{id}/create', [FormsController::class, 'createAgentBrokerForm'])->name('create-agent/broker-form');
     Route::post('store-agentBrokerForm', [FormsController::class, 'storeAgentBrokerForm'])->name('store-agentBrokerForm');
@@ -190,6 +191,10 @@ Route::middleware(['auth'])->group(function () {
     // Invoice Fro Payment
     Route::get('invoice/for/payment/form/{id}/create', [FormsController::class, 'CreateInvoiceForPaymentForm'])->name('create-invoice-for-payment-form');
     Route::post('store/invoice/for/payment', [FormsController::class, 'storeInvoiceForPayment'])->name('store-invoice-for-payment');
+
+    // Property OF Loss Notice
+    Route::get('property/loss/form/{id}/create', [FormsController::class, 'CreatePropertyLossForm'])->name('create-property-loss-form');
+    Route::post('store/property/loss', [FormsController::class, 'storePropertyLoss'])->name('store-property-loss');
 
 
 

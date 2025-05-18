@@ -11,34 +11,60 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EvidenceOfPropertyForm extends Model
 {
-    use SoftDeletes,HasFactory;
+    use SoftDeletes, HasFactory;
 
     protected $fillable = [
         'client_id',
-        'agency_id',
-        'insurance_company_id',
+        'invoice_date',
+
+        'agency_name',
+        'agency_address',
+        'agency_city',
+        'agency_state',
+        'agency_zipcode',
+        'company_name',
+        'agency_phone',
+        'agency_fax',
+        'agency_email',
+        'agency_code',
+        'agency_subcode',
+        'agency_customer_id',
+
         'loan_no',
+        'policy_number',
+
+        'insured_name',
+        'insured_address',
+        'insured_city',
+        'insured_state',
+        'insured_zipcode',
+
+        'effective_date',
+        'expiration_date',
         'is_terminated',
         'evidence_date',
-        'agency_customer_id',
-        'code',
-        'sub_code',
-        'property_description',
-        'is_perils_insured',
+
+        'property_information',
         'is_basic',
         'is_broad',
         'is_special',
-        'coverage_description',
-        'insurance_amount',
+        'coverage_description', ,
+        'coverage',
+        'amount',
         'deductible',
         'remarks',
-        'name',
-        'address',
-        'is_additional_insured',
-        'is_murtagagee',
-        'is_lenders_loss_payable',
-        'is_loss_payee',
-        'representative_name'
+
+        'additional_interest_name',
+        'additional_interest_address',
+        'additional_interest_city',
+        'additional_interest_state',
+        'additional_interest_zipcode',
+        'additional_insured',
+        'lenders_loss_payable',
+        'loss_payee',
+        'mortgagee',
+        'additional_interest_loan',
+        'representative_name',
     ];
 
     // Relationship with Client
@@ -47,15 +73,4 @@ class EvidenceOfPropertyForm extends Model
         return $this->belongsTo(Client::class);
     }
 
-    // Relationship with Agency
-    public function agency()
-    {
-        return $this->belongsTo(Agency::class);
-    }
-
-    // Relationship with InsuranceCompany
-    public function insuranceCompany()
-    {
-        return $this->belongsTo(InsuranceCompany::class);
-    }
 }

@@ -10,6 +10,7 @@ use App\Models\Forms\AgentBrokerForm;
 use App\Models\Forms\EvidenceOfPropertyForm;
 use App\Models\Forms\InvoicePayment;
 use App\Models\Forms\InvoicePaymentItem;
+use App\Models\Forms\PropertyLoss;
 use App\Models\InsuranceCompany;
 use App\Models\PolicyType;
 use Exception;
@@ -38,6 +39,10 @@ class FormsController extends Controller
 
         if ($type === 'invoiceForPayment') {
             $forms = InvoicePayment::all();
+        }
+
+        if ($type === 'propertyLoss') {
+            $forms = PropertyLoss::all();
         }
         return view('admin.clientForms.index', compact('title', 'forms', 'type'));
 
@@ -69,6 +74,12 @@ class FormsController extends Controller
 
         }
 
+        if ($type === 'propertyLoss') {
+            $form = PropertyLoss::find($id);
+            return view('admin.clientForms.property_loss.show', compact('title', 'form', 'type'));
+
+        }
+
     }
 
     public function createAgentBrokerForm($id)
@@ -83,9 +94,10 @@ class FormsController extends Controller
     {
         DB::beginTransaction();
 
-        try {
+
+         try {
             $validator = Validator::make($request->all(), [
-                'creation_date' => 'nullable|date',
+                'creation_date' => 'nullable',
                 'agency_phone' => 'nullable|string|max:255',
                 'agency_fax' => 'nullable|string|max:255',
                 'agency_name' => 'nullable|string|max:255',
@@ -105,9 +117,9 @@ class FormsController extends Controller
                 'current_agency' => 'nullable|string|max:255',
                 'current_producer' => 'nullable|string|max:255',
                 'advice_producer_name' => 'nullable|string|max:255',
-                'advice_producer_effective_date' => 'nullable|date',
+                'advice_producer_effective_date' => 'nullable',
                 'insured_signature' => 'nullable|string|max:255',
-                'issued_date' => 'nullable|date',
+                'issued_date' => 'nullable',
                 'insured_title' => 'nullable|string|max:255',
                 'insured_company_name' => 'nullable|string|max:255',
                 'insured_company_address' => 'nullable|string|max:255',
@@ -121,9 +133,9 @@ class FormsController extends Controller
                 'policy_number' => 'nullable|array',
                 'policy_number.*' => 'nullable|string|max:255',
                 'effective_date' => 'nullable|array',
-                'effective_date.*' => 'nullable|date',
+                'effective_date.*' => 'nullable',
                 'expiration_date' => 'nullable|array',
-                'expiration_date.*' => 'nullable|date',
+                'expiration_date.*' => 'nullable',
                 'line_of_business' => 'nullable|array',
                 'line_of_business.*' => 'nullable|string|max:255',
             ]);
@@ -137,7 +149,9 @@ class FormsController extends Controller
 
             $user_id = auth()->id();
 
+//             dd($request->all());
             $agentBrokerForm = AgentBrokerForm::create([
+                'client_id' => $request->client_id,
                 'code' => $request->code,
                 'sub_code' => $request->sub_code,
                 'current_producer' => $request->current_producer,
@@ -175,6 +189,7 @@ class FormsController extends Controller
             ]);
 
 
+//            dd($request->all());
             // Store company rows
             foreach ($request->name as $index => $value) {
                 if (isset($request->name[$index])) {
@@ -288,7 +303,7 @@ class FormsController extends Controller
             'sub_code' => 'nullable|string|max:50',
             'agency_customer_id' => 'nullable|string|max:50',
             'is_terminated' => 'nullable|in:0,1',
-            'evidence_date' => 'nullable|date',
+            'evidence_date' => 'nullable',
             'property_description' => 'nullable|string|max:255',
             'is_perils_insured' => 'nullable|in:0,1',
             'is_basic' => 'nullable|in:0,1',
@@ -396,6 +411,101 @@ class FormsController extends Controller
             'policy_number' => 'required',
             'invoice_date' => 'required',
              'note' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors())->withInput();
+        }
+
+        DB::beginTransaction();
+
+        try {
+
+            // Calculate total amount from the 'amount' array
+            $totalAmount = 0;
+            foreach ($request->amount as $index => $amt) {
+                if (!empty($amt) && is_numeric($amt)) {
+                    $totalAmount += floatval($amt);
+                }
+            }
+
+
+            // Store main invoice payment
+            $invoicePayment = InvoicePayment::create([
+                'invoice_no' => $request->invoice_no,
+                'agency_name' => $request->agency_name,
+                'agency_phone' => $request->agency_phone,
+                'agency_fax' => $request->agency_fax,
+                'agency_address' => $request->agency_address,
+                'agency_city' => $request->agency_city,
+                'agency_state' => $request->agency_state,
+                'agency_zipcode' => $request->agency_zipcode,
+                'insured_company_name' => $request->insured_company_name,
+                'insured_company_address' => $request->insured_company_address,
+                'insured_company_city' => $request->insured_company_city,
+                'insured_company_state' => $request->insured_company_state,
+                'insured_company_zipcode' => $request->insured_company_zipcode,
+                'company_name' => $request->company_name,
+                'company_fax' => $request->company_fax,
+                'policy_number' => $request->policy_number,
+                'invoice_date' => $request->invoice_date,
+                'total_amount' => $totalAmount,
+                'note' => $request->note,
+            ]);
+
+            // Save item details
+            foreach ($request->item_name as $index => $itemName) {
+                if (!empty($itemName) && !empty($request->description[$index]) && !empty($request->amount[$index])) {
+                    InvoicePaymentItem::create([
+                        'invoice_payment_id' => $invoicePayment->id,
+                        'item_name' => $itemName,
+                        'description' => $request->description[$index],
+                        'amount' => $request->amount[$index],
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Invoice Payment created successfully.');
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            DB::rollback();
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+
+
+    public function CreatePropertyLossForm($id)
+    {
+        $clientPolicy = ClientPolicy::with('client.policy.agency', 'insuranceCompany', 'agency', 'agent')->where('client_id', $id)->first();
+        $insuranceCompanies = InsuranceCompany::all();
+
+        return view('admin.clientForms.invoice_payment.create', compact('clientPolicy', 'insuranceCompanies'));
+    }
+
+    public function storePropertyLoss(Request $request)
+    {
+        // Validate the incoming request data
+        $validator = Validator::make($request->all(), [
+            'invoice_no' => 'required',
+            'agency_name' => 'required',
+            'agency_phone' => 'required',
+            'agency_fax' => 'required',
+            'agency_address' => 'required',
+            'agency_city' => 'required',
+            'agency_state' => 'required',
+            'agency_zipcode' => 'required',
+            'insured_company_name' => 'required',
+            'insured_company_address' => 'required',
+            'insured_company_city' => 'required',
+            'insured_company_state' => 'required',
+            'insured_company_zipcode' => 'required',
+            'company_name' => 'required',
+            'company_fax' => 'required',
+            'policy_number' => 'required',
+            'invoice_date' => 'required',
+            'note' => 'required',
         ]);
 
         if ($validator->fails()) {

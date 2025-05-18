@@ -15,12 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('invoice_no');
             $table->string('agency_name');
-            $table->string('agency_phone');
-            $table->string('agency_fax');
             $table->string('agency_address');
             $table->string('agency_city');
             $table->string('agency_state');
             $table->string('agency_zipcode');
+            $table->string('agency_phone');
+            $table->string('agency_contact_name');
+            $table->string('agency_fax');
+            $table->string('agency_email');
+            $table->string('agency_code');
+            $table->string('agency_sub_code');
+            $table->string('agency_customer_id');
 
             $table->string('location_code');
             $table->string('date_of_loss');

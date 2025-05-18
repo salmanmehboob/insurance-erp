@@ -18,6 +18,7 @@ class AgentBrokerForm extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'client_id',
         'creation_date',
 
         'agency_name',
@@ -67,6 +68,13 @@ class AgentBrokerForm extends Model
     {
         return $this->hasMany(AgentBrokerCompany::class, 'agent_broker_form_id');
     }
+
+    // Relationship with Client
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
 
 
 }

@@ -38,6 +38,9 @@
 
     <form action="{{ route('store-agentBrokerForm') }}" method="POST" enctype="multipart/form-data">
         @csrf
+        <input type="hidden" name="client_id" value="{{ $clientPolicy->client_id }}">
+
+
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
@@ -49,7 +52,7 @@
                 <div class="col-md-3">
                     <div class="mb-3">
                         <label for="creation_date" class="form-label">DATE (MM/DD/YYYY)</label>
-                        <input type="date" class="form-control" id="creation_date" name="creation_date" value="{{ old('creation_date') }}">
+                        <input type="text" class="form-control" id="creation_date" name="creation_date" placeholder="Invoice Date" value="{{ old('creation_date') }}">
                     </div>
                 </div>
             </div>
@@ -60,88 +63,88 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="agency_phone" class="form-label">PHONE (A/C, No, Ext)</label>
-                            <input type="text" class="form-control" id="agency_phone" name="agency_phone" value="{{ old('agency_phone', '(713)947-3434') }}">
+                            <input type="text" class="form-control" id="agency_phone" name="agency_phone" placeholder="Phone" value="{{ old('agency_phone', '(713)947-3434') }}">
                         </div>
                         <div class="col-md-6">
                             <label for="agency_fax" class="form-label">FAX (A/C, No)</label>
-                            <input type="text" class="form-control" id="agency_fax" name="agency_fax" value="{{ old('agency_fax', '(713)946-3969') }}">
+                            <input type="text" class="form-control" id="agency_fax" name="agency_fax" placeholder="Fax" value="{{ old('agency_fax', '(713)946-3969') }}">
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label for="agency_name" class="form-label">Agency Name</label>
-                        <input type="text" class="form-control" id="agency_name" name="agency_name" value="{{ old('agency_name', 'Aim Insurance of Texas') }}">
+                        <input type="text" class="form-control" id="agency_name" name="agency_name" placeholder="Name" value="{{ old('agency_name', 'Aim Insurance of Texas') }}">
                     </div>
                     <div class="mb-3">
                         <label for="agency_address" class="form-label">Street Address</label>
-                        <input type="text" class="form-control" id="agency_address" name="agency_address" value="{{ old('agency_address', '3322 Shaver St') }}">
+                        <input type="text" class="form-control" id="agency_address" name="agency_address" placeholder="Address" value="{{ old('agency_address', '3322 Shaver St') }}">
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-5">
                             <label for="agency_city" class="form-label">City</label>
-                            <input type="text" class="form-control" id="agency_city" name="agency_city" value="{{ old('agency_city', 'Pasadena') }}">
+                            <input type="text" class="form-control" id="agency_city" name="agency_city" placeholder="City" value="{{ old('agency_city', 'Pasadena') }}">
                         </div>
                         <div class="col-md-3">
                             <label for="agency_state" class="form-label">State</label>
-                            <input type="text" class="form-control" id="agency_state" name="agency_state" value="{{ old('agency_state', 'TX') }}">
+                            <input type="text" class="form-control" id="agency_state" name="agency_state" placeholder="State" value="{{ old('agency_state', 'TX') }}">
                         </div>
                         <div class="col-md-4">
                             <label for="agency_zipcode" class="form-label">ZIP Code</label>
-                            <input type="text" class="form-control" id="agency_zipcode" name="agency_zipcode" value="{{ old('agency_zipcode', '77504') }}">
+                            <input type="text" class="form-control" id="agency_zipcode" name="agency_zipcode" placeholder="Zip Code" value="{{ old('agency_zipcode', '77504') }}">
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">E-MAIL ADDRESS</label>
-                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email') }}">
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="code" class="form-label">CODE</label>
-                            <input type="text" class="form-control" id="code" name="code" value="{{ old('code') }}">
+                            <input type="text" class="form-control" id="code" name="code" placeholder="Code" value="{{ old('code') }}">
                         </div>
                         <div class="col-md-6">
                             <label for="sub_code" class="form-label">SUB CODE</label>
-                            <input type="text" class="form-control" id="sub_code" name="sub_code" value="{{ old('sub_code') }}">
+                            <input type="text" class="form-control" id="sub_code" name="sub_code" placeholder="SUB CODE" value="{{ old('sub_code') }}">
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="agency_customer_id" class="form-label">AGENCY CUSTOMER ID</label>
-                        <input type="text" class="form-control" id="agency_customer_id" name="agency_customer_id" value="{{ old('agency_customer_id') }}">
+                        <input type="text" class="form-control" id="agency_customer_id" name="agency_customer_id" placeholder="AGENCY CUSTOMER ID" value="{{ old('agency_customer_id') }}">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="insurance_company_name" class="form-label fw-bold">INSURANCE COMPANY NAME</label>
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="insurance_company_name" name="insurance_company_name" value="{{ old('insurance_company_name') }}">
+                            <input type="text" class="form-control" id="insurance_company_name" name="insurance_company_name" placeholder="INSURANCE COMPANY NAME" value="{{ old('insurance_company_name') }}">
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="insurance_company_address" class="form-label">Street Address</label>
-                        <input type="text" class="form-control" id="insurance_company_address" name="insurance_company_address" value="{{ old('insurance_company_address') }}">
+                        <input type="text" class="form-control" id="insurance_company_address" name="insurance_company_address" placeholder="Address" value="{{ old('insurance_company_address') }}">
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-5">
                             <label for="insurance_company_city" class="form-label">City</label>
-                            <input type="text" class="form-control" id="insurance_company_city" name="insurance_company_city" value="{{ old('insurance_company_city') }}">
+                            <input type="text" class="form-control" id="insurance_company_city" name="insurance_company_city" placeholder="City" value="{{ old('insurance_company_city') }}">
                         </div>
                         <div class="col-md-3">
                             <label for="insurance_company_state" class="form-label">State</label>
-                            <input type="text" class="form-control" id="insurance_company_state" name="insurance_company_state" value="{{ old('insurance_company_state') }}">
+                            <input type="text" class="form-control" id="insurance_company_state" name="insurance_company_state" placeholder="State" value="{{ old('insurance_company_state') }}">
                         </div>
                         <div class="col-md-4">
                             <label for="insurance_company_zipcode" class="form-label">ZIP Code</label>
-                            <input type="text" class="form-control" id="insurance_company_zipcode" name="insurance_company_zipcode" value="{{ old('insurance_company_zipcode') }}">
+                            <input type="text" class="form-control" id="insurance_company_zipcode" name="insurance_company_zipcode" placeholder="Zip Code" value="{{ old('insurance_company_zipcode') }}">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="current_agency" class="form-label">CURRENT AGENCY</label>
-                            <input type="text" class="form-control" id="current_agency" name="current_agency" value="{{ old('current_agency') }}">
+                            <input type="text" class="form-control" id="current_agency" name="current_agency" placeholder="Current Agency" value="{{ old('current_agency') }}">
                         </div>
                         <div class="col-md-6">
                             <label for="current_producer" class="form-label">CURRENT PRODUCER</label>
-                            <input type="text" class="form-control" id="current_producer" name="current_producer" value="{{ old('current_producer') }}">
+                            <input type="text" class="form-control" id="current_producer" name="current_producer" placeholder="Current Producer" value="{{ old('current_producer') }}">
                         </div>
                     </div>
                 </div>
@@ -164,11 +167,11 @@
                             <tbody>
                             @for ($i = 0; $i < 10; $i++)
                                 <tr>
-                                    <td><input type="text" class="form-control" name="name[{{ $i }}]" value="{{ old('name.' . $i) }}"></td>
-                                    <td><input type="text" class="form-control" name="policy_number[{{ $i }}]" value="{{ old('policy_number.' . $i) }}"></td>
-                                    <td><input type="date" class="form-control" name="effective_date[{{ $i }}]" value="{{ old('effective_date.' . $i) }}"></td>
-                                    <td><input type="date" class="form-control" name="expiration_date[{{ $i }}]" value="{{ old('expiration_date.' . $i) }}"></td>
-                                    <td><input type="text" class="form-control" name="line_of_business[{{ $i }}]" value="{{ old('line_of_business.' . $i) }}"></td>
+                                    <td><input type="text" class="form-control" name="name[{{ $i }}]" placeholder="Name" value="{{ old('name.' . $i) }}"></td>
+                                    <td><input type="text" class="form-control" name="policy_number[{{ $i }}]" placeholder="Policy #" value="{{ old('policy_number.' . $i) }}"></td>
+                                    <td><input type="text" class="form-control" name="effective_date[{{ $i }}]" placeholder="Effective Date" value="{{ old('effective_date.' . $i) }}"></td>
+                                    <td><input type="text" class="form-control" name="expiration_date[{{ $i }}]" placeholder="Expiration Date" value="{{ old('expiration_date.' . $i) }}"></td>
+                                    <td><input type="text" class="form-control" name="line_of_business[{{ $i }}]" placeholder="Business" value="{{ old('line_of_business.' . $i) }}"></td>
                                 </tr>
                             @endfor
                             </tbody>
@@ -189,7 +192,7 @@
                                 <span>as our exclusive representative effective</span>
                             </div>
                             <div class="col-md-4">
-                                <input type="date" class="form-control" id="advice_producer_effective_date" name="advice_producer_effective_date" value="{{ old('advice_producer_effective_date') }}">
+                                <input type="text" class="form-control" id="advice_producer_effective_date" name="advice_producer_effective_date" placeholder="Effective Date" value="{{ old('advice_producer_effective_date') }}">
                             </div>
                         </div>
                     </div>
@@ -202,13 +205,13 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="insured_signature" class="form-label">INSURED SIGNATURE</label>
-                        <input type="text" class="form-control" id="insured_signature" name="insured_signature" value="{{ old('insured_signature') }}">
+                        <input type="text" class="form-control" id="insured_signature" name="insured_signature" placeholder="Signature" value="{{ old('insured_signature') }}">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="issued_date" class="form-label">DATE</label>
-                        <input type="date" class="form-control" id="issued_date" name="issued_date" value="{{ old('issued_date') }}">
+                        <input type="text" class="form-control" id="issued_date" name="issued_date" placeholder="Issue Date" value="{{ old('issued_date') }}">
                     </div>
                 </div>
             </div>
@@ -217,7 +220,7 @@
                 <div class="col-12">
                     <div class="mb-3">
                         <label for="insured_title" class="form-label">TITLE (IF APPLICABLE)</label>
-                        <input type="text" class="form-control" id="insured_title" name="insured_title" value="{{ old('insured_title') }}">
+                        <input type="text" class="form-control" id="insured_title" name="insured_title" placeholder="Title" value="{{ old('insured_title') }}">
                     </div>
                 </div>
             </div>
@@ -226,7 +229,7 @@
                 <div class="col-12">
                     <div class="mb-3">
                         <label for="insured_company_name" class="form-label">COMPANY NAME (IF APPLICABLE)</label>
-                        <input type="text" class="form-control" id="insured_company_name" name="insured_company_name" value="{{ old('insured_company_name') }}">
+                        <input type="text" class="form-control" id="insured_company_name" name="insured_company_name" placeholder="Company Name" value="{{ old('insured_company_name') }}">
                     </div>
                 </div>
             </div>
@@ -235,7 +238,7 @@
                 <div class="col-12">
                     <div class="mb-3">
                         <label for="insured_company_address" class="form-label">STREET ADDRESS OF INSURED</label>
-                        <input type="text" class="form-control" id="insured_company_address" name="insured_company_address" value="{{ old('insured_company_address') }}">
+                        <input type="text" class="form-control" id="insured_company_address" name="insured_company_address" placeholder="Address" value="{{ old('insured_company_address') }}">
                     </div>
                 </div>
             </div>
@@ -244,19 +247,19 @@
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label for="insured_company_city" class="form-label">CITY OF INSURED</label>
-                        <input type="text" class="form-control" id="insured_company_city" name="insured_company_city" value="{{ old('insured_company_city') }}">
+                        <input type="text" class="form-control" id="insured_company_city" name="insured_company_city" placeholder="City" value="{{ old('insured_company_city') }}">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label for="insured_company_state" class="form-label">STATE OF INSURED</label>
-                        <input type="text" class="form-control" id="insured_company_state" name="insured_company_state" value="{{ old('insured_company_state') }}">
+                        <input type="text" class="form-control" id="insured_company_state" name="insured_company_state" placeholder="State" value="{{ old('insured_company_state') }}">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label for="insured_company_zipcode" class="form-label">ZIP CODE OF INSURED</label>
-                        <input type="text" class="form-control" id="insured_company_zipcode" name="insured_company_zipcode" value="{{ old('insured_company_zipcode') }}">
+                        <input type="text" class="form-control" id="insured_company_zipcode" name="insured_company_zipcode" placeholder="Zip Code" value="{{ old('insured_company_zipcode') }}">
                     </div>
                 </div>
             </div>
