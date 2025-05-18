@@ -179,7 +179,7 @@
     <div id="original">
         <div class="header">
             <div class="company-name">{{$form->agency_name}}</div>
-            <div class="company-details">3322 Shaver St{{$form->agency_address}}</div>
+            <div class="company-details">{{$form->agency_address}}</div>
             <div class="company-details">{{$form->agency_city}}, {{$form->agency_state}} {{$form->agency_zipcode}}</div>
             <div class="contact-info">
                 <div>Phone: {{$form->agency_phone}}</div>

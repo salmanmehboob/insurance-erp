@@ -535,87 +535,223 @@ class FormsController extends Controller
         $clientPolicy = ClientPolicy::with('client.policy.agency', 'insuranceCompany', 'agency', 'agent')->where('client_id', $id)->first();
         $insuranceCompanies = InsuranceCompany::all();
 
-        return view('admin.clientForms.invoice_payment.create', compact('clientPolicy', 'insuranceCompanies'));
+        return view('admin.clientForms.property_loss.create', compact('clientPolicy', 'insuranceCompanies'));
     }
 
     public function storePropertyLoss(Request $request)
     {
         // Validate the incoming request data
         $validator = Validator::make($request->all(), [
-            'invoice_no' => 'required',
-            'agency_name' => 'required',
-            'agency_phone' => 'required',
-            'agency_fax' => 'required',
-            'agency_address' => 'required',
-            'agency_city' => 'required',
-            'agency_state' => 'required',
-            'agency_zipcode' => 'required',
-            'insured_company_name' => 'required',
-            'insured_company_address' => 'required',
-            'insured_company_city' => 'required',
-            'insured_company_state' => 'required',
-            'insured_company_zipcode' => 'required',
-            'company_name' => 'required',
-            'company_fax' => 'required',
-            'policy_number' => 'required',
-            'invoice_date' => 'required',
-            'note' => 'required',
+            'client_id' => 'required|integer',
+            'invoice_date' => 'required|string',
+
+            'agency_name' => 'required|string',
+            'agency_address' => 'required|string',
+            'agency_city' => 'required|string',
+            'agency_state' => 'required|string',
+            'agency_zipcode' => 'required|string',
+            'agency_contact_name' => 'required|string',
+            'agency_phone' => 'required|string',
+            'agency_fax' => 'required|string',
+            'agency_email' => 'required|string',
+            'agency_code' => 'required|string',
+            'agency_subcode' => 'required|string',
+            'agency_customer_id' => 'required|string',
+
+            'location_code' => 'required|string',
+            'date_of_loss' => 'required|string',
+            'time_of_loss' => 'required|string',
+
+            'property_carrier' => 'nullable|string',
+            'property_naic_code' => 'nullable|string',
+            'property_policy_number' => 'nullable|string',
+            'property_business' => 'nullable|string',
+
+            'flood_carrier' => 'nullable|string',
+            'flood_naic_code' => 'nullable|string',
+            'flood_policy_number' => 'nullable|string',
+
+            'wind_carrier' => 'nullable|string',
+            'wind_naic_code' => 'nullable|string',
+            'wind_policy_number' => 'nullable|string',
+
+            'insured_name' => 'required|string',
+            'insured_address' => 'required|string',
+            'insured_city' => 'required|string',
+            'insured_state' => 'required|string',
+            'insured_zipcode' => 'required|string',
+            'insured_dob' => 'nullable|string',
+            'insured_fein' => 'nullable|string',
+            'insured_marital_status' => 'nullable|string',
+            'insured_phone_primary' => 'nullable|string',
+            'insured_phone_primary_type' => 'nullable|string|in:home,cell,bus',
+            'insured_phone_secondary' => 'nullable|string',
+            'insured_phone_secondary_type' => 'nullable|string|in:home,cell,bus',
+            'insured_email_primary' => 'nullable|string',
+            'insured_email_secondary' => 'nullable|string',
+
+            'spouse_name' => 'nullable|string',
+            'spouse_address' => 'nullable|string',
+            'spouse_city' => 'nullable|string',
+            'spouse_state' => 'nullable|string',
+            'spouse_zipcode' => 'nullable|string',
+            'spouse_dob' => 'nullable|string',
+            'spouse_fein' => 'nullable|string',
+            'spouse_marital_status' => 'nullable|string',
+            'spouse_phone_primary' => 'nullable|string',
+            'spouse_phone_primary_type' => 'nullable|string|in:home,cell,bus',
+            'spouse_phone_secondary' => 'nullable|string',
+            'spouse_phone_secondary_type' => 'nullable|string|in:home,cell,bus',
+            'spouse_email_primary' => 'nullable|string',
+            'spouse_email_secondary' => 'nullable|string',
+
+            'contact_name' => 'nullable|string',
+            'contact_address' => 'nullable|string',
+            'contact_city' => 'nullable|string',
+            'contact_state' => 'nullable|string',
+            'contact_zipcode' => 'nullable|string',
+            'contact_phone_primary' => 'nullable|string',
+            'contact_phone_primary_type' => 'nullable|string|in:home,cell,bus',
+            'contact_phone_secondary' => 'nullable|string',
+            'contact_phone_secondary_type' => 'nullable|string|in:home,cell,bus',
+            'contact_email_primary' => 'nullable|string',
+            'contact_email_secondary' => 'nullable|string',
+            'contact_when' => 'nullable|string',
+
+            'loss_location' => 'nullable|string',
+            'loss_police_contact' => 'nullable|string',
+            'loss_address' => 'nullable|string',
+            'loss_city' => 'nullable|string',
+            'loss_state' => 'nullable|string',
+            'loss_zipcode' => 'nullable|string',
+            'loss_police_report' => 'nullable|string',
+            'loss_country' => 'nullable|string',
+            'loss_type' => 'required|string',
+            'loss_type_other' => 'required_if:loss_type,other|string',
+            'loss_amount' => 'required|string',
+            'loss_description' => 'required|string',
+            'report_by' => 'required|string',
+            'report_to' => 'required|string',
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator->errors())->withInput();
+
+         if ($validator->fails()) {
+
+            return redirect()->back()->withErrors(['error' => $validator->errors()]);
         }
 
         DB::beginTransaction();
 
         try {
 
-            // Calculate total amount from the 'amount' array
-            $totalAmount = 0;
-            foreach ($request->amount as $index => $amt) {
-                if (!empty($amt) && is_numeric($amt)) {
-                    $totalAmount += floatval($amt);
-                }
-            }
-
-
             // Store main invoice payment
-            $invoicePayment = InvoicePayment::create([
+            $invoicePayment = PropertyLoss::create([
+                'client_id' => $request->client_id,
                 'invoice_no' => $request->invoice_no,
+                'invoice_date' => $request->invoice_date,
+
+                // Agency Info
                 'agency_name' => $request->agency_name,
                 'agency_phone' => $request->agency_phone,
                 'agency_fax' => $request->agency_fax,
+                'agency_email' => $request->agency_email,
                 'agency_address' => $request->agency_address,
                 'agency_city' => $request->agency_city,
                 'agency_state' => $request->agency_state,
                 'agency_zipcode' => $request->agency_zipcode,
-                'insured_company_name' => $request->insured_company_name,
-                'insured_company_address' => $request->insured_company_address,
-                'insured_company_city' => $request->insured_company_city,
-                'insured_company_state' => $request->insured_company_state,
-                'insured_company_zipcode' => $request->insured_company_zipcode,
-                'company_name' => $request->company_name,
-                'company_fax' => $request->company_fax,
-                'policy_number' => $request->policy_number,
-                'invoice_date' => $request->invoice_date,
-                'total_amount' => $totalAmount,
-                'note' => $request->note,
-            ]);
+                'agency_contact_name' => $request->agency_contact_name,
+                'agency_code' => $request->agency_code,
+                'agency_subcode' => $request->agency_subcode,
+                'agency_customer_id' => $request->agency_customer_id,
 
-            // Save item details
-            foreach ($request->item_name as $index => $itemName) {
-                if (!empty($itemName) && !empty($request->description[$index]) && !empty($request->amount[$index])) {
-                    InvoicePaymentItem::create([
-                        'invoice_payment_id' => $invoicePayment->id,
-                        'item_name' => $itemName,
-                        'description' => $request->description[$index],
-                        'amount' => $request->amount[$index],
-                    ]);
-                }
-            }
+                // Property Info
+                'location_code' => $request->location_code,
+                'date_of_loss' => $request->date_of_loss,
+                'time_of_loss' => $request->time_of_loss,
+
+                'property_carrier' => $request->property_carrier,
+                'property_naic_code' => $request->property_naic_code,
+                'property_policy_number' => $request->property_policy_number,
+                'property_business' => $request->property_business,
+
+                'flood_carrier' => $request->flood_carrier,
+                'flood_naic_code' => $request->flood_naic_code,
+                'flood_policy_number' => $request->flood_policy_number,
+
+                'wind_carrier' => $request->wind_carrier,
+                'wind_naic_code' => $request->wind_naic_code,
+                'wind_policy_number' => $request->wind_policy_number,
+
+                // Insured Info
+                'insured_name' => $request->insured_name,
+                'insured_address' => $request->insured_address,
+                'insured_city' => $request->insured_city,
+                'insured_state' => $request->insured_state,
+                'insured_zipcode' => $request->insured_zipcode,
+                'insured_dob' => $request->insured_dob,
+                'insured_fein' => $request->insured_fein,
+                'insured_marital_status' => $request->insured_marital_status,
+                'insured_phone_primary' => $request->insured_phone_primary,
+                'insured_phone_primary_type' => $request->insured_phone_primary_type,
+                'insured_phone_secondary' => $request->insured_phone_secondary,
+                'insured_phone_secondary_type' => $request->insured_phone_secondary_type,
+                'insured_email_primary' => $request->insured_email_primary,
+                'insured_email_secondary' => $request->insured_email_secondary,
+
+                // Spouse Info
+                'spouse_name' => $request->spouse_name,
+                'spouse_address' => $request->spouse_address,
+                'spouse_city' => $request->spouse_city,
+                'spouse_state' => $request->spouse_state,
+                'spouse_zipcode' => $request->spouse_zipcode,
+                'spouse_dob' => $request->spouse_dob,
+                'spouse_fein' => $request->spouse_fein,
+                'spouse_marital_status' => $request->spouse_marital_status,
+                'spouse_phone_primary' => $request->spouse_phone_primary,
+                'spouse_phone_primary_type' => $request->spouse_phone_primary_type,
+                'spouse_phone_secondary' => $request->spouse_phone_secondary,
+                'spouse_phone_secondary_type' => $request->spouse_phone_secondary_type,
+                'spouse_email_primary' => $request->spouse_email_primary,
+                'spouse_email_secondary' => $request->spouse_email_secondary,
+
+                // Contact Info
+                'contact_name' => $request->contact_name,
+                'contact_address' => $request->contact_address,
+                'contact_city' => $request->contact_city,
+                'contact_state' => $request->contact_state,
+                'contact_zipcode' => $request->contact_zipcode,
+                'contact_phone_primary' => $request->contact_phone_primary,
+                'contact_phone_primary_type' => $request->contact_phone_primary_type,
+                'contact_phone_secondary' => $request->contact_phone_secondary,
+                'contact_phone_secondary_type' => $request->contact_phone_secondary_type,
+                'contact_email_primary' => $request->contact_email_primary,
+                'contact_email_secondary' => $request->contact_email_secondary,
+                'contact_when' => $request->contact_when,
+
+                // Loss Info
+                'loss_location' => $request->loss_location,
+                'loss_police_contact' => $request->loss_police_contact,
+                'loss_address' => $request->loss_address,
+                'loss_city' => $request->loss_city,
+                'loss_state' => $request->loss_state,
+                'loss_zipcode' => $request->loss_zipcode,
+                'loss_police_report' => $request->loss_police_report,
+                'loss_country' => $request->loss_country,
+                'loss_type' => $request->loss_type,
+                'loss_type_other' => $request->loss_type_other,
+                'loss_amount' => $request->loss_amount,
+                'loss_description' => $request->loss_description,
+
+                // Report
+                'report_by' => $request->report_by,
+                'report_to' => $request->report_to,
+
+                'created_by' => auth()->user()->id,
+             ]);
+
 
             DB::commit();
-            return redirect()->back()->with('success', 'Invoice Payment created successfully.');
+            return redirect()->back()->with('success', 'Property Loss created successfully.');
         } catch (\Exception $e) {
             dd($e->getMessage());
             DB::rollback();

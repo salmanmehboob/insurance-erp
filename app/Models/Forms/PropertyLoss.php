@@ -5,15 +5,18 @@ namespace App\Models\Forms;
 use App\Models\Agency;
 use App\Models\Client;
 use App\Models\InsuranceCompany;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PropertyLoss extends Model
 {
-    use SoftDeletes, HasFactory;
+    use  HasFactory;
 
+    protected $table = 'property_loss';
     protected $fillable = [
+        'client_id',
         'invoice_no',
         'agency_name',
         'agency_address',
@@ -43,7 +46,7 @@ class PropertyLoss extends Model
 
         'wind_carrier',
         'wind_naic_code',
-        'wind_policy_number',
+            'wind_policy_number',
 
         'insured_name',
         'insured_address',
@@ -54,7 +57,9 @@ class PropertyLoss extends Model
         'insured_fein',
         'insured_marital_status',
         'insured_phone_primary',
+        'insured_phone_primary_type',
         'insured_phone_secondary',
+        'insured_phone_secondary_type',
         'insured_email_primary',
         'insured_email_secondary',
 
@@ -67,7 +72,9 @@ class PropertyLoss extends Model
         'spouse_fein',
         'spouse_marital_status',
         'spouse_phone_primary',
+        'spouse_phone_primary_type',
         'spouse_phone_secondary',
+        'spouse_phone_secondary_type',
         'spouse_email_primary',
         'spouse_email_secondary',
 
@@ -78,7 +85,9 @@ class PropertyLoss extends Model
         'contact_zipcode',
         'contact_when',
         'contact_phone_primary',
+        'contact_phone_primary_type',
         'contact_phone_secondary',
+        'contact_phone_secondary_type',
         'contact_email_primary',
         'contact_email_secondary',
 
@@ -91,9 +100,23 @@ class PropertyLoss extends Model
         'loss_police_report',
         'loss_location',
         'loss_type',
+        'loss_type_other',
         'loss_amount',
         'loss_description',
         'report_by',
         'report_to',
+        'created_by',
     ];
+
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class,'created_by');
+    }
+
+    // Relationship with Client
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

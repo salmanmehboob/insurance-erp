@@ -169,28 +169,28 @@
         <input type="hidden" name="client_id" value="{{ $clientPolicy->client_id }}">
 
         <div class="header">
-            <div class="company-name"><input type="text" name="agency_name" value="Aim Insurance Of Texas" style="width: 300px;"></div>
-            <div class="company-details"><input type="text" name="agency_address" value="3322 Shaver St" style="width: 300px;"></div>
+            <div class="company-name"><input type="text" name="agency_name" placeholder="Name" value="Aim Insurance Of Texas" style="width: 300px;"></div>
+            <div class="company-details"><input type="text" name="agency_address" placeholder="Address" value="3322 Shaver St" style="width: 300px;"></div>
             <div class="company-details">
-                <input type="text" name="agency_city" value="Pasadena" style="width: 100px;">
-                <input type="text" name="agency_state" value="TX" style="width: 100px;">
-                <input type="text" name="agency_zipcode" value="77504" style="width: 100px;">
+                <input type="text" name="agency_city" placeholder="City" value="Pasadena" style="width: 100px;">
+                <input type="text" name="agency_state" placeholder="State" value="TX" style="width: 100px;">
+                <input type="text" name="agency_zipcode" placeholder="Zip Code" value="77504" style="width: 100px;">
             </div>
             <div class="contact-info">
-                <div>Phone:<input type="text" name="agency_phone" value="(713)947-3434" style="width: 120px;"></div>
-                <div>Fax:<input type="text" name="agency_fax" value=" (713)946-3969" style="width: 120px;"></div>
+                <div>Phone:<input type="text" name="agency_phone" placeholder="Phone" value="(713)947-3434" style="width: 120px;"></div>
+                <div>Fax:<input type="text" name="agency_fax" placeholder="Fax" value=" (713)946-3969" style="width: 120px;"></div>
             </div>
         </div>
 
         <hr>
 
-        <div class="invoice-title">Invoice : <input type="text" name="invoice_no" value="" style="width: 150px;"></div>
+        <div class="invoice-title">Invoice : <input type="text" name="invoice_no" placeholder="Invoice #" value="" style="width: 150px;"></div>
 
         <div class="invoice-meta-container">
             <div class="invoice-meta">
-                <span class="labels">Invoice Date:</span> <input type="text" name="invoice_date" value="" style="width: 150px;">
+                <span class="labels">Invoice Date:</span> <input type="text" name="invoice_date" placeholder="Invocie Date" value="" style="width: 150px;">
 <br>
-                    <span class="labels"><b>Policy Number:</b> <input type="text" name="policy_number" style="width: 100px;"></span>
+                    <span class="labels"><b>Policy Number:</b> <input type="text" name="policy_number" placeholder="Policy #" style="width: 100px;"></span>
 
             </div>
         </div>

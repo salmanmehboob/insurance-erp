@@ -41,6 +41,12 @@
                     @include('admin.clientForms.invoice_payment.index')
                 @endif
             </div>
+
+            <div class="card-body">
+                @if($type === 'propertyLoss')
+                    @include('admin.clientForms.property_loss.index')
+                @endif
+            </div>
         </div>
         <!-- /basic datatable -->
 
