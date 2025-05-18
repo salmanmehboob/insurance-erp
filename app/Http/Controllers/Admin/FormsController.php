@@ -95,7 +95,7 @@ class FormsController extends Controller
         DB::beginTransaction();
 
 
-         try {
+        try {
             $validator = Validator::make($request->all(), [
                 'creation_date' => 'nullable',
                 'agency_phone' => 'nullable|string|max:255',
@@ -294,35 +294,65 @@ class FormsController extends Controller
 
     public function storeEvidenceOfProperty(Request $request)
     {
+//        dd($request->all());
         // Validate the incoming request data
         $validator = Validator::make($request->all(), [
             'client_id' => 'required|integer|exists:clients,id',
-            'agency_id' => 'nullable|integer|exists:agencies,id',
-            'insurance_company_id' => 'nullable|integer|exists:insurance_companies,id',
-            'loan_no' => 'nullable|string|max:50',
-            'code' => 'nullable|string|max:50',
-            'sub_code' => 'nullable|string|max:50',
-            'agency_customer_id' => 'nullable|string|max:50',
-            'is_terminated' => 'nullable|in:0,1',
+            'invoice_date' => 'nullable',
+
+            'agency_name' => 'nullable',
+            'agency_address' => 'nullable',
+            'agency_city' => 'nullable',
+            'agency_state' => 'nullable',
+            'agency_zipcode' => 'nullable',
+            'agency_phone' => 'nullable',
+            'company_name' => 'nullable',
+            'agency_fax' => 'nullable',
+            'agency_email' => 'nullable',
+            'agency_code' => 'nullable',
+            'agency_subcode' => 'nullable',
+            'agency_customer_id' => 'nullable',
+
+
+            'loan_number' => 'nullable',
+            'policy_number' => 'nullable',
+
+            'insured_name' => 'nullable',
+            'insured_address' => 'nullable',
+            'insured_city' => 'nullable',
+            'insured_state' => 'nullable',
+            'insured_zipcode' => 'nullable',
+
+            'effective_date' => 'nullable',
+            'expiration_date' => 'nullable',
+            'is_terminated' => 'nullable',
             'evidence_date' => 'nullable',
-            'property_description' => 'nullable|string|max:255',
-            'is_perils_insured' => 'nullable|in:0,1',
+            'property_information' => 'nullable',
+
+            'is_perlis' => 'nullable|in:0,1',
             'is_basic' => 'nullable|in:0,1',
             'is_broad' => 'nullable|in:0,1',
             'is_special' => 'nullable|in:0,1',
-            'coverage_description' => 'nullable|string|max:255',
-            'insurance_amount' => 'nullable|numeric',
-            'deductible' => 'nullable|numeric',
+            'location_description' => 'nullable|string|max:255',
+            'coverage' => 'nullable',
+            'amount' => 'nullable|string',
+            'deductible' => 'nullable|string',
             'remarks' => 'nullable|string|max:255',
-            'name' => 'nullable|string|max:100',
-            'address' => 'nullable|string|max:255',
-            'is_additional_insured' => 'nullable|in:0,1',
-            'is_murtagagee' => 'nullable|in:0,1',
-            'is_lenders_loss_payable' => 'nullable|in:0,1',
-            'is_loss_payee' => 'nullable|in:0,1',
-            'representative_name' => 'nullable|string|max:100',
+
+            'additional_interest_name' => 'nullable|string|max:100',
+            'additional_interest_address' => 'nullable|string|max:255',
+            'additional_interest_city' => 'nullable|string|max:255',
+            'additional_interest_state' => 'nullable|string|max:255',
+            'additional_interest_zipcode' => 'nullable|string|max:255',
+            'additional_insured' => 'nullable',
+            'lenders_loss_payable' => 'nullable',
+            'loss_payee' => 'nullable',
+            'mortgagee' => 'nullable',
+            'additional_interest_loan' => 'nullable',
+            'authorized_representative' => 'nullable',
+
         ]);
-//dd($validator);
+//dd($validator->errors());
         // Check if validation fails
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -332,36 +362,60 @@ class FormsController extends Controller
         DB::beginTransaction();
 
         try {
-//            $user_id = auth()->user()->id;
+            $user_id = auth()->user()->id;
 
-            $evidence = EvidenceOfPropertyForm::create([
+//            dd($request->all());
+            $dbData = [
                 'client_id' => $request->client_id,
-                'agency_id' => $request->agency_id ?: null,
-                'insurance_company_id' => $request->insurance_company_id ?: null,
-//                'created_by' => $user_id,
-                'loan_no' => $request->loan_no,
-                'code' => $request->code,
-                'sub_code' => $request->sub_code,
-                'agency_customer_id' => $request->agency_customer_id,
-                'is_terminated' => $request->is_terminated,
-                'evidence_date' => $request->evidence_date,
-                'property_description' => $request->property_description,
-                'is_perils_insured' => $request->is_perils_insured,
-                'is_basic' => $request->is_basic,
-                'is_broad' => $request->is_broad,
-                'is_special' => $request->is_special,
-                'coverage_description' => $request->coverage_description,
-                'insurance_amount' => $request->insurance_amount,
-                'deductible' => $request->deductible,
-                'remarks' => $request->remarks,
-                'name' => $request->name,
-                'address' => $request->address,
-                'is_additional_insured' => $request->is_additional_insured,
-                'is_murtagagee' => $request->is_murtagagee,
-                'is_lenders_loss_payable' => $request->is_lenders_loss_payable,
-                'is_loss_payee' => $request->is_loss_payee,
-                'representative_name' => $request->representative_name,
-            ]);
+                'invoice_date' => isset($request->invoice_date) ? $request->invoice_date : null,
+                'agency_name' => isset($request->agency_name) ? $request->agency_name : null,
+                'agency_address' => isset($request->agency_address) ? $request->agency_address : null,
+                'agency_city' => isset($request->agency_city) ? $request->agency_city : null,
+                'agency_state' => isset($request->agency_state) ? $request->agency_state : null,
+                'agency_zipcode' => $request->agency_zipcode ?? null,
+                'company_name' => $request->company_name ?? null,
+                'agency_phone' => $request->agency_phone ?? null,
+                'agency_fax' => $request->agency_fax ?? null,
+                'agency_email' => $request->agency_email ?? null,
+                'agency_code' => $request->agency_code ?? null,
+                'agency_subcode' => $request->agency_subcode ?? null,
+                'agency_customer_id' => $request->agency_customer_id ?? null,
+                'loan_number' => $request->loan_number ?? null,
+                'policy_number' => $request->policy_number ?? null,
+                'insured_name' => $request->insured_name ?? null,
+                'insured_address' => $request->insured_address ?? null,
+                'insured_city' => $request->insured_city ?? null,
+                'insured_state' => $request->insured_state ?? null,
+                'insured_zipcode' => $request->insured_zipcode ?? null,
+                'effective_date' => $request->effective_date ?? null,
+                'expiration_date' => $request->expiration_date ?? null,
+                'is_terminated' => $request->is_terminated ?? null,
+                'evidence_date' => $request->evidence_date ?? null,
+                'property_information' => $request->property_information ?? null,
+                'is_perlis' => $request->is_perlis ?? null,
+                'is_basic' => $request->is_basic ?? null,
+                'is_broad' => $request->is_broad ?? null,
+                'is_special' => $request->is_special ?? null,
+                'location_description' => $request->location_description ?? null,
+                'coverage' => $request->coverage ?? null,
+                'amount' => $request->amount ?? null,
+                'deductible' => $request->deductible ?? null,
+                'remarks' => $request->remarks ?? null,
+                'additional_interest_name' => $request->additional_interest_name ?? null,
+                'additional_interest_address' => $request->additional_interest_address ?? null,
+                'additional_interest_city' => $request->additional_interest_city ?? null,
+                'additional_interest_state' => $request->additional_interest_state ?? null,
+                'additional_interest_zipcode' => $request->additional_interest_zipcode ?? null,
+                'additional_insured' => $request->additional_insured ?? null,
+                'lenders_loss_payable' => $request->lenders_loss_payable ?? null,
+                'loss_payee' => $request->loss_payee ?? null,
+                'mortgagee' => $request->mortgagee ?? null,
+                'additional_interest_loan' => $request->additional_interest_loan ?? null,
+                'authorized_representative' => $request->authorized_representative ?? null,
+                'created_by' => $user_id,
+            ];
+//            dd($dbData);
+            $evidence = EvidenceOfPropertyForm::create($dbData);
 
             // Check if the data was successfully created
             if ($evidence) {
@@ -379,7 +433,6 @@ class FormsController extends Controller
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
-
 
 
     public function CreateInvoiceForPaymentForm($id)
@@ -411,7 +464,7 @@ class FormsController extends Controller
             'company_fax' => 'required',
             'policy_number' => 'required',
             'invoice_date' => 'required',
-             'note' => 'required',
+            'note' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -433,6 +486,7 @@ class FormsController extends Controller
 
             // Store main invoice payment
             $invoicePayment = InvoicePayment::create([
+                'client_id' => $request->client_id,
                 'invoice_no' => $request->invoice_no,
                 'agency_name' => $request->agency_name,
                 'agency_phone' => $request->agency_phone,
@@ -474,7 +528,6 @@ class FormsController extends Controller
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
-
 
 
     public function CreatePropertyLossForm($id)

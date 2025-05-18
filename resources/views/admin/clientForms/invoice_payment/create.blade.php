@@ -166,6 +166,7 @@
 
     <form action="{{ route('store-invoice-for-payment') }}" method="POST" class="container mt-4">
     @csrf
+        <input type="hidden" name="client_id" value="{{ $clientPolicy->client_id }}">
 
         <div class="header">
             <div class="company-name"><input type="text" name="agency_name" value="Aim Insurance Of Texas" style="width: 300px;"></div>
@@ -187,10 +188,10 @@
 
         <div class="invoice-meta-container">
             <div class="invoice-meta">
-                <span class="labels">Invoice Date:</span> <input type="date" name="invoice_date" value="" style="width: 150px;">
-                <div>
-                    <span class="labelss"><b>Policy Number:</b> <input type="text" name="policy_number" style="width: 100px;"></span>
-                </div>
+                <span class="labels">Invoice Date:</span> <input type="text" name="invoice_date" value="" style="width: 150px;">
+<br>
+                    <span class="labels"><b>Policy Number:</b> <input type="text" name="policy_number" style="width: 100px;"></span>
+
             </div>
         </div>
 

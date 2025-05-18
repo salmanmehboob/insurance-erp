@@ -223,7 +223,7 @@
                          <div class="city-state-zip">
                             <input type="text" name="agency_city" placeholder="City" value="Pasadena" />
                             <input type="text" name="agency_state" placeholder="State" value="TX" />
-                            <input type="text" name="agency_zip" placeholder="Zip Code" value="77504" />
+                            <input type="text" name="agency_zipcode" placeholder="Zip Code" value="77504" />
                         </div>
                     </div>
                 </div>
@@ -284,7 +284,7 @@
                          <div class="city-state-zip">
                             <input type="text" name="insured_city" placeholder="City" value="Katy" />
                             <input type="text" name="insured_state" placeholder="State" value="TX" />
-                            <input type="text" name="insured_zip" placeholder="Zip Code" value="77494" />
+                            <input type="text" name="insured_zipcode" placeholder="Zip Code" value="77494" />
                         </div>
                     </div>
                 </div>
@@ -340,15 +340,19 @@
             <div style="font-weight: bold; font-size: 10px;">PERILS INSURED</div>
             <div class="coverage-perils">
                 <div class="checkbox-row">
-                    <input type="checkbox" name="perils_basic" value="1" />
+                    <input type="checkbox" name="is_perlis" value="1" />
+                    <span class="checkbox-label">PERILS INSURED</span>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" name="is_basic" value="1" />
                     <span class="checkbox-label">BASIC</span>
                 </div>
                 <div class="checkbox-row" style="margin-left: 10px;">
-                    <input type="checkbox" name="perils_broad" value="1" />
+                    <input type="checkbox" name="is_broad" value="1" />
                     <span class="checkbox-label">BROAD</span>
                 </div>
                 <div class="checkbox-row" style="margin-left: 10px;">
-                    <input type="checkbox" name="perils_special" value="1" />
+                    <input type="checkbox" name="is_special" value="1" />
                     <span class="checkbox-label">SPECIAL</span>
                 </div>
             </div>
@@ -395,7 +399,7 @@
                 <div class="city-state-zip">
                     <input type="text" name="additional_interest_city" placeholder="City" />
                     <input type="text" name="additional_interest_state" placeholder="State" />
-                    <input type="text" name="additional_interest_zip" placeholder="Zip Code"/>
+                    <input type="text" name="additional_interest_zipcode" placeholder="Zip Code"/>
                 </div>
             </div>
             <div class="cell" style="width: 50%;">
@@ -408,11 +412,11 @@
                     <span class="checkbox-label">LENDER'S LOSS PAYABLE</span>
                 </div>
                 <div class="checkbox-row">
-                    <input type="checkbox" name="loss_payee" />
+                    <input type="checkbox" name="loss_payee" value="1"  />
                     <span class="checkbox-label">LOSS PAYEE</span>
                 </div>
                 <div class="checkbox-row">
-                    <input type="checkbox" name="mortgagee" />
+                    <input type="checkbox" name="mortgagee"  value="1" />
                     <span class="checkbox-label">MORTGAGEE</span>
                 </div>
             </div>

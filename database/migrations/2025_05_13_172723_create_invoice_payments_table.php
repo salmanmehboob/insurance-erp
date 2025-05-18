@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('invoice_payments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
+
             $table->string('invoice_no');
             $table->string('agency_name');
             $table->string('agency_phone');
@@ -31,7 +33,7 @@ return new class extends Migration
             $table->string('company_name');
             $table->string('company_fax');
             $table->string('policy_number');
-            $table->date('invoice_date');
+            $table->string('invoice_date');
             $table->string('total_amount');
             $table->longText('note');
 

@@ -30,7 +30,7 @@ class EvidenceOfPropertyForm extends Model
         'agency_subcode',
         'agency_customer_id',
 
-        'loan_no',
+        'loan_number',
         'policy_number',
 
         'insured_name',
@@ -45,10 +45,11 @@ class EvidenceOfPropertyForm extends Model
         'evidence_date',
 
         'property_information',
+        'is_perlis',
         'is_basic',
         'is_broad',
         'is_special',
-        'coverage_description', ,
+        'location_description',
         'coverage',
         'amount',
         'deductible',
@@ -64,7 +65,11 @@ class EvidenceOfPropertyForm extends Model
         'loss_payee',
         'mortgagee',
         'additional_interest_loan',
-        'representative_name',
+        'authorized_representative',
+
+        'created_by',
+
+
     ];
 
     // Relationship with Client

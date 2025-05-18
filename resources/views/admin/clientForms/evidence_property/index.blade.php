@@ -2,9 +2,9 @@
     <thead>
     <tr>
         <th>Client</th>
-        <th>Agent</th>
-        <th>Agency</th>
-        <th>Insurance Company</th>
+         <th>Agency</th>
+        <th>Company</th>
+        <th>Loan #</th>
         <th class="text-center">Actions</th>
     </tr>
     </thead>
@@ -12,9 +12,9 @@
     @foreach($forms as $row)
         <tr>
             <td>{{ $row->client->applicant_name ?? '' }}</td>
-            <td>{{ $row->agent->name ?? '' }}</td>
-            <td>{{ $row->agency->agency_name ?? ''   }}</td>
-            <td>{{ $row->insuranceCompany->name ?? '' }}</td>
+            <td>{{ $row->agency_name ?? '' }}</td>
+            <td>{{ $row->company_name ?? ''   }}</td>
+            <td>{{ $row->loan_number ?? '' }}</td>
             <td>
                 <div class="d-flex action-buttons">
 
