@@ -225,7 +225,6 @@
                                             <a href="{{ route('create-invoice-for-payment-form', $policy->client->id) }}"
                                                class="text-primary w-100">Invoice For Payment</a>
                                         </div>
-
                                         <div class="col-md-6">
                                             <a target="_blank" href="{{route('view.form',['type' => 'invoiceForPayment'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
                                         </div>
@@ -237,6 +236,15 @@
 
                                         <div class="col-md-6">
                                             <a target="_blank" href="{{route('view.form',['type' => 'propertyLoss'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <a href="{{ route('create-property-insurance-form', $policy->client->id) }}"
+                                               class="text-primary w-100">Certificate Of Property Insurance</a>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <a target="_blank" href="{{route('view.form',['type' => 'propertyInsurance'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
                                         </div>
                                     </div>
                                 </div>

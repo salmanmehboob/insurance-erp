@@ -196,6 +196,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('property/loss/form/{id}/create', [FormsController::class, 'CreatePropertyLossForm'])->name('create-property-loss-form');
     Route::post('store/property/loss', [FormsController::class, 'storePropertyLoss'])->name('store-property-loss');
 
+    // Certificate Of Property Insurance
+    Route::get('property/insurance/form/{id}/create', [FormsController::class, 'CreatePropertyInsuranceForm'])->name('create-property-insurance-form');
+    Route::post('store/property/insurance', [FormsController::class, 'storePropertyInsurance'])->name('store-property-insurance');
+
 
 
 });

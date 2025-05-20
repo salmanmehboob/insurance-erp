@@ -47,6 +47,11 @@
                     @include('admin.clientForms.property_loss.index')
                 @endif
             </div>
+            <div class="card-body">
+                @if($type === 'propertyInsurance')
+                    @include('admin.clientForms.property_insurance.index')
+                @endif
+            </div>
         </div>
         <!-- /basic datatable -->
 
