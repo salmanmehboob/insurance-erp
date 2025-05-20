@@ -1112,4 +1112,346 @@ class FormsController extends Controller
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
+
+    public function CreateLiabilityInsuranceForm($id)
+    {
+        $clientPolicy = ClientPolicy::with('client.policy.agency', 'insuranceCompany', 'agency', 'agent')->where('client_id', $id)->first();
+        $insuranceCompanies = InsuranceCompany::all();
+
+        return view('admin.clientForms.liability_insurance.create', compact('clientPolicy', 'insuranceCompanies'));
+    }
+
+    public function storeLiabilityInsurance(Request $request)
+    {
+
+//        dd($request->all());
+        // Validate the incoming request data
+
+        $validator = Validator::make($request->all(), [
+            'client_id' => 'required|integer',
+            'invoice_date' => 'required|string',
+
+            'producer_name' => 'nullable|string',
+            'producer_phone' => 'nullable|string',
+            'producer_fax' => 'nullable|string',
+            'producer_address' => 'nullable|string',
+            'producer_city' => 'nullable|string',
+            'producer_state' => 'nullable|string',
+            'producer_zipcode' => 'nullable|string',
+
+            'contact_name' => 'nullable|string',
+            'contact_phone_no' => 'nullable|string',
+            'contact_fax_no' => 'nullable|string',
+            'contact_email' => 'nullable|string',
+            'producer_customer_id' => 'nullable|string',
+
+            'insurer_a' => 'nullable|string',
+            'insurer_a_naic' => 'nullable|string',
+            'insurer_b' => 'nullable|string',
+            'insurer_b_naic' => 'nullable|string',
+            'insurer_c' => 'nullable|string',
+            'insurer_c_naic' => 'nullable|string',
+            'insurer_d' => 'nullable|string',
+            'insurer_d_naic' => 'nullable|string',
+            'insurer_e' => 'nullable|string',
+            'insurer_e_naic' => 'nullable|string',
+            'insurer_f' => 'nullable|string',
+            'insurer_f_naic' => 'nullable|string',
+
+            'insured_name' => 'nullable|string',
+            'insured_address' => 'nullable|string',
+            'insured_city' => 'nullable|string',
+            'insured_state' => 'nullable|string',
+            'insured_zipcode' => 'nullable|string',
+            'insured_phone' => 'nullable|string',
+            'insured_fax' => 'nullable|string',
+
+            'certificate_no' => 'nullable|string',
+            'revision_no' => 'nullable|string',
+
+            'property_description' => 'nullable|string',
+            'property_causes_loss' => 'nullable|string',
+            'property_deductible' => 'nullable|string',
+            'property_policy_number' => 'nullable|string',
+            'property_effective_date' => 'nullable|string',
+            'property_expiration_date' => 'nullable|string',
+
+            'property_coverage_building' => 'nullable|string',
+            'property_coverage_personal' => 'nullable|string',
+            'property_coverage_income' => 'nullable|string',
+            'property_coverage_expense' => 'nullable|string',
+            'property_coverage_rental' => 'nullable|string',
+            'property_coverage_b_building' => 'nullable|string',
+            'property_coverage_b_prop' => 'nullable|string',
+            'property_coverage_b_pp' => 'nullable|string',
+
+            'property_coverage_other_one' => 'nullable|string',
+            'property_coverage_other_two' => 'nullable|string',
+            'property_coverage_building_limit' => 'nullable|string',
+            'property_coverage_personal_limit' => 'nullable|string',
+            'property_coverage_income_limit' => 'nullable|string',
+            'property_coverage_expense_limit' => 'nullable|string',
+            'property_coverage_rental_limit' => 'nullable|string',
+            'property_coverage_other_one_limit' => 'nullable|string',
+            'property_coverage_other_two_limit' => 'nullable|string',
+
+            'property_basic' => 'nullable|string',
+            'property_broad' => 'nullable|string',
+            'property_special' => 'nullable|string',
+            'property_contents' => 'nullable|string',
+            'property_building' => 'nullable|string',
+            'property_earthquake' => 'nullable|string',
+            'property_wind' => 'nullable|string',
+            'property_flood' => 'nullable|string',
+            'property_other_one' => 'nullable|string',
+            'property_other_two' => 'nullable|string',
+
+            'inland_causes' => 'nullable|string',
+            'inland_policy_type' => 'nullable|string',
+            'inland_policy_effective_date' => 'nullable|string',
+            'inland_policy_expiration_date' => 'nullable|string',
+            'inland_policy_number' => 'nullable|string',
+            'inland_coverage_one' => 'nullable|string',
+            'inland_coverage_two' => 'nullable|string',
+            'inland_coverage_three' => 'nullable|string',
+            'inland_coverage_four' => 'nullable|string',
+            'inland_coverage_one_limit' => 'nullable|string',
+            'inland_coverage_two_limit' => 'nullable|string',
+            'inland_coverage_three_limit' => 'nullable|string',
+            'inland_coverage_four_limit' => 'nullable|string',
+
+            'crime_policy_type' => 'nullable|string',
+            'crime_policy_number' => 'nullable|string',
+            'crime_effective_date' => 'nullable|string',
+            'crime_expiration_date' => 'nullable|string',
+            'crime_coverage_one' => 'nullable|string',
+            'crime_coverage_two' => 'nullable|string',
+            'crime_coverage_three' => 'nullable|string',
+            'crime_coverage_one_limit' => 'nullable|string',
+            'crime_coverage_two_limit' => 'nullable|string',
+            'crime_coverage_three_limit' => 'nullable|string',
+
+            'machinery_policy_number' => 'nullable|string',
+            'machinery_effective_date' => 'nullable|string',
+            'machinery_expiration_date' => 'nullable|string',
+            'machinery_coverage_one' => 'nullable|string',
+            'machinery_coverage_two' => 'nullable|string',
+            'machinery_coverage_one_limit' => 'nullable|string',
+            'machinery_coverage_two_limit' => 'nullable|string',
+
+            'other_type' => 'nullable|string',
+            'other_policy_number' => 'nullable|string',
+            'other_effective_date' => 'nullable|string',
+            'other_expiration_date' => 'nullable|string',
+            'other_coverage_one' => 'nullable|string',
+            'other_coverage_two' => 'nullable|string',
+            'other_coverage_one_limit' => 'nullable|string',
+            'other_coverage_two_limit' => 'nullable|string',
+
+            'special_condition' => 'nullable|string',
+            'certificate_holder' => 'nullable|string',
+            'authorize_representative' => 'nullable|string',
+        ]);
+
+
+        if ($validator->fails()) {
+
+            return redirect()->back()->withErrors(['error' => $validator->errors()]);
+        }
+
+        DB::beginTransaction();
+
+        try {
+
+
+            // Store main invoice payment
+            $propertyInsurance = new PropertyInsurance();
+
+// STEP 1: Basic Info
+            $propertyInsurance->fill([
+                'client_id' => $request->client_id,
+                'invoice_no' => $request->invoice_no,
+                'invoice_date' => $request->invoice_date,
+                'created_by' => auth()->user()->id,
+            ]);
+            $propertyInsurance->save();
+
+// STEP 2: Agency Info
+            $propertyInsurance->fill([
+                'producer_name' => $request->producer_name,
+                'producer_phone' => $request->producer_phone,
+                'producer_fax' => $request->producer_fax,
+                'producer_address' => $request->producer_address,
+                'producer_city' => $request->producer_city,
+                'producer_state' => $request->producer_state,
+                'producer_zipcode' => $request->producer_zipcode,
+
+                'contact_name' => $request->contact_name,
+                'contact_phone_no' => $request->contact_phone_no,
+                'contact_fax_no' => $request->contact_fax_no,
+                'contact_email' => $request->contact_email,
+                'producer_customer_id' => $request->producer_customer_id,
+            ]);
+            $propertyInsurance->save();
+
+// STEP 3: Insured Info
+            $propertyInsurance->fill([
+                'insured_name' => $request->insured_name,
+                'insured_phone' => $request->insured_phone,
+                'insured_fax' => $request->insured_fax,
+                'insured_address' => $request->insured_address,
+                'insured_city' => $request->insured_city,
+                'insured_state' => $request->insured_state,
+                'insured_zipcode' => $request->insured_zipcode,
+            ]);
+            $propertyInsurance->save();
+
+// STEP 4: Insurer Info
+            $propertyInsurance->fill([
+                'insurer_a' => $request->insurer_a,
+                'insurer_a_naic' => $request->insurer_a_naic,
+                'insurer_b' => $request->insurer_b,
+                'insurer_b_naic' => $request->insurer_b_naic,
+                'insurer_c' => $request->insurer_c,
+                'insurer_c_naic' => $request->insurer_c_naic,
+                'insurer_d' => $request->insurer_d,
+                'insurer_d_naic' => $request->insurer_d_naic,
+                'insurer_e' => $request->insurer_e,
+                'insurer_e_naic' => $request->insurer_e_naic,
+                'insurer_f' => $request->insurer_f,
+                'insurer_f_naic' => $request->insurer_f_naic,
+            ]);
+            $propertyInsurance->save();
+
+// STEP 5: General Info
+            $propertyInsurance->fill([
+                'coverages' => $request->coverages,
+                'certificate_no' => $request->certificate_no,
+                'revision_no' => $request->revision_no,
+                'property_description' => $request->property_description,
+            ]);
+            $propertyInsurance->save();
+
+// STEP 6: Property Policy
+            $propertyInsurance->fill([
+                'property_causes_loss' => $request->property_causes_loss,
+                'property_deductible' => $request->property_deductible,
+                'property_building' => $request->property_building,
+                'property_contents' => $request->property_contents,
+                'property_basic' => $request->property_basic,
+                'property_broad' => $request->property_broad,
+                'property_special' => $request->property_special,
+                'property_earthquake' => $request->property_earthquake,
+                'property_wind' => $request->property_wind,
+                'property_flood' => $request->property_flood,
+                'property_other_one' => $request->property_other_one,
+                'property_other_two' => $request->property_other_two,
+                'property_policy_number' => $request->property_policy_number,
+                'property_effective_date' => $request->property_effective_date,
+                'property_expiration_date' => $request->property_expiration_date,
+            ]);
+            $propertyInsurance->save();
+
+// STEP 7: Property Coverage Limits
+            $propertyInsurance->fill([
+                'property_coverage_building' => $request->property_coverage_building,
+                'property_coverage_building_limit' => $request->property_coverage_building_limit,
+                'property_coverage_personal' => $request->property_coverage_personal,
+                'property_coverage_personal_limit' => $request->property_coverage_personal_limit,
+                'property_coverage_income' => $request->property_coverage_income,
+                'property_coverage_income_limit' => $request->property_coverage_income_limit,
+                'property_coverage_expense' => $request->property_coverage_expense,
+                'property_coverage_expense_limit' => $request->property_coverage_expense_limit,
+                'property_coverage_rental' => $request->property_coverage_rental,
+                'property_coverage_rental_limit' => $request->property_coverage_rental_limit,
+                'property_coverage_b_building' => $request->property_coverage_b_building,
+                'property_coverage_b_building_limit' => $request->property_coverage_b_building_limit,
+                'property_coverage_b_prop' => $request->property_coverage_b_prop,
+                'property_coverage_b_prop_limit' => $request->property_coverage_b_prop_limit,
+                'property_coverage_b_pp' => $request->property_coverage_b_pp,
+                'property_coverage_b_pp_limit' => $request->property_coverage_b_pp_limit,
+                'property_coverage_other_one' => $request->property_coverage_other_one,
+                'property_coverage_other_one_limit' => $request->property_coverage_other_one_limit,
+                'property_coverage_other_two' => $request->property_coverage_other_two,
+                'property_coverage_other_two_limit' => $request->property_coverage_other_two_limit,
+            ]);
+            $propertyInsurance->save();
+
+// STEP 8: Inland Coverage
+            $propertyInsurance->fill([
+                'inland_causes' => $request->inland_causes,
+                'inland_perils' => $request->inland_perils,
+                'inland_other' => $request->inland_other,
+                'inland_policy_type' => $request->inland_policy_type,
+                'inland_policy_number' => $request->inland_policy_number,
+                'inland_policy_effective_date' => $request->inland_policy_effective_date,
+                'inland_policy_expiration_date' => $request->inland_policy_expiration_date,
+                'inland_coverage_one' => $request->inland_coverage_one,
+                'inland_coverage_one_limit' => $request->inland_coverage_one_limit,
+                'inland_coverage_two' => $request->inland_coverage_two,
+                'inland_coverage_two_limit' => $request->inland_coverage_two_limit,
+                'inland_coverage_three' => $request->inland_coverage_three,
+                'inland_coverage_three_limit' => $request->inland_coverage_three_limit,
+                'inland_coverage_four' => $request->inland_coverage_four,
+                'inland_coverage_four_limit' => $request->inland_coverage_four_limit,
+            ]);
+            $propertyInsurance->save();
+
+// STEP 9: Crime Coverage
+            $propertyInsurance->fill([
+                'crime_policy_type' => $request->crime_policy_type,
+                'crime_policy_number' => $request->crime_policy_number,
+                'crime_effective_date' => $request->crime_effective_date,
+                'crime_expiration_date' => $request->crime_expiration_date,
+                'crime_coverage_one' => $request->crime_coverage_one,
+                'crime_coverage_one_limit' => $request->crime_coverage_one_limit,
+                'crime_coverage_two' => $request->crime_coverage_two,
+                'crime_coverage_two_limit' => $request->crime_coverage_two_limit,
+                'crime_coverage_three' => $request->crime_coverage_three,
+                'crime_coverage_three_limit' => $request->crime_coverage_three_limit,
+            ]);
+            $propertyInsurance->save();
+
+// STEP 10: Machinery Coverage
+            $propertyInsurance->fill([
+                'machinery_policy_number' => $request->machinery_policy_number,
+                'machinery_effective_date' => $request->machinery_effective_date,
+                'machinery_expiration_date' => $request->machinery_expiration_date,
+                'machinery_coverage_one' => $request->machinery_coverage_one,
+                'machinery_coverage_one_limit' => $request->machinery_coverage_one_limit,
+                'machinery_coverage_two' => $request->machinery_coverage_two,
+                'machinery_coverage_two_limit' => $request->machinery_coverage_two_limit,
+            ]);
+            $propertyInsurance->save();
+
+// STEP 11: Other Coverage
+            $propertyInsurance->fill([
+                'other_type' => $request->other_type,
+                'other_policy_number' => $request->other_policy_number,
+                'other_effective_date' => $request->other_effective_date,
+                'other_expiration_date' => $request->other_expiration_date,
+                'other_coverage_one' => $request->other_coverage_one,
+                'other_coverage_one_limit' => $request->other_coverage_one_limit,
+                'other_coverage_two' => $request->other_coverage_two,
+                'other_coverage_two_limit' => $request->other_coverage_two_limit,
+            ]);
+            $propertyInsurance->save();
+
+// STEP 12: Final Report Info
+            $propertyInsurance->fill([
+                'special_condition' => $request->special_condition,
+                'certificate_holder' => $request->certificate_holder,
+                'authorize_representative' => $request->authorize_representative,
+            ]);
+            $propertyInsurance->save();
+
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Property Insurance created successfully.');
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            DB::rollback();
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
 }

@@ -200,6 +200,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('property/insurance/form/{id}/create', [FormsController::class, 'CreatePropertyInsuranceForm'])->name('create-property-insurance-form');
     Route::post('store/property/insurance', [FormsController::class, 'storePropertyInsurance'])->name('store-property-insurance');
 
+    // Certificate Of Liability Insurance
+    Route::get('liability/insurance/form/{id}/create', [FormsController::class, 'CreateLiabilityInsuranceForm'])->name('create-liability-insurance-form');
+    Route::post('store/liability/insurance', [FormsController::class, 'storeLiabilityInsurance'])->name('store-liability-insurance');
+
 
 
 });

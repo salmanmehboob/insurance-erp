@@ -527,7 +527,7 @@
                     <td style="width:57pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
                         rowspan="2">
                         <p class="s10" style="padding-left: 1pt; text-indent: 0pt; text-align: left;">DEDUCTIBLES</p>
-                        <input type="text" name="property_deductible"/>
+                            <input type="text" name="property_deductible"/>
                     </td>
                     <td style="width:138pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
                         rowspan="11">
