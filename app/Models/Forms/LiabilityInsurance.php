@@ -14,7 +14,7 @@ class LiabilityInsurance extends Model
 {
     use  HasFactory;
 
-    protected $table = 'liability_insurances';
+    protected $table = 'liabilty_insurances';
     protected $fillable = [
         'client_id',
 

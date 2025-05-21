@@ -23,33 +23,29 @@
                 @if($type === 'agent_broker')
                     @include('admin.clientForms.agent_broker.index')
                 @endif
-            </div>
 
-            <div class="card-body">
                 @if($type === 'additional_remarks')
                     @include('admin.clientForms.additional_remarks.index')
                 @endif
-            </div>
-            <div class="card-body">
+
                 @if($type === 'evidenceOfProperty')
                     @include('admin.clientForms.evidence_property.index')
                 @endif
-            </div>
 
-            <div class="card-body">
                 @if($type === 'invoiceForPayment')
                     @include('admin.clientForms.invoice_payment.index')
                 @endif
-            </div>
 
-            <div class="card-body">
                 @if($type === 'propertyLoss')
                     @include('admin.clientForms.property_loss.index')
                 @endif
-            </div>
-            <div class="card-body">
+
                 @if($type === 'propertyInsurance')
                     @include('admin.clientForms.property_insurance.index')
+                @endif
+
+                @if($type === 'liabilityInsurance')
+                    @include('admin.clientForms.liability_insurance.index')
                 @endif
             </div>
         </div>

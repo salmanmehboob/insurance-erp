@@ -286,7 +286,7 @@
 @endpush
 @section('content')
 
-    <form action="{{ route('store-property-insurance') }}" method="POST" class=" mt-4">
+    <form action="{{ route('store-liability-insurance') }}" method="POST" class=" mt-4">
         @csrf
 
         <input type="hidden" name="client_id" value="{{ $clientPolicy->client_id }}">
@@ -623,7 +623,8 @@
                         <tbody>
                         <tr>
                             <td class="ins-td ins-text-center ins-col-narrow"></td>
-                            <td class="ins-td  ins-col-27">COMMERCIAL GENERAL LIABILITY
+                            <td class="ins-td  ins-col-27">
+                                COMMERCIAL GENERAL LIABILITY
                                 <br>
                                 <div class="ins-indent">
                                     <input type="checkbox" name="commercial_claim" value="1" class="ins-checkbox-input">
@@ -636,6 +637,20 @@
                                     <br>
                                     <input type="checkbox" class="ins-checkbox-input">
                                     <input type="text" name="commercial_other_two"/>
+                                </div>
+                                <br>
+                                GEN AGGREGATE LIMIT APPLIES PER
+                                <div class="ins-indent">
+                                    <input type="checkbox" name="commercial_aggregate_policy" value="1" class="ins-checkbox-input">
+                                   POLICY
+                                    <input type="checkbox" name="commercial_aggregate_project" value="1" class="ins-checkbox-input">
+                                    PROJECT
+                                    <input type="checkbox" name="commercial_aggregate_loc" value="1" class="ins-checkbox-input">
+                                    LOC
+                                    <input type="checkbox" name="commercial_aggregate_other" value="1" class="ins-checkbox-input">
+                                    OTHER
+                                    <br>
+
                                 </div>
                             </td>
                             <td class="ins-td"><input type="text" style="width: 20pt" name="commercial_addl"/></td>
@@ -654,14 +669,15 @@
                                 DAMAGE TO RENTED PREMISES (Ea occurrence) <br>
                                 <input type="checkbox" name="commercial_expense" value="1" class="ins-checkbox-input">
                                 MED EXP (Any one person)<br>
-                                <input type="checkbox" name="commercial_expense" value="1" class="ins-checkbox-input">
+                                <input type="checkbox" name="commercial_injury" value="1" class="ins-checkbox-input">
                                 PERSONAL & ADV INJURY<br>
-                                <input type="checkbox" name="commercial_expense" value="1" class="ins-checkbox-input">
-                                GEN'L AGGREGATE LIMIT APPLIES PER:<br>
-                                <input type="checkbox" name="commercial_expense" value="1" class="ins-checkbox-input">
+
+                                <input type="checkbox" name="commercial_general_aggregate" value="1" class="ins-checkbox-input">
                                 GENERAL AGGREGATE<br>
-                                <input type="checkbox" name="commercial_expense" value="1" class="ins-checkbox-input">
+                                <input type="checkbox" name="commercial_general_product" value="1" class="ins-checkbox-input">
                                 PRODUCTS - COMP/OP AGG<br>
+                                <input type="checkbox"   class="ins-checkbox-input">
+                                <input type="text" name="commercial_general_other"/><br>
                             </td>
                             <td class="ins-td">
                                 <input type="text" name="commercial_each_occurrence_limit"/>

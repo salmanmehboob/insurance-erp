@@ -166,7 +166,8 @@
                         DATE (MM/DD/YYYY)</p>
                     <p class="s3"
                        style="padding-top: 5pt;padding-left: 6pt;text-indent: 0pt;line-height: 8pt;text-align: center;">
-                        {{$form->invoice_date}}</p>
+                        {{$form->invoice_date}}
+                    </p>
                 </td>
             </tr>
             <tr style="height:41pt">
@@ -382,9 +383,9 @@
             <tr style="height:11pt">
                 <td style="width:235pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
                     colspan="4">
-                    <p class="s5"
-                       style="padding-top: 1pt;padding-left: 2pt;text-indent: 0pt;line-height: 8pt;text-align: left;">
-                        INSURER D: {{$form->insurer_d}}</p>
+                        <p class="s5"
+                           style="padding-top: 1pt;padding-left: 2pt;text-indent: 0pt;line-height: 8pt;text-align: left;">
+                            INSURER D: {{$form->insurer_d}}</p>
                 </td>
                 <td
                     style="width:53pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
