@@ -264,6 +264,15 @@
                                         <div class="col-md-6">
                                             <a target="_blank" href="{{route('view.form',['type' => 'InsuranceCard'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
                                         </div>
+
+                                        <div class="col-md-6">
+                                            <a href="{{ route('create-general-liability-form', $policy->client->id) }}"
+                                               class="text-primary w-100">COMMERCIAL GENERAL LIABILITY SECTION</a>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <a target="_blank" href="{{route('view.form',['type' => 'GeneralLiability'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

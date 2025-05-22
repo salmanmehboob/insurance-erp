@@ -208,5 +208,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('insurance/card/form/{id}/create', [FormsController::class, 'CreateInsuranceCardForm'])->name('create-insurance-card-form');
     Route::post('store/insurance/card', [FormsController::class, 'storeInsuranceCardForm'])->name('store-insurance-card');
 
+    // COMMERCIAL GENERAL LIABILITY SECTION
+    Route::get('general/liability/form/{id}/create', [FormsController::class, 'CreateGeneralLiabilityForm'])->name('create-general-liability-form');
+    Route::post('store/general/liability', [FormsController::class, 'storeGeneralLiabilityForm'])->name('store-general-liability');
+
 
 });

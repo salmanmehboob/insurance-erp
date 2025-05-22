@@ -8,6 +8,7 @@ use App\Models\ClientPolicy;
 use App\Models\Forms\AdditionalRemarkForm;
 use App\Models\Forms\AgentBrokerForm;
 use App\Models\Forms\EvidenceOfPropertyForm;
+use App\Models\Forms\GeneralLiability;
 use App\Models\Forms\InsuranceCard;
 use App\Models\Forms\InvoicePayment;
 use App\Models\Forms\InvoicePaymentItem;
@@ -57,6 +58,10 @@ class FormsController extends Controller
 
         if ($type === 'InsuranceCard') {
             $forms = InsuranceCard::all();
+        }
+
+        if ($type === 'GeneralLiability') {
+            $forms = GeneralLiability::all();
         }
 
         return view('admin.clientForms.index', compact('title', 'forms', 'type'));
@@ -1520,4 +1525,92 @@ class FormsController extends Controller
         }
     }
 
+
+    public function CreateGeneralLiabilityForm($id)
+    {
+        $clientPolicy = ClientPolicy::with('client.policy.agency', 'insuranceCompany', 'agency', 'agent')->where('client_id', $id)->first();
+
+        return view('admin.clientForms.general_liability.create', compact('clientPolicy'));
+    }
+
+    public function storeGeneralLiabilityForm(Request $request)
+    {
+
+//        dd($request->all());
+        // Validate the incoming request data
+        $validator = Validator::make($request->all(), [
+            'client_id' => 'required',
+            'company_number' => 'required',
+            'company_name' => 'required',
+            'type' => 'required',
+            'policy_number' => 'required',
+            'effective_date' => 'required',
+            'expiration_date' => 'required',
+            'year' => 'required',
+            'make' => 'required',
+            'vehicle_number' => 'required',
+            'agency_name' => 'required',
+            'agency_address' => 'required',
+            'agency_city' => 'required',
+            'agency_state' => 'required',
+            'agency_zipcode' => 'required',
+
+            'insured_name' => 'required',
+            'insured_address' => 'required',
+            'insured_city' => 'required',
+            'insured_state' => 'required',
+            'insured_zipcode' => 'required',
+
+        ]);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Start database transaction
+        DB::beginTransaction();
+
+        try {
+
+            $insuranceCardForm = InsuranceCard::create([
+                'client_id' => $request->client_id,
+                'company_number' => $request->company_number,
+                'company_name' => $request->company_name,
+                'type' => $request->type,
+                'policy_number' => $request->policy_number,
+                'effective_date' => $request->effective_date,
+                'expiration_date' => $request->expiration_date,
+                'year' => $request->year,
+                'make' => $request->make,
+                'vehicle_number' => $request->vehicle_number,
+                'agency_name' => $request->agency_name,
+                'agency_address' => $request->agency_address,
+                'agency_city' => $request->agency_city,
+                'agency_state' => $request->agency_state,
+                'agency_zipcode' => $request->agency_zipcode,
+                'insured_name' => $request->insured_name,
+                'insured_address' => $request->insured_address,
+                'insured_city' => $request->insured_city,
+                'insured_state' => $request->insured_state,
+                'insured_zipcode' => $request->insured_zipcode,
+
+                'created_by' => auth()->user()->id,
+            ]);
+
+            // Check if the data was successfully created
+            if ($insuranceCardForm) {
+                DB::commit();
+                return redirect()->back()->with('success', 'Form submitted successfully!');
+            } else {
+                DB::rollback();
+                return redirect()->back()->withErrors(['error' => 'Failed to create the record.']);
+            }
+
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            DB::rollback();
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
 }

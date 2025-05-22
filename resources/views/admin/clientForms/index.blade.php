@@ -50,6 +50,9 @@
                 @if($type === 'InsuranceCard')
                     @include('admin.clientForms.insurance_card.index')
                 @endif
+                    @if($type === 'GeneralLiability')
+                    @include('admin.clientForms.general_liability.index')
+                @endif
             </div>
         </div>
         <!-- /basic datatable -->
