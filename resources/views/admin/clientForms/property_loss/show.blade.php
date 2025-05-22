@@ -259,6 +259,14 @@
         .ins-form-checkbox-item {
             width: 25%;
         }
+
+        .footer {
+            position: absolute;
+
+            width: calc(8.5in - 40px); /* Adjust for padding */
+            text-align: right;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -734,13 +742,224 @@
         <div class="ins-form-footer">
             <div>ACORD 1 (2016/10)</div>
             <div style="display: flex; justify-content: center; margin-top: 3px;">
-                <div style="width: 33%;">Page 1 of 3</div>
+
                 <div style="width: 33%;">© 1988-2016 ACORD CORPORATION. All rights reserved.</div>
                 <div style="width: 33%;"></div>
             </div>
         </div>
+        <div class="footer">
+            Page 1 of 3
+        </div>
+    </div>
+<br>
+    <style>
+
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #000;
+            padding: 4px;
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        .header-left {
+            text-align: left;
+            width: 60%;
+        }
+
+        .header-right {
+            text-align: right;
+            width: 40%;
+        }
+
+        .content {
+            padding: 10px;
+        }
+
+        .state-section {
+            margin-bottom: 10px;
+        }
+
+        .state-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #000;
+            margin: 8px 0;
+        }
+    </style>
+    <div class="form-container">
+        <div class="header">
+            <div class="header-left">
+                WARNING (ATTACH TO: Additional Remarks Schedule, may be attached if more space is needed)
+            </div>
+            <div class="header-right">
+                AGENCY CUSTOMER ID: {{$form->agency_customer_id}}
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="state-section">
+                <div class="state-title">Applicable in Alabama:</div>
+                <p>A person who knowingly presents a false or fraudulent claim for payment of a loss or benefit or who knowingly presents false information in an application for insurance is guilty of a crime and may be subject to restitution, fines, or confinement in prison, or any combination thereof.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in Alaska:</div>
+                <p>A person who knowingly and with intent to injure, defraud, or deceive an insurance company files a claim containing false, incomplete, or misleading information may be prosecuted under state law.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in Arizona:</div>
+                <p>For your protection Arizona law requires the following statement to appear on this form. Any person who knowingly presents a false or fraudulent claim for payment of a loss is subject to criminal and civil penalties.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in Arkansas:</div>
+                <p>A person who knowingly presents a false or fraudulent claim for payment of a loss or benefit or knowingly presents false information in an application for insurance is guilty of a crime and may be subject to fines and confinement in prison.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in California:</div>
+                <p>For your protection California law requires the following to appear on this form. Any person who knowingly presents a false or fraudulent claim for the payment of a loss is guilty of a crime and may be subject to fines and confinement in state prison.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in Colorado:</div>
+                <p>It is unlawful to knowingly provide false, incomplete, or misleading facts or information to an insurance company for the purpose of defrauding or attempting to defraud the company. Penalties may include imprisonment, fines, denial of insurance, and civil damages. Any insurance company or agent of an insurance company who knowingly provides false, incomplete, or misleading facts or information to a policyholder or claimant for the purpose of defrauding or attempting to defraud the policyholder or claimant with regard to a settlement or award payable from insurance proceeds shall be reported to the Colorado Division of Insurance within the Department of Regulatory Agencies.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in Delaware:</div>
+                <p>A person who knowingly, and with intent to injure, defraud, or deceive any insurance company, files a statement of claim containing any false, incomplete, or misleading information is guilty of a felony.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in District of Columbia:</div>
+                <p>WARNING: It is a crime to provide false or misleading information to an insurer for the purpose of defrauding the insurer or any other person. Penalties include imprisonment and/or fines. In addition, an insurer may deny insurance benefits if false information materially related to a claim was provided by the applicant.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in Florida:</div>
+                <p>Any person who knowingly and with intent to injure, defraud, or deceive any insurer files a statement of claim or an application containing any false, incomplete, or misleading information is guilty of a felony of the third degree.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in Hawaii:</div>
+                <p>For your protection, Hawaii law requires you to be informed that presenting a fraudulent claim for payment of a loss or benefit is a crime punishable by fines or imprisonment, or both.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in Idaho:</div>
+                <p>Any person who knowingly, and with intent to defraud or deceive any insurance company, files a statement of claim containing any false, incomplete, or misleading information is guilty of a felony.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in Indiana:</div>
+                <p>A person who knowingly and with intent to defraud an insurer files a statement of claim containing any false, incomplete, or misleading information commits a felony.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in Kentucky:</div>
+                <p>Any person who knowingly and with intent to defraud any insurance company or other person files a statement of claim containing any materially false information or conceals, for the purpose of misleading, information concerning any fact material thereto commits a fraudulent insurance act, which is a crime.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in Louisiana:</div>
+                <p>Any person who knowingly presents a false or fraudulent claim for payment of a loss or benefit or knowingly presents false information in an application for insurance is guilty of a crime and may be subject to fines and confinement in prison.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in Maine:</div>
+                <p>It is a crime to knowingly provide false, incomplete or misleading information to an insurance company for the purpose of defrauding the company. Penalties may include imprisonment, fines or a denial of insurance benefits.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in Maryland:</div>
+                <p>Any person who knowingly or willfully presents a false or fraudulent claim for payment of a loss or benefit or who knowingly or willfully presents false information in an application for insurance is guilty of a crime and may be subject to fines and confinement in prison.</p>
+            </div>
+
+            <div class="state-section">
+                <div class="state-title">Applicable in Minnesota:</div>
+                <p>A person who files a claim with intent to defraud or helps commit a fraud against an insurer is guilty of a crime.</p>
+            </div>
+         </div>
+        <div class="footer">
+            Page 2 of 3
+        </div>
 
     </div>
+
+    <br>
+    <style>
+
+        .header {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        .content {
+            font-size: 14px;
+            text-align: justify;
+        }
+        .content p {
+            margin: 5px 0;
+        }
+
+    </style>
+    <div class="form-container">
+        <div class="header">
+            AGENCY STATEMENT
+        </div>
+        <div class="content">
+            <div class="section-title">Applicable in Louisiana person who knowingly presents a false or fraudulent claim for payment of a loss or benefit or knowingly presents false information in an application for insurance is guilty of a crime and may be subject to fines and confinement in prison.</div>
+            <p>In Louisiana, any person who knowingly presents a false or fraudulent claim for the payment of a loss or benefit or knowingly presents false information in an application for insurance is guilty of a crime and may be subject to fines and confinement in prison. This applies to any individual or entity submitting such claims or information with the intent to deceive an insurance company or other parties involved in the insurance process. Such actions undermine the integrity of the insurance system and can lead to severe legal consequences, including monetary penalties and imprisonment.</p>
+
+            <div class="section-title">Applicable in Maine person who knowingly provides false, incomplete, or misleading information to an insurance company for the purpose of defrauding the company commits a crime and may be subject to penalties.</div>
+            <p>In Maine, it is a crime for any person to knowingly provide false, incomplete, or misleading information to an insurance company with the purpose of defrauding the company. Penalties for such actions may include fines, imprisonment, or both, depending on the severity of the offense and the extent of the fraud committed.</p>
+
+            <div class="section-title">Applicable in Minnesota person who files a claim with intent to defraud or helps commit a fraud against an insurer is guilty of a crime and may be subject to penalties.</div>
+            <p>In Minnesota (Minn. Stat. ยง 609.611), any person who files a claim with the intent to defraud or assists in committing a fraud against an insurer is guilty of a crime. This includes submitting false claims or aiding others in fraudulent activities against an insurance company. Violators may face penalties such as fines, imprisonment, or both, as determined by the legal system.</p>
+
+            <div class="section-title">Applicable in New Hampshire person who, with a purpose to injure, defraud, or deceive any insurance company, files a statement of claim containing any false, incomplete, or misleading information is subject to prosecution and punishment for insurance fraud as provided in RSA 638:20.</div>
+            <p>In New Hampshire, any person who, with the purpose to injure, defraud, or deceive any insurance company, files a statement of claim containing any false, incomplete, or misleading information is subject to prosecution and punishment for insurance fraud as provided in RSA 638:20. This statute ensures that individuals or entities engaging in deceptive practices face legal consequences, which may include fines, imprisonment, or other penalties.</p>
+
+            <div class="section-title">Applicable in New Jersey person who knowingly presents a false or fraudulent claim for payment of a loss or benefit or knowingly submits false information in an application for insurance is guilty of a crime and may be subject to fines and confinement in prison.</div>
+            <p>In New Jersey, any person who knowingly presents a false or fraudulent claim for the payment of a loss or benefit or knowingly submits false information in an application for insurance is guilty of a crime. Such actions are considered insurance fraud, and offenders may be subject to fines, imprisonment, or both, depending on the severity of the offense and the extent of the fraud.</p>
+
+            <div class="section-title">Applicable in New Mexico person who knowingly presents a false or fraudulent claim for payment of a loss or benefit or knowingly submits false information in an application for insurance is guilty of a crime and may be subject to fines and confinement in prison.</div>
+            <p>In New Mexico, any person who knowingly presents a false or fraudulent claim for the payment of a loss or benefit or knowingly submits false information in an application for insurance is guilty of a crime. This includes any individual or entity that submits such claims or information with the intent to deceive. Offenders may face fines, imprisonment, or both, as determined by the legal system.</p>
+
+            <div class="section-title">Applicable in Ohio person who, with intent to defraud or knowing that he is facilitating a fraud against an insurer, submits an application or files a claim containing a false or deceptive statement is guilty of insurance fraud.</div>
+            <p>In Ohio, any person who, with the intent to defraud or knowing that they are facilitating a fraud against an insurer, submits an application or files a claim containing a false or deceptive statement is guilty of insurance fraud. Such actions are considered a crime, and offenders may be subject to legal consequences, including fines, imprisonment, or both.</p>
+
+            <div class="section-title">Applicable in Puerto Rico person who knowingly and with the intention of defrauding presents false information in an insurance application, or presents, helps, or causes the presentation of a fraudulent claim for the payment of a loss or other benefit may be subject to fines and confinement in prison.</div>
+            <p>In Puerto Rico, any person who knowingly and with the intention of defrauding presents false information in an insurance application, or presents, helps, or causes the presentation of a fraudulent claim for the payment of a loss or other benefit, may be subject to fines and confinement in prison. This applies to individuals or entities involved in such deceptive practices, and penalties may vary based on the severity of the offense.</p>
+
+            <div class="section-title">Applicable in Tennessee a person who knowingly presents false information in an insurance application or claim commits a fraudulent insurance act, which is a crime and may be subject to fines and confinement in prison.</div>
+            <p>In Tennessee, a person who knowingly presents false information in an insurance application or claim commits a fraudulent insurance act, which is considered a crime. Such actions may lead to penalties, including fines, imprisonment, or both, depending on the extent of the fraud and the legal consequences determined by the courts.</p>
+
+            <div class="section-title">Applicable in Virginia person who knowingly provides false, incomplete, or misleading information to an insurance company for the purpose of defrauding the company commits a crime and may be subject to penalties.</div>
+            <p>In Virginia, any person who knowingly provides false, incomplete, or misleading information to an insurance company for the purpose of defrauding the company commits a crime. Offenders may be subject to penalties, including fines, imprisonment, or both, as determined by the legal system.</p>
+        </div>
+        <div class="footer">
+            Page 3 of 3
+        </div>
+    </div>
+
 
 </div>
 <script>

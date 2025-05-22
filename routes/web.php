@@ -204,6 +204,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('liability/insurance/form/{id}/create', [FormsController::class, 'CreateLiabilityInsuranceForm'])->name('create-liability-insurance-form');
     Route::post('store/liability/insurance', [FormsController::class, 'storeLiabilityInsurance'])->name('store-liability-insurance');
 
+    // INSURANCE IDENTIFICATION CARD
+    Route::get('insurance/card/form/{id}/create', [FormsController::class, 'CreateInsuranceCardForm'])->name('create-insurance-card-form');
+    Route::post('store/insurance/card', [FormsController::class, 'storeInsuranceCardForm'])->name('store-insurance-card');
 
 
 });
