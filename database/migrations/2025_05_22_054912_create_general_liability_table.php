@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
 
-            $table->string('invoice_date', 100)->nullable();
-            $table->string('agency_name', 100)->nullable();
-            $table->string('carrier', 100)->nullable();
-            $table->string('naic_code', 100)->nullable();
+            $table->string('invoice_date', 50)->nullable();
+            $table->string('agency_name', 50)->nullable();
+            $table->string('carrier', 50)->nullable();
+            $table->string('naic_code', 50)->nullable();
             $table->string('policy_number', 50)->nullable();
             $table->string('effective_date', 50)->nullable();
             $table->string('expiration_date', 50)->nullable();
-            $table->string('insured_name', 100)->nullable();
+            $table->string('insured_name', 50)->nullable();
 
             $table->string('coverage_general', 50)->nullable();
             $table->string('coverage_claim', 50)->nullable();
@@ -57,7 +57,7 @@ return new class extends Migration
             $table->string('deductible_damage_rented', 50)->nullable();
             $table->string('deductible_expense', 50)->nullable();
             $table->string('deductible_benefits', 50)->nullable();
-            $table->string('deductible_other', 50)->nullable();
+            $table->string('deductible_other_benefits', 50)->nullable();
 
             $table->text('other_coverage')->nullable();
 
@@ -216,40 +216,46 @@ return new class extends Migration
             $table->string('interest_item', 50)->nullable();
             $table->text('interest_item_description')->nullable();
 
-            $table->string('information_q_one', 50)->nullable();
-            $table->string('information_q_two', 50)->nullable();
-            $table->string('information_q_three', 50)->nullable();
-            $table->string('information_q_four', 50)->nullable();
-            $table->string('information_q_five', 50)->nullable();
+            $table->string('information_q_one', 1)->nullable();
+            $table->string('information_q_two', 1)->nullable();
+            $table->string('information_q_three', 1)->nullable();
+            $table->string('information_q_four', 1)->nullable();
+            $table->string('information_q_five', 1)->nullable();
+
             $table->string('information_equipment_one', 50)->nullable();
             $table->string('information_equipment_type_one', 50)->nullable();
             $table->string('information_equipment_instruction_one', 50)->nullable();
-            $table->string('information_q_six', 50)->nullable();
-            $table->string('information_q_seven', 50)->nullable();
-            $table->string('information_q_eight', 50)->nullable();
-            $table->string('information_q_nine', 50)->nullable();
-            $table->string('information_q_ten', 50)->nullable();
-            $table->string('information_q_apt', 50)->nullable();
-            $table->string('information_q_apt_area', 50)->nullable();
+
+            $table->string('information_equipment_two', 50)->nullable();
+            $table->string('information_equipment_type_two', 50)->nullable();
+            $table->string('information_equipment_instruction_two', 50)->nullable();
+
+            $table->string('information_q_six', 1)->nullable();
+            $table->string('information_q_seven', 1)->nullable();
+            $table->string('information_q_eight', 1)->nullable();
+            $table->string('information_q_nine', 1)->nullable();
+            $table->string('information_q_ten', 1)->nullable();
+            $table->string('information_q_apt', 5)->nullable();
+            $table->string('information_q_apt_area', 5)->nullable();
             $table->text('information_q_apt_description')->nullable();
-            $table->string('information_q_eleven', 50)->nullable();
-            $table->string('information_approved_fence', 50)->nullable();
-            $table->string('information_limited_access', 50)->nullable();
-            $table->string('information_diving_board', 50)->nullable();
-            $table->string('information_slide', 50)->nullable();
-            $table->string('information_above_ground', 50)->nullable();
-            $table->string('information_in_ground', 50)->nullable();
-            $table->string('information_lift_guard', 50)->nullable();
-            $table->string('information_q_twelve', 50)->nullable();
-            $table->string('information_q_thirteen', 50)->nullable();
-            $table->string('information_sport_type', 50)->nullable();
-            $table->string('information_sport_contact', 50)->nullable();
-            $table->string('information_sport_age', 50)->nullable();
-            $table->string('information_sport_sponsorship', 50)->nullable();
-            $table->string('information_fourteen', 50)->nullable();
-            $table->string('information_fifteen', 50)->nullable();
-            $table->string('information_sixteen', 50)->nullable();
-            $table->string('information_seventeen', 50)->nullable();
+            $table->string('information_q_eleven', 1)->nullable();
+            $table->string('information_approved_fence', 5)->nullable();
+            $table->string('information_limited_access', 5)->nullable();
+            $table->string('information_diving_board', 5)->nullable();
+            $table->string('information_slide', 5)->nullable();
+            $table->string('information_above_ground', 5)->nullable();
+            $table->string('information_in_ground', 5)->nullable();
+            $table->string('information_lift_guard', 5)->nullable();
+            $table->string('information_q_twelve', 1)->nullable();
+            $table->string('information_q_thirteen', 1)->nullable();
+            $table->string('information_sport_type', 5)->nullable();
+            $table->string('information_sport_contact', 5)->nullable();
+            $table->string('information_sport_age', 5)->nullable();
+            $table->string('information_sport_sponsorship', 5)->nullable();
+            $table->string('information_fourteen', 1)->nullable();
+            $table->string('information_fifteen', 1)->nullable();
+            $table->string('information_sixteen', 1)->nullable();
+            $table->string('information_seventeen', 1)->nullable();
 
             $table->string('information_lease_to_one', 50)->nullable();
             $table->string('information_lease_to_one_coverage', 50)->nullable();
@@ -261,19 +267,19 @@ return new class extends Migration
             $table->string('information_lease_from_two', 50)->nullable();
             $table->string('information_lease_from_two_coverage', 50)->nullable();
 
-            $table->string('information_eighteen', 50)->nullable();
-            $table->string('information_nineteen', 50)->nullable();
-            $table->string('information_twenty', 50)->nullable();
-            $table->string('information_twenty_one', 50)->nullable();
-            $table->string('information_twenty_two', 50)->nullable();
+            $table->string('information_eighteen', 1)->nullable();
+            $table->string('information_nineteen', 1)->nullable();
+            $table->string('information_twenty', 1)->nullable();
+            $table->string('information_twenty_one', 1)->nullable();
+            $table->string('information_twenty_two', 1)->nullable();
 
             $table->text('remarks')->nullable();
-            $table->string('procedure_signature')->nullable();
-            $table->string('procedure_name')->nullable();
-            $table->string('procedure_license')->nullable();
-            $table->string('applicant_signature')->nullable();
-            $table->string('applicant_date')->nullable();
-            $table->string('procedure_no')->nullable();
+            $table->string('procedure_signature',50)->nullable();
+            $table->string('procedure_name',50)->nullable();
+            $table->string('procedure_license',50)->nullable();
+            $table->string('applicant_signature',50)->nullable();
+            $table->string('applicant_date',50)->nullable();
+            $table->string('procedure_no',50)->nullable();
 
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
 

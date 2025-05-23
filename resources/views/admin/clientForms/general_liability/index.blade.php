@@ -3,7 +3,7 @@
     <tr>
         <th>Agency</th>
          <th>Insured Name</th>
-         <th>Vehicle Number </th>
+         <th>Agency Customer ID </th>
         <th class="text-center">Actions</th>
     </tr>
     </thead>
@@ -12,7 +12,7 @@
         <tr>
             <td>{{ $row->agency_name . ' ' . $row->agency_address  }}</td>
             <td>{{ $row->insured_name  }}</td>
-            <td>{{ $row->vehicle_number  }}</td>
+            <td>{{ $row->agency_customer_id  }}</td>
             <td>
                 <div class="d-flex action-buttons">
 

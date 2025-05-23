@@ -13,7 +13,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class GeneralLiability extends Model
 {
     use  HasFactory;
+    protected $guarded = [];
 
+    protected $table = 'general_liability';
     protected $fillable = [
         'client_id',
 
@@ -59,7 +61,7 @@ class GeneralLiability extends Model
         'deductible_damage_rented',
         'deductible_expense',
         'deductible_benefits',
-        'deductible_other',
+        'deductible_other_benefits',
 
         'other_coverage',
 
@@ -226,6 +228,9 @@ class GeneralLiability extends Model
         'information_equipment_one',
         'information_equipment_type_one',
         'information_equipment_instruction_one',
+        'information_equipment_two',
+        'information_equipment_type_two',
+        'information_equipment_instruction_two',
         'information_q_six',
         'information_q_seven',
         'information_q_eight',
@@ -271,7 +276,7 @@ class GeneralLiability extends Model
 
         'remarks',
         'procedure_signature',
-        'procedure_name',
+            'procedure_name',
         'procedure_license',
         'applicant_signature',
         'applicant_date',
