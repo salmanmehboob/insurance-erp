@@ -212,5 +212,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('general/liability/form/{id}/create', [FormsController::class, 'CreateGeneralLiabilityForm'])->name('create-general-liability-form');
     Route::post('store/general/liability', [FormsController::class, 'storeGeneralLiabilityForm'])->name('store-general-liability');
 
+    // COMMERCIAL GENERAL LIABILITY SECTION
+    Route::get('insurance/application/form/{id}/create', [FormsController::class, 'CreateInsuranceApplicationForm'])->name('create-insurance-application-form');
+    Route::post('store/insurance/application', [FormsController::class, 'storeInsuranceApplicationForm'])->name('store-insurance-application');
+
 
 });

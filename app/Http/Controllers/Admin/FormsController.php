@@ -9,6 +9,13 @@ use App\Models\Forms\AdditionalRemarkForm;
 use App\Models\Forms\AgentBrokerForm;
 use App\Models\Forms\EvidenceOfPropertyForm;
 use App\Models\Forms\GeneralLiability;
+use App\Models\Forms\InsuranceApplication;
+use App\Models\Forms\InsuranceApplicationApplicant;
+use App\Models\Forms\InsuranceApplicationAttachment;
+use App\Models\Forms\InsuranceApplicationBusiness;
+use App\Models\Forms\InsuranceApplicationInfo;
+use App\Models\Forms\InsuranceApplicationPremise;
+use App\Models\Forms\InsuranceApplicationPrior;
 use App\Models\Forms\InsuranceCard;
 use App\Models\Forms\InvoicePayment;
 use App\Models\Forms\InvoicePaymentItem;
@@ -62,6 +69,10 @@ class FormsController extends Controller
 
         if ($type === 'GeneralLiability') {
             $forms = GeneralLiability::all();
+        }
+
+        if ($type === 'InsuranceApplication') {
+            $forms = InsuranceApplication::all();
         }
 
         return view('admin.clientForms.index', compact('title', 'forms', 'type'));
@@ -119,6 +130,12 @@ class FormsController extends Controller
         if ($type === 'GeneralLiability') {
             $form = GeneralLiability::find($id);
             return view('admin.clientForms.general_liability.show', compact('title', 'form', 'type'));
+
+        }
+
+        if ($type === 'InsuranceApplication') {
+            $form = InsuranceApplication::find($id);
+            return view('admin.clientForms.insurance_application.show', compact('title', 'form', 'type'));
 
         }
 
@@ -1155,7 +1172,7 @@ class FormsController extends Controller
     public function storeLiabilityInsurance(Request $request)
     {
 
-         // Validate the incoming request data
+        // Validate the incoming request data
 
         $validator = Validator::make($request->all(), [
             'client_id' => 'required|integer',
@@ -1208,10 +1225,10 @@ class FormsController extends Controller
             'commercial_policy_number' => 'nullable|string',
             'commercial_effective_date' => 'nullable|string',
             'commercial_expiration_date' => 'nullable|string',
-             'commercial_each_occurrence' => 'nullable|string',
+            'commercial_each_occurrence' => 'nullable|string',
             'commercial_damage' => 'nullable|string',
             'commercial_expense' => 'nullable|string',
-             'commercial_each_occurrence_limit' => 'nullable|string',
+            'commercial_each_occurrence_limit' => 'nullable|string',
             'commercial_damage_limit' => 'nullable|string',
             'commercial_expense_limit' => 'nullable|string',
             'commercial_injury_limit' => 'nullable|string',
@@ -1428,8 +1445,7 @@ class FormsController extends Controller
             ];
 
 
-           LiabilityInsurance::create($dbData);
-
+            LiabilityInsurance::create($dbData);
 
 
             DB::commit();
@@ -1512,7 +1528,7 @@ class FormsController extends Controller
                 'insured_zipcode' => $request->insured_zipcode,
 
                 'created_by' => auth()->user()->id,
-             ]);
+            ]);
 
             // Check if the data was successfully created
             if ($insuranceCardForm) {
@@ -1547,6 +1563,605 @@ class FormsController extends Controller
         try {
             // Directly insert all request data
             $form = GeneralLiability::create($request->all());
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Form submitted successfully!');
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function CreateInsuranceApplicationForm($id)
+    {
+        $clientPolicy = ClientPolicy::with('client.policy.agency', 'insuranceCompany', 'agency', 'agent')->where('client_id', $id)->first();
+
+        return view('admin.clientForms.insurance_application.create', compact('clientPolicy'));
+    }
+
+    public function storeInsuranceApplicationForm(Request $request)
+    {
+        // Optional: Validate data here if needed
+
+//        dd($request->all());
+        DB::beginTransaction();
+
+        try {
+            // Directly insert all request data
+
+            $insuranceApplication = InsuranceApplication::create([
+                'client_id' => $request->client_id,
+
+                'invoice_date' => $request->invoice_date,
+                'agency_name' => $request->agency_name,
+                'agency_address' => $request->agency_address,
+                'agency_city' => $request->agency_city,
+                'agency_state' => $request->agency_state,
+                'agency_zipcode' => $request->agency_zipcode,
+
+                'contact_name' => $request->contact_name,
+                'contact_phone_no' => $request->contact_phone_no,
+                'contact_fax_no' => $request->contact_fax_no,
+                'contact_email' => $request->contact_email,
+                'code' => $request->code,
+                'sub_code' => $request->sub_code,
+                'producer_customer_id' => $request->producer_customer_id,
+
+                'carrier' => $request->carrier,
+                'naic_code' => $request->naic_code,
+                'program_name' => $request->program_name,
+                'program_code' => $request->program_code,
+                'policy_number' => $request->policy_number,
+                'under_writer' => $request->under_writer,
+                'under_writer_office' => $request->under_writer_office,
+
+                'status_quote' => $request->status_quote,
+                'status_bound' => $request->status_bound,
+                'status_change' => $request->status_change,
+                'status_cancel' => $request->status_cancel,
+                'status_issue_policy' => $request->status_issue_policy,
+                'status_renew' => $request->status_renew,
+                'status_date' => $request->status_date,
+                'status_time' => $request->status_time,
+
+                'signature_notice' => $request->signature_notice,
+                'applicant' => $request->applicant,
+                'procedure_signature' => $request->procedure_signature,
+                'procedure_name' => $request->procedure_name,
+                'procedure_license' => $request->procedure_license,
+                'applicant_signature' => $request->applicant_signature,
+                'applicant_date' => $request->applicant_date,
+                'procedure_no' => $request->procedure_no,
+                'created_by' => $request->created_by,
+            ]);
+
+            $insuranceApplicationId = $insuranceApplication->id;
+            InsuranceApplicationBusiness::create([
+                'insurance_application_id' => $insuranceApplicationId,
+
+                'business_boiler' => $request->business_boiler,
+                'business_boiler_limit' => $request->business_boiler_limit,
+
+                'business_auto' => $request->business_auto,
+                'business_auto_limit' => $request->business_auto_limit,
+
+                'business_owner' => $request->business_owner,
+                'business_owner_limit' => $request->business_owner_limit,
+
+                'business_commercial_gl' => $request->business_commercial_gl,
+                'business_commercial_gl_limit' => $request->business_commercial_gl_limit,
+
+                'business_inland' => $request->business_inland,
+                'business_inland_limit' => $request->business_inland_limit,
+
+                'business_property' => $request->business_property,
+                'business_property_limit' => $request->business_property_limit,
+
+                'business_crime' => $request->business_crime,
+                'business_crime_limit' => $request->business_crime_limit,
+
+                'business_cyber' => $request->business_cyber,
+                'business_cyber_limit' => $request->business_cyber_limit,
+
+                'business_fiduciary' => $request->business_fiduciary,
+                'business_fiduciary_limit' => $request->business_fiduciary_limit,
+
+                'business_garage' => $request->business_garage,
+                'business_garage_limit' => $request->business_garage_limit,
+
+                'business_liquor' => $request->business_liquor,
+                'business_liquor_limit' => $request->business_liquor_limit,
+
+                'business_motor' => $request->business_motor,
+                'business_motor_limit' => $request->business_motor_limit,
+
+                'business_trucker' => $request->business_trucker,
+                'business_trucker_limit' => $request->business_trucker_limit,
+
+                'business_umbrella' => $request->business_umbrella,
+                'business_umbrella_limit' => $request->business_umbrella_limit,
+
+                'business_yacht' => $request->business_yacht,
+                'business_yacht_limit' => $request->business_yacht_limit,
+            ]);
+
+            InsuranceApplicationAttachment::create([
+                'application_id' => $insuranceApplicationId,
+
+                'attachment_account_receivable' => $request->attachment_account_receivable,
+                'attachment_additional_interest' => $request->attachment_additional_interest,
+                'attachment_additional_premises' => $request->attachment_additional_premises,
+                'attachment_apartment' => $request->attachment_apartment,
+                'attachment_condo' => $request->attachment_condo,
+                'attachment_contractor' => $request->attachment_contractor,
+                'attachment_coverage' => $request->attachment_coverage,
+                'attachment_dealer' => $request->attachment_dealer,
+                'attachment_driver' => $request->attachment_driver,
+                'attachment_electronic' => $request->attachment_electronic,
+                'attachment_glass' => $request->attachment_glass,
+                'attachment_hotel' => $request->attachment_hotel,
+                'attachment_installation' => $request->attachment_installation,
+                'attachment_liability_exposure' => $request->attachment_liability_exposure,
+                'attachment_property_exposure' => $request->attachment_property_exposure,
+                'attachment_loss' => $request->attachment_loss,
+                'attachment_cargo' => $request->attachment_cargo,
+                'attachment_premium' => $request->attachment_premium,
+                'attachment_professional' => $request->attachment_professional,
+                'attachment_restaurant' => $request->attachment_restaurant,
+                'attachment_statement' => $request->attachment_statement,
+                'attachment_state' => $request->attachment_state,
+                'attachment_vacant' => $request->attachment_vacant,
+                'attachment_vehicle' => $request->attachment_vehicle,
+
+                'attachment_other_one' => $request->attachment_other_one,
+                'attachment_other_two' => $request->attachment_other_two,
+                'attachment_other_three' => $request->attachment_other_three,
+                'attachment_other_four' => $request->attachment_other_four,
+                'attachment_other_five' => $request->attachment_other_five,
+                'attachment_other_six' => $request->attachment_other_six,
+            ]);
+
+            InsuranceApplicationApplicant::create([
+                'application_id' => $insuranceApplicationId,
+
+                // Policy info
+                'policy_effective_date' => $request->policy_effective_date,
+                'policy_expiration_date' => $request->policy_expiration_date,
+                'policy_billing_plan' => $request->policy_billing_plan,
+                'policy_payment_plan' => $request->policy_payment_plan,
+                'policy_payment_method' => $request->policy_payment_method,
+                'policy_audit' => $request->policy_audit,
+                'policy_deposit' => $request->policy_deposit,
+                'policy_minimum_premium' => $request->policy_minimum_premium,
+                'policy_policy_premium' => $request->policy_policy_premium,
+
+                // Applicant One
+                'applicant_one_name' => $request->applicant_one_name,
+                'applicant_one_address' => $request->applicant_one_address,
+                'applicant_one_city' => $request->applicant_one_city,
+                'applicant_one_state' => $request->applicant_one_state,
+                'applicant_one_zipcode' => $request->applicant_one_zipcode,
+                'applicant_one_gl_code' => $request->applicant_one_gl_code,
+                'applicant_one_sic_code' => $request->applicant_one_sic_code,
+                'applicant_one_naic_code' => $request->applicant_one_naic_code,
+                'applicant_one_soc_code' => $request->applicant_one_soc_code,
+                'applicant_one_phone' => $request->applicant_one_phone,
+                'applicant_one_website' => $request->applicant_one_website,
+                'applicant_one_corporation' => $request->applicant_one_corporation,
+                'applicant_one_individual' => $request->applicant_one_individual,
+                'applicant_one_joint_adventure' => $request->applicant_one_joint_adventure,
+                'applicant_one_llc' => $request->applicant_one_llc,
+                'applicant_one_members' => $request->applicant_one_members,
+                'applicant_one_non_profit' => $request->applicant_one_non_profit,
+                'applicant_one_partnership' => $request->applicant_one_partnership,
+                'applicant_one_sub_chapter' => $request->applicant_one_sub_chapter,
+                'applicant_one_trust' => $request->applicant_one_trust,
+                'applicant_one_other' => $request->applicant_one_other,
+
+                // Applicant Two
+                'applicant_two_name' => $request->applicant_two_name,
+                'applicant_two_address' => $request->applicant_two_address,
+                'applicant_two_city' => $request->applicant_two_city,
+                'applicant_two_state' => $request->applicant_two_state,
+                'applicant_two_zipcode' => $request->applicant_two_zipcode,
+                'applicant_two_gl_code' => $request->applicant_two_gl_code,
+                'applicant_two_sic_code' => $request->applicant_two_sic_code,
+                'applicant_two_naic_code' => $request->applicant_two_naic_code,
+                'applicant_two_soc_code' => $request->applicant_two_soc_code,
+                'applicant_two_phone' => $request->applicant_two_phone,
+                'applicant_two_website' => $request->applicant_two_website,
+                'applicant_two_corporation' => $request->applicant_two_corporation,
+                'applicant_two_individual' => $request->applicant_two_individual,
+                'applicant_two_joint_adventure' => $request->applicant_two_joint_adventure,
+                'applicant_two_llc' => $request->applicant_two_llc,
+                'applicant_two_members' => $request->applicant_two_members,
+                'applicant_two_non_profit' => $request->applicant_two_non_profit,
+                'applicant_two_partnership' => $request->applicant_two_partnership,
+                'applicant_two_sub_chapter' => $request->applicant_two_sub_chapter,
+                'applicant_two_trust' => $request->applicant_two_trust,
+                'applicant_two_other' => $request->applicant_two_other,
+
+                // Applicant Three
+                'applicant_three_name' => $request->applicant_three_name,
+                'applicant_three_address' => $request->applicant_three_address,
+                'applicant_three_city' => $request->applicant_three_city,
+                'applicant_three_state' => $request->applicant_three_state,
+                'applicant_three_zipcode' => $request->applicant_three_zipcode,
+                'applicant_three_gl_code' => $request->applicant_three_gl_code,
+                'applicant_three_sic_code' => $request->applicant_three_sic_code,
+                'applicant_three_naic_code' => $request->applicant_three_naic_code,
+                'applicant_three_soc_code' => $request->applicant_three_soc_code,
+                'applicant_three_phone' => $request->applicant_three_phone,
+                'applicant_three_website' => $request->applicant_three_website,
+                'applicant_three_corporation' => $request->applicant_three_corporation,
+                'applicant_three_individual' => $request->applicant_three_individual,
+                'applicant_three_joint_adventure' => $request->applicant_three_joint_adventure,
+                'applicant_three_llc' => $request->applicant_three_llc,
+                'applicant_three_members' => $request->applicant_three_members,
+                'applicant_three_non_profit' => $request->applicant_three_non_profit,
+                'applicant_three_partnership' => $request->applicant_three_partnership,
+                'applicant_three_sub_chapter' => $request->applicant_three_sub_chapter,
+                'applicant_three_trust' => $request->applicant_three_trust,
+                'applicant_three_other' => $request->applicant_three_other,
+
+                // Contact Info One
+                'contact_info_type_one' => $request->contact_info_type_one,
+                'contact_info_name_one' => $request->contact_info_name_one,
+                'contact_info_pp_type_one' => $request->contact_info_pp_type_one,
+                'contact_info_pp_number_one' => $request->contact_info_pp_number_one,
+                'contact_info_sp_type_one' => $request->contact_info_sp_type_one,
+                'contact_info_sp_number_one' => $request->contact_info_sp_number_one,
+                'contact_info_s_email_one' => $request->contact_info_s_email_one,
+                'contact_info_p_email_one' => $request->contact_info_p_email_one,
+
+                // Contact Info Two
+                'contact_info_type_two' => $request->contact_info_type_two,
+                'contact_info_name_two' => $request->contact_info_name_two,
+                'contact_info_pp_type_two' => $request->contact_info_pp_type_two,
+                'contact_info_pp_number_two' => $request->contact_info_pp_number_two,
+                'contact_info_sp_type_two' => $request->contact_info_sp_type_two,
+                'contact_info_sp_number_two' => $request->contact_info_sp_number_two,
+                'contact_info_s_email_two' => $request->contact_info_s_email_two,
+                'contact_info_p_email_two' => $request->contact_info_p_email_two,
+            ]);
+
+            InsuranceApplicationPremise::create([
+                'application_id' => $insuranceApplicationId,
+
+                // Premises 1
+                'premises_loc_one' => $request->premises_loc_one,
+                'premises_bld_one' => $request->premises_bld_one,
+                'premises_street_one' => $request->premises_street_one,
+                'premises_city_one' => $request->premises_city_one,
+                'premises_state_one' => $request->premises_state_one,
+                'premises_zipcode_one' => $request->premises_zipcode_one,
+                'premises_country_one' => $request->premises_country_one,
+                'premises_city_limit_one' => $request->premises_city_limit_one,
+                'premises_interest_one' => $request->premises_interest_one,
+                'premises_full_employee_one' => $request->premises_full_employee_one,
+                'premises_annual_revenue_one' => $request->premises_annual_revenue_one,
+                'premises_occupied_area_one' => $request->premises_occupied_area_one,
+                'premises_part_employee_one' => $request->premises_part_employee_one,
+                'premises_public_area_one' => $request->premises_public_area_one,
+                'premises_building_area_one' => $request->premises_building_area_one,
+                'premises_leased_one' => $request->premises_leased_one,
+                'premises_description_one' => $request->premises_description_one,
+
+                // Premises 2
+                'premises_loc_two' => $request->premises_loc_two,
+                'premises_bld_two' => $request->premises_bld_two,
+                'premises_street_two' => $request->premises_street_two,
+                'premises_city_two' => $request->premises_city_two,
+                'premises_state_two' => $request->premises_state_two,
+                'premises_zipcode_two' => $request->premises_zipcode_two,
+                'premises_country_two' => $request->premises_country_two,
+                'premises_city_limit_two' => $request->premises_city_limit_two,
+                'premises_interest_two' => $request->premises_interest_two,
+                'premises_full_employee_two' => $request->premises_full_employee_two,
+                'premises_annual_revenue_two' => $request->premises_annual_revenue_two,
+                'premises_occupied_area_two' => $request->premises_occupied_area_two,
+                'premises_part_employee_two' => $request->premises_part_employee_two,
+                'premises_public_area_two' => $request->premises_public_area_two,
+                'premises_building_area_two' => $request->premises_building_area_two,
+                'premises_leased_two' => $request->premises_leased_two,
+                'premises_description_two' => $request->premises_description_two,
+
+                // Premises 3
+                'premises_loc_three' => $request->premises_loc_three,
+                'premises_bld_three' => $request->premises_bld_three,
+                'premises_street_three' => $request->premises_street_three,
+                'premises_city_three' => $request->premises_city_three,
+                'premises_state_three' => $request->premises_state_three,
+                'premises_zipcode_three' => $request->premises_zipcode_three,
+                'premises_country_three' => $request->premises_country_three,
+                'premises_city_limit_three' => $request->premises_city_limit_three,
+                'premises_interest_three' => $request->premises_interest_three,
+                'premises_full_employee_three' => $request->premises_full_employee_three,
+                'premises_annual_revenue_three' => $request->premises_annual_revenue_three,
+                'premises_occupied_area_three' => $request->premises_occupied_area_three,
+                'premises_part_employee_three' => $request->premises_part_employee_three,
+                'premises_public_area_three' => $request->premises_public_area_three,
+                'premises_building_area_three' => $request->premises_building_area_three,
+                'premises_leased_three' => $request->premises_leased_three,
+                'premises_description_three' => $request->premises_description_three,
+
+                // Premises 4
+                'premises_loc_four' => $request->premises_loc_four,
+                'premises_bld_four' => $request->premises_bld_four,
+                'premises_street_four' => $request->premises_street_four,
+                'premises_city_four' => $request->premises_city_four,
+                'premises_state_four' => $request->premises_state_four,
+                'premises_zipcode_four' => $request->premises_zipcode_four,
+                'premises_country_four' => $request->premises_country_four,
+                'premises_city_limit_four' => $request->premises_city_limit_four,
+                'premises_interest_four' => $request->premises_interest_four,
+                'premises_full_employee_four' => $request->premises_full_employee_four,
+                'premises_annual_revenue_four' => $request->premises_annual_revenue_four,
+                'premises_occupied_area_four' => $request->premises_occupied_area_four,
+                'premises_part_employee_four' => $request->premises_part_employee_four,
+                'premises_public_area_four' => $request->premises_public_area_four,
+                'premises_building_area_four' => $request->premises_building_area_four,
+                'premises_leased_four' => $request->premises_leased_four,
+                'premises_description_four' => $request->premises_description_four,
+
+                // Nature of business
+                'nature_apartment' => $request->nature_apartment,
+                'nature_condom' => $request->nature_condom,
+                'nature_contractor' => $request->nature_contractor,
+                'nature_institutional' => $request->nature_institutional,
+                'nature_manufacture' => $request->nature_manufacture,
+                'nature_office' => $request->nature_office,
+                'nature_restaurant' => $request->nature_restaurant,
+                'nature_retail' => $request->nature_retail,
+                'nature_service' => $request->nature_service,
+                'nature_wholesale' => $request->nature_wholesale,
+                'nature_start_date' => $request->nature_start_date,
+                'nature_description' => $request->nature_description,
+                'nature_total_sale' => $request->nature_total_sale,
+                'nature_installation' => $request->nature_installation,
+                'nature_off_premises' => $request->nature_off_premises,
+                'nature_description_operation' => $request->nature_description_operation,
+
+                // Interests
+                'interest_additional' => $request->interest_additional,
+                'interest_breach' => $request->interest_breach,
+                'interest_co_owner' => $request->interest_co_owner,
+                'interest_lessor' => $request->interest_lessor,
+                'interest_leaseback' => $request->interest_leaseback,
+                'interest_loss' => $request->interest_loss,
+                'interest_holder' => $request->interest_holder,
+                'interest_loss_payee' => $request->interest_loss_payee,
+                'interest_mortgagee' => $request->interest_mortgagee,
+                'interest_owner' => $request->interest_owner,
+                'interest_registrant' => $request->interest_registrant,
+                'interest_trustee' => $request->interest_trustee,
+                'interest_other' => $request->interest_other,
+
+                'interest_type' => $request->interest_type,
+                'interest_name' => $request->interest_name,
+                'interest_address' => $request->interest_address,
+                'interest_rank' => $request->interest_rank,
+                'interest_reference' => $request->interest_reference,
+                'interest_end_date' => $request->interest_end_date,
+                'interest_line_amount' => $request->interest_line_amount,
+                'interest_phone' => $request->interest_phone,
+                'interest_fax' => $request->interest_fax,
+                'interest_email' => $request->interest_email,
+
+                'interest_location' => $request->interest_location,
+                'interest_building' => $request->interest_building,
+                'interest_vehicle' => $request->interest_vehicle,
+                'interest_boat' => $request->interest_boat,
+                'interest_airport' => $request->interest_airport,
+                'interest_aircraft' => $request->interest_aircraft,
+                'interest_item_class' => $request->interest_item_class,
+                'interest_item' => $request->interest_item,
+                'interest_item_description' => $request->interest_item_description,
+                'interest_reason' => $request->interest_reason,
+            ]);
+
+            InsuranceApplicationInfo::create([
+                'application_id' => $insuranceApplicationId,
+
+                // Q1
+                'information_q_one_a_name' => $request->information_q_one_a_name,
+                'information_q_one_a_relation' => $request->information_q_one_a_relation,
+                'information_q_one_a_percentage' => $request->information_q_one_a_percentage,
+                'information_q_one_b_name' => $request->information_q_one_b_name,
+                'information_q_one_b_relation' => $request->information_q_one_b_relation,
+                'information_q_one_b_percentage' => $request->information_q_one_b_percentage,
+
+                // Q2
+                'information_q_two_manual' => $request->information_q_two_manual,
+                'information_q_two_position' => $request->information_q_two_position,
+                'information_q_two_meeting' => $request->information_q_two_meeting,
+                'information_q_two_osha' => $request->information_q_two_osha,
+                'information_q_two_other' => $request->information_q_two_other,
+
+                // Q3
+                'information_q_three' => $request->information_q_three,
+
+                // Q4
+                'information_q_business_one' => $request->information_q_business_one,
+                'information_q_policy_one' => $request->information_q_policy_one,
+                'information_q_business_two' => $request->information_q_business_two,
+                'information_q_policy_two' => $request->information_q_policy_two,
+                'information_q_business_three' => $request->information_q_business_three,
+                'information_q_policy_three' => $request->information_q_policy_three,
+                'information_q_business_four' => $request->information_q_business_four,
+                'information_q_policy_four' => $request->information_q_policy_four,
+
+                // Q5
+                'information_q_non_payment' => $request->information_q_non_payment,
+                'information_q_non_renewal' => $request->information_q_non_renewal,
+                'information_q_agent_carrier' => $request->information_q_agent_carrier,
+                'information_q_under_writing' => $request->information_q_under_writing,
+                'information_q_condition' => $request->information_q_condition,
+                'information_q_condition_description' => $request->information_q_condition_description,
+                'information_q_other' => $request->information_q_other,
+
+                // Q6–Q7
+                'information_q_six' => $request->information_q_six,
+                'information_q_seven' => $request->information_q_seven,
+
+                // Q8
+                'information_q_eight_date_one' => $request->information_q_eight_date_one,
+                'information_q_eight_explanation_one' => $request->information_q_eight_explanation_one,
+                'information_q_eight_resolution_one' => $request->information_q_eight_resolution_one,
+                'information_q_eight_resolution_date_one' => $request->information_q_eight_resolution_date_one,
+                'information_q_eight_date_two' => $request->information_q_eight_date_two,
+                'information_q_eight_explanation_two' => $request->information_q_eight_explanation_two,
+                'information_q_eight_resolution_two' => $request->information_q_eight_resolution_two,
+                'information_q_eight_resolution_date_two' => $request->information_q_eight_resolution_date_two,
+
+                // Q9
+                'information_q_nine_date_one' => $request->information_q_nine_date_one,
+                'information_q_nine_explanation_one' => $request->information_q_nine_explanation_one,
+                'information_q_nine_resolution_one' => $request->information_q_nine_resolution_one,
+                'information_q_nine_resolution_date_one' => $request->information_q_nine_resolution_date_one,
+                'information_q_nine_date_two' => $request->information_q_nine_date_two,
+                'information_q_nine_explanation_two' => $request->information_q_nine_explanation_two,
+                'information_q_nine_resolution_two' => $request->information_q_nine_resolution_two,
+                'information_q_nine_resolution_date_two' => $request->information_q_nine_resolution_date_two,
+
+                // Q10
+                'information_q_ten_date_one' => $request->information_q_ten_date_one,
+                'information_q_ten_explanation_one' => $request->information_q_ten_explanation_one,
+                'information_q_ten_resolution_one' => $request->information_q_ten_resolution_one,
+                'information_q_ten_resolution_date_one' => $request->information_q_ten_resolution_date_one,
+                'information_q_ten_date_two' => $request->information_q_ten_date_two,
+                'information_q_ten_explanation_two' => $request->information_q_ten_explanation_two,
+                'information_q_ten_resolution_two' => $request->information_q_ten_resolution_two,
+                'information_q_ten_resolution_date_two' => $request->information_q_ten_resolution_date_two,
+
+                // Q11–15
+                'information_q_eleven' => $request->information_q_eleven,
+                'information_q_eleven_name' => $request->information_q_eleven_name,
+                'information_q_twelve' => $request->information_q_twelve,
+                'information_q_thirteen' => $request->information_q_thirteen,
+                'information_q_thirteen_detail' => $request->information_q_thirteen_detail,
+                'information_q_fourteen' => $request->information_q_fourteen,
+                'information_q_fourteen_detail' => $request->information_q_fourteen_detail,
+                'information_q_fifteen' => $request->information_q_fifteen,
+                'information_q_fifteen_detail' => $request->information_q_fifteen_detail,
+
+                'remarks' => $request->remarks,
+            ]);
+
+            InsuranceApplicationPrior::create([
+                'application_id' => $insuranceApplicationId,
+
+                'carrier_one_year' => $request->carrier_one_year,
+                'carrier_one_gl' => $request->carrier_one_gl,
+                'carrier_one_auto' => $request->carrier_one_auto,
+                'carrier_one_property' => $request->carrier_one_property,
+                'carrier_one_other' => $request->carrier_one_other,
+
+                'carrier_policy_one_gl' => $request->carrier_policy_one_gl,
+                'carrier_policy_one_auto' => $request->carrier_policy_one_auto,
+                'carrier_policy_one_property' => $request->carrier_policy_one_property,
+                'carrier_policy_one_other' => $request->carrier_policy_one_other,
+
+                'carrier_premium_one_gl' => $request->carrier_premium_one_gl,
+                'carrier_premium_one_auto' => $request->carrier_premium_one_auto,
+                'carrier_premium_one_property' => $request->carrier_premium_one_property,
+                'carrier_premium_one_other' => $request->carrier_premium_one_other,
+
+                'carrier_effective_one_gl' => $request->carrier_effective_one_gl,
+                'carrier_effective_one_auto' => $request->carrier_effective_one_auto,
+                'carrier_effective_one_property' => $request->carrier_effective_one_property,
+                'carrier_effective_one_other' => $request->carrier_effective_one_other,
+
+                'carrier_expiration_one_gl' => $request->carrier_expiration_one_gl,
+                'carrier_expiration_one_auto' => $request->carrier_expiration_one_auto,
+                'carrier_expiration_one_property' => $request->carrier_expiration_one_property,
+                'carrier_expiration_one_other' => $request->carrier_expiration_one_other,
+
+                'carrier_two_year' => $request->carrier_two_year,
+
+                'carrier_two_gl' => $request->carrier_two_gl,
+                'carrier_two_auto' => $request->carrier_two_auto,
+                'carrier_two_property' => $request->carrier_two_property,
+                'carrier_two_other' => $request->carrier_two_other,
+
+                'carrier_policy_two_gl' => $request->carrier_policy_two_gl,
+                'carrier_policy_two_auto' => $request->carrier_policy_two_auto,
+                'carrier_policy_two_property' => $request->carrier_policy_two_property,
+                'carrier_policy_two_other' => $request->carrier_policy_two_other,
+
+                'carrier_premium_two_gl' => $request->carrier_premium_two_gl,
+                'carrier_premium_two_auto' => $request->carrier_premium_two_auto,
+                'carrier_premium_two_property' => $request->carrier_premium_two_property,
+                'carrier_premium_two_other' => $request->carrier_premium_two_other,
+
+                'carrier_effective_two_gl' => $request->carrier_effective_two_gl,
+                'carrier_effective_two_auto' => $request->carrier_effective_two_auto,
+                'carrier_effective_two_property' => $request->carrier_effective_two_property,
+                'carrier_effective_two_other' => $request->carrier_effective_two_other,
+
+                'carrier_expiration_two_gl' => $request->carrier_expiration_two_gl,
+                'carrier_expiration_two_auto' => $request->carrier_expiration_two_auto,
+                'carrier_expiration_two_property' => $request->carrier_expiration_two_property,
+                'carrier_expiration_two_other' => $request->carrier_expiration_two_other,
+
+                'carrier_three_year' => $request->carrier_three_year,
+
+                'carrier_three_gl' => $request->carrier_three_gl,
+                'carrier_three_auto' => $request->carrier_three_auto,
+                'carrier_three_property' => $request->carrier_three_property,
+                'carrier_three_other' => $request->carrier_three_other,
+
+                'carrier_policy_three_gl' => $request->carrier_policy_three_gl,
+                'carrier_policy_three_auto' => $request->carrier_policy_three_auto,
+                'carrier_policy_three_property' => $request->carrier_policy_three_property,
+                'carrier_policy_three_other' => $request->carrier_policy_three_other,
+
+                'carrier_premium_three_gl' => $request->carrier_premium_three_gl,
+                'carrier_premium_three_auto' => $request->carrier_premium_three_auto,
+                'carrier_premium_three_property' => $request->carrier_premium_three_property,
+                'carrier_premium_three_other' => $request->carrier_premium_three_other,
+
+                'carrier_effective_three_gl' => $request->carrier_effective_three_gl,
+                'carrier_effective_three_auto' => $request->carrier_effective_three_auto,
+                'carrier_effective_three_property' => $request->carrier_effective_three_property,
+                'carrier_effective_three_other' => $request->carrier_effective_three_other,
+
+                'carrier_expiration_three_gl' => $request->carrier_expiration_three_gl,
+                'carrier_expiration_three_auto' => $request->carrier_expiration_three_auto,
+                'carrier_expiration_three_property' => $request->carrier_expiration_three_property,
+                'carrier_expiration_three_other' => $request->carrier_expiration_three_other,
+
+                'loss_year' => $request->loss_year,
+                'loss_amount' => $request->loss_amount,
+
+                'loss_one_date' => $request->loss_one_date,
+                'loss_one_line' => $request->loss_one_line,
+                'loss_one_description' => $request->loss_one_description,
+                'loss_one_claim_date' => $request->loss_one_claim_date,
+                'loss_one_amount_paid' => $request->loss_one_amount_paid,
+                'loss_one_amount_reserved' => $request->loss_one_amount_reserved,
+                'loss_one_subrogation' => $request->loss_one_subrogation,
+                'loss_one_claim_open' => $request->loss_one_claim_open,
+
+                'loss_two_date' => $request->loss_two_date,
+                'loss_two_line' => $request->loss_two_line,
+                'loss_two_description' => $request->loss_two_description,
+                'loss_two_claim_date' => $request->loss_two_claim_date,
+                'loss_two_amount_paid' => $request->loss_two_amount_paid,
+                'loss_two_amount_reserved' => $request->loss_two_amount_reserved,
+                'loss_two_subrogation' => $request->loss_two_subrogation,
+                'loss_two_claim_open' => $request->loss_two_claim_open,
+
+                'loss_three_date' => $request->loss_three_date,
+                'loss_three_line' => $request->loss_three_line,
+                'loss_three_description' => $request->loss_three_description,
+                'loss_three_claim_date' => $request->loss_three_claim_date,
+                'loss_three_amount_paid' => $request->loss_three_amount_paid,
+                'loss_three_amount_reserved' => $request->loss_three_amount_reserved,
+                'loss_three_subrogation' => $request->loss_three_subrogation,
+                'loss_three_claim_open' => $request->loss_three_claim_open,
+            ]);
 
             DB::commit();
             return redirect()->back()->with('success', 'Form submitted successfully!');
