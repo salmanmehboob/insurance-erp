@@ -135,7 +135,7 @@ class FormsController extends Controller
 
         if ($type === 'InsuranceApplication') {
             $form = InsuranceApplication::find($id);
-            return view('admin.clientForms.insurance_application.show', compact('title', 'form', 'type'));
+             return view('admin.clientForms.insurance_application.show', compact('title', 'form', 'type'));
 
         }
 

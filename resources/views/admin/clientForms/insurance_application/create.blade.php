@@ -3547,7 +3547,7 @@
 
                 <tr style="height: 11pt;">
                     <td style="width: 59pt; border: 2pt solid black;"><input style="width: 50%;  margin-left: 5px;"
-                                                                             type="text" name="loss_one_date"/></td>
+                                                                             type="text" name="loss_two_date"/></td>
                     <td style="width: 59pt; border: 2pt solid black;"><input style="width: 50%;  margin-left: 5px;"
                                                                              type="text" name="loss_two_line"/></td>
                     <td style="width: 59pt; border: 2pt solid black;"><input style="width: 50%;  margin-left: 5px;"
@@ -3572,7 +3572,7 @@
 
                 <tr style="height: 11pt;">
                     <td style="width: 59pt; border: 2pt solid black;"><input style="width: 50%;  margin-left: 5px;"
-                                                                             type="text" name="loss_one_date"/></td>
+                                                                             type="text" name="loss_three_date"/></td>
                     <td style="width: 59pt; border: 2pt solid black;"><input style="width: 50%;  margin-left: 5px;"
                                                                              type="text" name="loss_three_line"/></td>
                     <td style="width: 59pt; border: 2pt solid black;"><input style="width: 50%;  margin-left: 5px;"

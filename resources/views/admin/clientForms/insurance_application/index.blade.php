@@ -2,8 +2,8 @@
     <thead>
     <tr>
         <th>Agency</th>
-         <th>Insured Name</th>
-         <th>Agency Customer ID </th>
+        <th>Carrier Name</th>
+        <th>Producer Customer ID</th>
         <th class="text-center">Actions</th>
     </tr>
     </thead>
@@ -11,8 +11,8 @@
     @foreach($forms as $row)
         <tr>
             <td>{{ $row->agency_name . ' ' . $row->agency_address  }}</td>
-            <td>{{ $row->insured_name  }}</td>
-            <td>{{ $row->agency_customer_id  }}</td>
+            <td>{{ $row->carrier  }}</td>
+            <td>{{ $row->producer_customer_id  }}</td>
             <td>
                 <div class="d-flex action-buttons">
 

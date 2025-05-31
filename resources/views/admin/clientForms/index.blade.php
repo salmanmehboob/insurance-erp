@@ -50,8 +50,11 @@
                 @if($type === 'InsuranceCard')
                     @include('admin.clientForms.insurance_card.index')
                 @endif
-                    @if($type === 'GeneralLiability')
+                @if($type === 'GeneralLiability')
                     @include('admin.clientForms.general_liability.index')
+                @endif
+                @if($type === 'InsuranceApplication')
+                    @include('admin.clientForms.insurance_application.index')
                 @endif
             </div>
         </div>

@@ -64,6 +64,35 @@ class InsuranceApplication extends Model
         'created_by',
     ];
 
+    public function applicantt()
+    {
+        return $this->hasOne(InsuranceApplicationApplicant::class, 'application_id');
+    }
+
+    public function attachment()
+    {
+        return $this->hasOne(InsuranceApplicationAttachment::class, 'application_id');
+    }
+
+    public function business()
+    {
+        return $this->hasOne(InsuranceApplicationBusiness::class, 'insurance_application_id');
+    }
+
+    public function information()
+    {
+        return $this->hasOne(InsuranceApplicationInfo::class, 'application_id');
+    }
+
+    public function premises()
+    {
+        return $this->hasOne(InsuranceApplicationPremise::class, 'application_id');
+    }
+
+    public function prior()
+    {
+        return $this->hasOne(InsuranceApplicationPrior::class, 'application_id');
+    }
 
     public function createdBy()
     {
