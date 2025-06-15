@@ -20,6 +20,7 @@ class ClientPolicy extends Model
         'file_number',
         'policy_number',
         'insurance_company_id',
+        'general_agent_id',
         'agent_id',
         'agency_id',
     ];
@@ -42,10 +43,17 @@ class ClientPolicy extends Model
     {
         return $this->belongsTo(PolicyStatus::class);
     }
+
     public function agency()
     {
         return $this->belongsTo(Agency::class);
     }
+
+    public function generalAgent()
+    {
+        return $this->belongsTo(GeneralAgent::class);
+    }
+
     public function agent()
     {
         return $this->belongsTo(Agent::class);

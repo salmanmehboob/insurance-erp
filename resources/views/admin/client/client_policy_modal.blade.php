@@ -32,7 +32,7 @@
                                     aria-labelledby="v-pills-Policy-Accounting-tab-{{ $policy->id }}">
                                     <li>
                                         <button class="dropdown-item"
-                                                onclick="window.open('{{ route('add-payment') }}', '_blank')"
+                                                onclick="window.open('{{ route('add-payment', ['clientID' => $policy->client->id]) }}', '_blank')"
                                                 type="button">Receive Payment
                                         </button>
                                     </li>

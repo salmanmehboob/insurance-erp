@@ -42,12 +42,15 @@
                                 <div class="form-group">
                                     <select name="client_id" id="client_id" class="form-control select2"
                                             data-placeholder="Select Client">
-                                        <option></option>
+                                        <option value="">Select Client</option>
                                         @foreach($clients as $row)
                                             <option
-                                                value="{{ $row->id }}" {{ old('client_id') == $row->id ? 'selected' : '' }}>{{ $row->applicant_name }}</option>
+                                                value="{{ $row->id }}" {{ (isset($clientID) && $clientID == $row->id) ? 'selected' : '' }}>
+                                                {{ $row->applicant_name }}
+                                            </option>
                                         @endforeach
                                     </select>
+
                                     @if ($errors->has('client_id'))
                                         <span class="text-danger">{{ $errors->first('client_id') }}</span>
                                     @endif
@@ -127,11 +130,13 @@
                         <div class="col-md-12">
                             <label class="col-form-label">Company</label>
                             <div class="form-group">
-                                <select name="insurance_company_id" id="insurance_company_id" class="form-control select2"
+                                <select name="insurance_company_id" id="insurance_company_id"
+                                        class="form-control select2"
                                         data-placeholder="Select Company">
                                     <option></option>
                                     @foreach($insurance_companies as $row)
                                         <option
+                                            {{ isset($insurance_company_id) && $insurance_company_id == $row->id ? 'selected' : '' }}
                                             value="{{ $row->id }}">{{ $row->name }}</option>
                                     @endforeach
                                 </select>
@@ -143,9 +148,9 @@
                         <div class="col-md-12">
                             <label class="col-form-label">Policy #</label>
                             <div class="form-group">
-                                <input type="text" name="policy_number"  id="policy_number" class="form-control"
+                                <input type="text" name="policy_number" id="policy_number" class="form-control"
                                        placeholder="Policy"
-                                       value="{{ old('policy_number') }}">
+                                       value="{{ $policy_number ?? '' }}">
                                 @if ($errors->has('policy_number'))
                                     <span class="text-danger">{{ $errors->first('policy_number') }}</span>
                                 @endif
@@ -159,12 +164,13 @@
                                 <select name="payment_for" class="form-control select2"
                                         data-placeholder="Select Option">
                                     <option></option>
-                                    <option value="Balance Down Payment">Balance Down Payment</option>
-                                    <option value="Balance Fee">Balance Fee</option>
-                                    <option value="Agency Fee">Agency Fee</option>
-                                    <option value="Agent Fee">Agent Fee</option>
-                                    <option value="Cash">Cash</option>
-                                 </select>
+                                    <option value="Downpayment">Downpayment</option>
+                                    <option value="Monthly Payment">Monthly Payment</option>
+                                    <option value="Endorsement">Endorsement</option>
+                                    <option value="Remaining Balance">Remaining Balance</option>
+                                    <option value="Other">Other</option>
+
+                                </select>
                                 @if ($errors->has('payment_for'))
                                     <span class="text-danger">{{ $errors->first('payment_for') }}</span>
                                 @endif
@@ -176,23 +182,23 @@
                                 <select name="payment_method" class="form-control select2"
                                         data-placeholder="Select Option">
                                     <option></option>
-                                     <option value="cash">Cash</option>
-                                     <option value="check">Check</option>
-                                     <option value="check_cash">Check+Cash</option>
-                                     <option value="check_card">Check+Card</option>
-                                     <option value="two_check">2 Check</option>
-                                     <option value="card_cash">Card+Cash</option>
-                                     <option value="credit_card">Credit Card</option>
-                                     <option value="card_to_company">Card To Company</option>
-                                     <option value="customer_eft">Customer EFT</option>
-                                     <option value="customer_eft_cash">Customer EFT+Cash</option>
-                                     <option value="customer_eft_credit_card">Customer EFT+Credit Card</option>
-                                     <option value="e_check">E-Check</option>
-                                     <option value="money_order">Money Order</option>
-                                     <option value="money_order_cash">Money Order+Cash</option>
-                                     <option value="money_order_card">Money Order+Card</option>
-                                     <option value="order">Other</option>
-                                     <option value="paypal">Paypal</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="check">Check</option>
+                                    <option value="check_cash">Check+Cash</option>
+                                    <option value="check_card">Check+Card</option>
+                                    <option value="two_check">2 Check</option>
+                                    <option value="card_cash">Card+Cash</option>
+                                    <option value="credit_card">Credit Card</option>
+                                    <option value="card_to_company">Card To Company</option>
+                                    <option value="customer_eft">Customer EFT</option>
+                                    <option value="customer_eft_cash">Customer EFT+Cash</option>
+                                    <option value="customer_eft_credit_card">Customer EFT+Credit Card</option>
+                                    <option value="e_check">E-Check</option>
+                                    <option value="money_order">Money Order</option>
+                                    <option value="money_order_cash">Money Order+Cash</option>
+                                    <option value="money_order_card">Money Order+Card</option>
+                                    <option value="order">Other</option>
+                                    <option value="paypal">Paypal</option>
                                 </select>
                                 @if ($errors->has('payment_method'))
                                     <span class="text-danger">{{ $errors->first('payment_method') }}</span>
@@ -322,7 +328,7 @@
                 $.ajax({
                     type: method,
                     url: getClientData, // Make sure this variable contains the correct endpoint URL
-                    data: { clientID: clientID },
+                    data: {clientID: clientID},
                     dataType: 'json',
                     success: function (data, status, xhr) {
                         // Assuming `data` contains `insurance_company_id` and `policy_number`

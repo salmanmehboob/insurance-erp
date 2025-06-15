@@ -21,6 +21,7 @@ use App\Models\ClientVehicle;
 use App\Models\EducationLevel;
 use App\Models\EmailStatus;
 use App\Models\Gender;
+use App\Models\GeneralAgent;
 use App\Models\InsuranceCompany;
 use App\Models\MaritalStatus;
 use App\Models\PolicyStatus;
@@ -63,7 +64,7 @@ class ClientController extends Controller
     public function showPolicyType()
     {
         $title = 'Create a New Policy';
-        $types = PolicyType::all();
+        $types = PolicyType::orderBy('group')->orderBy('name')->get();
         return view('admin.client.type', compact('title', 'types'));
     }
 
@@ -79,6 +80,7 @@ class ClientController extends Controller
         $policyStatuses = PolicyStatus::all();
         $terms = Term::all();
         $insuranceCompanies = InsuranceCompany::all();
+        $generalAgents = GeneralAgent::all();
         $agents = Agent::all();
         $locations = Agency::all();
         $genders = Gender::all();
@@ -95,7 +97,7 @@ class ClientController extends Controller
             'policyType', 'states', 'emailStatues', 'languages',
             'policyStatuses', 'terms', 'insuranceCompanies', 'agents', 'locations',
             'genders', 'maritalStatus', 'relationships', 'educationLevels', 'years',
-            'vehicleMakes', 'vehicleModels'));
+            'vehicleMakes', 'vehicleModels', 'generalAgents'));
     }
 
     /**
@@ -107,6 +109,7 @@ class ClientController extends Controller
         $validator = Validator::make($request->all(), [
             'policy_type_id' => 'required',
             'applicant_name' => 'required',
+            'business_name' => 'required',
             'address' => 'required',
             'city' => 'required',
             'state_id' => 'required',
@@ -116,9 +119,6 @@ class ClientController extends Controller
             'anniversary' => 'required',
             'primary_language_id' => 'required',
             'home_phone_no' => 'required',
-            'cell_phone_no' => 'required',
-            'work_phone_no' => 'required',
-            'fax_phone_no' => 'required',
             'policy_status_id' => 'required',
             'effective_date' => 'required',
             'term_id' => 'required',
@@ -134,8 +134,8 @@ class ClientController extends Controller
             'initial_premium' => 'required',
             'prorated_endorsement' => 'required',
             'premium_addon' => 'required',
-            'company_fee' => 'required',
-            'agency_fee' => 'required',
+            'company_fee' => 'nullable',
+            'agency_fee' => 'nullable',
             'total_prorated' => 'required',
             'down_payment' => 'required',
             'monthly_payment' => 'required',
@@ -143,15 +143,12 @@ class ClientController extends Controller
             'primary_agency_commission' => 'required',
             'secondary_agency_commission' => 'required',
             'total_premium' => 'required',
-//            'total_company_fee' => 'required',
-//            'total_agency_fee' => 'required',
             'total' => 'required',
             'payment_due_days' => 'required',
             'coverage' => 'required',
             'referral_resource' => 'required',
             'notes' => 'required',
         ]);
-//        dd($validator->errors());
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -165,6 +162,7 @@ class ClientController extends Controller
                 'user_id' => auth()->user()->id,
                 'policy_type_id' => $request->policy_type_id,
                 'applicant_name' => $request->applicant_name,
+                'business_name' => $request->business_name,
                 'address' => $request->address,
                 'city' => $request->city,
                 'state_id' => $request->state_id,
@@ -192,6 +190,7 @@ class ClientController extends Controller
                 'file_number' => $request->file_number,
                 'policy_number' => $request->policy_number,
                 'insurance_company_id' => $request->insurance_company_id,
+                'general_agent_id' => $request->general_agent_id,
                 'agent_id' => $request->agent_id,
                 'agency_id' => $request->agency_id,
             ];
@@ -384,6 +383,7 @@ class ClientController extends Controller
                 'total' => removeDollarSign($request->total),
                 'payment_option' => ($request->payment_option),
                 'payment_due_days' => ($request->payment_due_days),
+                'insurance_company_id' => ($request->insurance_company_id),
                 'financial_company' => $request->financial_company,
             ]);
 
@@ -483,8 +483,8 @@ class ClientController extends Controller
             'initial_premium' => 'required',
             'prorated_endorsement' => 'required',
             'premium_addon' => 'required',
-            'company_fee' => 'required',
-            'agency_fee' => 'required',
+            'company_fee' => 'nullable',
+            'agency_fee' => 'nullable',
             'total_prorated' => 'required',
             'down_payment' => 'required',
             'monthly_payment' => 'required',
@@ -492,8 +492,8 @@ class ClientController extends Controller
             'primary_agency_commission' => 'required',
             'secondary_agency_commission' => 'required',
             'total_premium' => 'required',
-            'total_company_fee' => 'required',
-            'total_agency_fee' => 'required',
+//            'total_company_fee' => 'required',
+//            'total_agency_fee' => 'required',
             'total' => 'required',
             'payment_due_days' => 'required',
             'coverage' => 'required',
@@ -1029,7 +1029,7 @@ class ClientController extends Controller
                 'is_any_pet' => $request->is_any_pet,
                 'bankruptcy' => $request->bankruptcy,
                 'company' => $request->company,
-             ];
+            ];
 
 //            dd($clientData);
             $client = Client::create($clientData);
@@ -1128,6 +1128,7 @@ class ClientController extends Controller
                     'pump' => removeDollarSign($request->pump),
                     'sign' => removeDollarSign($request->sign),
                     'glass' => removeDollarSign($request->glass),
+                    'other_commercial_property' => $request->other_commercial_property,
                     'property_owner' => $request->property_owner,
                     'built_year' => $request->built_year,
                     'property_area' => $request->property_area,

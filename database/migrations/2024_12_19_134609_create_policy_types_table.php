@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('policy_types', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->string('group');
             $table->timestamps();
             $table->softDeletes(); // Soft delete column
         });

@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('pump');
             $table->string('sign');
             $table->string('glass');
+            $table->string('other_commercial_property');
 
             $table->enum('property_owner',['owned','leased']);
             $table->string('built_year');

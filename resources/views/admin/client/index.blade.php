@@ -69,10 +69,6 @@
                                         </a>
                                     @endcan
 
-                                        <a title="" href="{{ route('edit-client', $client->id) }}"
-                                           class="text-primary me-2 action-buttons">
-                                            <i class="fas fa-pager"></i>
-                                        </a>
 
                                     @can('delete-client')
                                         <a href="javascript:void(0)"

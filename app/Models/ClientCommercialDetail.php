@@ -32,6 +32,7 @@ class ClientCommercialDetail extends Model
         'pump',
         'sign',
         'glass',
+        'other_commercial_property',
         'property_owner',
         'built_year',
         'property_area',

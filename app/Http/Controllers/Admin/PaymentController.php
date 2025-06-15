@@ -56,7 +56,7 @@ class PaymentController extends Controller
     public function index()
     {
         $title = 'Payments';
-        $payments = Payment::with('client','insuranceCompany')->orderBy('created_at', 'DESC')->get();
+        $payments = Payment::with('client', 'insuranceCompany')->orderBy('created_at', 'DESC')->get();
         LogActivity::addToLog('Payments  Listing View');
 
         return view('admin.payment.index', compact('title', 'payments'));
@@ -74,9 +74,21 @@ class PaymentController extends Controller
         $agents = Agent::all();
         $locations = Agency::all();
         $banks = BankAccount::all();
+
+        $clientID = $request->clientID;
+        $insurance_company_id = NULL;
+        $policy_number = NULL;
+        if ($clientID) {
+            $responseData = Client::with('policy')->find($clientID);
+            $insurance_company_id = $responseData->policy->insurance_company_id;
+            $policy_number = $responseData->policy->policy_number;
+
+        }
+
+
         return view('admin.payment.create', compact('title',
             'clients', 'insurance_companies', 'agents', 'banks',
-            'locations'));
+            'locations', 'clientID', 'insurance_company_id', 'policy_number'));
     }
 
     /**
@@ -141,7 +153,7 @@ class PaymentController extends Controller
             ]);
 
             DB::commit();
-            LogActivity::addToLog('Payment '.$request->policy_number.' Created');
+            LogActivity::addToLog('Payment ' . $request->policy_number . ' Created');
 
             return redirect()->route('show-payment')->with('success', 'Payment created successfully.');
         } catch (\Exception $e) {
@@ -218,7 +230,7 @@ class PaymentController extends Controller
             'next_payment' => 'nullable|date',
         ]);
 
-         if ($validator->fails()) {
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -266,7 +278,7 @@ class PaymentController extends Controller
 //            dd($payment);
 
             DB::commit();
-            LogActivity::addToLog('Payment '.$request->policy_number.' Updated');
+            LogActivity::addToLog('Payment ' . $request->policy_number . ' Updated');
 
             return redirect()->route('show-payment')->with('success', 'Payment updated successfully.');
 
@@ -294,7 +306,7 @@ class PaymentController extends Controller
             // Delete the payment
             $payment->delete();
             DB::commit();
-            LogActivity::addToLog('Payment '.$payment->policy_number.' Deleted');
+            LogActivity::addToLog('Payment ' . $payment->policy_number . ' Deleted');
 
             return response()->json(['success' => 'Payment deleted successfully.']);
         } catch (\Exception $e) {
@@ -320,7 +332,7 @@ class PaymentController extends Controller
     {
         $payment = Payment::onlyTrashed()->findOrFail($id);
         $payment->restore();
-        LogActivity::addToLog('Payment '.$payment->policy_number.' Restored');
+        LogActivity::addToLog('Payment ' . $payment->policy_number . ' Restored');
         return redirect()->route('trashed-payments')->with('success', 'Payment restored successfully.');
     }
 
@@ -328,7 +340,7 @@ class PaymentController extends Controller
     {
         $payment = Payment::onlyTrashed()->findOrFail($id);
         $payment->forceDelete();
-        LogActivity::addToLog('Payment '.$payment->policy_number.' Forced Deleted');
+        LogActivity::addToLog('Payment ' . $payment->policy_number . ' Forced Deleted');
 
         return redirect()->route('trashed-payments')->with('success', 'Payment permanently deleted.');
     }

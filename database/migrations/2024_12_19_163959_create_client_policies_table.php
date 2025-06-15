@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('file_number');
             $table->string('policy_number');
             $table->unsignedBigInteger('insurance_company_id');
+            $table->unsignedBigInteger('general_agent_id')->nullable();
             $table->unsignedBigInteger('agent_id');
             $table->unsignedBigInteger('agency_id');
 
@@ -31,6 +32,7 @@ return new class extends Migration
             $table->foreign('policy_status_id')->references('id')->on('policy_statuses')->onDelete('cascade');
             $table->foreign('term_id')->references('id')->on('terms')->onDelete('cascade');
             $table->foreign('insurance_company_id')->references('id')->on('insurance_companies')->onDelete('cascade');
+            $table->foreign('general_agent_id')->references('id')->on('general_agents')->onDelete('cascade');
             $table->foreign('agent_id')->references('id')->on('agents')->onDelete('cascade');
             $table->foreign('agency_id')->references('id')->on('agencies')->onDelete('cascade');
 

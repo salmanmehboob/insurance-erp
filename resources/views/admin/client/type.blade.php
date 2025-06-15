@@ -19,15 +19,24 @@
                     <div class="col-md-4">
                         <label class="col-form-label">Select the type of policy you would like to create</label>
                         <div class="form-group">
-                            <select name="policy_type_id" class="form-control select2"
-                                    data-placeholder="Select option">
+                            <select name="policy_type_id" class="form-control select2" data-placeholder="Select option">
                                 <option></option>
-                                @foreach($types as $row)
-                                    <option
-                                        value="{{ $row->id }}" {{ old('policy_type_id') == $row->id ? 'selected' : '' }}>{{ $row->name }}</option>
+                                @php
+                                    $grouped = $types->groupBy('group');
+                                @endphp
+
+                                @foreach($grouped as $groupName => $groupItems)
+                                    <optgroup label="{{ $groupName }}">
+                                        @foreach($groupItems as $row)
+                                            <option value="{{ $row->id }}" {{ old('policy_type_id') == $row->id ? 'selected' : '' }}>
+                                                {{ $row->name }}
+                                            </option>
+                                        @endforeach
+                                    </optgroup>
                                 @endforeach
                             </select>
-                            @if ($errors->has('policy_type_id'))
+
+                        @if ($errors->has('policy_type_id'))
                                 <span class="text-danger">{{ $errors->first('policy_type_id') }}</span>
                             @endif
                         </div>

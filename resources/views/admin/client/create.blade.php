@@ -23,7 +23,7 @@
                                         class="text-danger">*</span></label>
                                 <div class="form-group">
                                     <input type="text" name="applicant_name" class="form-control"
-                                           placeholder="Agent Name"
+                                           placeholder="Applicant Name"
                                            value="{{ old('applicant_name') }}">
                                     @if ($errors->has('applicant_name'))
                                         <span class="text-danger">{{ $errors->first('applicant_name') }}</span>
@@ -31,9 +31,22 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-6">
+                                <label class="col-form-label">Business Name
+                                    <span class="text-danger">*</span></label>
+                                <div class="form-group">
+                                    <input type="text" name="business_name" class="form-control"
+                                           placeholder="Business Name"
+                                           value="{{ old('business_name') }}">
+                                    @if ($errors->has('business_name'))
+                                        <span class="text-danger">{{ $errors->first('business_name') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+
 
                             <!-- Address -->
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label class="col-form-label">Address</label>
                                 <div class="form-group">
                                     <input type="text" name="address" class="form-control" placeholder="Address"
@@ -46,7 +59,7 @@
 
                             <!-- City -->
                             <div class="col-md-4">
-                                <label class="col-form-label">City</label>
+                                <label class="col-form-label">City <span class="text-danger">*</span></label>
                                 <div class="form-group">
                                     <input type="text" name="city" class="form-control" placeholder="City"
                                            value="{{ old('city') }}">
@@ -58,7 +71,7 @@
 
                             <!-- State -->
                             <div class="col-md-4">
-                                <label class="col-form-label">State</label>
+                                <label class="col-form-label">State <span class="text-danger">*</span></label>
                                 <div class="form-group">
                                     <select name="state_id" class="form-control select2"
                                             data-placeholder="Select State">
@@ -76,7 +89,7 @@
 
                             <!-- Zip Code -->
                             <div class="col-md-4">
-                                <label class="col-form-label">Zip Code</label>
+                                <label class="col-form-label">Zip Code <span class="text-danger">*</span></label>
                                 <div class="form-group">
                                     <input type="text" name="zip_code" class="form-control"
                                            placeholder="Zip Code" value="{{ old('zip_code') }}">
@@ -87,7 +100,7 @@
                             </div>
                             <!-- Email -->
                             <div class="col-md-8">
-                                <label class="col-form-label">Email</label>
+                                <label class="col-form-label">Email <span class="text-danger">*</span></label>
                                 <div class="form-group">
                                     <input type="email" name="email" class="form-control" placeholder="Email"
                                            value="{{ old('email') }}">
@@ -97,7 +110,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <label class="col-form-label">Email Status</label>
+                                <label class="col-form-label">Email Status <span class="text-danger">*</span></label>
                                 <div class="form-group">
                                     <select name="email_status_id" class="form-control select2"
                                             data-placeholder="Select Status">
@@ -116,7 +129,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                <label class="col-form-label">Anniversary</label>
+                                <label class="col-form-label">Anniversary <span class="text-danger">*</span></label>
                                 <div class="form-group">
                                     <input type="text" name="anniversary" class="form-control flatpickr-minimum"
                                            placeholder="Select Date"
@@ -127,7 +140,8 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <label class="col-form-label">Primary Language</label>
+                                <label class="col-form-label">Primary Language <span
+                                        class="text-danger">*</span></label>
                                 <div class="form-group">
                                     <select name="primary_language_id" class="form-control select2"
                                             data-placeholder="Select Language">
@@ -152,7 +166,7 @@
                         <div class="col-md-12">
                             <label class="col-form-label">Home Phone <span class="text-danger">*</span></label>
                             <div class="form-group">
-                                <input type="text" name="home_phone_no" class="form-control"
+                                <input type="text" name="home_phone_no" class="form-control home_phone"
                                        placeholder="(999) 999-9999"
                                        data-inputmask="'mask': '(999) 999-9999'"
                                        value="{{ old('home_phone_no') }}">
@@ -162,7 +176,7 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <label class="col-form-label">Cell Phone <span class="text-danger">*</span></label>
+                            <label class="col-form-label">Cell Phone </label>
                             <div class="form-group">
                                 <input type="text" name="cell_phone_no" class="form-control"
                                        placeholder="(999) 999-9999"
@@ -174,7 +188,7 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <label class="col-form-label">Work Phone <span class="text-danger">*</span></label>
+                            <label class="col-form-label">Work Phone </label>
                             <div class="form-group">
                                 <input type="text" name="work_phone_no" class="form-control"
                                        placeholder="(999) 999-9999"
@@ -186,7 +200,7 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <label class="col-form-label">Fax Phone <span class="text-danger">*</span></label>
+                            <label class="col-form-label">Fax Phone </label>
                             <div class="form-group">
                                 <input type="text" name="fax_phone_no" class="form-control"
                                        placeholder="(999) 999-9999"
@@ -206,14 +220,17 @@
                         <a href="#policy-tab" class="nav-link active" data-bs-toggle="tab">Policy</a>
                     </li>
                     @if($policyType->id == 3 || $policyType->id == 4 || $policyType->id == 5 || $policyType->id == 13 || $policyType->id == 7
-                    || $policyType->id == 9)
+                    || $policyType->id == 9 || $policyType->id == 14 || $policyType->id == 15 || $policyType->id == 16)
                         <li class="nav-item">
                             <a href="#details-tab" class="nav-link" data-bs-toggle="tab">Details</a>
                         </li>
                     @endif
                     @if($policyType->id == 1 || $policyType->id == 2 || $policyType->id == 3
-|| $policyType->id == 4 || $policyType->id == 5 || $policyType->id == 13 || $policyType->id == 6 || $policyType->id == 7
-|| $policyType->id == 8 || $policyType->id == 9 || $policyType->id == 10 || $policyType->id == 11 || $policyType->id == 12)
+|| $policyType->id == 4 || $policyType->id == 5 || $policyType->id == 13
+|| $policyType->id == 6 || $policyType->id == 7
+|| $policyType->id == 8 || $policyType->id == 9 || $policyType->id == 10
+|| $policyType->id == 11 || $policyType->id == 12 || $policyType->id == 14
+|| $policyType->id == 15 || $policyType->id == 16)
                         <li class="nav-item">
                             <a href="#driver-tab" class="nav-link" data-bs-toggle="tab">
                                 @if($policyType->id == 1)
@@ -223,7 +240,8 @@
                                 @elseif($policyType->id == 7 || $policyType->id == 9)
                                     Owners
                                 @elseif($policyType->id == 2 || $policyType->id == 3 || $policyType->id == 4
- || $policyType->id == 5 || $policyType->id == 13 || $policyType->id == 10 || $policyType->id == 11 || $policyType->id == 12)
+ || $policyType->id == 5 || $policyType->id == 13 || $policyType->id == 10 || $policyType->id == 11
+ || $policyType->id == 12 || $policyType->id == 14 || $policyType->id == 15 || $policyType->id == 16)
                                     Contact Info
                                 @endif
                             </a>
@@ -252,7 +270,7 @@
                         <fieldset class="border p-3 mb-4">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Status</label>
+                                    <label class="col-form-label">Status <span class="text-danger">*</span></label>
                                     <div class="form-group">
                                         <select name="policy_status_id" class="form-control select2"
                                                 data-placeholder="Select Status">
@@ -268,9 +286,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Effective Date</label>
+                                    <label class="col-form-label">Effective Date <span
+                                            class="text-danger">*</span></label>
                                     <div class="form-group">
-                                        <input type="text" id="effective_date" name="effective_date" class="form-control flatpickr-minimum"
+                                        <input type="text" id="effective_date" name="effective_date"
+                                               class="form-control flatpickr-minimum"
                                                placeholder="Select Date"
                                                value="{{ old('effective_date') }}">
                                         @if ($errors->has('effective_date'))
@@ -280,7 +300,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Terms</label>
+                                    <label class="col-form-label">Terms <span class="text-danger">*</span></label>
                                     <div class="form-group">
                                         <select name="term_id" id="term_id" class="form-control select2"
                                                 data-placeholder="Select Term">
@@ -296,9 +316,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Expiration Date</label>
+                                    <label class="col-form-label">Expiration Date <span
+                                            class="text-danger">*</span></label>
                                     <div class="form-group">
-                                        <input type="text" id="expiration_date" name="expiration_date" class="form-control flatpickr-minimum"
+                                        <input type="text" id="expiration_date" name="expiration_date"
+                                               class="form-control flatpickr-minimum"
                                                placeholder="Select Date"
                                                value="{{ old('expiration_date') }}">
                                         @if ($errors->has('expiration_date'))
@@ -308,7 +330,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="col-form-label">File Number</label>
+                                    <label class="col-form-label">File Number <span class="text-danger">*</span></label>
                                     <div class="form-group">
                                         <input type="text" name="file_number" class="form-control"
                                                placeholder="File Number"
@@ -319,7 +341,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Sold Date</label>
+                                    <label class="col-form-label">Sold Date <span class="text-danger">*</span></label>
                                     <div class="form-group">
                                         <input type="text" name="sold_date" class="form-control flatpickr-minimum"
                                                placeholder="Select Date"
@@ -336,7 +358,8 @@
                         <fieldset class="border p-3 mb-4">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Policy Number</label>
+                                    <label class="col-form-label">Policy Number <span
+                                            class="text-danger">*</span></label>
                                     <div class="form-group">
                                         <input type="text" name="policy_number" class="form-control"
                                                placeholder="Policy Number"
@@ -348,7 +371,8 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Company</label>
+                                    <label class="col-form-label">Insurance Company <span
+                                            class="text-danger">*</span></label>
                                     <div class="form-group">
                                         <select name="insurance_company_id" id="insurance_company_id"
                                                 class="form-control select2"
@@ -365,10 +389,26 @@
                                         @endif
                                     </div>
                                 </div>
-
+                                <div class="col-md-6">
+                                    <label class="col-form-label">General Agent</label>
+                                    <div class="form-group">
+                                        <select name="general_agent_id" class="form-control select2"
+                                                data-placeholder="Select General Agent">
+                                            <option></option>
+                                            @foreach($generalAgents as $row)
+                                                <option
+                                                    value="{{ $row->id }}" {{ old('general_agent_id') == $row->id ? 'selected' : '' }}>{{ $row->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('general_agent_id'))
+                                            <span class="text-danger">{{ $errors->first('general_agent_id') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
 
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Primary Agent</label>
+                                    <label class="col-form-label">Primary Agent <span
+                                            class="text-danger">*</span></label>
                                     <div class="form-group">
                                         <select name="agent_id" class="form-control select2"
                                                 data-placeholder="Select Agent">
@@ -384,7 +424,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Agency Location</label>
+                                    <label class="col-form-label">Agency Location <span
+                                            class="text-danger">*</span></label>
                                     <div class="form-group">
                                         <select name="agency_id" class="form-control select2"
                                                 data-placeholder="Select Agency">
@@ -465,8 +506,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="col-form-label">SSN #<span
-                                                        class="text-danger">*</span></label>
+                                                <label class="col-form-label">SSN # </label>
                                                 <div class="form-group">
                                                     <input type="text" name="ssn_no[0]" class="form-control"
                                                            placeholder="999-99-9999"
@@ -483,8 +523,7 @@
                                                 <label class="col-form-label">Gender</label>
                                                 <div class="form-group">
                                                     <select name="gender_id[0]" class="form-control"
-                                                            style="width: 100%"
-                                                            data-placeholder="Select Gender">
+                                                            style="width: 100%; appearance: auto; -webkit-appearance: auto;">
                                                         <option>Select Gender</option>
                                                         @foreach($genders as $state)
                                                             <option
@@ -501,8 +540,7 @@
                                                 <label class="col-form-label">Marital Status</label>
                                                 <div class="form-group">
                                                     <select name="marital_status_id[0]" class="form-control"
-                                                            style="width: 100%"
-                                                            data-placeholder="Select Status">
+                                                            style="width: 100%; appearance: auto; -webkit-appearance: auto;">
                                                         <option>Select Status</option>
                                                         @foreach($maritalStatus as $state)
                                                             <option
@@ -519,8 +557,7 @@
                                                 <label class="col-form-label">Relation to Insured</label>
                                                 <div class="form-group">
                                                     <select name="relationship_id[0]" class="form-control"
-                                                            style="width: 100%"
-                                                            data-placeholder="Select Status">
+                                                            style="width: 100%; appearance: auto; -webkit-appearance: auto;">
                                                         <option>Select Relation</option>
                                                         @foreach($relationships as $state)
                                                             <option
@@ -549,8 +586,7 @@
                                                 <label class="col-form-label">License State</label>
                                                 <div class="form-group">
                                                     <select name="us_state_id[0]" class="form-control"
-                                                            style="width: 100%"
-                                                            data-placeholder="Select State">
+                                                            style="width: 100%; appearance: auto; -webkit-appearance: auto;">
                                                         <option>Select State</option>
                                                         @foreach($states as $state)
                                                             <option
@@ -579,7 +615,7 @@
                                                 <label class="col-form-label">Cell Phone <span
                                                         class="text-danger">*</span></label>
                                                 <div class="form-group">
-                                                    <input type="text" name="cell_no[0]" class="form-control"
+                                                    <input type="text" name="cell_no[0]" class="form-control cell_no"
                                                            placeholder="(999) 999-9999"
                                                            data-inputmask="'mask': '(999) 999-9999'"
                                                            value="{{ old('cell_no') }}">
@@ -593,8 +629,7 @@
                                                 <label class="col-form-label">Education Level</label>
                                                 <div class="form-group">
                                                     <select name="education_level_id[0]" class="form-control"
-                                                            style="width: 100%"
-                                                            data-placeholder="Select Education Level">
+                                                            style="width: 100%; appearance: auto; -webkit-appearance: auto;">
                                                         <option>Select Education Level</option>
                                                         @foreach($educationLevels as $state)
                                                             <option
@@ -735,7 +770,8 @@
 
                                     </div>
                                 @endif
-                                @if($policyType->id == 3 || $policyType->id == 4 || $policyType->id == 5 || $policyType->id == 13)
+                                @if($policyType->id == 3 || $policyType->id == 4 || $policyType->id == 5
+|| $policyType->id == 13 || $policyType->id == 14 || $policyType->id == 16)
                                     <div class="col-md-4">
                                         <fieldset class="border p-3">
 
@@ -743,7 +779,12 @@
                                                 <div class="form-group">
                                                     <input type="checkbox" class="form-check-inline" value="1"
                                                            name="is_general_liability" id="">
-                                                    Commercial General Liability
+                                                    @if($policyType->id == 14)
+                                                        EPLI
+                                                    @else
+                                                        Commercial General Liability
+                                                    @endif
+
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
@@ -822,51 +863,53 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
-                                                <label class="col-form-label">Fire Damage</label>
-                                                <div class="form-group">
-                                                    <select name="fire_damage" class="form-control select2"
-                                                            style="width: 100%"
-                                                            data-placeholder="Select Option">
-                                                        <option></option>
-                                                        <option value="500000">$50,000.00</option>
-                                                        <option value="2000000">$2,000,000.00</option>
-                                                        <option value="1000000">$1,000,000.00</option>
-                                                        <option value="500000">$500,000.00</option>
-                                                        <option value="300000">$300,000.00</option>
-                                                        <option value="100000">$100,000.00</option>
-                                                    </select>
-                                                    @if ($errors->has('fire_damage'))
-                                                        <span
-                                                            class="text-danger">{{ $errors->first('fire_damage') }}</span>
-                                                    @endif
+                                            @if($policyType->id != 14)
+                                                <div class="col-md-12">
+                                                    <label class="col-form-label">Fire Damage</label>
+                                                    <div class="form-group">
+                                                        <select name="fire_damage" class="form-control select2"
+                                                                style="width: 100%"
+                                                                data-placeholder="Select Option">
+                                                            <option></option>
+                                                            <option value="500000">$50,000.00</option>
+                                                            <option value="2000000">$2,000,000.00</option>
+                                                            <option value="1000000">$1,000,000.00</option>
+                                                            <option value="500000">$500,000.00</option>
+                                                            <option value="300000">$300,000.00</option>
+                                                            <option value="100000">$100,000.00</option>
+                                                        </select>
+                                                        @if ($errors->has('fire_damage'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('fire_damage') }}</span>
+                                                        @endif
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label class="col-form-label">Medical Expenses</label>
-                                                <div class="form-group">
-                                                    <select name="medical_expense" class="form-control select2"
-                                                            style="width: 100%"
-                                                            data-placeholder="Select Option">
-                                                        <option></option>
-                                                        <option value="500">$500.00</option>
-                                                        <option value="1000">$1,000.00</option>
-                                                        <option value="5000">$5,000.00</option>
-                                                        <option value="100000">$10,000.00</option>
-                                                        <option value="250000">$25,000.00</option>
-                                                        <option value="500000">$50,000.00</option>
-                                                        <option value="2000000">$2,000,000.00</option>
-                                                        <option value="1000000">$1,000,000.00</option>
-                                                        <option value="500000">$500,000.00</option>
-                                                        <option value="300000">$300,000.00</option>
-                                                        <option value="100000">$100,000.00</option>
-                                                    </select>
-                                                    @if ($errors->has('medical_expense'))
-                                                        <span
-                                                            class="text-danger">{{ $errors->first('medical_expense') }}</span>
-                                                    @endif
+                                                <div class="col-md-12">
+                                                    <label class="col-form-label">Medical Expenses</label>
+                                                    <div class="form-group">
+                                                        <select name="medical_expense" class="form-control select2"
+                                                                style="width: 100%"
+                                                                data-placeholder="Select Option">
+                                                            <option></option>
+                                                            <option value="500">$500.00</option>
+                                                            <option value="1000">$1,000.00</option>
+                                                            <option value="5000">$5,000.00</option>
+                                                            <option value="100000">$10,000.00</option>
+                                                            <option value="250000">$25,000.00</option>
+                                                            <option value="500000">$50,000.00</option>
+                                                            <option value="2000000">$2,000,000.00</option>
+                                                            <option value="1000000">$1,000,000.00</option>
+                                                            <option value="500000">$500,000.00</option>
+                                                            <option value="300000">$300,000.00</option>
+                                                            <option value="100000">$100,000.00</option>
+                                                        </select>
+                                                        @if ($errors->has('medical_expense'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('medical_expense') }}</span>
+                                                        @endif
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            @endif
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Annual Receipt</label>
                                                 <div class="form-group">
@@ -882,7 +925,7 @@
                                         </fieldset>
                                     </div>
                                 @endif
-                                @if($policyType->id == 3 || $policyType->id == 4 )
+                                @if($policyType->id == 3 || $policyType->id == 4 || $policyType->id == 13 || $policyType->id == 15 )
                                     <div class="col-md-4">
                                         <fieldset class="border p-3">
 
@@ -962,6 +1005,17 @@
                                                     @if ($errors->has('glass'))
                                                         <span
                                                             class="text-danger">{{ $errors->first('glass') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="col-form-label">Other</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="other_commercial_property" class="form-control"
+                                                            value="{{ old('other_commercial_property') }}">
+                                                    @if ($errors->has('other_commercial_property'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('other_commercial_property') }}</span>
                                                     @endif
                                                 </div>
                                             </div>
@@ -1770,10 +1824,13 @@
                                                 </button>
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="col-form-label">VIN</label>
+                                                <label class="col-form-label">
+                                                    VIN <small>(17 characters: uppercase letters and numbers, excluding
+                                                        I, O, Q — e.g., 1HGCM82633A123456)</small>
+                                                </label>
                                                 <div class="form-group">
                                                     <input type="text" name="vin[0]" class="form-control"
-                                                           placeholder="VIN" maxlength="17" minlength="17"
+                                                           placeholder="1HGCM82633A123456" maxlength="17" minlength="17"
                                                            pattern="[A-HJ-NPR-Z0-9]{17}"
                                                            value="{{ old('vin.0') }}" required>
                                                     @if ($errors->has('vin.0'))
@@ -1807,7 +1864,7 @@
                                                 <div class="form-group">
                                                     <select name="vehicle_make_id[0]" id="vehicle_make_id[0]"
                                                             class="form-control  vehicle-make"
-                                                            style="width: 100%"
+                                                            style="width: 100%; appearance: auto; -webkit-appearance: auto;"
                                                             data-placeholder="Select Option">
                                                         <option selected>Select Make</option>
                                                         @foreach($vehicleMakes as $row)
@@ -1828,7 +1885,7 @@
                                                 <div class="form-group">
                                                     <select name="vehicle_model_id[0]" id="vehicle_model_id[0]"
                                                             class="form-control"
-                                                            style="width: 100%"
+                                                            style="width: 100%; appearance: auto; -webkit-appearance: auto;"
                                                             data-placeholder="Select Option">
                                                         <option selected>Select Model</option>
 
@@ -1843,7 +1900,7 @@
                                                 <label class="col-form-label">Comprehensive</label>
                                                 <div class="form-group">
                                                     <select name="comprehensive[0]" class="form-control "
-                                                            style="width: 100%"
+                                                            style="width: 100%; appearance: auto; -webkit-appearance: auto;"
                                                             data-placeholder="Select Option">
                                                         <option selected>Select Comprehensive</option>
                                                         <option value="None">None</option>
@@ -1866,7 +1923,7 @@
                                                 <label class="col-form-label">Collision</label>
                                                 <div class="form-group">
                                                     <select name="collision[0]" class="form-control "
-                                                            style="width: 100%"
+                                                            style="width: 100%; appearance: auto; -webkit-appearance: auto;"
                                                             data-placeholder="Select Option">
                                                         <option selected>Select Collision</option>
                                                         <option value="None">None</option>
@@ -1886,7 +1943,7 @@
                                                 <label class="col-form-label">Rental</label>
                                                 <div class="form-group">
                                                     <select name="rental[0]" class="form-control"
-                                                            style="width: 100%"
+                                                            style="width: 100%; appearance: auto; -webkit-appearance: auto;"
                                                             data-placeholder="Select Option">
                                                         <option selected>Select Rental</option>
                                                         <option value="20">20</option>
@@ -1903,7 +1960,7 @@
                                                 <label class="col-form-label">Towing</label>
                                                 <div class="form-group">
                                                     <select name="towing[0]" class="form-control"
-                                                            style="width: 100%"
+                                                            style="width: 100%; appearance: auto; -webkit-appearance: auto;"
                                                             data-placeholder="Select Option">
                                                         <option selected>Select Towing</option>
                                                         <option value="None">None</option>
@@ -1981,30 +2038,30 @@
                                             @endif
                                         </div>
                                     </div>
-{{--                                    <div class="col-md-12">--}}
-{{--                                        <label class="col-form-label">Company Fees + Taxes</label>--}}
-{{--                                        <div class="form-group">--}}
-{{--                                            <input type="text" name="company_fee" class="form-control"--}}
-{{--                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"--}}
-{{--                                                   value="${{ old('company_fee') }}">--}}
-{{--                                            @if ($errors->has('company_fee'))--}}
-{{--                                                <span--}}
-{{--                                                    class="text-danger">{{ $errors->first('company_fee') }}</span>--}}
-{{--                                            @endif--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="col-md-12">--}}
-{{--                                        <label class="col-form-label">Agency Fee</label>--}}
-{{--                                        <div class="form-group">--}}
-{{--                                            <input type="text" name="agency_fee" class="form-control"--}}
-{{--                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"--}}
-{{--                                                   value="${{ old('agency_fee') }}">--}}
-{{--                                            @if ($errors->has('agency_fee'))--}}
-{{--                                                <span--}}
-{{--                                                    class="text-danger">{{ $errors->first('agency_fee') }}</span>--}}
-{{--                                            @endif--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
+                                    {{--                                    <div class="col-md-12">--}}
+                                    {{--                                        <label class="col-form-label">Company Fees + Taxes</label>--}}
+                                    {{--                                        <div class="form-group">--}}
+                                    {{--                                            <input type="text" name="company_fee" class="form-control"--}}
+                                    {{--                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"--}}
+                                    {{--                                                   value="${{ old('company_fee') }}">--}}
+                                    {{--                                            @if ($errors->has('company_fee'))--}}
+                                    {{--                                                <span--}}
+                                    {{--                                                    class="text-danger">{{ $errors->first('company_fee') }}</span>--}}
+                                    {{--                                            @endif--}}
+                                    {{--                                        </div>--}}
+                                    {{--                                    </div>--}}
+                                    {{--                                    <div class="col-md-12">--}}
+                                    {{--                                        <label class="col-form-label">Agency Fee</label>--}}
+                                    {{--                                        <div class="form-group">--}}
+                                    {{--                                            <input type="text" name="agency_fee" class="form-control"--}}
+                                    {{--                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"--}}
+                                    {{--                                                   value="${{ old('agency_fee') }}">--}}
+                                    {{--                                            @if ($errors->has('agency_fee'))--}}
+                                    {{--                                                <span--}}
+                                    {{--                                                    class="text-danger">{{ $errors->first('agency_fee') }}</span>--}}
+                                    {{--                                            @endif--}}
+                                    {{--                                        </div>--}}
+                                    {{--                                    </div>--}}
 
                                     <hr>
                                     <div class="col-md-12">
@@ -2100,30 +2157,30 @@
                                             @endif
                                         </div>
                                     </div>
-{{--                                    <div class="col-md-12">--}}
-{{--                                        <label class="col-form-label">Company Fees + Taxes</label>--}}
-{{--                                        <div class="form-group">--}}
-{{--                                            <input type="text" name="total_company_fee" class="form-control"--}}
-{{--                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"--}}
-{{--                                                   value="${{ old('total_company_fee') }}">--}}
-{{--                                            @if ($errors->has('total_company_fee'))--}}
-{{--                                                <span--}}
-{{--                                                    class="text-danger">{{ $errors->first('total_company_fee') }}</span>--}}
-{{--                                            @endif--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="col-md-12">--}}
-{{--                                        <label class="col-form-label">Total Agency Fee</label>--}}
-{{--                                        <div class="form-group">--}}
-{{--                                            <input type="text" name="total_agency_fee" class="form-control"--}}
-{{--                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"--}}
-{{--                                                   value="${{ old('total_agency_fee') }}">--}}
-{{--                                            @if ($errors->has('total_agency_fee'))--}}
-{{--                                                <span--}}
-{{--                                                    class="text-danger">{{ $errors->first('total_agency_fee') }}</span>--}}
-{{--                                            @endif--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
+                                    {{--                                    <div class="col-md-12">--}}
+                                    {{--                                        <label class="col-form-label">Company Fees + Taxes</label>--}}
+                                    {{--                                        <div class="form-group">--}}
+                                    {{--                                            <input type="text" name="total_company_fee" class="form-control"--}}
+                                    {{--                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"--}}
+                                    {{--                                                   value="${{ old('total_company_fee') }}">--}}
+                                    {{--                                            @if ($errors->has('total_company_fee'))--}}
+                                    {{--                                                <span--}}
+                                    {{--                                                    class="text-danger">{{ $errors->first('total_company_fee') }}</span>--}}
+                                    {{--                                            @endif--}}
+                                    {{--                                        </div>--}}
+                                    {{--                                    </div>--}}
+                                    {{--                                    <div class="col-md-12">--}}
+                                    {{--                                        <label class="col-form-label">Total Agency Fee</label>--}}
+                                    {{--                                        <div class="form-group">--}}
+                                    {{--                                            <input type="text" name="total_agency_fee" class="form-control"--}}
+                                    {{--                                                   data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"--}}
+                                    {{--                                                   value="${{ old('total_agency_fee') }}">--}}
+                                    {{--                                            @if ($errors->has('total_agency_fee'))--}}
+                                    {{--                                                <span--}}
+                                    {{--                                                    class="text-danger">{{ $errors->first('total_agency_fee') }}</span>--}}
+                                    {{--                                            @endif--}}
+                                    {{--                                        </div>--}}
+                                    {{--                                    </div>--}}
 
                                     <hr>
                                     <div class="col-md-12">
@@ -2190,7 +2247,8 @@
 
                                             {{--                                            </select>--}}
                                             <input type="text" name="financial_company" class="form-control"
-                                                   value="{{ old('financial_company') }}" placeholder="Financial Company">
+                                                   value="{{ old('financial_company') }}"
+                                                   placeholder="Financial Company">
                                             @if ($errors->has('financial_company'))
                                                 <span
                                                     class="text-danger">{{ $errors->first('financial_company') }}</span>
@@ -2266,31 +2324,31 @@
     <script>
         $(document).ready(function () {
             $('#insurance_company_id').change(function () {
-                // Get the selected option's data-commission value
+// Get the selected option's data-commission value
                 let commission = parseFloat($(this).find(':selected').data('commission')) || 0;
 
-                // Set the value in #company_commission
+// Set the value in #company_commission
                 $('#company_commission').val(commission);
                 console.log(commission);
-                // Trigger calculation if premium is already entered
+// Trigger calculation if premium is already entered
                 $('#initial_premium').trigger('input');
             });
 
-            // Calculate initial agency commission when #initial_premium changes
+// Calculate initial agency commission when #initial_premium changes
             $('#initial_premium').on('input', function () {
-                // Remove "$" sign before parsing value
+// Remove "$" sign before parsing value
                 let initialPremium = parseFloat($(this).val().replace(/[^0-9.]/g, '')) || 0;
                 let companyCommission = parseFloat($('#company_commission').val()) || 0;
 
                 console.log(initialPremium)
-                // Convert percentage to decimal before calculation
+// Convert percentage to decimal before calculation
                 let initialAgencyCommission = (companyCommission / 100) * initialPremium;
 
-                // Format value with "$" prefix
+// Format value with "$" prefix
                 $('#initial_agency_commission').val(`$ ${initialAgencyCommission.toFixed(2)}`);
             });
 
-            // Ensure initial_premium input always has "$" prefix
+// Ensure initial_premium input always has "$" prefix
             $('#initial_premium').on('focus', function () {
                 if ($(this).val() === '') {
                     $(this).val('$ ');
@@ -2301,30 +2359,30 @@
                 }
             });
 
-            // Set default values on page load
+// Set default values on page load
             $('#initial_premium').val('$ ');
             $('#initial_agency_commission').val('$ ');
         });
         $(document).ready(function () {
             $('#effective_date, #term_id').change(function () {
-                // Get the selected effective date
+// Get the selected effective date
                 let effectiveDate = $('#effective_date').val();
 
-                // Get the selected term value (e.g., "1 month", "2 months", "24 months")
+// Get the selected term value (e.g., "1 month", "2 months", "24 months")
                 let termText = $('#term_id option:selected').text();
 
-                // Extract the numeric value from the term (e.g., "1" from "1 month")
+// Extract the numeric value from the term (e.g., "1" from "1 month")
                 let monthsToAdd = parseInt(termText) || 0;
 
-                // If both values are present, calculate the expiration date
+// If both values are present, calculate the expiration date
                 if (effectiveDate && monthsToAdd > 0) {
                     let newExpirationDate = new Date(effectiveDate);
                     newExpirationDate.setMonth(newExpirationDate.getMonth() + monthsToAdd);
 
-                    // Format the expiration date as YYYY-MM-DD
+// Format the expiration date as YYYY-MM-DD
                     let formattedDate = newExpirationDate.toISOString().split('T')[0];
 
-                    // Set the calculated expiration date
+// Set the calculated expiration date
                     $('#expiration_date').val(formattedDate);
                 } else {
                     $('#expiration_date').val('');
@@ -2334,12 +2392,12 @@
 
 
         $(document).ready(function () {
-            // Use event delegation to handle dynamically added elements
+// Use event delegation to handle dynamically added elements
             $(document).on('change', '.vehicle-make', function () {
                 var selectedData = $(this).find('option:selected');
                 var makeID = selectedData.val();
 
-                // Get the index from the id of the selected make
+// Get the index from the id of the selected make
                 var index = $(this).attr('id').match(/\d+/)[0]; // Extract the index from the id, e.g., 0, 1, etc.
 
                 var method = 'GET';
@@ -2382,23 +2440,23 @@
             });
             flatpickr(".flatpickr-minimum");
 
-            // By default, hide the Remove button in the first form
+// By default, hide the Remove button in the first form
             $('.driver-form:first').find('#count\\[0\\] .remove-form').hide();
 
             let driverFormIndex = 0; // To track the index for array names
 
-            // Add new driver form
+// Add new driver form
             $('#add-more-driver').click(function () {
                 driverFormIndex++;
 
-                // Clone the driver form
+// Clone the driver form
                 let newDriverForm = $('.driver-form:first').clone();
 
-                // Reset all input values and adjust names for array indexing
+// Reset all input values and adjust names for array indexing
                 newDriverForm.find('input, select, div').each(function () {
                     let oldName = $(this).attr('name') || $(this).attr('id'); // Handle both `name` and `id`
                     if (oldName) {
-                        // Change the name or id to include the array index
+// Change the name or id to include the array index
                         let newName = oldName.replace(/\[(\d+)\]/, '') + '[' + driverFormIndex + ']';
                         $(this).attr('name', newName).attr('id', newName);
                         if ($(this).is('input, select')) {
@@ -2409,14 +2467,14 @@
 
                 newDriverForm.find('input[name^="ssn_no"]').attr('data-inputmask', "'mask': '999-99-9999'");
 
-                // Append the cloned driver form
+// Append the cloned driver form
                 $('.driver-form-container').append(newDriverForm);
 
-                // Show the remove button for the newly appended driver form
+// Show the remove button for the newly appended driver form
                 newDriverForm.find('.remove-form').show();
             });
 
-            // Handle remove button click for driver form
+// Handle remove button click for driver form
             $(document).on('click', '.remove-form', function () {
                 $(this).closest('.driver-form').remove();
             });
@@ -2431,14 +2489,14 @@
 
             let vehicleFormIndex = 0; // To track the index for array names
 
-            // Add new vehicle form
+// Add new vehicle form
             $('#add-more-vehicle').click(function () {
                 vehicleFormIndex++;
 
-                // Clone the vehicle form
+// Clone the vehicle form
                 let newVehicleForm = $('.vehicle-form:first').clone();
 
-                // Reset input values and adjust names and IDs for array indexing
+// Reset input values and adjust names and IDs for array indexing
                 newVehicleForm.find('input, select').each(function () {
                     let oldName = $(this).attr('name') || $(this).attr('id');
                     if (oldName) {
@@ -2450,18 +2508,24 @@
                     }
                 });
 
-                // Append the cloned vehicle form to the container
+// Append the cloned vehicle form to the container
                 $('.vehicle-form-container').append(newVehicleForm);
 
                 newVehicleForm.find('.remove-form-vehicle').show();
 
             });
 
-            // Handle remove button click for vehicle form
+// Handle remove button click for vehicle form
             $(document).on('click', '.remove-form-vehicle', function () {
                 $(this).closest('.vehicle-form').remove();
             });
 
+        });
+
+        $(document).ready(function () {
+            $('.home_phone').on('input change keyup', function () {
+                $('.cell_no').val($(this).val());
+            });
         });
     </script>
 @endpush

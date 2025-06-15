@@ -218,7 +218,7 @@
                                             $selectedLocationIds = [];
                                             $selectedLocationNames = [];
                                         @endphp
-                                        @foreach($agent->agencies as $agency)
+                                        @foreach($agent->agentAgencies as $agency)
                                             @php
                                                 $selectedLocationIds[] = $agency->locations->id;
                                                 $selectedLocationNames[] = $agency->locations->agency_name . ' - ' . $agency->locations->address;

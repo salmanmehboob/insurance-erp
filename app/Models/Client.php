@@ -15,6 +15,7 @@ class Client extends Model
         'user_id',
         'policy_type_id',
         'applicant_name',
+        'business_name',
         'address',
         'city',
         'state_id',

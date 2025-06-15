@@ -34,14 +34,14 @@ class AgentController extends Controller
     public function index()
     {
         $title = 'Agents';
-        $agents = Agent::with(['state', 'bank', 'user.permissions', 'agencies.locations'])
+        $agents = Agent::with(['state', 'bank', 'user.permissions', 'agentAgencies.locations'])
             ->orderBy('created_at', 'DESC')
             ->get()
             ->map(function ($agent) {
                 $assignedLocations = [];
-                foreach ($agent->agencies as $agency) {
+                foreach ($agent->agentAgencies as $agency) {
                     $location = $agency->locations;
-                    $assignedLocations[] = $location->agency_name;
+                     $assignedLocations[] = $location->agency_name;
 
                 }
                 // Remove duplicates and convert to a string
@@ -178,7 +178,7 @@ class AgentController extends Controller
      */
     public function edit($id)
     {
-        $agent = Agent::with(['agencies.locations', 'user.permissions'])->find($id);
+        $agent = Agent::with(['agentAgencies.locations', 'user.permissions'])->find($id);
 
         if (!$agent) {
             return redirect()->route('show-agent')->with('error', 'Agent not found.');
@@ -191,7 +191,7 @@ class AgentController extends Controller
         $allAgencies = Agency::all(); // Assuming `Agency` model for locations
 
         // Collect assigned agency IDs
-        $assignedLocationIds = $agent->agencies->pluck('agency_id')->toArray();
+        $assignedLocationIds = $agent->agentAgencies->pluck('agency_id')->toArray();
 
 //        dd($assignedLocationIds);
         return view('admin.agent.edit', compact(
