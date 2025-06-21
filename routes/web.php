@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\CommissionController;
 use App\Http\Controllers\Admin\Dashboard\SuperAdminDashboardController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FinancialCompanyController;
 use App\Http\Controllers\Admin\FormsController;
 use App\Http\Controllers\Admin\GeneralAgentController;
 use App\Http\Controllers\Admin\InsuranceCompanyController;
@@ -87,6 +88,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('company/restore/{id}', [InsuranceCompanyController::class, 'restore'])->name('company.restore');
     Route::delete('company/delete-permanent/{id}', [InsuranceCompanyController::class, 'forceDelete'])->name('company.forceDelete');
 
+
+    Route::get('show-financial-company', [FinancialCompanyController::class, 'index'])->name('show-financial-company');
+    Route::get('add-financial-company', [FinancialCompanyController::class, 'create'])->name('add-financial-company');
+    Route::post('store-financial-company', [FinancialCompanyController::class, 'store'])->name('store-financial-company');
+    Route::get('company/{id}/edit', [FinancialCompanyController::class, 'edit'])->name('edit-financial-company');
+    Route::put('update-financial-company{id}', [FinancialCompanyController::class, 'update'])->name('update-financial-company');
+    Route::post('destroy-financial-company', [FinancialCompanyController::class, 'destroy'])->name('destroy-financial-company');
+    Route::get('financial-company/trashed', [FinancialCompanyController::class, 'trashed'])->name('financial-company.trashed');
+    Route::get('financial-company/restore/{id}', [FinancialCompanyController::class, 'restore'])->name('financial-company.restore');
+    Route::delete('financial-company/delete-permanent/{id}', [FinancialCompanyController::class, 'forceDelete'])->name('financial-company.forceDelete');
+
+
+
     Route::get('show-general-agent', [GeneralAgentController::class, 'index'])->name('show-general-agent');
     Route::get('add-general-agent', [GeneralAgentController::class, 'create'])->name('add-general-agent');
     Route::post('store-general-agent', [GeneralAgentController::class, 'store'])->name('store-general-agent');
@@ -107,6 +121,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('clients/trashed', [ClientController::class, 'trashed'])->name('trashed-clients');
     Route::post('clients/restore/{id}', [ClientController::class, 'restore'])->name('restore-client');
     Route::delete('clients/force-delete/{id}', [ClientController::class, 'forceDelete'])->name('force-delete-client');
+     Route::get('clients/autocomplete-coverage', [ClientController::class, 'autocompleteCoverage'])->name('autocomplete.coverage');
 
 
     Route::get('show-payment', [PaymentController::class, 'index'])->name('show-payment');

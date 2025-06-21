@@ -4,13 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('insurance_companies', function (Blueprint $table) {
+        Schema::create('financial_companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('address')->nullable();
@@ -27,6 +28,7 @@ return new class extends Migration {
             $table->softDeletes();
 
             $table->foreign('state_id')->references('id')->on('us_states')->onDelete('cascade');
+
         });
     }
 
@@ -35,6 +37,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('insurance_companies');
+        Schema::dropIfExists('financial_companies');
     }
 };

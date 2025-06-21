@@ -2918,19 +2918,19 @@
                                 <div class="col-md-12">
                                     <label class="col-form-label">Financial Company</label>
                                     <div class="form-group">
-                                        <select name="insurance_company_id" class="form-control select2"
+                                        <select name="financial_company_id" class="form-control select2"
                                                 style="width: 100%"
                                                 data-placeholder="Select Option">
                                             <option></option>
-                                            @foreach($insuranceCompanies as $state)
+                                            @foreach($financialCompanies as $state)
                                                 <option
-                                                    value="{{ $state->id }}" {{ old('insurance_company_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
+                                                    value="{{ $state->id }}" {{ old('financial_company_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
                                             @endforeach
 
                                         </select>
-                                        @if ($errors->has('insurance_company_id'))
+                                        @if ($errors->has('financial_company_id'))
                                             <span
-                                                class="text-danger">{{ $errors->first('insurance_company_id') }}</span>
+                                                class="text-danger">{{ $errors->first('financial_company_id') }}</span>
                                         @endif
                                     </div>
                                 </div>

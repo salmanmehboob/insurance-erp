@@ -42,7 +42,18 @@
                                         @endif
                                     </div>
                                 </div>
-
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Business Name
+                                        <span class="text-danger">*</span></label>
+                                    <div class="form-group">
+                                        <input type="text" name="business_name" class="form-control"
+                                               placeholder="Business Name"
+                                               value="{{ old('business_name',$client->business_name) }}">
+                                        @if ($errors->has('business_name'))
+                                            <span class="text-danger">{{ $errors->first('business_name') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
 
                                 <!-- Address -->
                                 <div class="col-md-6">
@@ -481,8 +492,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <label class="col-form-label">SSN #<span
-                                                                class="text-danger">*</span></label>
+                                                        <label class="col-form-label">SSN # </label>
                                                         <div class="form-group">
                                                             <input type="text" name="ssn_no[{{$key}}]"
                                                                    class="form-control"
@@ -500,7 +510,7 @@
                                                         <label class="col-form-label">Gender</label>
                                                         <div class="form-group">
                                                             <select name="gender_id[{{$key}}]" class="form-control"
-                                                                    style="width: 100%"
+                                                                    style="width: 100%; appearance: auto; -webkit-appearance: auto;"
                                                                     data-placeholder="Select Gender">
                                                                 <option>Select Gender</option>
                                                                 @foreach($genders as $state)
@@ -519,7 +529,7 @@
                                                         <div class="form-group">
                                                             <select name="marital_status_id[{{$key}}]"
                                                                     class="form-control"
-                                                                    style="width: 100%"
+                                                                    style="width: 100%; appearance: auto; -webkit-appearance: auto;"
                                                                     data-placeholder="Select Status">
                                                                 <option>Select Status</option>
                                                                 @foreach($maritalStatus as $state)
@@ -538,7 +548,7 @@
                                                         <div class="form-group">
                                                             <select name="relationship_id[{{$key}}]"
                                                                     class="form-control"
-                                                                    style="width: 100%"
+                                                                    style="width: 100%; appearance: auto; -webkit-appearance: auto;"
                                                                     data-placeholder="Select Status">
                                                                 <option>Select Relation</option>
                                                                 @foreach($relationships as $state)
@@ -569,7 +579,7 @@
                                                         <label class="col-form-label">License State</label>
                                                         <div class="form-group">
                                                             <select name="us_state_id[{{$key}}]" class="form-control"
-                                                                    style="width: 100%"
+                                                                    style="width: 100%; appearance: auto; -webkit-appearance: auto;"
                                                                     data-placeholder="Select State">
                                                                 <option>Select State</option>
                                                                 @foreach($states as $state)
@@ -616,7 +626,7 @@
                                                         <div class="form-group">
                                                             <select name="education_level_id[{{$key}}]"
                                                                     class="form-control"
-                                                                    style="width: 100%"
+                                                                    style="width: 100%; appearance: auto; -webkit-appearance: auto;"
                                                                     data-placeholder="Select Education Level">
                                                                 <option>Select Education Level</option>
                                                                 @foreach($educationLevels as $state)
@@ -2733,7 +2743,7 @@
                                                 <input type="text" id="initial_premium" name="initial_premium"
                                                        class="form-control"
                                                        data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
-                                                       value="${{ old('initial_premium',$client->payment->initial_premium) }}">
+                                                       value="${{  $client->payment->initial_premium}}">
                                                 @if ($errors->has('initial_premium'))
                                                     <span
                                                         class="text-danger">{{ $errors->first('initial_premium') }}</span>
@@ -2764,30 +2774,30 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <label class="col-form-label">Company Fees + Taxes</label>
-                                            <div class="form-group">
-                                                <input type="text" name="company_fee" class="form-control"
-                                                       data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
-                                                       value="${{ old('company_fee',$client->payment->company_fee) }}">
-                                                @if ($errors->has('company_fee'))
-                                                    <span
-                                                        class="text-danger">{{ $errors->first('company_fee') }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <label class="col-form-label">Agency Fee</label>
-                                            <div class="form-group">
-                                                <input type="text" name="agency_fee" class="form-control"
-                                                       data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
-                                                       value="${{ old('agency_fee',$client->payment->agency_fee) }}">
-                                                @if ($errors->has('agency_fee'))
-                                                    <span
-                                                        class="text-danger">{{ $errors->first('agency_fee') }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
+{{--                                        <div class="col-md-12">--}}
+{{--                                            <label class="col-form-label">Company Fees + Taxes</label>--}}
+{{--                                            <div class="form-group">--}}
+{{--                                                <input type="text" name="company_fee" class="form-control"--}}
+{{--                                                       data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"--}}
+{{--                                                       value="${{ old('company_fee',$client->payment->company_fee) }}">--}}
+{{--                                                @if ($errors->has('company_fee'))--}}
+{{--                                                    <span--}}
+{{--                                                        class="text-danger">{{ $errors->first('company_fee') }}</span>--}}
+{{--                                                @endif--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                        <div class="col-md-12">--}}
+{{--                                            <label class="col-form-label">Agency Fee</label>--}}
+{{--                                            <div class="form-group">--}}
+{{--                                                <input type="text" name="agency_fee" class="form-control"--}}
+{{--                                                       data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"--}}
+{{--                                                       value="${{ old('agency_fee',$client->payment->agency_fee) }}">--}}
+{{--                                                @if ($errors->has('agency_fee'))--}}
+{{--                                                    <span--}}
+{{--                                                        class="text-danger">{{ $errors->first('agency_fee') }}</span>--}}
+{{--                                                @endif--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
                                         <hr>
                                         <div class="col-md-12">
@@ -2976,9 +2986,19 @@
                                         <div class="col-md-12">
                                             <label class="col-form-label">Financial Company</label>
                                             <div class="form-group">
-                                                <input type="text" name="financial_company" class="form-control"
-                                                       value="{{ old('financial_company',$client->payment->financial_company) }}"
-                                                       placeholder="Financial Company">
+                                                <select name="financial_company_id" class="form-control select2"
+                                                        style="width: 100%"
+                                                        data-placeholder="Select Option">
+                                                    <option></option>
+                                                    @foreach($financialCompanies as $state)
+                                                        <option
+                                                            value="{{ $state->id }}" {{ $client->payment->financial_company_id == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
+                                                    @endforeach
+
+                                                </select>
+{{--                                                <input type="text" name="financial_company" class="form-control"--}}
+{{--                                                       value="{{ old('financial_company',$client->payment->financial_company) }}"--}}
+{{--                                                       placeholder="Financial Company">--}}
                                                 @if ($errors->has('financial_company'))
                                                     <span
                                                         class="text-danger">{{ $errors->first('financial_company') }}</span>
@@ -2995,7 +3015,7 @@
                                         <div class="col-md-12">
                                             <label class="col-form-label">Coverage</label>
                                             <div class="form-group">
-                                                <input type="text" name="coverage" class="form-control"
+                                                <input type="text" name="coverage" class="form-control" id="coverage"
                                                        value="{{ old('coverage',$client->note->coverage) }}">
                                                 @if ($errors->has('coverage'))
                                                     <span
@@ -3052,6 +3072,31 @@
 @endsection
 
 @push('script')
+
+
+    <!-- ✅ jQuery UI CSS -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+    <!-- ✅ jQuery UI JS -->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#coverage').autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "{{ route('autocomplete.coverage') }}",
+                        data: {term: request.term},
+                        success: function (data) {
+                            response(data);
+                        }
+                    });
+                },
+                minLength: 2
+            });
+        });
+    </script>
+
     <script>
         $(document).ready(function () {
             $('#insurance_company_id').change(function () {
@@ -3066,18 +3111,18 @@
             });
 
             // Calculate initial agency commission when #initial_premium changes
-            $('#initial_premium').on('input', function () {
-                // Remove "$" sign before parsing value
-                let initialPremium = parseFloat($(this).val().replace(/[^0-9.]/g, '')) || 0;
-                let companyCommission = parseFloat($('#company_commission').val()) || 0;
-
-                console.log(initialPremium)
-                // Convert percentage to decimal before calculation
-                let initialAgencyCommission = (companyCommission / 100) * initialPremium;
-
-                // Format value with "$" prefix
-                $('#initial_agency_commission').val(`$ ${initialAgencyCommission.toFixed(2)}`);
-            });
+            // $('#initial_premium').on('input', function () {
+            //     // Remove "$" sign before parsing value
+            //     let initialPremium = parseFloat($(this).val().replace(/[^0-9.]/g, '')) || 0;
+            //     let companyCommission = parseFloat($('#company_commission').val()) || 0;
+            //
+            //     console.log(initialPremium)
+            //     // Convert percentage to decimal before calculation
+            //     let initialAgencyCommission = (companyCommission / 100) * initialPremium;
+            //
+            //     // Format value with "$" prefix
+            //     $('#initial_agency_commission').val(`$ ${initialAgencyCommission.toFixed(2)}`);
+            // });
 
             // Ensure initial_premium input always has "$" prefix
             $('#initial_premium').on('focus', function () {
@@ -3091,8 +3136,8 @@
             });
 
             // Set default values on page load
-            $('#initial_premium').val('$ ');
-            $('#initial_agency_commission').val('$ ');
+            // $('#initial_premium').val('$ ');
+            // $('#initial_agency_commission').val('$ ');
         });
 
         $(document).ready(function () {

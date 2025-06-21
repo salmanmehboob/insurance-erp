@@ -66,8 +66,9 @@
                                 data-commission_fee="$ {{ $agent->commission_fee }}"
                                 data-notes="{{ $agent->note}}"
                                 data-locations="{{ $agent->assignedLocations ?? 'No Locations' }}"
-                                data-permissions="{{ $agent->user->getAllPermissions()->pluck('id')->join(',') }}"
-                                data-permission-names="{{ $agent->user->getAllPermissions()->pluck('short_name')->join(',') }}">{{ $agent->name }}</td>
+{{--                                data-permissions="{{ $agent->user->getAllPermissions()->pluck('id')->join(',') }}"--}}
+{{--                                data-permission-names="{{ $agent->user->getAllPermissions()->pluck('short_name')->join(',') }}"--}}
+                            >{{ $agent->name }}</td>
                             <td>{{ $agent->email }}</td>
                             <td>{{ $agent->phone_no }}</td>
                             <td>{{ $agent->city }}</td>

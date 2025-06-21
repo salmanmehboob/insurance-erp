@@ -36,6 +36,7 @@ return new class extends Migration
             $table->string('payment_due_days');
 
             $table->unsignedBigInteger('insurance_company_id');
+            $table->unsignedBigInteger('financial_company_id');
 
 
 
@@ -43,6 +44,8 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->foreign('insurance_company_id')->references('id')->on('insurance_companies')->onDelete('cascade');
+            $table->foreign('financial_company_id')->references('id')->on('financial_companies')->onDelete('cascade');
+
 
         });
     }

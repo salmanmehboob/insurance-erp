@@ -50,6 +50,7 @@ class AgentController extends Controller
             });
         LogActivity::addToLog('Agents Listing View');
 
+//        dd($agents);
         return view('admin.agent.index', compact('title', 'agents'));
     }
 

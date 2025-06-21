@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Models;
+
+use App\Models\Forms\AgentBrokerForm;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class FinancialCompany extends Model
+{
+    use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'name',
+        'user_id',
+        'address',
+        'city',
+        'state_id',
+        'zip_code',
+        'phone_no',
+        'note',
+        'fax_no',
+        'website',
+        'agency_code',
+        'commission_in_percentage',
+    ];
+
+    // Relationships
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function state()
+    {
+        return $this->belongsTo(UsState::class, 'state_id');
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(FinancialCompanyAttachment::class, 'financial_company_id');
+    }
+
+    public function agentBrokerForms()
+    {
+        return $this->hasMany(AgentBrokerForm::class, 'financial_company_id');
+    }
+}
+

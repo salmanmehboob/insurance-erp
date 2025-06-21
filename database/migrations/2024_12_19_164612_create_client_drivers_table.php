@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->date('dob');
             $table->integer('age');
-            $table->string('ssn_no');
+            $table->string('ssn_no')->nullable();
             $table->unsignedBigInteger('gender_id');
             $table->unsignedBigInteger('marital_status_id');
             $table->unsignedBigInteger('relationship_id');

@@ -9,7 +9,7 @@
     <div class="card">
         <!-- Agent form -->
         <form action="{{ route('store-client') }}" method="POST" enctype="multipart/form-data"
-              class="flex-fill form-validate-jquery">
+              class="flex-fill">
             @csrf
             <input type="hidden" name="policy_type_id" value="{{$policyType->id}}">
             <div class="card-body">
@@ -1011,8 +1011,9 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Other</label>
                                                 <div class="form-group">
-                                                    <input type="text" name="other_commercial_property" class="form-control"
-                                                            value="{{ old('other_commercial_property') }}">
+                                                    <input type="text" name="other_commercial_property"
+                                                           class="form-control"
+                                                           value="{{ old('other_commercial_property') }}">
                                                     @if ($errors->has('other_commercial_property'))
                                                         <span
                                                             class="text-danger">{{ $errors->first('other_commercial_property') }}</span>
@@ -1631,7 +1632,7 @@
                                             <option value="20/40">20/40</option>
                                             <option value="25/50">25/50</option>
                                             <option value="25/65">25/65</option>
-                                            <option selected value="30/60">30/60</option>
+                                            <option value="30/60">30/60</option>
                                             <option value="50/100">50/100</option>
                                             <option value="100/300">100/300</option>
                                             <option value="250/500">250/500</option>
@@ -1654,7 +1655,7 @@
                                             <option value="5">5</option>
                                             <option value="10">10</option>
                                             <option value="15">15</option>
-                                            <option selected value="25">25</option>
+                                            <option value="25">25</option>
                                             <option value="50">50</option>
                                             <option value="100">100</option>
                                             <option value="250">250</option>
@@ -1671,7 +1672,7 @@
                                     <div class="form-group">
                                         <select name="medical_payments" class="form-control select2" style="width: 100%"
                                                 data-placeholder="Select Option">
-                                            <option selected value="None">None</option>
+                                            <option value="None">None</option>
                                             <option value="500">500</option>
                                             <option value="1000">1000</option>
                                             <option value="2000">2000</option>
@@ -1689,7 +1690,7 @@
                                         <select name="pip" class="form-control select2" style="width: 100%"
                                                 data-placeholder="Select Option">
 
-                                            <option selected value="None">None</option>
+                                            <option value="None">None</option>
                                             <option value="500">500</option>
                                             <option value="1000">1000</option>
                                             <option value="2000">2000</option>
@@ -1709,7 +1710,7 @@
                                         <select name="uninsured_body_injury" class="form-control select2"
                                                 style="width: 100%"
                                                 data-placeholder="Select Option">
-                                            <option selected value="None">None</option>
+                                            <option value="None">None</option>
 
                                             <option value="10/10">10/10</option>
                                             <option value="1020">10/20</option>
@@ -1738,7 +1739,7 @@
                                         <select name="uninsured_property_damage" class="form-control select2"
                                                 style="width: 100%"
                                                 data-placeholder="Select Option">
-                                            <option selected value="None">None</option>
+                                            <option value="None">None</option>
 
                                             <option value="5">5</option>
                                             <option value="10">10</option>
@@ -1762,7 +1763,7 @@
                                         <select name="under_insured_body_injury" class="form-control select2"
                                                 style="width: 100%"
                                                 data-placeholder="Select Option">
-                                            <option selected value="None">None</option>
+                                            <option value="None">None</option>
 
                                             <option value="10/10">10/10</option>
                                             <option value="1020">10/20</option>
@@ -1791,7 +1792,7 @@
                                         <select name="under_insured_property_damage" class="form-control select2"
                                                 style="width: 100%"
                                                 data-placeholder="Select Option">
-                                            <option selected value="None">None</option>
+                                            <option value="None">None</option>
 
                                             <option value="5">5</option>
                                             <option value="10">10</option>
@@ -1832,9 +1833,9 @@
                                                     <input type="text" name="vin[0]" class="form-control"
                                                            placeholder="1HGCM82633A123456" maxlength="17" minlength="17"
                                                            pattern="[A-HJ-NPR-Z0-9]{17}"
-                                                           value="{{ old('vin.0') }}" required>
-                                                    @if ($errors->has('vin.0'))
-                                                        <span class="text-danger">{{ $errors->first('vin.0') }}</span>
+                                                           value="{{ old('vin') }}">
+                                                    @if ($errors->has('vin'))
+                                                        <span class="text-danger">{{ $errors->first('vin') }}</span>
                                                     @endif
                                                 </div>
                                             </div>
@@ -2236,22 +2237,22 @@
                                     <div class="col-md-12">
                                         <label class="col-form-label">Financial Company</label>
                                         <div class="form-group">
-                                            {{--                                            <select name="insurance_company_id" class="form-control select2"--}}
-                                            {{--                                                    style="width: 100%"--}}
-                                            {{--                                                    data-placeholder="Select Option">--}}
-                                            {{--                                                <option></option>--}}
-                                            {{--                                                @foreach($insuranceCompanies as $state)--}}
-                                            {{--                                                    <option--}}
-                                            {{--                                                        value="{{ $state->id }}" {{ old('insurance_company_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>--}}
-                                            {{--                                                @endforeach--}}
+                                            <select name="financial_company_id" class="form-control select2"
+                                                    style="width: 100%"
+                                                    data-placeholder="Select Option">
+                                                <option></option>
+                                                @foreach($financialCompanies as $state)
+                                                    <option
+                                                        value="{{ $state->id }}" {{ old('financial_company_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
+                                                @endforeach
 
-                                            {{--                                            </select>--}}
-                                            <input type="text" name="financial_company" class="form-control"
-                                                   value="{{ old('financial_company') }}"
-                                                   placeholder="Financial Company">
-                                            @if ($errors->has('financial_company'))
+                                            </select>
+                                            {{--                                            <input type="text" name="financial_company" class="form-control"--}}
+                                            {{--                                                   value="{{ old('financial_company') }}"--}}
+                                            {{--                                                   placeholder="Financial Company">--}}
+                                            @if ($errors->has('financial_company_id'))
                                                 <span
-                                                    class="text-danger">{{ $errors->first('financial_company') }}</span>
+                                                    class="text-danger">{{ $errors->first('financial_company_id') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -2265,7 +2266,7 @@
                                     <div class="col-md-12">
                                         <label class="col-form-label">Coverage</label>
                                         <div class="form-group">
-                                            <input type="text" name="coverage" class="form-control"
+                                            <input type="text" name="coverage" class="form-control" id="coverage"
                                                    value="{{ old('coverage') }}">
                                             @if ($errors->has('coverage'))
                                                 <span
@@ -2321,6 +2322,32 @@
 @endsection
 
 @push('script')
+
+
+    <!-- ✅ jQuery UI CSS -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+    <!-- ✅ jQuery UI JS -->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#coverage').autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "{{ route('autocomplete.coverage') }}",
+                        data: {term: request.term},
+                        success: function (data) {
+                            response(data);
+                        }
+                    });
+                },
+                minLength: 2
+            });
+        });
+    </script>
+
+
     <script>
         $(document).ready(function () {
             $('#insurance_company_id').change(function () {
@@ -2389,8 +2416,6 @@
                 }
             });
         });
-
-
         $(document).ready(function () {
 // Use event delegation to handle dynamically added elements
             $(document).on('change', '.vehicle-make', function () {
@@ -2438,6 +2463,24 @@
                 placeholder: "Select an option",
                 allowClear: true
             });
+
+
+            {{--$('#coverage').autocomplete({--}}
+            {{--    source: function (request, response) {--}}
+            {{--        $.ajax({--}}
+            {{--            url: "{{ route('autocomplete.coverage') }}",--}}
+            {{--            data: {--}}
+            {{--                term: request.term--}}
+            {{--            },--}}
+            {{--            success: function (data) {--}}
+            {{--                response(data);--}}
+            {{--            }--}}
+            {{--        });--}}
+            {{--    },--}}
+            {{--    minLength: 2 // minimum characters before triggering--}}
+            {{--});--}}
+
+
             flatpickr(".flatpickr-minimum");
 
 // By default, hide the Remove button in the first form
@@ -2527,5 +2570,10 @@
                 $('.cell_no').val($(this).val());
             });
         });
+
+
     </script>
+
+
+
 @endpush

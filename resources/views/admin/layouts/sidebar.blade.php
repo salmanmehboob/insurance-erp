@@ -118,6 +118,14 @@
                                 <span class="align-middle">Insurance Company</span>
                             </a>
                         </li>
+
+
+                        <li class="sidebar-item  ">
+                            <a class="sidebar-link" href="{{ route('show-financial-company') }}">
+                                <i class="fas fa-user-astronaut"></i>
+                                <span class="align-middle">Financial Company</span>
+                            </a>
+                        </li>
                         <li class="sidebar-item  ">
                             <a class="sidebar-link" href="{{ route('show-general-agent') }}">
                                 <i class="fas fa-user-astronaut"></i>

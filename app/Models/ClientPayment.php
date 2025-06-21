@@ -30,6 +30,7 @@ class ClientPayment extends Model
         'payment_option',
         'payment_due_days',
         'insurance_company_id',
-        'financial_company',
+//        'financial_company',
+        'financial_company_id',
     ];
 }

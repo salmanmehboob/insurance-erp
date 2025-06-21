@@ -20,6 +20,7 @@ use App\Models\ClientPolicy;
 use App\Models\ClientVehicle;
 use App\Models\EducationLevel;
 use App\Models\EmailStatus;
+use App\Models\FinancialCompany;
 use App\Models\Gender;
 use App\Models\GeneralAgent;
 use App\Models\InsuranceCompany;
@@ -80,6 +81,7 @@ class ClientController extends Controller
         $policyStatuses = PolicyStatus::all();
         $terms = Term::all();
         $insuranceCompanies = InsuranceCompany::all();
+        $financialCompanies = FinancialCompany::all();
         $generalAgents = GeneralAgent::all();
         $agents = Agent::all();
         $locations = Agency::all();
@@ -97,7 +99,7 @@ class ClientController extends Controller
             'policyType', 'states', 'emailStatues', 'languages',
             'policyStatuses', 'terms', 'insuranceCompanies', 'agents', 'locations',
             'genders', 'maritalStatus', 'relationships', 'educationLevels', 'years',
-            'vehicleMakes', 'vehicleModels', 'generalAgents'));
+            'vehicleMakes', 'vehicleModels', 'generalAgents' ,'financialCompanies'));
     }
 
     /**
@@ -263,6 +265,7 @@ class ClientController extends Controller
                     'pump' => removeDollarSign($request->pump),
                     'sign' => removeDollarSign($request->sign),
                     'glass' => removeDollarSign($request->glass),
+                    'other_commercial_property' =>  ($request->other_commercial_property),
                     'property_owner' => $request->property_owner,
                     'built_year' => $request->built_year,
                     'property_area' => $request->property_area,
@@ -384,7 +387,7 @@ class ClientController extends Controller
                 'payment_option' => ($request->payment_option),
                 'payment_due_days' => ($request->payment_due_days),
                 'insurance_company_id' => ($request->insurance_company_id),
-                'financial_company' => $request->financial_company,
+                'financial_company_id' => $request->financial_company_id,
             ]);
 
             // Create Client Notes
@@ -424,6 +427,7 @@ class ClientController extends Controller
         $policyStatuses = PolicyStatus::all();
         $terms = Term::all();
         $insuranceCompanies = InsuranceCompany::all();
+        $financialCompanies = FinancialCompany::all();
         $agents = Agent::all();
         $locations = Agency::all();
         $genders = Gender::all();
@@ -443,7 +447,7 @@ class ClientController extends Controller
             'policyType', 'states', 'emailStatues', 'languages',
             'policyStatuses', 'terms', 'insuranceCompanies', 'agents', 'locations',
             'genders', 'maritalStatus', 'relationships', 'educationLevels', 'years',
-            'vehicleMakes', 'vehicleModels'
+            'vehicleMakes', 'vehicleModels' ,'financialCompanies'
         ));
     }
 
@@ -456,6 +460,7 @@ class ClientController extends Controller
         $validator = Validator::make($request->all(), [
             'policy_type_id' => 'required',
             'applicant_name' => 'required',
+            'business_name' => 'required',
             'address' => 'required',
             'city' => 'required',
             'state_id' => 'required',
@@ -520,6 +525,7 @@ class ClientController extends Controller
                 'user_id' => auth()->user()->id,
                 'policy_type_id' => $request->policy_type_id,
                 'applicant_name' => $request->applicant_name,
+                'business_name' => $request->business_name,
                 'address' => $request->address,
                 'city' => $request->city,
                 'state_id' => $request->state_id,
@@ -576,7 +582,7 @@ class ClientController extends Controller
                 }
             }
 
-            // Update or Create Client Coverage
+             // Update or Create Client Coverage
             if (isset($request->body_injury)) {
                 $client->coverage()->updateOrCreate(
                     ['client_id' => $client->id],
@@ -618,6 +624,7 @@ class ClientController extends Controller
                         'pump' => removeDollarSign($request->pump),
                         'sign' => removeDollarSign($request->sign),
                         'glass' => removeDollarSign($request->glass),
+                        'other_commercial_property' =>  ($request->other_commercial_property),
                         'property_owner' => $request->property_owner,
                         'built_year' => $request->built_year,
                         'property_area' => $request->property_area,
@@ -751,6 +758,7 @@ class ClientController extends Controller
                     'payment_option' => ($request->payment_option),
                     'payment_due_days' => ($request->payment_due_days),
                     'insurance_company_id' => $request->insurance_company_id,
+                    'financial_company_id' => $request->financial_company_id,
                 ]
             );
 
@@ -870,6 +878,7 @@ class ClientController extends Controller
         $policyStatuses = PolicyStatus::all();
         $terms = Term::all();
         $insuranceCompanies = InsuranceCompany::all();
+        $financialCompanies = FinancialCompany::all();
         $agents = Agent::all();
         $locations = Agency::all();
         $genders = Gender::all();
@@ -887,7 +896,7 @@ class ClientController extends Controller
             'policyType', 'states', 'emailStatues', 'languages',
             'policyStatuses', 'terms', 'insuranceCompanies', 'agents', 'locations',
             'genders', 'maritalStatus', 'relationships', 'educationLevels', 'years',
-            'vehicleMakes', 'vehicleModels', 'drivers'));
+            'vehicleMakes', 'vehicleModels', 'drivers' ,'financialCompanies'));
     }
 
     public function storeQuote(Request $request)
@@ -1251,6 +1260,7 @@ class ClientController extends Controller
                 'payment_option' => ($request->payment_option),
                 'payment_due_days' => ($request->payment_due_days),
                 'insurance_company_id' => $request->insurance_company_id,
+                'financial_company_id' => $request->financial_company_id,
             ]);
 
             // Create Client Notes
@@ -1270,6 +1280,18 @@ class ClientController extends Controller
             dd($e->getMessage());
             return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
+    }
+
+
+    public function autocompleteCoverage(Request $request)
+    {
+        $term = $request->get('term');
+
+        $results = ClientNotes::where('coverage', 'LIKE', '%' . $term . '%')
+            ->pluck('coverage')
+            ->unique(); // limit to 10 results
+
+        return response()->json($results);
     }
 
 }
