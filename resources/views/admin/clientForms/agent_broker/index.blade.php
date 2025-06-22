@@ -17,7 +17,7 @@
             <td>{{ $row->insurance_company_name ?? '' }}</td>
             <td>{{ $row->current_agency ?? '' }}</td>
             <td>{{ $row->email ?? '' }}</td>
-            <td>
+            <td>    
                 <div class="d-flex action-buttons">
                     <a target="_blank" title="View" href="{{ route('show.form', ['id' =>$row->id, 'type' => $type]) }}"
                        class="text-primary me-2">

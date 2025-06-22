@@ -484,7 +484,7 @@
     <div class="row">
         <div class="col-12 mb-4 buttons-container">
             <h1 class="text-center mb-4">ACORD Agent/Broker of Record Change Form</h1>
-            <div class="d-flex justify-content-end no-print">
+            <div style="display: flex; justify-content: end;" class=" no-print">
                 <button id="printFormBtn" class="btn btn-secondary">Print Form</button>
             </div>
         </div>
