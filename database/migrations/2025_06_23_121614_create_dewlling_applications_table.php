@@ -53,6 +53,17 @@ return new class extends Migration
             $table->string('applicant_pp_no', 50)->nullable();
             $table->string('applicant_sp_type', 50)->nullable();
             $table->string('applicant_sp_no', 50)->nullable();
+            $table->string('applicant_mail_date', 50)->nullable();
+            $table->string('applicant_p_email', 50)->nullable();
+            $table->string('applicant_s_email', 50)->nullable();
+            $table->string('applicant_prev_address', 50)->nullable();
+            $table->string('applicant_year_prev_address', 50)->nullable();
+            $table->string('applicant_dwelling_location', 50)->nullable();
+            $table->string('applicant_occupation', 50)->nullable();
+            $table->string('applicant_current_occupation_year', 50)->nullable();
+            $table->string('applicant_current_employer', 50)->nullable();
+            $table->string('applicant_prev_employer', 50)->nullable();
+            
 
 
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');

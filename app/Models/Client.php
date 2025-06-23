@@ -106,7 +106,7 @@ class Client extends Model
 
     public function language()
     {
-        return $this->belongsTo(PrimaryLanguage::class);
+        return $this->belongsTo(PrimaryLanguage::class, 'primary_language_id');
     }
 
     public function commercial()

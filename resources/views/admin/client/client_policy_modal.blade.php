@@ -169,7 +169,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <p><strong>Primary
-                                                    Language:</strong> {{ optional($policy->client->language)->name ?? 'N/A' }}
+                                                    Language:</strong> {{ $policy->client->language->name ?? 'N/A' }}
                                             </p>
                                         </div>
                                     </div>

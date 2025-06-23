@@ -196,10 +196,10 @@ Route::middleware(['auth'])->group(function () {
     // Agent Broker Form
     Route::get('agent/broker/form/{id}/create', [FormsController::class, 'createAgentBrokerForm'])->name('create-agent/broker-form');
     Route::post('store-agentBrokerForm', [FormsController::class, 'storeAgentBrokerForm'])->name('store-agentBrokerForm');
-    // Additional Remarks From
+    // Additional Remarks Form
     Route::get('additional/remarks/form/{id}/create', [FormsController::class, 'CreateAdditionalRemarksForm'])->name('create-additional/remarks-form');
     Route::post('store-additionalRemarks', [FormsController::class, 'storeAdditionalRemarksForm'])->name('store-additionalRemarks');
-// Additional Remarks From
+// Additional Remarks Form
     Route::get('evidence/of/property/form/{id}/create', [FormsController::class, 'CreateEvidenceOfPropertyForm'])->name('create-evidence/of/property-form');
     Route::post('store-evidence/of/property', [FormsController::class, 'storeEvidenceOfProperty'])->name('store-evidence/of/property');
 
