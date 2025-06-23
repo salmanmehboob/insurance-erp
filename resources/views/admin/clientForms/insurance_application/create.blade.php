@@ -814,8 +814,7 @@
                             <div>FIDUCIARY LIABILITY</div>
                         </div>
                     </td>
-                    <td style="border: 1px solid #000; padding: 5px;">$ <input type="text"
-                                                                               name="business_fiduciary_limit"
+                    <td style="border: 1px solid #000; padding: 5px;">$ <input type="text" name="business_fiduciary_limit"
                                                                                style="height: 20px;"></td>
                     <td style="border: 1px solid #000; padding: 5px;"></td>
                     <td style="border: 1px solid #000; padding: 5px;"></td>

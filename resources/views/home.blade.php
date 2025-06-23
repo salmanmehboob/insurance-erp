@@ -141,7 +141,7 @@
             </div>
 
             <div class="card-body">
-                <table id="datatable" class="table table-hover  datatables-reponsive">
+                <table id="datatable" class="table table-hover  datatables-responsive">
                     <thead>
                     <tr>
                         <th>#</th>

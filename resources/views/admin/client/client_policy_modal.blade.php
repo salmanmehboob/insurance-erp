@@ -198,14 +198,14 @@
                                         </div>
                                         <div class="col-md-6">
                                             <a href="{{ route('create-agent/broker-form', $policy->client->id) }}"
-                                               class="text-primary w-100">Agent/Broker Form</a>
+                                               class="text-primary w-100">Create Agent/Broker Form</a>
                                         </div>
                                         <div class="col-md-6">
                                             <a target="_blank" href="{{route('view.form',['type' => 'agent_broker'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
                                         </div>
                                         <div class="col-md-6">
                                             <a href="{{ route('create-additional/remarks-form', $policy->client->id) }}"
-                                               class="text-primary w-100">Additional/Remarks Form</a>
+                                               class="text-primary w-100">Create Additional/Remarks Form</a>
                                         </div>
 
                                         <div class="col-md-6">
