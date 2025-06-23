@@ -92,7 +92,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('show-financial-company', [FinancialCompanyController::class, 'index'])->name('show-financial-company');
     Route::get('add-financial-company', [FinancialCompanyController::class, 'create'])->name('add-financial-company');
     Route::post('store-financial-company', [FinancialCompanyController::class, 'store'])->name('store-financial-company');
-    Route::get('company/{id}/edit', [FinancialCompanyController::class, 'edit'])->name('edit-financial-company');
+    Route::get('financial-company/{id}/edit', [FinancialCompanyController::class, 'edit'])->name('edit-financial-company');
     Route::put('update-financial-company{id}', [FinancialCompanyController::class, 'update'])->name('update-financial-company');
     Route::post('destroy-financial-company', [FinancialCompanyController::class, 'destroy'])->name('destroy-financial-company');
     Route::get('financial-company/trashed', [FinancialCompanyController::class, 'trashed'])->name('financial-company.trashed');

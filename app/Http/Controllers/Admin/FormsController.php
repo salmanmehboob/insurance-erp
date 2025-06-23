@@ -473,8 +473,7 @@ class FormsController extends Controller
                 'authorized_representative' => $request->authorized_representative ?? null,
                 'created_by' => $user_id,
             ];
-//            dd($dbData);
-            $evidence = EvidenceOfPropertyForm::create($dbData);
+             $evidence = EvidenceOfPropertyForm::create($dbData);
 
             // Check if the data was successfully created
             if ($evidence) {

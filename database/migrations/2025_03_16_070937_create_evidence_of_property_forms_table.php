@@ -43,6 +43,7 @@ return new class extends Migration {
             $table->string('evidence_date')->nullable();
 
             $table->longText('property_information')->nullable();
+            $table->string('is_perlis')->nullable();
             $table->string('is_basic')->nullable();
             $table->string('is_broad')->nullable();
             $table->string('is_special')->nullable();
