@@ -122,6 +122,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('clients/restore/{id}', [ClientController::class, 'restore'])->name('restore-client');
     Route::delete('clients/force-delete/{id}', [ClientController::class, 'forceDelete'])->name('force-delete-client');
      Route::get('clients/autocomplete-coverage', [ClientController::class, 'autocompleteCoverage'])->name('autocomplete.coverage');
+    Route::post('/client-attachments', [ClientController::class, 'storeClientAttachment'])->name('client-attachments.store');
 
 
     Route::get('show-payment', [PaymentController::class, 'index'])->name('show-payment');

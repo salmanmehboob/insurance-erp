@@ -22,8 +22,8 @@
                 <h5 class="card-title"></h5>
                 <div class="header-elements">
                          <div class="col-md-12 mt-5">
-                             <a href="{{ route('show-agent') }}" class="btn btn-outline-danger float-end me-4">
-                                 <i class="fas fa-eye"></i> View Active Agents
+                             <a href="{{ route('show-client') }}" class="btn btn-outline-danger float-end me-4">
+                                 <i class="fas fa-eye"></i> View Active Clients
                              </a>
                         </div>
                  </div>
@@ -33,46 +33,40 @@
                 <table id="agent-table" class="table table-striped datatables-reponsive">
                     <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>Policy Type</th>
+                        <th>Applicant Name</th>
                         <th>Email</th>
-                        <th>Phone</th>
+                        <th>Address</th>
                         <th>City</th>
-                        <th>Locations</th>
                         <th class="text-center">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($agents as $agent)
+                    @foreach($clients as $client)
                          <tr>
-                            <td data-bs-toggle="modal" data-bs-target="#agentModal" class="clickable-row"
-                                data-id="{{ $agent->id }}"
-                                data-name="{{ $agent->name }}"
-                                data-email="{{ $agent->email }}"
-                                data-phone_no="{{ $agent->phone_no }}"
-                                data-city="{{ $agent->city }}"
-                                data-state="{{ $agent->state->name }}"
-                                data-zip_code="{{ $agent->zip_code }}"
-                                data-address="{{ $agent->address }}"
-                                data-bank_name="{{ $agent->bank->bank_name ?? 'N/A' }}"
-                                data-commission_percentage="{{ $agent->commission_in_percentage }}"
-                                data-commission_fee="{{ $agent->commission_fee }}"
-                                data-notes="{{ $agent->note}}"
-                                data-locations="{{ $agent->assignedLocations ?? 'No Locations' }}"
-                                data-permissions="{{ $agent->user->getAllPermissions()->pluck('id')->join(',') }}"
-                                data-permission-names="{{ $agent->user->getAllPermissions()->pluck('short_name')->join(',') }}">{{ $agent->name }}</td>
-                            <td>{{ $agent->email }}</td>
-                            <td>{{ $agent->phone_no }}</td>
-                            <td>{{ $agent->city }}</td>
-                            <td>{{ $agent->assignedLocations ?? 'No Locations' }}</td>
+                             @php
+                                 $expired = isset($client->policy) && \Carbon\Carbon::parse($client->policy->expiration_date)->isPast();
+                             @endphp
+
+                             <td>
+                                <span style="color: {{ $expired ? '#dc3545' : '#28a745' }};">
+                                    {{ $client->policyType->name }}
+                                </span>
+                             </td>
+
+                             <td>{{ $client->applicant_name }}</td>
+                             <td>{{ $client->email   }}</td>
+                             <td>{{ $client->address }}</td>
+                             <td>{{ $client->city }}</td>
                              <td>
                                  <div class="d-flex action-buttons">
-                                     <form method="POST" action="{{ route('restore-agent', $agent->id) }}">
+                                     <form method="POST" action="{{ route('restore-client', $client->id) }}">
                                          @csrf
                                          <button type="submit" class="btn btn-success btn-sm me-2" title="Restore">
                                              <i class="fas fa-undo"></i> Restore
                                          </button>
                                      </form>
-                                     <form method="POST" action="{{ route('force-delete-agent', $agent->id) }}">
+                                     <form method="POST" action="{{ route('force-delete-client', $client->id) }}">
                                          @csrf
                                          @method('DELETE')
                                          <button type="submit" class="btn btn-danger btn-sm" title="Delete Permanently">

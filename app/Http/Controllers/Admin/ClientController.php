@@ -8,6 +8,7 @@ use App\Models\Agency;
 use App\Models\Agent;
 use App\Models\Client;
 use App\Models\ClientAccident;
+use App\Models\ClientAttachment;
 use App\Models\ClientCommercialDetail;
 use App\Models\ClientCommercialLiability;
 use App\Models\ClientCoverage;
@@ -266,6 +267,7 @@ class ClientController extends Controller
                     'sign' => removeDollarSign($request->sign),
                     'glass' => removeDollarSign($request->glass),
                     'other_commercial_property' =>  ($request->other_commercial_property),
+                    'other_commercial_property_two' =>  ($request->other_commercial_property_two),
                     'property_owner' => $request->property_owner,
                     'built_year' => $request->built_year,
                     'property_area' => $request->property_area,
@@ -429,6 +431,7 @@ class ClientController extends Controller
         $insuranceCompanies = InsuranceCompany::all();
         $financialCompanies = FinancialCompany::all();
         $agents = Agent::all();
+        $generalAgents = GeneralAgent::all();
         $locations = Agency::all();
         $genders = Gender::all();
         $maritalStatus = MaritalStatus::all();
@@ -440,14 +443,13 @@ class ClientController extends Controller
 
         $policyType = PolicyType::find($client->policy_type_id);
 
-//        dd($client->policy);
-        return view('admin.client.edit', compact(
+         return view('admin.client.edit', compact(
             'title',
             'client',
             'policyType', 'states', 'emailStatues', 'languages',
             'policyStatuses', 'terms', 'insuranceCompanies', 'agents', 'locations',
             'genders', 'maritalStatus', 'relationships', 'educationLevels', 'years',
-            'vehicleMakes', 'vehicleModels' ,'financialCompanies'
+            'vehicleMakes', 'vehicleModels' ,'financialCompanies' ,'generalAgents'
         ));
     }
 
@@ -470,10 +472,7 @@ class ClientController extends Controller
             'anniversary' => 'required',
             'primary_language_id' => 'required',
             'home_phone_no' => 'required',
-            'cell_phone_no' => 'required',
-            'work_phone_no' => 'required',
-            'fax_phone_no' => 'required',
-            'policy_status_id' => 'required',
+             'policy_status_id' => 'required',
             'effective_date' => 'required',
             'term_id' => 'required',
             'expiration_date' => 'required',
@@ -514,7 +513,7 @@ class ClientController extends Controller
 
         try {
 
-            $client = Client::findOrFail($id);
+             $client = Client::findOrFail($id);
 
             if (!$client) {
                 return redirect()->route('show-client')->with('error', 'Client not found.');
@@ -624,7 +623,8 @@ class ClientController extends Controller
                         'pump' => removeDollarSign($request->pump),
                         'sign' => removeDollarSign($request->sign),
                         'glass' => removeDollarSign($request->glass),
-                        'other_commercial_property' =>  ($request->other_commercial_property),
+                        'other_commercial_property' =>  $request->other_commercial_property,
+                        'other_commercial_property_two' =>  $request->other_commercial_property_two,
                         'property_owner' => $request->property_owner,
                         'built_year' => $request->built_year,
                         'property_area' => $request->property_area,
@@ -817,18 +817,10 @@ class ClientController extends Controller
     {
         $title = 'Deleted Clients';
         $clients = Client::onlyTrashed()
-            ->with(['state', 'bank', 'user.permissions', 'agencies.locations'])
+            ->with(['state', 'bank'])
             ->orderBy('deleted_at', 'DESC')
             ->get()
-            ->map(function ($client) {
-                $assignedLocations = [];
-                foreach ($client->agencies as $agency) {
-                    $location = $agency->locations;
-                    $assignedLocations[] = $location->agency_name;
-                }
-                $client->assignedLocations = implode(', ', array_unique($assignedLocations));
-                return $client;
-            });
+             ;
         LogActivity::addToLog('Clients Trashed Listing View');
 
         return view('admin.client.trashed', compact('title', 'clients'));
@@ -1292,6 +1284,36 @@ class ClientController extends Controller
             ->unique(); // limit to 10 results
 
         return response()->json($results);
+    }
+
+
+    public function storeClientAttachment(Request $request)
+    {
+        $request->validate([
+            'client_id' => 'required|exists:clients,id',
+            'attachments' => 'required|array',
+            'attachments.*.attachment_name' => 'required|string|max:255',
+            'attachments.*.attachment_file' => 'required|file|max:5120', // 5MB
+        ]);
+
+        $saved = [];
+
+        foreach ($request->attachments as $item) {
+            $file = $item['attachment_file'];
+            $path = $file->store('client_attachments', 'public');
+
+            $saved[] = ClientAttachment::create([
+                'client_id' => $request->client_id,
+                'attachment_name' => $item['attachment_name'],
+                'path' => $path,
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Attachments uploaded successfully.',
+            'attachments' => $saved,
+        ]);
     }
 
 }

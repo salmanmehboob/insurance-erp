@@ -1,21 +1,21 @@
 @extends('admin.layouts.app')
 @push('styles')
 
-    @endpush
+@endpush
 @section('content')
 
     <div class="container-fluid p-0">
 
-        <div class="row mb-2 mb-xl-3">
-            <div class="col-auto d-none d-sm-block">
-                <h3><strong>Analytics</strong> Dashboard</h3>
-            </div>
+        {{--        <div class="row mb-2 mb-xl-3">--}}
+        {{--            <div class="col-auto d-none d-sm-block">--}}
+        {{--                <h3><strong>Analytics</strong> Dashboard</h3>--}}
+        {{--            </div>--}}
 
-            <div class="col-auto ms-auto text-end mt-n1">
-                <a href="#" class="btn btn-light bg-white me-2">Invite a Friend</a>
-                <a href="#" class="btn btn-primary">New Project</a>
-            </div>
-        </div>
+        {{--            <div class="col-auto ms-auto text-end mt-n1">--}}
+        {{--                <a href="#" class="btn btn-light bg-white me-2">Invite a Friend</a>--}}
+        {{--                <a href="#" class="btn btn-primary">New Project</a>--}}
+        {{--            </div>--}}
+        {{--        </div>--}}
         <div class="container mt-4">
 
             <div class="card p-3">
@@ -180,11 +180,53 @@
                     @endif
                 </table>
             </div>
+
+            <div class="card p-3">
+                <h3>Policy Expired in 7 Days or Expired</h3>
+                <div class="card-body">
+                    <table id="client-table" class="table table-striped datatables-reponsive">
+                        <thead>
+                        <tr>
+                            <th>Policy Type</th>
+                            <th>Applicant Name</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>Effective Date</th>
+                            <th>Expiration Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($clientsExpiredSevenDays as $client)
+                            <tr>
+                                @php
+                                    $expired = isset($client->policy) && \Carbon\Carbon::parse($client->policy->expiration_date)->isPast();
+                                @endphp
+
+                                <td>
+                                <span style="color: {{ $expired ? '#dc3545' : '#28a745' }};">
+                                    {{ $client->policyType->name }}
+                                </span>
+                                </td>
+
+                                <td>{{ $client->applicant_name }}</td>
+                                <td>{{ $client->email   }}</td>
+                                <td>{{ $client->address }}</td>
+                                <td>{{ $client->city }}</td>
+                                <td>{{ $client->policy->effective_date }}</td>
+                                <td>{{ $client->policy->expiration_date }}</td>
+
+                            </tr>
+                        @endforeach
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
 
-@endsection
+        @endsection
 
-@push('script')
-    <script src="{{asset('backend/js/datatables.js')}}"></script>
-@endpush
+        @push('script')
+            <script src="{{asset('backend/js/datatables.js')}}"></script>
+    @endpush

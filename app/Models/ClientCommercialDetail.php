@@ -33,6 +33,7 @@ class ClientCommercialDetail extends Model
         'sign',
         'glass',
         'other_commercial_property',
+        'other_commercial_property_two',
         'property_owner',
         'built_year',
         'property_area',

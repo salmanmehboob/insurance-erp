@@ -55,7 +55,16 @@
                     <tbody>
                     @foreach($clients as $client)
                         <tr>
-                            <td>{{ $client->policyType->name }}</td>
+                            @php
+                                $expired = isset($client->policy) && \Carbon\Carbon::parse($client->policy->expiration_date)->isPast();
+                            @endphp
+
+                            <td>
+                                <span style="color: {{ $expired ? '#dc3545' : '#28a745' }};">
+                                    {{ $client->policyType->name }}
+                                </span>
+                            </td>
+
                             <td>{{ $client->applicant_name }}</td>
                             <td>{{ $client->email   }}</td>
                             <td>{{ $client->address }}</td>

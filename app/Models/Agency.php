@@ -40,4 +40,5 @@ class Agency extends Model
     {
         return $this->hasMany(AgentAgency::class);
     }
+
 }

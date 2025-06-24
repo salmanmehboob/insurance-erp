@@ -1,9 +1,8 @@
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
-        <a class="sidebar-brand" href="index.html">
+        <a class="sidebar-brand" href="/">
 					<span class="sidebar-brand-text align-middle">
-						AdminKit
-						<sup><small class="badge bg-primary text-uppercase">Pro</small></sup>
+						Admin
 					</span>
             <svg class="sidebar-brand-icon align-middle" width="32px" height="32px" viewBox="0 0 24 24" fill="none"
                  stroke="#FFFFFF" stroke-width="1.5"
@@ -102,9 +101,10 @@
                         <li class="sidebar-item  ">
                             <a class="sidebar-link" href="{{ route('show-agency') }}">
                                 <i class="fas fa-bank"></i>
-                                <span class="align-middle">Agency Information</span>
+                                <span class="align-middle">Agency Location</span>
                             </a>
                         </li>
+
                         <li class="sidebar-item  ">
                             <a class="sidebar-link" href="{{ route('show-agent') }}">
                                 <i class="fas fa-user-astronaut"></i>
@@ -126,6 +126,7 @@
                                 <span class="align-middle">Financial Company</span>
                             </a>
                         </li>
+
                         <li class="sidebar-item  ">
                             <a class="sidebar-link" href="{{ route('show-general-agent') }}">
                                 <i class="fas fa-user-astronaut"></i>

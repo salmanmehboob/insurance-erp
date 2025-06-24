@@ -37,9 +37,9 @@
                         <li class="nav-item">
                             <a href="#notes-tab" class="nav-link" data-bs-toggle="tab">Notes</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#permission-tab" class="nav-link" data-bs-toggle="tab">Permissions</a>
-                        </li>
+{{--                        <li class="nav-item">--}}
+{{--                            <a href="#permission-tab" class="nav-link" data-bs-toggle="tab">Permissions</a>--}}
+{{--                        </li>--}}
                     </ul>
 
                     <!-- Tab content -->
@@ -155,7 +155,44 @@
                                             @error('password') <span class="text-danger">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
+
+                                    <div class="col-md-6">
+                                        <label class="col-form-label">Role</label>
+                                        <div class="form-group">
+                                            <select name="role_id" class="form-control select2" data-placeholder="Select Role">
+                                                <option></option>
+                                                @foreach($roles as $role)
+                                                    <option value="{{ $role->id }}"
+                                                        {{ old('role_id', optional($agent->user->roles->first())->id) == $role->id ? 'selected' : '' }}>
+                                                        {{ $role->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('role_id'))
+                                                <span class="text-danger">{{ $errors->first('role_id') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <!-- Bank -->
+                                    <div class="col-md-6">
+                                        <label class="col-form-label">Bank</label>
+                                        <div class="form-group">
+                                            <select name="bank_id" class="form-control select2"
+                                                    data-placeholder="Select Bank">
+                                                <option></option>
+                                                @foreach($banks as $bank)
+                                                    <option
+                                                        value="{{ $bank->id }}" {{ old('bank_id',$agent->bank_id) == $bank->id ? 'selected' : '' }}>{{ $bank->bank_name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('bank_id'))
+                                                <span class="text-danger">{{ $errors->first('bank_id') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
+
                             </fieldset>
 
                             <!-- Commission -->
@@ -257,43 +294,43 @@
                         </div>
 
 
-                        <div class="tab-pane fade" id="permission-tab">
-                            <div class="row mt-3">
-                                <!-- Permissions -->
-                                <div class="col-md-12">
-                                    <label class="col-form-label">Permissions</label>
-                                    <div class="form-group">
-                                        <!-- "Select All" Checkbox -->
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="select-all" onclick="toggleAllPermissions()">
-                                            <label class="form-check-label fw-bold" for="select-all">Administrator: Allow All Access</label>
-                                        </div>
+{{--                        <div class="tab-pane fade" id="permission-tab">--}}
+{{--                            <div class="row mt-3">--}}
+{{--                                <!-- Permissions -->--}}
+{{--                                <div class="col-md-12">--}}
+{{--                                    <label class="col-form-label">Permissions</label>--}}
+{{--                                    <div class="form-group">--}}
+{{--                                        <!-- "Select All" Checkbox -->--}}
+{{--                                        <div class="form-check">--}}
+{{--                                            <input type="checkbox" class="form-check-input" id="select-all" onclick="toggleAllPermissions()">--}}
+{{--                                            <label class="form-check-label fw-bold" for="select-all">Administrator: Allow All Access</label>--}}
+{{--                                        </div>--}}
 
-                                        <div class="row mt-3">
-                                            <!-- Individual Permission Checkboxes -->
-                                            @foreach($permissions as $row)
-                                                <div class="col-md-4 mb-2">
-                                                    <div class="form-check">
-                                                        <input type="checkbox"
-                                                               class="form-check-input permission-checkbox"
-                                                               name="permissions[]"
-                                                               id="permission{{$row->id}}"
-                                                               value="{{$row->id}}"
-                                                            {{ in_array($row->id, old('permissions', $agent->user->getAllPermissions()->pluck('id')->toArray())) ? 'checked' : '' }}>
-                                                        <label class="form-check-label" for="permission{{$row->id}}">
-                                                            {{$row->short_name}}
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                        @error('permissions')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+{{--                                        <div class="row mt-3">--}}
+{{--                                            <!-- Individual Permission Checkboxes -->--}}
+{{--                                            @foreach($permissions as $row)--}}
+{{--                                                <div class="col-md-4 mb-2">--}}
+{{--                                                    <div class="form-check">--}}
+{{--                                                        <input type="checkbox"--}}
+{{--                                                               class="form-check-input permission-checkbox"--}}
+{{--                                                               name="permissions[]"--}}
+{{--                                                               id="permission{{$row->id}}"--}}
+{{--                                                               value="{{$row->id}}"--}}
+{{--                                                            {{ in_array($row->id, old('permissions', $agent->user->getAllPermissions()->pluck('id')->toArray())) ? 'checked' : '' }}>--}}
+{{--                                                        <label class="form-check-label" for="permission{{$row->id}}">--}}
+{{--                                                            {{$row->short_name}}--}}
+{{--                                                        </label>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+{{--                                            @endforeach--}}
+{{--                                        </div>--}}
+{{--                                        @error('permissions')--}}
+{{--                                        <span class="text-danger">{{ $message }}</span>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
 
                     </div>

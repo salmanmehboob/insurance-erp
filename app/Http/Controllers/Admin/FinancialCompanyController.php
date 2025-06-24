@@ -70,8 +70,7 @@ class FinancialCompanyController extends Controller
             'fax_no' => 'required|string',
             'website' => 'required|string',
             'agency_code' => 'required|string',
-            'note' => 'required|string',
-            'commission_in_percentage' => 'nullable|numeric',
+
 
         ]);
 
@@ -99,29 +98,13 @@ class FinancialCompanyController extends Controller
                 'fax_no' => $data['fax_no'],
                 'website' => $data['website'],
                 'agency_code' => $data['agency_code'],
-                'note' => $data['note'],
-                'commission_in_percentage' => $data['commission_in_percentage'] ?? null,
+//                'note' => $data['note'],
+//                'commission_in_percentage' => $data['commission_in_percentage'] ?? null,
             ];
 
             $company = FinancialCompany::create($companyDbData);
 
 
-            // Handle attachments if any are uploaded
-            if ($request->hasFile('attachment_file')) {
-                $attachmentNames = $request->attachment_name ?? [];
-                $attachmentFiles = $request->file('attachment_file');
-
-                foreach ($attachmentFiles as $index => $file) {
-                    $filename = $file->getClientOriginalName();
-                    $path = $file->store('financial_company_attachments', 'public'); // Store in "attachments" folder
-                    // Create attachment record for each uploaded file
-                    FinancialCompanyAttachment::create([
-                        'financial_company_id' => $company->id,
-                        'attachment_name' => $attachmentNames[$index] ?? $filename,  // Use provided name or file name
-                        'path' => $path,
-                    ]);
-                }
-            }
 
             DB::commit();
             LogActivity::addToLog('Financial Companies' . $data['name'] . ' Created');
@@ -145,11 +128,10 @@ class FinancialCompanyController extends Controller
             return redirect()->route('show-financial-company')->with('error', 'Company not found.');
         }
 
-        $title = 'Edit Company';
+        $title = 'Edit Financial Company';
         $states = UsState::all();
         $banks = BankAccount::all();
-//        dd($company->attachments);
-        return view('admin.financial_company.edit', compact('title', 'company', 'states', 'banks'));
+         return view('admin.financial_company.edit', compact('title', 'company', 'states', 'banks'));
     }
 
 
@@ -169,11 +151,7 @@ class FinancialCompanyController extends Controller
             'fax_no' => 'required|string',
             'website' => 'required|string',
             'agency_code' => 'required|string',
-            'note' => 'required|string',
-            'commission_in_percentage' => 'nullable|numeric',
-            'attachment_id.*' => 'nullable|integer|exists:financial_company_attachments,id', // Existing attachment IDs
-            'attachment_name.*' => 'nullable|string|max:255',
-            'attachment_file.*' => 'nullable|file|mimes:jpg,png,pdf,docx|max:2048', // File validation rules
+
         ]);
 
         if ($validator->fails()) {
@@ -201,62 +179,9 @@ class FinancialCompanyController extends Controller
                 'fax_no' => $data['fax_no'],
                 'website' => $data['website'],
                 'agency_code' => $data['agency_code'],
-                'note' => $data['note'],
-                'commission_in_percentage' => $data['commission_in_percentage'] ?? null,
-            ]);
+             ]);
 
-            // Get all existing attachment IDs from the database
-            $existingAttachmentIds = $company->attachments()->pluck('id')->toArray();
 
-            // Get submitted attachment IDs from the form
-            $submittedAttachmentIds = $data['attachment_id'] ?? [];
-
-            // Find IDs to delete
-            $attachmentsToDelete = array_diff($existingAttachmentIds, $submittedAttachmentIds);
-
-            // Delete removed attachments
-            if (!empty($attachmentsToDelete)) {
-                $attachments = FinancialCompanyAttachment::whereIn('id', $attachmentsToDelete)->get();
-                foreach ($attachments as $attachment) {
-                    // Delete file from storage
-                    Storage::disk('public')->delete($attachment->path);
-                    // Delete record from database
-                    $attachment->delete();
-                }
-            }
-
-            // Handle existing attachments that are updated
-            foreach ($submittedAttachmentIds as $index => $attachmentId) {
-                if ($attachmentId) {
-                    $attachment = FinancialCompanyAttachment::findOrFail($attachmentId);
-                    $attachment->update([
-                        'attachment_name' => $data['attachment_name'][$index],
-                    ]);
-
-                    // If a new file is uploaded, replace the existing one
-                    if (isset($request->file('attachment_file')[$index])) {
-                        $file = $request->file('attachment_file')[$index];
-                        $path = $file->store('financial_company_attachments', 'public');
-                        // Delete the old file
-                        Storage::disk('public')->delete($attachment->path);
-                        // Update the path
-                        $attachment->update(['path' => $path]);
-                    }
-                }
-            }
-
-            // Handle new attachments
-            $attachmentFiles = $request->file('attachment_file') ?? [];
-            foreach ($attachmentFiles as $index => $file) {
-                if (empty($submittedAttachmentIds[$index])) {
-                    $filename = $file->getClientOriginalName();
-                    $path = $file->store('financial_company_attachments', 'public');
-                    $company->attachments()->create([
-                        'attachment_name' => $data['attachment_name'][$index] ?? $filename,
-                        'path' => $path,
-                    ]);
-                }
-            }
 
             DB::commit();
 

@@ -42,6 +42,7 @@
                     <thead>
                     <tr>
                         <th>Name</th>
+                        <th>User Name</th>
                         <th>Email</th>
                         <th>Phone</th>
                         <th>City</th>
@@ -69,6 +70,7 @@
 {{--                                data-permissions="{{ $agent->user->getAllPermissions()->pluck('id')->join(',') }}"--}}
 {{--                                data-permission-names="{{ $agent->user->getAllPermissions()->pluck('short_name')->join(',') }}"--}}
                             >{{ $agent->name }}</td>
+                            <td>{{ $agent->user->name }}</td>
                             <td>{{ $agent->email }}</td>
                             <td>{{ $agent->phone_no }}</td>
                             <td>{{ $agent->city }}</td>

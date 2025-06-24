@@ -60,6 +60,10 @@
                                aria-controls="v-pills-forms-{{ $policy->id }}" aria-selected="false"> Forms &
                                 Letters</a>
 
+                            <a class="nav-link" id="v-pills-attachment-tab-{{ $policy->id }}" data-bs-toggle="pill"
+                               href="#v-pills-attachment-{{ $policy->id }}" role="tab"
+                               aria-controls="v-pills-attachment-{{ $policy->id }}" aria-selected="false"> Scan Documents</a>
+
                         </div>
                     </div>
 
@@ -285,6 +289,74 @@
                                 </div>
                             </div>
 
+                            <!-- Attachments Tab -->
+                            <div class="tab-pane fade text-black" id="v-pills-attachment-{{ $policy->id }}" role="tabpanel"
+                                 aria-labelledby="v-pills-attachment-tab-{{ $policy->id }}">
+                                <div class="container py-3">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h2 >Attachment</h2>
+                                        </div>
+
+                                        @if($policy->client && $policy->client->attachments->count())
+                                            <div class="mt-3">
+
+                                                <ul class="list-group">
+                                                    @foreach($policy->client->attachments as $attachment)
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                            {{ $attachment->attachment_name }}
+                                                            <a href="{{ asset('storage/' . $attachment->path) }}" target="_blank" class="btn btn-sm btn-primary">
+                                                                View
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @else
+                                            <p class="text-muted">No attachments uploaded.</p>
+                                        @endif
+
+                                        <div id="attachments-container"></div>
+
+                                        <!-- Hidden Template -->
+                                        <template id="attachment-template">
+                                            <div class="attachment-row mt-5">
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="attachment_name">Attachment Name</label>
+                                                            <input type="text" name="attachment_name[]" class="form-control" placeholder="Enter attachment name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="attachment_file">Attachment File</label>
+                                                            <input type="file" name="attachment_file[]" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <button type="button" class="btn btn-danger mt-3 remove-row"><i class="fa fa-trash-alt"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <div class="col-md-6 mt-5">
+                                            <button type="button" class="btn btn-primary" id="add-attachment">Add Attachment
+                                            </button>
+                                        </div>
+
+                                        <div class="col-md-6 mt-3">
+                                            <button type="button" class="btn btn-success" id="upload-attachments">
+                                                Upload Attachments
+                                            </button>
+                                        </div>
+
+                                        <div class="col-md-12 mt-3" id="upload-status"></div>
+                                    </div>
+                                </div>
+                            </div>
+
 
 
                         </div>
@@ -307,5 +379,104 @@
                 $('#v-pills-Policy-Accounting').html('<h2>Policy-Accounting</h2><p>Here is some content for Policy-Accounting...</p>');
             });
         });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            // Add new attachment row
+            $('#add-attachment').click(function () {
+                let template = document.getElementById('attachment-template').content.cloneNode(true);
+                let newAttachment = $(template); // Convert the cloned template into a jQuery object
+                $('#attachments-container').append(newAttachment); // Append to container
+                newAttachment.hide().slideDown(); // Hide it initially and then slide it down
+            });
+
+
+            // Remove attachment row
+            $(document).on('click', '.remove-row', function () {
+                let deleteElement = $(this).closest('.attachment-row'); // Store the row element to delete
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteElement.slideUp(function () {
+                            $(this).remove(); // Remove the element after animation completes
+                        });
+
+                        // // Show a success message
+                        // Swal.fire(
+                        //     'Deleted!',
+                        //     'Your attachment has been deleted.',
+                        //     'success'
+                        // );
+                    }
+                });
+            });
+
+            // Upload all attachments via AJAX
+            $('#upload-attachments').click(function () {
+                let formData = new FormData();
+                let hasFile = false;
+
+                // Collect each attachment row
+                $('.attachment-row').each(function (index) {
+                    let name = $(this).find('input[name="attachment_name[]"]').val();
+                    let fileInput = $(this).find('input[name="attachment_file[]"]')[0];
+                    let file = fileInput.files[0];
+
+                    if (!name || !file) return; // Skip empty rows
+
+                    formData.append(`attachments[${index}][attachment_name]`, name);
+                    formData.append(`attachments[${index}][attachment_file]`, file);
+                    hasFile = true;
+                });
+
+                if (!hasFile) {
+                    $('#upload-status').html('<span class="text-danger">Please add at least one valid attachment.</span>');
+                    return;
+                }
+
+                // Add client_id (if needed)
+                formData.append('client_id', '{{ $policy->id }}');
+
+                $.ajax({
+                    url: "{{ route('client-attachments.store') }}",
+                    method: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    beforeSend: function () {
+                        $('#upload-status').html('<span class="text-info">Uploading attachments...</span>');
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#upload-status').html('<span class="text-success">' + response.message + '</span>');
+                            $('#attachments-container').empty(); // Clear form
+                            location.reload();
+                        } else {
+                            $('#upload-status').html('<span class="text-danger">Upload failed.</span>');
+                        }
+                    },
+                    error: function (xhr) {
+                        let message = xhr.responseJSON?.message || 'Upload failed';
+                        $('#upload-status').html('<span class="text-danger">' + message + '</span>');
+                    }
+                });
+            });
+
+        });
+
+
     </script>
 @endpush

@@ -1020,6 +1020,19 @@
                                                     @endif
                                                 </div>
                                             </div>
+
+                                            <div class="col-md-12">
+                                                <label class="col-form-label">Other</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="other_commercial_property_two"
+                                                           class="form-control"
+                                                           value="{{ old('other_commercial_property_two') }}">
+                                                    @if ($errors->has('other_commercial_property_two'))
+                                                        <span
+                                                            class="text-danger">{{ $errors->first('other_commercial_property_two') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </fieldset>
                                     </div>
                                     <div class="col-md-4">
@@ -1033,8 +1046,8 @@
                                                             style="width: 100%"
                                                             data-placeholder="Select Option">
                                                         <option></option>
-                                                        <option value="1">YES</option>
-                                                        <option value="0">NO</option>
+                                                        <option value="owned">Owned</option>
+                                                        <option value="leased">Lease</option>
 
                                                     </select>
                                                     @if ($errors->has('property_owner'))
@@ -1832,9 +1845,10 @@
                                                 <div class="form-group">
                                                     <input type="text" name="vin[0]" class="form-control"
                                                            placeholder="1HGCM82633A123456" maxlength="17" minlength="17"
-                                                           pattern="[A-HJ-NPR-Z0-9]{17}"
-                                                           value="{{ old('vin') }}">
-                                                    @if ($errors->has('vin'))
+                                                           pattern="[A-Za-z0-9]{17}"
+                                                           value="{{ old('vin.0') }}">
+
+                                                @if ($errors->has('vin'))
                                                         <span class="text-danger">{{ $errors->first('vin') }}</span>
                                                     @endif
                                                 </div>

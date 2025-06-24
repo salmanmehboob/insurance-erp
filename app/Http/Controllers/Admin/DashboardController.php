@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Announcement;
 use App\Models\Attendance;
+use App\Models\Client;
+use App\Models\ClientAttachment;
 use App\Models\ClientPolicy;
 use App\Models\InventoryRequest;
 use App\Models\LeaveRequest;
 use App\Models\MeetingSchedule;
 use App\Models\Project;
 use App\Models\VehicleRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
@@ -51,6 +54,13 @@ class DashboardController extends Controller
         $policyStatuses = DB::table('policy_statuses')->get();
         $policyTypes = DB::table('policy_types')->get();
         $agencies = DB::table('agencies')->get();
+        $clientsExpiredSevenDays = Client::with(['policyType', 'policy'])
+            ->where('is_quote_sheet', 0)
+            ->whereHas('policy', function ($query) {
+                $query->where('expiration_date', '<=', Carbon::now()->addDays(7)->endOfDay());
+            })
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         // If no filters, return view without fetching policies
         if (!$hasFilters) {
@@ -59,11 +69,13 @@ class DashboardController extends Controller
                 'policyStatuses' => $policyStatuses,
                 'policyTypes' => $policyTypes,
                 'agencies' => $agencies,
+                'clientsExpiredSevenDays' => $clientsExpiredSevenDays,
+
             ]);
         }
 
         // Query policies with relationships
-        $query = ClientPolicy::with('client.language', 'insuranceCompany', 'policyStatus', 'agency', 'agent');
+        $query = ClientPolicy::with('client.attachments','client.language', 'insuranceCompany', 'policyStatus', 'agency', 'agent');
 
         if ($request->filled('client_name')) {
             $query->whereHas('client', function ($q) use ($request) {
@@ -112,12 +124,19 @@ class DashboardController extends Controller
         $policies = $query->paginate(10);
 
 
+
+
+
         return view('home', [
             'policies' => $policies,
             'policyStatuses' => $policyStatuses,
             'policyTypes' => $policyTypes,
             'agencies' => $agencies,
+            'clientsExpiredSevenDays' => $clientsExpiredSevenDays,
         ]);
     }
+
+
+
 
 }

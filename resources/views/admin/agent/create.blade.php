@@ -36,9 +36,9 @@
                         <li class="nav-item">
                             <a href="#notes-tab" class="nav-link" data-bs-toggle="tab">Notes</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#permission-tab" class="nav-link" data-bs-toggle="tab">Permissions</a>
-                        </li>
+{{--                        <li class="nav-item">--}}
+{{--                            <a href="#permission-tab" class="nav-link" data-bs-toggle="tab">Permissions</a>--}}
+{{--                        </li>--}}
                     </ul>
 
                     <!-- Tab content -->
@@ -171,6 +171,23 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-md-6">
+                                        <label class="col-form-label">Role</label>
+                                        <div class="form-group">
+                                            <select name="role_id" class="form-control select2"
+                                                    data-placeholder="Select Role">
+                                                <option></option>
+                                                @foreach($roles as $role)
+                                                    <option
+                                                        value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('role_id'))
+                                                <span class="text-danger">{{ $errors->first('role_id') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+
                                     <!-- Bank -->
                                     <div class="col-md-6">
                                         <label class="col-form-label">Bank</label>
@@ -272,31 +289,31 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="permission-tab">
-                            <div class="row mt-3">
-                                <!-- Permissions -->
-                                <div class="col-md-12">
-                                    <label class="col-form-label">Permissions</label>
-                                    <div class="form-group">
-                                        <div class="form-check">
-                                            <!-- Administrator Checkbox -->
-                                            <input type="checkbox" class="form-check-input" id="select-all" onclick="toggleAllPermissions()">
-                                            <label class="form-check-label fw-bold" for="select-all">Administrator: Allow All Access</label>
-                                        </div>
-                                        <div class="row mt-3">
-                                            @foreach($permissions as $row)
-                                                <div class="col-md-4 mb-2">
-                                                    <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input permission-checkbox" name="permissions[]" value="{{$row->id}}">
-                                                        <label class="form-check-label" for="permission{{$row->id}}">{{$row->short_name}}</label>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+{{--                        <div class="tab-pane fade" id="permission-tab">--}}
+{{--                            <div class="row mt-3">--}}
+{{--                                <!-- Permissions -->--}}
+{{--                                <div class="col-md-12">--}}
+{{--                                    <label class="col-form-label">Permissions</label>--}}
+{{--                                    <div class="form-group">--}}
+{{--                                        <div class="form-check">--}}
+{{--                                            <!-- Administrator Checkbox -->--}}
+{{--                                            <input type="checkbox" class="form-check-input" id="select-all" onclick="toggleAllPermissions()">--}}
+{{--                                            <label class="form-check-label fw-bold" for="select-all">Administrator: Allow All Access</label>--}}
+{{--                                        </div>--}}
+{{--                                        <div class="row mt-3">--}}
+{{--                                            @foreach($permissions as $row)--}}
+{{--                                                <div class="col-md-4 mb-2">--}}
+{{--                                                    <div class="form-check">--}}
+{{--                                                        <input type="checkbox" class="form-check-input permission-checkbox" name="permissions[]" value="{{$row->id}}">--}}
+{{--                                                        <label class="form-check-label" for="permission{{$row->id}}">{{$row->short_name}}</label>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+{{--                                            @endforeach--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
                     </div>
                 </div>

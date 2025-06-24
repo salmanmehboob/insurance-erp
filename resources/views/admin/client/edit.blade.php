@@ -56,7 +56,7 @@
                                 </div>
 
                                 <!-- Address -->
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <label class="col-form-label">Address</label>
                                     <div class="form-group">
                                         <input type="text" name="address" class="form-control" placeholder="Address"
@@ -371,7 +371,7 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Company</label>
+                                        <label class="col-form-label">Insurance Company</label>
                                         <div class="form-group">
                                             <select name="insurance_company_id" id="insurance_company_id"
                                                     class="form-control select2"
@@ -388,7 +388,22 @@
                                             @endif
                                         </div>
                                     </div>
-
+                                    <div class="col-md-6">
+                                        <label class="col-form-label">General Agent</label>
+                                        <div class="form-group">
+                                            <select name="general_agent_id" class="form-control select2"
+                                                    data-placeholder="Select General Agent">
+                                                <option></option>
+                                                @foreach($generalAgents as $row)
+                                                    <option
+                                                        value="{{ $row->id }}" {{ old('general_agent_id',$client->policy->general_agent_id) == $row->id ? 'selected' : '' }}>{{ $row->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('general_agent_id'))
+                                                <span class="text-danger">{{ $errors->first('general_agent_id') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
 
                                     <div class="col-md-6">
                                         <label class="col-form-label">Primary Agent</label>
@@ -1341,6 +1356,32 @@
                                                         @endif
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-12">
+                                                    <label class="col-form-label">Other</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="other_commercial_property"
+                                                               class="form-control"
+                                                               value="{{ old('other_commercial_property',$client->commercial->other_commercial_property) }}">
+                                                        @if ($errors->has('other_commercial_property'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('other_commercial_property') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <label class="col-form-label">Other</label>
+                                                    <div class="form-group">
+                                                        <input type="text" name="other_commercial_property_two"
+                                                               class="form-control"
+                                                               value="{{ old('other_commercial_property_two',$client->commercial->other_commercial_property_two) }}">
+                                                        @if ($errors->has('other_commercial_property_two'))
+                                                            <span
+                                                                class="text-danger">{{ $errors->first('other_commercial_property_two') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
                                             </fieldset>
                                         </div>
                                         <div class="col-md-4">
@@ -2083,43 +2124,43 @@
                                                     data-placeholder="Select Option">
                                                 <option></option>
                                                 <option
-                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '10/10' ? 'selected' : ''}} value="10/10">
+                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '1010' ? 'selected' : ''}} value="10/10">
                                                     10/10
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '10/20' ? 'selected' : ''}}  value="1020">
+                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '1020' ? 'selected' : ''}}  value="1020">
                                                     10/20
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '15/30' ? 'selected' : ''}}  value="15/30">
+                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '1530' ? 'selected' : ''}}  value="15/30">
                                                     15/30
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '20/40' ? 'selected' : ''}}  value="20/40">
+                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '2040' ? 'selected' : ''}}  value="20/40">
                                                     20/40
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '25/50' ? 'selected' : ''}}  value="25/50">
+                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '2550' ? 'selected' : ''}}  value="25/50">
                                                     25/50
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '25/65' ? 'selected' : ''}}  value="25/65">
+                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '2565' ? 'selected' : ''}}  value="25/65">
                                                     25/65
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '30/60' ? 'selected' : ''}}  value="30/60">
+                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '3060' ? 'selected' : ''}}  value="30/60">
                                                     30/60
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '50/100' ? 'selected' : ''}}  value="50/100">
+                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '50100' ? 'selected' : ''}}  value="50/100">
                                                     50/100
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '100/300' ? 'selected' : ''}}  value="100/300">
+                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '100300' ? 'selected' : ''}}  value="100/300">
                                                     100/300
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '250/500' ? 'selected' : ''}}  value="250/500">
+                                                    {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '250500' ? 'selected' : ''}}  value="250/500">
                                                     250/500
                                                 </option>
                                                 <option
@@ -2268,43 +2309,43 @@
                                                     data-placeholder="Select Option">
                                                 <option></option>
                                                 <option
-                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '10/10' ? 'selected' : ''}} value="10/10">
+                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '1010' ? 'selected' : ''}} value="10/10">
                                                     10/10
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '10/20' ? 'selected' : ''}} value="10/20">
+                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '1020' ? 'selected' : ''}} value="10/20">
                                                     10/20
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '15/30' ? 'selected' : ''}} value="15/30">
+                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '1530' ? 'selected' : ''}} value="15/30">
                                                     15/30
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '20/40' ? 'selected' : ''}} value="20/40">
+                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '2040' ? 'selected' : ''}} value="20/40">
                                                     20/40
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '25/50' ? 'selected' : ''}} value="25/50">
+                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '2550' ? 'selected' : ''}} value="25/50">
                                                     25/50
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '25/65' ? 'selected' : ''}} value="25/65">
+                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '2565' ? 'selected' : ''}} value="25/65">
                                                     25/65
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '30/60' ? 'selected' : ''}} value="30/60">
+                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '3060' ? 'selected' : ''}} value="30/60">
                                                     30/60
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '50/100' ? 'selected' : ''}} value="50/100">
+                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '50100' ? 'selected' : ''}} value="50/100">
                                                     50/100
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '100/300' ? 'selected' : ''}} value="100/300">
+                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '100300' ? 'selected' : ''}} value="100/300">
                                                     100/300
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '250/500' ? 'selected' : ''}} value="250/500">
+                                                    {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '250500' ? 'selected' : ''}} value="250/500">
                                                     250/500
                                                 </option>
                                                 <option
@@ -2382,43 +2423,43 @@
                                                     data-placeholder="Select Option">
                                                 <option></option>
                                                 <option
-                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '10/10' ? 'selected' : ''}} value="10/10">
+                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '1010' ? 'selected' : ''}} value="10/10">
                                                     10/10
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '10/20' ? 'selected' : ''}} value="10/20">
+                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '1020' ? 'selected' : ''}} value="10/20">
                                                     10/20
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '15/30' ? 'selected' : ''}} value="15/30">
+                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '1530' ? 'selected' : ''}} value="15/30">
                                                     15/30
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '20/40' ? 'selected' : ''}} value="20/40">
+                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '2040' ? 'selected' : ''}} value="20/40">
                                                     20/40
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '25/50' ? 'selected' : ''}} value="25/50">
+                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '2550' ? 'selected' : ''}} value="25/50">
                                                     25/50
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '25/65' ? 'selected' : ''}} value="25/65">
+                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '2565' ? 'selected' : ''}} value="25/65">
                                                     25/65
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '30/60' ? 'selected' : ''}} value="30/60">
+                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '3060' ? 'selected' : ''}} value="30/60">
                                                     30/60
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '50/100' ? 'selected' : ''}} value="50/100">
+                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '50100' ? 'selected' : ''}} value="50/100">
                                                     50/100
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '100/300' ? 'selected' : ''}} value="100/300">
+                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '100300' ? 'selected' : ''}} value="100/300">
                                                     100/300
                                                 </option>
                                                 <option
-                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '250/500' ? 'selected' : ''}} value="250/500">
+                                                    {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '250500' ? 'selected' : ''}} value="250/500">
                                                     250/500
                                                 </option>
                                                 <option
@@ -2510,7 +2551,7 @@
                                                                 <input type="text" name="vin[{{$key}}]"
                                                                        class="form-control" maxlength="17"
                                                                        minlength="17"
-                                                                       pattern="[A-HJ-NPR-Z0-9]{17}"
+                                                                       pattern="[A-Za-z0-9]{17}"
                                                                        placeholder="VIN"
                                                                        value="{{ old('vin',$vehicle->vin) }}">
                                                                 @if ($errors->has('vin'))

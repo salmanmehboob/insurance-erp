@@ -44,8 +44,7 @@
                         <th>Phone</th>
                         <th>City</th>
                         <th>Agency Code</th>
-                        <th>Commission (%)</th>
-                        <th class="text-center">Actions</th>
+                         <th class="text-center">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -62,15 +61,11 @@
                                 data-fax_no="{{ $company->fax_no }}"
                                 data-website="{{ $company->website }}"
                                 data-agency_code="{{ $company->agency_code }}"
-                                data-commission_percentage="{{ $company->commission_in_percentage }}"
-                                data-note="{{ $company->note }}"
-                                    data-attachments="{{ $company->attachments->toJson() }}"
-                            >{{ $company->name }}</td>
+                             >{{ $company->name }}</td>
                             <td>{{ $company->phone_no }}</td>
                             <td>{{ $company->city }}</td>
                             <td>{{ $company->agency_code }}</td>
-                            <td>{{ $company->commission_in_percentage }}</td>
-                            <td>
+                             <td>
                                 <div class="d-flex action-buttons">
                                     @can('edit-financial-company')
                                         <a title="Edit" href="{{ route('edit-financial-company', $company->id) }}"

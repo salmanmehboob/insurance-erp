@@ -64,8 +64,9 @@ class AgentController extends Controller
         $states = UsState::all();
         $banks = BankAccount::all();
         $agencies = Agency::all();
+        $roles = Role::all();
         $permissions = Permission::where('module', 4)->get();
-        return view('admin.agent.create', compact('title', 'states', 'banks', 'agencies', 'permissions'));
+        return view('admin.agent.create', compact('title', 'states', 'banks', 'agencies', 'permissions' ,'roles'));
     }
 
     /**
@@ -86,12 +87,13 @@ class AgentController extends Controller
             'username' => 'required|string|max:255',
             'password' => 'required|string|min:8',
             'bank_id' => 'nullable|exists:bank_accounts,id',
+            'role_id' => 'required|exists:roles,id',
             'commission_in_percentage' => 'nullable|numeric',
             'commission_fee' => 'nullable|string',
             'selected_location_ids' => 'nullable|array',
             'selected_location_names' => 'nullable|array',
-            'permissions' => 'nullable|array',  // ensure permissions are passed as an array
-            'permissions.*' => 'exists:permissions,id', // make sure each permission ID is valid
+//            'permissions' => 'nullable|array',  // ensure permissions are passed as an array
+//            'permissions.*' => 'exists:permissions,id', // make sure each permission ID is valid
         ]);
 
         if ($validator->fails()) {
@@ -106,30 +108,31 @@ class AgentController extends Controller
             // Agent data
             $data = $validator->validated();
 
-            $roleName = $data['name']; // If you need just the first name as a string
+            $roleID = $data['role_id']; // If you need just the first name as a string
 
-            $agentRole = Role::create(['name' => $roleName]);
+//            $agentRole = Role::create(['name' => $roleName]);
+            $agentRole = Role::find($roleID);
 
             // Create the user associated with this agent
             $user = User::create([
                 'email' => $data['email'],
                 'name' => $data['username'],
-                'password' => ($data['password']),  // Encrypt password
-                'role' => '$roleName',  // Assuming a role 'agent'
+                'password' => $data['password'],  // Encrypt password
+//                'role' => '$roleName',  // Assuming a role 'agent'
             ]);
 
 
             // If permissions are provided in the form
-            if ($request->has('permissions')) {
-                // Get the permissions based on the IDs provided in the form
-                $allPermissions = Permission::whereIn('id', $request->permissions)->get();
+//            if ($request->has('permissions')) {
+//                // Get the permissions based on the IDs provided in the form
+//                $allPermissions = Permission::whereIn('id', $request->permissions)->get();
 
                 // Assign the 'Super Admin' role to the user
                 $user->assignRole($agentRole);
 
-                // Assign the selected permissions to the 'Super Admin' role
-                $agentRole->givePermissionTo($allPermissions);
-            }
+//                // Assign the selected permissions to the 'Super Admin' role
+//                $agentRole->givePermissionTo($allPermissions);
+//            }
 
 
             // Create the agent record
@@ -190,6 +193,7 @@ class AgentController extends Controller
         $banks = BankAccount::all();
         $permissions = Permission::where('module', 4)->get(); // Module 4 Permissions
         $allAgencies = Agency::all(); // Assuming `Agency` model for locations
+        $roles = Role::all();
 
         // Collect assigned agency IDs
         $assignedLocationIds = $agent->agentAgencies->pluck('agency_id')->toArray();
@@ -202,7 +206,8 @@ class AgentController extends Controller
             'banks',
             'permissions',
             'allAgencies',
-            'assignedLocationIds'
+            'assignedLocationIds',
+            'roles'
         ));
     }
 
@@ -229,11 +234,13 @@ class AgentController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $agent->user->id,
             'username' => 'required|string|max:255',
             'password' => 'nullable|string|min:8', // Only update if provided
+            'bank_id' => 'nullable|exists:bank_accounts,id',
+            'role_id' => 'required|exists:roles,id',
             'commission_in_percentage' => 'nullable|numeric',
             'commission_fee' => 'nullable|string',
             'selected_location_ids' => 'nullable|array',
-            'permissions' => 'nullable|array',
-            'permissions.*' => 'exists:permissions,id',
+//            'permissions' => 'nullable|array',
+//            'permissions.*' => 'exists:permissions,id',
         ]);
 
         if ($validator->fails()) {
@@ -261,17 +268,13 @@ class AgentController extends Controller
 
             $agent->user->update($updateData);
 
-            $agentRole = $agent->user->roles[0];
+//            $agentRole = $agent->user->roles[0];
+            $roleID = $data['role_id'];
+            $agentRole = Role::find($roleID);
 
+            // Update the user's role
+            $agent->user->syncRoles($agentRole);
 
-            // Update role name if the name changes
-            if ($data['name'] !== $agentRole->name) {
-                $roleName = $data['name']; // Use the updated name as the new role name
-                $agentRole = $agent->user->roles[0]; // Get the current role
-                $role = Role::find($agentRole->id);
-                $role->name = $roleName; // Update the role name
-                $role->save(); // Save the updated role
-            }
 
 
             // Update agent details
@@ -289,16 +292,16 @@ class AgentController extends Controller
             ]);
 
 
-            $role = Role::find($agentRole->id);
+//            $role = Role::find($agentRole->id);
 
-            // Update permissions
-            if ($request->has('permissions')) {
-                $validPermissionIds = Permission::whereIn('id', $data['permissions'])->pluck('id')->toArray();
-                $role->syncPermissions($validPermissionIds);
-            } else {
-                $role->syncPermissions([]);
-
-            }
+//            // Update permissions
+//            if ($request->has('permissions')) {
+//                $validPermissionIds = Permission::whereIn('id', $data['permissions'])->pluck('id')->toArray();
+//                $role->syncPermissions($validPermissionIds);
+//            } else {
+//                $role->syncPermissions([]);
+//
+//            }
 // Update location associations (agent_agencies)
             if (!empty($data['selected_location_ids']) && is_array($data['selected_location_ids'])) {
                 $locationIds = array_filter(
@@ -370,15 +373,16 @@ class AgentController extends Controller
     {
         $title = 'Deleted Agents';
         $agents = Agent::onlyTrashed()
-            ->with(['state', 'bank', 'user.permissions', 'agencies.locations'])
-            ->orderBy('deleted_at', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->get()
             ->map(function ($agent) {
                 $assignedLocations = [];
-                foreach ($agent->agencies as $agency) {
+                foreach ($agent->agentAgencies as $agency) {
                     $location = $agency->locations;
                     $assignedLocations[] = $location->agency_name;
+
                 }
+                // Remove duplicates and convert to a string
                 $agent->assignedLocations = implode(', ', array_unique($assignedLocations));
                 return $agent;
             });

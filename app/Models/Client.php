@@ -92,7 +92,20 @@ class Client extends Model
         'bankruptcy',
         'company',
     ];
+    public function state()
+    {
+        return $this->belongsTo(UsState::class);
+    }
 
+    public function bank()
+    {
+        return $this->belongsTo(BankAccount::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function policyType()
     {
@@ -157,5 +170,10 @@ class Client extends Model
     public function vehicles()
     {
         return $this->hasMany(ClientVehicle::class);
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(ClientAttachment::class);
     }
 }
