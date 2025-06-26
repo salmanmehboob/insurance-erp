@@ -11,6 +11,7 @@ use App\Models\BankAccount;
 use App\Models\Permission;
 use App\Models\User;
 use App\Models\UsState;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -119,6 +120,8 @@ class AgentController extends Controller
                 'name' => $data['username'],
                 'password' => $data['password'],  // Encrypt password
 //                'role' => '$roleName',  // Assuming a role 'agent'
+                'email_verified_at' => Carbon::now(),
+
             ]);
 
 
@@ -259,6 +262,7 @@ class AgentController extends Controller
             $updateData = [
                 'email' => $data['email'],
                 'name' => $data['username'],
+                'email_verified_at' => Carbon::now(),
             ];
 
             // Only update the password if provided

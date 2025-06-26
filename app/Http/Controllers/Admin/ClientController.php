@@ -242,7 +242,8 @@ class ClientController extends Controller
             }
 
             // Create Client Commercial Detail
-            if (isset($request->type_of_business)) {
+//            dd($request->all());
+//            if (isset($request->type_of_business)) {
 
                 ClientCommercialDetail::create([
                     'client_id' => $client->id,
@@ -253,13 +254,6 @@ class ClientController extends Controller
                     'employment_payroll' => removeDollarSign($request->employment_payroll),
                     'current_inst' => $request->current_inst,
                     'quote_expiry' => $request->quote_expiry,
-                    'general_aggregate' => $request->general_aggregate,
-                    'product_aggregate' => $request->product_aggregate,
-                    'personal_injury' => $request->personal_injury,
-                    'each_occurrence' => $request->each_occurrence,
-                    'fire_damage' => $request->fire_damage,
-                    'medical_expense' => $request->medical_expense,
-                    'annual_receipt' => removeDollarSign($request->annual_receipt),
                     'building' => removeDollarSign($request->building),
                     'contents' => removeDollarSign($request->contents),
                     'loss_of_earning' => removeDollarSign($request->loss_of_earning),
@@ -275,8 +269,22 @@ class ClientController extends Controller
                     'construction' => $request->construction,
                     'is_alarm_system' => $request->is_alarm_system ?? 0,
                 ]);
-            }
+//            }
 
+            if (isset($request->is_general_aggregate)) {
+
+                ClientCommercialLiability::create([
+                    'client_id' => $client->id,
+                    'general_aggregate' => $request->is_general_aggregate,
+                    'product_aggregate' => $request->product_aggregate,
+                    'personal_injury' => $request->personal_injury,
+                    'each_occurrence' => $request->each_occurrence,
+                    'fire_damage' => $request->fire_damage,
+                    'medical_expense' => $request->medical_expense,
+                    'annual_receipt' => removeDollarSign($request->annual_receipt),
+
+                ]);
+            }
             // Create Client House Detail
             if (isset($request->dwelling_building) && $request->dwelling_building != null) {
 
@@ -330,7 +338,7 @@ class ClientController extends Controller
             }
 
 
-            if (isset($request->is_general_liability) && $request->is_general_liability != null) {
+            if (isset($request->general_aggregate) && $request->general_aggregate != null) {
 
                 ClientCommercialLiability::create([
                     'client_id' => $client->id,
@@ -339,8 +347,8 @@ class ClientController extends Controller
                     'product_aggregate' => $request->product_aggregate,
                     'personal_injury' => $request->personal_injury,
                     'each_occurrence' => $request->each_occurrence,
-                    'fire_damage' => $request->fire_damage,
-                    'medical_expense' => $request->medical_expense,
+                    'fire_damage' => $request->fire_damage ?? '0',
+                    'medical_expense' => $request->medical_expense ?? '0',
                     'annual_receipt' => removeDollarSign($request->annual_receipt),
 
                 ]);
@@ -417,6 +425,7 @@ class ClientController extends Controller
     public function edit($id)
     {
         $client = Client::with('policy')->find($id);
+//        dd($client->commercialLiability);
 
         if (!$client) {
             return redirect()->route('show-client')->with('error', 'Client not found.');
@@ -599,7 +608,7 @@ class ClientController extends Controller
             }
 
             // Update Client Commercial Detail
-            if (isset($request->type_of_business)) {
+//            if (isset($request->type_of_business)) {
                 $client->commercial()->updateOrCreate(
                     ['client_id' => $client->id],
                     [
@@ -610,13 +619,6 @@ class ClientController extends Controller
                         'employment_payroll' => removeDollarSign($request->employment_payroll),
                         'current_inst' => $request->current_inst,
                         'quote_expiry' => $request->quote_expiry,
-                        'general_aggregate' => $request->general_aggregate,
-                        'product_aggregate' => $request->product_aggregate,
-                        'personal_injury' => $request->personal_injury,
-                        'each_occurrence' => $request->each_occurrence,
-                        'fire_damage' => $request->fire_damage,
-                        'medical_expense' => $request->medical_expense,
-                        'annual_receipt' => removeDollarSign($request->annual_receipt),
                         'building' => removeDollarSign($request->building),
                         'contents' => removeDollarSign($request->contents),
                         'loss_of_earning' => removeDollarSign($request->loss_of_earning),
@@ -635,6 +637,26 @@ class ClientController extends Controller
 
                 );
 
+//            }
+
+            if (isset($request->general_aggregate)) {
+//                dd('hy');
+                $client->commercialLiability()->updateOrCreate(
+                    ['client_id' => $client->id],
+                    [
+
+                        'general_aggregate' => $request->general_aggregate,
+                        'product_aggregate' => $request->product_aggregate,
+                        'personal_injury' => $request->personal_injury,
+                        'each_occurrence' => $request->each_occurrence,
+                        'fire_damage' => isset($request->fire_damage) ? $request->fire_damage : '0',
+                        'medical_expense' => isset($request->medical_expense) ? $request->medical_expense : '0',
+                        'annual_receipt' => removeDollarSign($request->annual_receipt),
+
+                    ]
+
+                );
+
             }
 
             // Update Client House Detail
@@ -645,7 +667,7 @@ class ClientController extends Controller
                         'dwelling_building' => removeDollarSign($request->dwelling_building),
                         'liability_limit' => $request->liability_limit,
                         'contents' => removeDollarSign($request->contents),
-                        'medical_payment' => ($request->medical_payment),
+                        'medical_payment' => ($request->medical_payment) ?? 0,
                         'additional_structure' => removeDollarSign($request->medical_payment),
                         'deductible' => ($request->deductible),
                         'loss_of_use' => removeDollarSign($request->loss_of_use),
