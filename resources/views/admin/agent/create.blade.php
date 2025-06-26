@@ -1,6 +1,11 @@
 @extends('admin.layouts.app')
 
 @push('style')
+    .tab-error {
+        color: #dc3545 !important;
+        font-weight: bold;
+        border-bottom: 2px solid #dc3545 !important;
+    }
 @endpush
 
 @section('content')
@@ -55,44 +60,47 @@
                                         <label class="col-form-label">Agent Name <span
                                                 class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="name" class="form-control" placeholder="Agent Name"
+                                            <input type="text" name="name" class="form-control required-field" placeholder="Agent Name"
                                                    value="{{ old('name') }}">
                                             @if ($errors->has('name'))
                                                 <span class="text-danger">{{ $errors->first('name') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
 
                                     <!-- Address -->
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Address</label>
+                                        <label class="col-form-label">Address <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="address" class="form-control" placeholder="Address"
+                                            <input type="text" name="address" class="form-control required-field" placeholder="Address"
                                                    value="{{ old('address') }}">
                                             @if ($errors->has('address'))
                                                 <span class="text-danger">{{ $errors->first('address') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- City -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">City</label>
+                                        <label class="col-form-label">City <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="city" class="form-control" placeholder="City"
+                                            <input type="text" name="city" class="form-control required-field" placeholder="City"
                                                    value="{{ old('city') }}">
                                             @if ($errors->has('city'))
                                                 <span class="text-danger">{{ $errors->first('city') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- State -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">State</label>
+                                        <label class="col-form-label">State <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <select name="state_id" class="form-control select2"
+                                            <select name="state_id" class="form-control select2 required-field"
                                                     data-placeholder="Select State">
                                                 <option></option>
                                                 @foreach($states as $state)
@@ -103,18 +111,20 @@
                                             @if ($errors->has('state_id'))
                                                 <span class="text-danger">{{ $errors->first('state_id') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- Zip Code -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">Zip Code</label>
+                                        <label class="col-form-label">Zip Code <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="zip_code" class="form-control"
+                                            <input type="text" name="zip_code" class="form-control required-field"
                                                    placeholder="Zip Code" value="{{ old('zip_code') }}">
                                             @if ($errors->has('zip_code'))
                                                 <span class="text-danger">{{ $errors->first('zip_code') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
@@ -123,23 +133,25 @@
                                     <div class="col-md-6">
                                         <label class="col-form-label">Phone <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="phone_no" class="form-control"
+                                            <input type="text" name="phone_no" class="form-control required-field"
                                                    placeholder="(999) 999-9999" data-inputmask="'mask': '(999) 999-9999'" value="{{ old('phone_no') }}">
                                             @if ($errors->has('phone_no'))
                                                 <span class="text-danger">{{ $errors->first('phone_no') }}</span>
                                             @endif
-                                        </div>
+                                            <span class="error-message text-danger"></span>
+                                            </div>
                                     </div>
 
                                     <!-- Email -->
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Email</label>
+                                        <label class="col-form-label">Email <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="email" name="email" class="form-control" placeholder="Email"
+                                            <input type="email" name="email" class="form-control required-field" placeholder="Email"
                                                    value="{{ old('email') }}">
                                             @if ($errors->has('email'))
                                                 <span class="text-danger">{{ $errors->first('email') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -149,32 +161,34 @@
                                 <legend class="mb-3 azm-color-444">Login</legend>
                                 <div class="row mt-3">
                                     <div class="col-md-6">
-                                        <label class="col-form-label">User ID</label>
+                                        <label class="col-form-label">User ID <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="username" class="form-control"
+                                            <input type="text" name="username" class="form-control required-field"
                                                    placeholder="User Name"
                                                    value="{{ old('username') }}">
                                             @if ($errors->has('username'))
                                                 <span class="text-danger">{{ $errors->first('username') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Password</label>
+                                        <label class="col-form-label">Password <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="password" name="password" class="form-control"
+                                            <input type="password" name="password" class="form-control required-field"
                                                    placeholder="***********" value="">
                                             @if ($errors->has('password'))
                                                 <span class="text-danger">{{ $errors->first('password') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Role</label>
+                                        <label class="col-form-label">Role <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <select name="role_id" class="form-control select2"
+                                            <select name="role_id" class="form-control select2 required-field"
                                                     data-placeholder="Select Role">
                                                 <option></option>
                                                 @foreach($roles as $role)
@@ -185,14 +199,15 @@
                                             @if ($errors->has('role_id'))
                                                 <span class="text-danger">{{ $errors->first('role_id') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- Bank -->
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Bank</label>
+                                        <label class="col-form-label">Bank <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <select name="bank_id" class="form-control select2"
+                                            <select name="bank_id" class="form-control select2 required-field"
                                                     data-placeholder="Select Bank">
                                                 <option></option>
                                                 @foreach($banks as $bank)
@@ -203,6 +218,7 @@
                                             @if ($errors->has('bank_id'))
                                                 <span class="text-danger">{{ $errors->first('bank_id') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -212,29 +228,31 @@
                                 <div class="row mt-3">
                                     <!-- Commission -->
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Commission (%)</label>
+                                        <label class="col-form-label">Commission (%) <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="number" name="commission_in_percentage" class="form-control"
+                                            <input type="number" name="commission_in_percentage" class="form-control required-field"
                                                    placeholder="Commission Percentage"
                                                    value="{{ old('commission_in_percentage') }}">
                                             @if ($errors->has('commission_in_percentage'))
                                                 <span
                                                     class="text-danger">{{ $errors->first('commission_in_percentage') }}</span>
                                             @endif
-                                        </div>
+                                            <span class="error-message text-danger"></span>
+                                            </div>
                                     </div>
 
                                     <!-- Commission -->
                                     <div class="col-md-6">
                                         <label class="col-form-label">Flat Fee</label>
                                         <div class="form-group">
-                                            <input type="text" name="commission_fee" class="form-control"
+                                            <input type="text" name="commission_fee" class="form-control required-field"
                                                    data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                    value="${{ old('commission_fee') }}">
                                             @if ($errors->has('commission_fee'))
                                                 <span
                                                     class="text-danger">{{ $errors->first('commission_fee') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -267,8 +285,9 @@
 
                                         </ul>
                                         <!-- Hidden input fields to store selected locations -->
-                                        <input type="hidden" id="selected-location-ids" name="selected_location_ids[]">
-                                        <input type="hidden" id="selected-location-names" name="selected_location_names[]">
+                                        <input type="hidden" id="selected-location-ids" class="required-field" name="selected_location_ids[]">
+                                        <input type="hidden" id="selected-location-names" class="required-field" name="selected_location_names[]">
+                                        <span class="error-message text-danger" id="selected-location-error"></span>
                                     </div>
                                 </div>
                             </div>
@@ -278,13 +297,14 @@
                             <div class="row mt-3">
                                 <!-- Notes -->
                                 <div class="col-md-12">
-                                    <label class="col-form-label">Notes</label>
+                                    <label class="col-form-label">Notes <span class="text-danger">*</span></label>
                                     <div class="form-group">
-                                        <textarea name="notes" class="form-control" rows="5"
+                                        <textarea name="notes" class="form-control required-field" rows="5"
                                                   placeholder="Add notes here...">{{ old('notes') }}</textarea>
                                         @if ($errors->has('notes'))
                                             <span class="text-danger">{{ $errors->first('notes') }}</span>
                                         @endif
+                                        <span class="error-message text-danger"></span>
                                     </div>
                                 </div>
                             </div>
@@ -394,9 +414,87 @@
                 $('#selected-location-names').val(currentNames.join(','));
             }
 
+            // Helper: Should this field be validated?
+            function shouldValidateField($input) {
+                let $tabPane = $input.closest('.tab-pane');
+                if ($tabPane.length === 0) return true; // Not in a tab, always validate
+                let tabId = $tabPane.attr('id');
+                let $tabLink = $('.nav-link[href="#' + tabId + '"]');
+                if ($tabLink.length === 0) return false; // Tab not shown for this policy type
+                if ($tabLink.is(':hidden') || $tabLink.parent().is(':hidden')) return false;
+                return true;
+            }
 
+            // Real-time validation
+            $(document).on('input change blur', '.required-field', function() {
+                let $input = $(this);
+                if (!shouldValidateField($input)) return;
+                let isCheckbox = $input.is(':checkbox');
+                let value = isCheckbox ? $input.is(':checked') : $input.val().trim();
+                let inputName = $input.attr('name');
+                let $errorSpan = $input.closest('.form-group').find('.error-message');
+                let $tabPane = $input.closest('.tab-pane');
+                let tabId = $tabPane.attr('id');
+                let $tabLink = $('.nav-link[href="#' + tabId + '"]');
+                if (!value) {
+                    let errorMsg = isCheckbox ? 'Please check this box if you want to proceed.' : 'This field is required.';
+                    $errorSpan.text(errorMsg);
+                    $tabLink.addClass('tab-error');
+                    console.log('❌ Validation Error:', { fieldName: inputName, tabId, message: errorMsg });
+                } else {
+                    $errorSpan.text('');
+                    let hasOtherErrors = $tabPane.find('.error-message').not($errorSpan).filter(function(){return $(this).text().length > 0;}).length > 0;
+                    if (!hasOtherErrors) $tabLink.removeClass('tab-error');
+                }
 
+                
+            });
 
+            // On form submit
+            $('form').on('submit', function (e) {
+                let isValid = true;
+                let firstErrorTab = null;
+                $('.error-message').text('');
+                $('.nav-link').removeClass('tab-error');
+                $('.required-field').each(function () {
+                    let $input = $(this);
+                    if (!shouldValidateField($input)) return;
+                    let isCheckbox = $input.is(':checkbox');
+                    let value = isCheckbox ? $input.is(':checked') : $input.val().trim();
+                    let $tabPane = $input.closest('.tab-pane');
+                    let tabId = $tabPane.attr('id');
+                    let $tabLink = $('.nav-link[href="#' + tabId + '"]');
+                    if (!value) {
+                        isValid = false;
+                        let inputName = $input.attr('name');
+                        let errorMsg = isCheckbox ? 'Please check this box if you want to proceed.' : 'This field is required.';
+                        $input.closest('.form-group').find('.error-message').text(errorMsg);
+                        $tabLink.addClass('tab-error');
+                        if (!firstErrorTab) firstErrorTab = $tabLink;
+                        console.log('❌ Form Submit Validation Error:', { fieldName: inputName, tabId, message: errorMsg });
+                    }
+
+                    
+                });
+
+                // Custom validation for hidden selected location ids
+                let $selectedLocationInput = $('#selected-location-ids');
+                let $selectedLocationError = $('#selected-location-error');
+                if (!$selectedLocationInput.val()) {
+                    isValid = false;
+                    $selectedLocationError.text('At least one location must be selected.');
+                    // Optionally, scroll to the error
+                    $selectedLocationInput[0].scrollIntoView({behavior: 'smooth', block: 'center'});
+                    console.log('❌ Location Validation Error:', { fieldName: 'selected_location_ids', message: 'At least one location must be selected.' });
+                } else {
+                    $selectedLocationError.text('');
+                }
+
+                if (!isValid) {
+                    e.preventDefault();
+                    if (firstErrorTab) firstErrorTab.tab('show');
+                }
+            });
         });
         // Function to toggle all checkboxes
         function toggleAllPermissions() {

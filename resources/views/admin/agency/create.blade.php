@@ -36,34 +36,37 @@
                                             @if ($errors->has('agency_name'))
                                                 <span class="text-danger">{{ $errors->first('agency_name') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- Address -->
                                     <div class="col-md-12">
-                                        <label class="col-form-label">Address</label>
+                                        <label class="col-form-label">Address <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="address" class="form-control" placeholder="Address" value="{{ old('address') }}">
                                             @if ($errors->has('address'))
                                                 <span class="text-danger">{{ $errors->first('address') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- City -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">City</label>
+                                        <label class="col-form-label">City <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="city" class="form-control" placeholder="City" value="{{ old('city') }}">
                                             @if ($errors->has('city'))
                                                 <span class="text-danger">{{ $errors->first('city') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- State -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">State</label>
+                                        <label class="col-form-label">State <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <select name="state_id" class="form-control select2" data-placeholder="Select State">
                                                 <option></option>
@@ -74,45 +77,49 @@
                                             @if ($errors->has('state_id'))
                                                 <span class="text-danger">{{ $errors->first('state_id') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- Zip Code -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">Zip Code</label>
+                                        <label class="col-form-label">Zip Code <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="zip_code" class="form-control" placeholder="Zip Code" value="{{ old('zip_code') }}">
                                             @if ($errors->has('zip_code'))
                                                 <span class="text-danger">{{ $errors->first('zip_code') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- Phone -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">Phone</label>
+                                        <label class="col-form-label">Phone <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="phone" class="form-control" placeholder="(999) 999-9999" data-inputmask="'mask': '(999) 999-9999'" value="{{ old('phone') }}">
                                             @if ($errors->has('phone'))
                                                 <span class="text-danger">{{ $errors->first('phone') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- Secondary Phone -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">Secondary Phone</label>
+                                        <label class="col-form-label">Secondary Phone <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="secondary_phone" class="form-control" placeholder="(999) 999-9999" data-inputmask="'mask': '(999) 999-9999'" value="{{ old('secondary_phone') }}">
                                             @if ($errors->has('secondary_phone'))
                                                 <span class="text-danger">{{ $errors->first('secondary_phone') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- Fax -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">Fax</label>
+                                        <label class="col-form-label">Fax <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="fax" class="form-control" placeholder="(999) 999-9999" data-inputmask="'mask': '(999) 999-9999'" value="{{ old('fax') }}">
                                             @if ($errors->has('fax'))
@@ -123,18 +130,19 @@
 
                                     <!-- Account Number -->
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Account Number</label>
+                                        <label class="col-form-label">Account Number <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="account_number" class="form-control" placeholder="Account Number" value="{{ old('account_number') }}">
                                             @if ($errors->has('account_number'))
                                                 <span class="text-danger">{{ $errors->first('account_number') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- Bank -->
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Default Bank Account</label>
+                                        <label class="col-form-label">Default Bank Account <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <select name="bank_id" class="form-control select2" data-placeholder="Select Bank">
                                                 <option></option>
@@ -146,17 +154,20 @@
                                                 <span class="text-danger">{{ $errors->first('bank_id') }}</span>
                                             @endif
                                         </div>
+                                        <span class="error-message text-danger"></span>
+
                                     </div>
 
                                     <!-- Custom Message -->
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Custom Message</label>
+                                        <label class="col-form-label">Custom Message <small>(Optional)</small>          </label>
                                         <div class="form-group">
                                             <textarea name="custom_message" class="form-control" rows="3" placeholder="Custom Message">{{ old('custom_message') }}</textarea>
                                             @if ($errors->has('custom_message'))
                                                 <span class="text-danger">{{ $errors->first('custom_message') }}</span>
                                             @endif
                                         </div>
+                                        <span class="error-message text-danger"></span>
                                     </div>
 
                                     <div class="col-md-4">
@@ -206,77 +217,17 @@
     </div>
     <!-- /content area -->
 
-    <!-- Modal -->
-    <div class="modal fade" id="agencyModal" tabindex="-1" aria-labelledby="agencyModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="agencyModalLabel">Agency Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="agency_name" class="form-label">Agency Name</label>
-                                <input type="text" class="form-control" id="agency_name" disabled>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="address" class="form-label">Address</label>
-                                <input type="text" class="form-control" id="address" disabled>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="city" class="form-label">City</label>
-                                <input type="text" class="form-control" id="city" disabled>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="state_id" class="form-label">State</label>
-                                <input type="text" class="form-control" id="state_id" disabled>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="zip_code" class="form-label">Zip Code</label>
-                                <input type="text" class="form-control" id="zip_code" disabled>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="phone" class="form-label">Phone</label>
-                                <input type="text" class="form-control" id="phone" disabled>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="secondary_phone" class="form-label">Secondary Phone</label>
-                                <input type="text" class="form-control" id="secondary_phone" disabled>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="fax" class="form-label">Fax</label>
-                                <input type="text" class="form-control" id="fax" disabled>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="account_number" class="form-label">Account Number</label>
-                                <input type="text" class="form-control" id="account_number" disabled>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="bank_id" class="form-label">Bank</label>
-                                <input type="text" class="form-control" id="bank_id" disabled>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="custom_message" class="form-label">Custom Message</label>
-                                <textarea class="form-control" id="custom_message" rows="3" disabled></textarea>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="logo" class="form-label">Logo</label>
-                                <img id="logo" class="img-fluid rounded-circle" width="128" height="128" src="" alt="Agency Logo">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
 @endsection
 
 @push('script')
-      <script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.7/jquery.inputmask.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
           document.getElementById('logo-input').addEventListener('change', function(event) {
               const file = event.target.files[0]; // Get the selected file
               if (file) {
@@ -311,6 +262,55 @@
 
             // Apply input mask
             $(":input").inputmask();
+        });
+
+        // jQuery Validation for the agency form
+        $(function() {
+            $('form.form-validate-jquery').validate({
+                ignore: [],
+                errorClass: 'is-invalid',
+                validClass: 'is-valid',
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('error-message text-danger');
+                    error.insertAfter(element);
+                },
+                highlight: function (element) {
+                    $(element).addClass('is-invalid').removeClass('is-valid');
+                },
+                unhighlight: function (element) {
+                    $(element).removeClass('is-invalid').addClass('is-valid');
+                },
+                rules: {
+                    agency_name: { required: true },
+                    address: { required: true },
+                    city: { required: true },
+                    state_id: { required: true },
+                    zip_code: { required: true },
+                    phone: { required: true },
+                    secondary_phone: { required: true },
+                    fax: { required: true },
+                    account_number: { required: true },
+                    bank_id: { required: true },
+                    custom_message: { required: true }
+                },
+                messages: {
+                    agency_name: 'Agency Name is required',
+                    address: 'Address is required',
+                    city: 'City is required',
+                    state_id: 'State is required',
+                    zip_code: 'Zip Code is required',
+                    phone: 'Phone is required',
+                    secondary_phone: 'Secondary Phone is required',
+                    fax: 'Fax is required',
+                    account_number: 'Account Number is required',
+                    bank_id: 'Bank is required',
+                    custom_message: 'Custom Message is required'
+                },
+                submitHandler: function(form) {
+                    form.submit();
+                }
+            });
         });
     </script>
 @endpush

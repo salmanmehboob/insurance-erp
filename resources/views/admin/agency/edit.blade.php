@@ -37,34 +37,37 @@
                                             @if ($errors->has('agency_name'))
                                                 <span class="text-danger">{{ $errors->first('agency_name') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- Address -->
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Address</label>
+                                        <label class="col-form-label">Address <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="address" class="form-control" placeholder="Address" value="{{ old('address', $agency->address) }}">
                                             @if ($errors->has('address'))
                                                 <span class="text-danger">{{ $errors->first('address') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- City -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">City</label>
+                                        <label class="col-form-label">City <span class="text-danger">*</span>           </label>
                                         <div class="form-group">
                                             <input type="text" name="city" class="form-control" placeholder="City" value="{{ old('city', $agency->city) }}">
                                             @if ($errors->has('city'))
                                                 <span class="text-danger">{{ $errors->first('city') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- State -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">State</label>
+                                        <label class="col-form-label">State <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <select name="state_id" class="form-control select2" data-placeholder="Select State">
                                                 <option></option>
@@ -75,34 +78,37 @@
                                             @if ($errors->has('state_id'))
                                                 <span class="text-danger">{{ $errors->first('state_id') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- Zip Code -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">Zip Code</label>
+                                        <label class="col-form-label">Zip Code <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="zip_code" class="form-control" placeholder="Zip Code" value="{{ old('zip_code', $agency->zip_code) }}">
                                             @if ($errors->has('zip_code'))
                                                 <span class="text-danger">{{ $errors->first('zip_code') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- Phone -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">Phone</label>
+                                        <label class="col-form-label">Phone <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="phone" class="form-control" placeholder="(999) 999-9999" data-inputmask="'mask': '(999) 999-9999'" value="{{ old('phone', $agency->phone) }}">
                                             @if ($errors->has('phone'))
                                                 <span class="text-danger">{{ $errors->first('phone') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- Secondary Phone -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">Secondary Phone</label>
+                                        <label class="col-form-label">Secondary Phone <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="secondary_phone" class="form-control" placeholder="(999) 999-9999" data-inputmask="'mask': '(999) 999-9999'" value="{{ old('secondary_phone', $agency->secondary_phone) }}">
                                             @if ($errors->has('secondary_phone'))
@@ -113,18 +119,19 @@
 
                                     <!-- Fax -->
                                     <div class="col-md-4">
-                                        <label class="col-form-label">Fax</label>
+                                        <label class="col-form-label">Fax <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="fax" class="form-control" placeholder="(999) 999-9999" data-inputmask="'mask': '(999) 999-9999'" value="{{ old('fax', $agency->fax) }}">
                                             @if ($errors->has('fax'))
                                                 <span class="text-danger">{{ $errors->first('fax') }}</span>
                                             @endif
+                                            <span class="error-message text-danger"></span>
                                         </div>
                                     </div>
 
                                     <!-- Account Number -->
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Account Number</label>
+                                        <label class="col-form-label">Account Number <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="account_number" class="form-control" placeholder="Account Number" value="{{ old('account_number', $agency->account_number) }}">
                                             @if ($errors->has('account_number'))
@@ -135,7 +142,7 @@
 
                                     <!-- Bank -->
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Default Bank Account</label>
+                                        <label class="col-form-label">Default Bank Account <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <select name="bank_id" class="form-control select2" data-placeholder="Select Bank">
                                                 <option></option>
@@ -147,17 +154,19 @@
                                                 <span class="text-danger">{{ $errors->first('bank_id') }}</span>
                                             @endif
                                         </div>
+                                        <span class="error-message text-danger"></span>
                                     </div>
 
                                     <!-- Custom Message -->
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Custom Message</label>
+                                        <label class="col-form-label">Custom Message <span class="text-danger">*</span> <small>(Optional)</small></label>
                                         <div class="form-group">
                                             <textarea name="custom_message" class="form-control" rows="3" placeholder="Custom Message">{{ old('custom_message', $agency->custom_message) }}</textarea>
                                             @if ($errors->has('custom_message'))
                                                 <span class="text-danger">{{ $errors->first('custom_message') }}</span>
                                             @endif
                                         </div>
+                                        <span class="error-message text-danger"></span>
                                     </div>
 
                                     <!-- Logo -->
@@ -213,5 +222,48 @@
                 }
             }
         });
+
+        // jQuery Validation for the agency form
+        $(function() {
+            $('form.form-validate-jquery').validate({
+                ignore: [],
+                errorClass: 'is-invalid',
+                validClass: 'is-valid',
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                rules: {
+                    agency_name: { required: true },
+                    address: { required: true },
+                    city: { required: true },
+                    state_id: { required: true },
+                    zip_code: { required: true },
+                    phone: { required: true },
+                    secondary_phone: { required: true },
+                    fax: { required: true },
+                    account_number: { required: true },
+                    bank_id: { required: true },
+                    custom_message: { required: true }  
+                },
+                messages: {
+                    agency_name: "Agency Name is required",
+                    address: "Address is required",
+                    city: "City is required",
+                    state_id: "State is required",
+                    zip_code: "Zip Code is required",
+                    phone: "Phone is required", 
+                    secondary_phone: "Secondary Phone is required",
+                    fax: "Fax is required",
+                    account_number: "Account Number is required",
+                    bank_id: "Bank is required",
+                    custom_message: "Custom Message is required"
+                },
+                submitHandler: function(form) {
+                    form.submit();
+                }
+            });
+        }); 
     </script>
 @endpush
