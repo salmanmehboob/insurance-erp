@@ -13,15 +13,15 @@ return new class extends Migration {
         Schema::create('client_commercial_liabilities', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id');
-            $table->text('general_liability');
+            $table->text('general_liability')->nullable();
 
-            $table->string('general_aggregate');
-            $table->string('product_aggregate');
-            $table->string('personal_injury');
-            $table->string('each_occurrence');
-            $table->string('fire_damage');
-            $table->string('medical_expense');
-            $table->string('annual_receipt');
+            $table->string('general_aggregate')->nullable();
+            $table->string('product_aggregate')->nullable();
+            $table->string('personal_injury')->nullable();
+            $table->string('each_occurrence')->nullable();
+            $table->string('fire_damage')->nullable();
+            $table->string('medical_expense')->nullable();
+            $table->string('annual_receipt')->nullable();
 
             $table->timestamps();
 

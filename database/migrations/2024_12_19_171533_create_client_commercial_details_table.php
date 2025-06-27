@@ -14,38 +14,38 @@ return new class extends Migration
         Schema::create('client_commercial_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id');
-            $table->text('type_of_business');
-            $table->string('year_of_experience');
-            $table->string('special_license');
-            $table->string('employment_number');
-            $table->string('employment_payroll');
+            $table->text('type_of_business')->nullable();
+            $table->string('year_of_experience')->nullable();
+            $table->string('special_license')->nullable();
+            $table->string('employment_number')->nullable();
+            $table->string('employment_payroll')->nullable();
 
-            $table->string('current_inst');
-            $table->date('quote_expiry');
+            $table->string('current_inst')->nullable();
+            $table->date('quote_expiry')->nullable();
 
-            $table->string('building');
-            $table->string('contents');
-            $table->string('loss_of_earning');
-            $table->string('pump');
-            $table->string('sign');
-            $table->string('glass');
-            $table->string('other_commercial_property');
+            $table->string('building')->nullable();
+            $table->string('contents')->nullable();
+            $table->string('loss_of_earning')->nullable();
+            $table->string('pump')->nullable();
+            $table->string('sign')->nullable();
+            $table->string('glass')->nullable();
+                    $table->string('other_commercial_property')->nullable();
 
-            $table->enum('property_owner',['owned','leased']);
-            $table->string('built_year');
-            $table->string('property_area');
-            $table->string('age_of_roof');
-            $table->string('construction');
-            $table->boolean('is_alarm_system');
+            $table->enum('property_owner',['owned','leased'])->nullable();
+            $table->string('built_year')->nullable();
+            $table->string('property_area')->nullable();
+            $table->string('age_of_roof')->nullable();
+            $table->string('construction')->nullable();
+            $table->boolean('is_alarm_system')->nullable();
 
 
-            $table->string('general_aggregate');
-            $table->string('product_aggregate');
-            $table->string('personal_injury');
-            $table->string('each_occurrence');
-            $table->string('fire_damage');
-            $table->string('medical_expense');
-            $table->string('annual_receipt');
+            $table->string('general_aggregate')->nullable();
+            $table->string('product_aggregate')->nullable();
+            $table->string('personal_injury')->nullable();
+            $table->string('each_occurrence')->nullable();
+            $table->string('fire_damage')->nullable();
+            $table->string('medical_expense')->nullable();
+            $table->string('annual_receipt')->nullable();
 
             $table->timestamps();
 
