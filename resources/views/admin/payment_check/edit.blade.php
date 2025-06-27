@@ -1,6 +1,13 @@
 @extends('admin.layouts.app')
 
 @push('style')
+    <style>
+        .tab-error {
+            color: #dc3545 !important;
+            font-weight: bold;
+            border-bottom: 2px solid #dc3545 !important;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -22,7 +29,7 @@
                         <div class="col-md-4">
                             <label class="col-form-label">Bank Account</label>
                             <div class="form-group">
-                                <select name="bank_id" class="form-control select2"
+                                <select name="bank_id" class="form-control select2 required-field"
                                         data-placeholder="Select Bank Account">
                                     <option></option>
                                     @foreach($banks as $row)
@@ -33,6 +40,7 @@
                                 @if ($errors->has('bank_id'))
                                     <span class="text-danger">{{ $errors->first('bank_id') }}</span>
                                 @endif
+                                <span class="error-message text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -42,34 +50,36 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="col-form-label">Check Number</label>
+                                <label class="col-form-label">Check Number <span class="text-danger">*</span></label>
                                 <div class="form-group">
-                                    <input type="number" name="check_no" class="form-control"
+                                    <input type="number" name="check_no" class="form-control required-field"
                                            placeholder="Enter Check Number"
                                            value="{{ old('check_no',$payment->check_no) }}">
                                     @if ($errors->has('check_no'))
                                         <span class="text-danger">{{ $errors->first('check_no') }}</span>
                                     @endif
+                                    <span class="error-message text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                             </div>
                             <div class="col-md-6">
-                                <label class="col-form-label">Payment Date</label>
+                                <label class="col-form-label">Payment Date <span class="text-danger">*</span></label>
                                 <div class="form-group">
-                                    <input type="text" name="payment_date" class="form-control flatpickr-minimum"
+                                    <input type="text" name="payment_date" class="form-control flatpickr-minimum required-field"
                                            placeholder="Select Date"
                                            value="{{ old('payment_date',$payment->payment_date) }}">
                                     @if ($errors->has('payment_date'))
                                         <span class="text-danger">{{ $errors->first('payment_date') }}</span>
                                     @endif
+                                    <span class="error-message text-danger"></span>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="col-form-label">Pay To</label>
+                                <label class="col-form-label">Pay To <span class="text-danger">*</span></label>
                                 <div class="form-group">
-                                    <select name="pay_to" id="pay_to" class="form-control select2"
+                                    <select name="pay_to" id="pay_to" class="form-control select2 required-field"
                                             data-placeholder="Select Company">
                                         <option></option>
                                         @foreach($insurance_companies as $row)
@@ -80,35 +90,39 @@
                                     @if ($errors->has('pay_to'))
                                         <span class="text-danger">{{ $errors->first('pay_to') }}</span>
                                     @endif
+                                    <span class="error-message text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label class="col-form-label">Amount</label>
+                                <label class="col-form-label">Amount <span class="text-danger">*</span></label>
                                 <div class="form-group">
-                                    <input type="text" name="amount" id="amount" class="form-control"
+                                    <input type="text" name="amount" id="amount" class="form-control required-field"
                                            data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                            value="${{$payment->amount}}">
                                     <span class="text-danger" id="amount_error"></span>
+                                    <span class="error-message text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <label class="col-form-label">Amount in Words</label>
+                                <label class="col-form-label">Amount in Words <span class="text-danger">*</span></label>
                                 <div class="form-group">
-                                    <input type="text" name="amount_in_word" id="amount_in_word" class="form-control"
+                                    <input type="text" name="amount_in_word" id="amount_in_word" class="form-control required-field"
                                            readonly>
                                     <span class="text-danger" id="amount_in_word_error"></span>
+                                    <span class="error-message text-danger"></span>
                                 </div>
                             </div>
 
                             <div class="col-md-12 mt-3">
 
-                                <label class="col-form-label">Memo / Notes</label>
+                                <label class="col-form-label">Memo / Notes <span class="text-danger">*</span></label>
                                 <div class="form-group">
-                                    <textarea class="form-control" rows="10" name="notes">{{$payment->notes}}</textarea>
+                                    <textarea class="form-control required-field" rows="10" name="notes">{{$payment->notes}}</textarea>
                                     @if ($errors->has('notes'))
                                         <span
                                             class="text-danger">{{ $errors->first('notes') }}</span>
                                     @endif
+                                    <span class="error-message text-danger"></span>
                                 </div>
 
 
@@ -118,7 +132,7 @@
                                 <div class="col-md-12">
                                     <label class="col-form-label">Account</label>
                                     <div class="form-group">
-                                        <select name="account" id="account" class="form-control select2"
+                                        <select name="account" id="account" class="form-control select2 required-field"
                                                 data-placeholder="Select Account">
                                             <option></option>
                                             <option {{  $payment->account == 'cash' ? 'selected' : '' }} value="cash">Cash</option>
@@ -144,12 +158,13 @@
                                         @if ($errors->has('account'))
                                             <span class="text-danger">{{ $errors->first('account') }}</span>
                                         @endif
+                                        <span class="error-message text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <label class="col-form-label">Client</label>
+                                    <label class="col-form-label">Client <span class="text-danger">*</span></label>
                                     <div class="form-group">
-                                        <select name="client_id" id="client_id" class="form-control select2"
+                                        <select name="client_id" id="client_id" class="form-control select2 required-field"
                                                 data-placeholder="Select Client">
                                             <option></option>
                                             @foreach($clients as $row)
@@ -160,15 +175,16 @@
                                         @if ($errors->has('client_id'))
                                             <span class="text-danger">{{ $errors->first('client_id') }}</span>
                                         @endif
+                                        <span class="error-message text-danger"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="col-md-12">
-                                    <label class="col-form-label">Company</label>
+                                    <label class="col-form-label">Company <span class="text-danger">*</span></label>
                                     <div class="form-group">
                                         <select name="insurance_company_id" id="insurance_company_id"
-                                                class="form-control select2"
+                                                class="form-control select2 required-field"
                                                 data-placeholder="Select Company">
                                             <option></option>
                                             @foreach($insurance_companies as $row)
@@ -180,17 +196,19 @@
                                             <span
                                                 class="text-danger">{{ $errors->first('insurance_company_id') }}</span>
                                         @endif
+                                        <span class="error-message text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <label class="col-form-label">Policy #</label>
+                                    <label class="col-form-label">Policy # <span class="text-danger">*</span></label>
                                     <div class="form-group">
-                                        <input type="text" name="policy_number" id="policy_number" class="form-control"
+                                        <input type="text" name="policy_number" id="policy_number" class="form-control required-field"
                                                placeholder="Policy"
                                                value="{{ old('policy_number',$payment->policy_number) }}">
                                         @if ($errors->has('policy_number'))
                                             <span class="text-danger">{{ $errors->first('policy_number') }}</span>
                                         @endif
+                                        <span class="error-message text-danger"></span>
                                     </div>
                                 </div>
                             </div>
@@ -242,8 +260,7 @@
                     }
                 });
             });
-        });
-        $(document).ready(function () {
+        
             // Utility function to convert numbers to words
             function numberToWords(num) {
                 const a = [
@@ -334,18 +351,121 @@
                 const initialAmountInWords = numberToWords(parseFloat(initialAmount));
                 $("#amount_in_word").val(initialAmountInWords);
             }
-        });
-
-    </script>
-
-    <script>
-        $(document).ready(function () {
+        
             $('.select2').select2({
                 width: '100%',
                 placeholder: "Select an option",
                 allowClear: true
             });
             flatpickr(".flatpickr-minimum");
+
+            function shouldValidateField($input) {
+                let $tabPane = $input.closest('.tab-pane');
+                if ($tabPane.length === 0) {
+                    // Not inside any tab-pane, always validate
+                    return true;
+                }
+                let tabId = $tabPane.attr('id');
+                let $tabLink = $('.nav-link[href="#' + tabId + '"]');
+                if ($tabLink.length === 0) {
+                    return false;
+                }
+                if ($tabLink.is(':hidden') || $tabLink.parent().is(':hidden')) {
+                    return false;
+                }
+                return true;
+            }
+
+            // Real-time validation for required fields
+            $(document).on('input change blur', '.required-field', function() {
+                let $input = $(this);
+                
+                // Only validate if the field should be validated based on policy type
+                if (!shouldValidateField($input)) {
+                    return;
+                }
+                
+                // let value = $input.val().trim();
+                let inputName = $input.attr('name');
+                let $errorSpan = $input.closest('.form-group').find('.error-message');
+                let $tabPane = $input.closest('.tab-pane');
+                let tabId = $tabPane.attr('id');
+                let $tabLink = $('.nav-link[href="#' + tabId + '"]');
+
+                let isCheckbox = $input.is(':checkbox');
+                console.log('isCheckbox', isCheckbox);
+                let value = isCheckbox ? $input.is(':checked') : $input.val().trim();
+
+
+                if (!value) {
+                    // Show error
+                    console.log('❌ Validation Error:', {
+                        fieldName: inputName,
+                        fieldType: $input.attr('type') || 'select',
+                        tabId: tabId,
+                        message: 'This field is required.'
+                    });
+                    $errorSpan.text('This field is required.');
+                    $tabLink.addClass('tab-error');
+                } else {
+                    // Remove error
+                    $errorSpan.text('');
+                    // Check if this tab has any other errors
+                    let hasOtherErrors = $tabPane.find('.error-message').not($errorSpan).text().length > 0;
+                    if (!hasOtherErrors) {
+                        $tabLink.removeClass('tab-error');
+                    }
+                }
+            });
+
+            // On form submit
+            $('form').on('submit', function (e) {
+                let isValid = true;
+                let firstErrorTab = null;
+
+                // Remove previous errors
+                $('.error-message').text('');
+                $('.nav-link').removeClass('tab-error');
+
+                // Validate each required field
+                $('.required-field').each(function () {
+                    let $input = $(this);
+                    
+                    // Only validate if the field should be validated based on policy type
+                    if (!shouldValidateField($input)) {
+                        return;
+                    }
+                    
+                    let isCheckbox = $input.is(':checkbox');
+                    let value = isCheckbox ? $input.is(':checked') : $input.val().trim();
+                    let $tabPane = $input.closest('.tab-pane');
+                    let tabId = $tabPane.attr('id');
+                    let $tabLink = $('.nav-link[href="#' + tabId + '"]');
+
+                    if (!value) {
+                        isValid = false;
+                        let inputName = $input.attr('name');
+                        console.log('❌ Form Submit Validation Error:', {
+                            fieldName: inputName,
+                            fieldType: $input.attr('type') || 'select',
+                            tabId: tabId,
+                            message: 'This field is required.'
+                        });
+                        // Set a specific error message for checkboxes
+                        let errorMsg = isCheckbox ? 'Please check this box if you want to proceed.' : 'This field is required.';
+                        $input.closest('.form-group').find('.error-message').text(errorMsg);
+                        $tabLink.addClass('tab-error');
+                        if (!firstErrorTab) firstErrorTab = $tabLink;
+                    }
+                });
+
+                // If not valid, prevent submit and switch to first error tab
+                if (!isValid) {
+                    e.preventDefault();
+                    if (firstErrorTab) firstErrorTab.tab('show');
+                }
+            });
+
         });
     </script>
 

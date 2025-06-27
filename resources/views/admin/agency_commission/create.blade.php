@@ -1,6 +1,13 @@
 @extends('admin.layouts.app')
 
 @push('style')
+    <style>
+        .tab-error {
+            color: #dc3545 !important;
+            font-weight: bold;
+            border-bottom: 2px solid #dc3545 !important;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -26,9 +33,9 @@
                 <div class="card-body">
                     <div class="row mt-3">
                         <div class="col-md-4">
-                            <label class="col-form-label">Client</label>
+                            <label class="col-form-label">Client <span class="text-danger">*</span></label>
                             <div class="form-group">
-                                <select name="client_id" id="client_id" class="form-control select2"
+                                <select name="client_id" id="client_id" class="form-control select2 required-field"
                                         data-placeholder="Select Client">
                                     <option></option>
                                     @foreach($clients as $row)
@@ -39,104 +46,113 @@
                                 @if ($errors->has('client_id'))
                                     <span class="text-danger">{{ $errors->first('client_id') }}</span>
                                 @endif
+                                <span class="error-message text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label class="col-form-label">Policy # <span
                                     class="text-danger">*</span></label>
                             <div class="form-group">
-                                <input type="text" name="policy_number" id="policy_number" class="form-control"
+                                <input type="text" name="policy_number" id="policy_number" class="form-control required-field"
                                        placeholder="Policy #"
                                        value="{{ old('policy_number') }}">
                                 @if ($errors->has('policy_number'))
                                     <span class="text-danger">{{ $errors->first('policy_number') }}</span>
                                 @endif
+                                <span class="error-message text-danger"></span>
                             </div>
                         </div>
 
                         <div class="col-md-4">
-                            <label class="col-form-label">Date</label>
+                            <label class="col-form-label">Date <span class="text-danger">*</span></label>
                             <div class="form-group">
-                                <input type="text" name="date" class="form-control flatpickr-minimum"
+                                <input type="text" name="date" class="form-control flatpickr-minimum required-field"
                                        placeholder="Select Date"
                                        value="{{ old('date') }}">
                                 @if ($errors->has('date'))
                                     <span class="text-danger">{{ $errors->first('date') }}</span>
                                 @endif
+                                <span class="error-message text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label class="col-form-label">Transaction<span
+                                <label class="col-form-label">Transaction<span
                                     class="text-danger">*</span></label>
                             <div class="form-group">
-                                <input type="text" name="transaction" class="form-control"
+                                <input type="text" name="transaction" class="form-control required-field"
                                        placeholder="Transaction"
                                        value="{{ old('transaction') }}">
                                 @if ($errors->has('transaction'))
                                     <span class="text-danger">{{ $errors->first('transaction') }}</span>
                                 @endif
+                                <span class="error-message text-danger"></span>
                             </div>
                         </div>
 
 
                         <div class="col-md-4">
-                            <label class="col-form-label">Pro Premium</label>
+                            <label class="col-form-label">Pro Premium <span class="text-danger">*</span></label>
                             <div class="form-group">
-                                <input type="text" name="pro_premium" class="form-control"
+                                <input type="text" name="pro_premium" class="form-control required-field"
                                        data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                        placeholder="Pro Premium" value="${{ old('pro_premium') }}">
                                 @if ($errors->has('pro_premium'))
                                     <span class="text-danger">{{ $errors->first('pro_premium') }}</span>
                                 @endif
-                            </div>
+                                <span class="error-message text-danger"></span>
+                                </div>
                         </div>
 
                         <div class="col-md-4">
-                            <label class="col-form-label">Commission</label>
+                            <label class="col-form-label">Commission <span class="text-danger">*</span></label>
                             <div class="form-group">
-                                <input type="text" name="commission" class="form-control"
+                                <input type="text" name="commission" class="form-control required-field"
                                        data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                        placeholder="Commission" value="${{ old('commission') }}">
                                 @if ($errors->has('commission'))
                                     <span class="text-danger">{{ $errors->first('commission') }}</span>
                                 @endif
+                                <span class="error-message text-danger"></span>
                             </div>
                         </div>
 
                         <div class="col-md-4">
-                            <label class="col-form-label">Paid</label>
+                            <label class="col-form-label">Paid <span class="text-danger">*</span></label>
                             <div class="form-group">
-                                <input type="text" name="paid" class="form-control"
+                                <input type="text" name="paid" class="form-control required-field"
                                        data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                        placeholder="Paid" value="${{ old('paid') }}">
                                 @if ($errors->has('paid'))
                                     <span class="text-danger">{{ $errors->first('paid') }}</span>
                                 @endif
+                                <span class="error-message text-danger"></span>
                             </div>
                         </div>
 
 
                         <div class="col-md-4">
-                            <label class="col-form-label">Due</label>
+                            <label class="col-form-label">Due <span class="text-danger">*</span></label>
                             <div class="form-group">
-                                <input type="text" name="due" class="form-control"
+                                <input type="text" name="due" class="form-control required-field"
                                        data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                        placeholder="Paid" value="${{ old('due') }}">
                                 @if ($errors->has('due'))
                                     <span class="text-danger">{{ $errors->first('due') }}</span>
                                 @endif
+                                <span class="error-message text-danger"></span>
                             </div>
                         </div>
 
 
                         <div class="col-md-12">
-                            <label class="col-form-label">Memo / Notes</label>
+                            <label class="col-form-label">Memo / Notes <span class="text-danger">*</span></label>
                             <div class="form-group">
-                                <textarea class="form-control" rows="10" name="notes"></textarea>
+                                <textarea class="form-control required-field" rows="10" name="notes"></textarea>
                                 @if ($errors->has('notes'))
                                     <span
                                         class="text-danger">{{ $errors->first('notes') }}</span>
                                 @endif
+                                <span class="error-message text-danger"></span>
                             </div>
                         </div>
 
@@ -166,9 +182,113 @@
             });
             flatpickr(".flatpickr-minimum");
 
-        });
+            function shouldValidateField($input) {
+                let $tabPane = $input.closest('.tab-pane');
+                if ($tabPane.length === 0) {
+                    // Not inside any tab-pane, always validate
+                    return true;
+                }
+                let tabId = $tabPane.attr('id');
+                let $tabLink = $('.nav-link[href="#' + tabId + '"]');
+                if ($tabLink.length === 0) {
+                    return false;
+                }
+                if ($tabLink.is(':hidden') || $tabLink.parent().is(':hidden')) {
+                    return false;
+                }
+                return true;
+            }
 
-        $(document).ready(function () {
+            // Real-time validation for required fields
+            $(document).on('input change blur', '.required-field', function() {
+                let $input = $(this);
+                
+                // Only validate if the field should be validated based on policy type
+                if (!shouldValidateField($input)) {
+                    return;
+                }
+                
+                // let value = $input.val().trim();
+                let inputName = $input.attr('name');
+                let $errorSpan = $input.closest('.form-group').find('.error-message');
+                let $tabPane = $input.closest('.tab-pane');
+                let tabId = $tabPane.attr('id');
+                let $tabLink = $('.nav-link[href="#' + tabId + '"]');
+
+                let isCheckbox = $input.is(':checkbox');
+                console.log('isCheckbox', isCheckbox);
+                let value = isCheckbox ? $input.is(':checked') : $input.val().trim();
+
+
+                if (!value) {
+                    // Show error
+                    console.log('❌ Validation Error:', {
+                        fieldName: inputName,
+                        fieldType: $input.attr('type') || 'select',
+                        tabId: tabId,
+                        message: 'This field is required.'
+                    });
+                    $errorSpan.text('This field is required.');
+                    $tabLink.addClass('tab-error');
+                } else {
+                    // Remove error
+                    $errorSpan.text('');
+                    // Check if this tab has any other errors
+                    let hasOtherErrors = $tabPane.find('.error-message').not($errorSpan).text().length > 0;
+                    if (!hasOtherErrors) {
+                        $tabLink.removeClass('tab-error');
+                    }
+                }
+            });
+
+            // On form submit
+            $('form').on('submit', function (e) {
+                let isValid = true;
+                let firstErrorTab = null;
+
+                // Remove previous errors
+                $('.error-message').text('');
+                $('.nav-link').removeClass('tab-error');
+
+                // Validate each required field
+                $('.required-field').each(function () {
+                    let $input = $(this);
+                    
+                    // Only validate if the field should be validated based on policy type
+                    if (!shouldValidateField($input)) {
+                        return;
+                    }
+                    
+                    let isCheckbox = $input.is(':checkbox');
+                    let value = isCheckbox ? $input.is(':checked') : $input.val().trim();
+                    let $tabPane = $input.closest('.tab-pane');
+                    let tabId = $tabPane.attr('id');
+                    let $tabLink = $('.nav-link[href="#' + tabId + '"]');
+
+                    if (!value) {
+                        isValid = false;
+                        let inputName = $input.attr('name');
+                        console.log('❌ Form Submit Validation Error:', {
+                            fieldName: inputName,
+                            fieldType: $input.attr('type') || 'select',
+                            tabId: tabId,
+                            message: 'This field is required.'
+                        });
+                        // Set a specific error message for checkboxes
+                        let errorMsg = isCheckbox ? 'Please check this box if you want to proceed.' : 'This field is required.';
+                        $input.closest('.form-group').find('.error-message').text(errorMsg);
+                        $tabLink.addClass('tab-error');
+                        if (!firstErrorTab) firstErrorTab = $tabLink;
+                    }
+                });
+
+                // If not valid, prevent submit and switch to first error tab
+                if (!isValid) {
+                    e.preventDefault();
+                    if (firstErrorTab) firstErrorTab.tab('show');
+                }
+            });
+    
             // Use event delegation to handle dynamically added elements
             $(document).on('change', '#client_id', function () {
                 var selectedData = $(this).find('option:selected');
