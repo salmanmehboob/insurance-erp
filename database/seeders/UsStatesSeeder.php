@@ -64,6 +64,7 @@ class UsStatesSeeder extends Seeder
             ['name' => 'West Virginia'],
             ['name' => 'Wisconsin'],
             ['name' => 'Wyoming'],
+            ['name' => 'International'],
         ];
 
         foreach ($states as $state) {

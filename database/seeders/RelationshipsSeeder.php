@@ -15,6 +15,7 @@ class RelationshipsSeeder extends Seeder
             ['name' => 'Spouse'],
             ['name' => 'Child'],
             ['name' => 'Friend'],
+            ['name' => 'Insured'],
         ];
 
         foreach ($relationships as $relationship) {

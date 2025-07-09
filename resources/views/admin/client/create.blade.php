@@ -5,7 +5,7 @@
         .tab-error {
             border-color: red !important;
         }
-    </style>    
+    </style>
 @endpush
 
 @section('content')
@@ -13,7 +13,8 @@
     <!-- Form validation -->
     <div class="card">
         <!-- Agent form -->
-        <form action="{{ route('store-client') }}" method="POST" enctype="multipart/form-data" class="flex-fill" novalidate>
+        <form action="{{ route('store-client') }}" method="POST" enctype="multipart/form-data" class="flex-fill"
+              novalidate>
             @csrf
             <input type="hidden" name="policy_type_id" value="{{$policyType->id}}">
             <div class="card-body">
@@ -55,7 +56,8 @@
                             <div class="col-md-12">
                                 <label class="col-form-label">Address</label>
                                 <div class="form-group">
-                                    <input type="text" name="address" class="form-control required-field" placeholder="Address"
+                                    <input type="text" name="address" class="form-control required-field"
+                                           placeholder="Address"
                                            value="{{ old('address') }}">
                                     <span class="error-message text-danger"></span>
                                     @if ($errors->has('address'))
@@ -68,7 +70,8 @@
                             <div class="col-md-4">
                                 <label class="col-form-label">City <span class="text-danger">*</span></label>
                                 <div class="form-group">
-                                    <input type="text" name="city" class="form-control required-field" placeholder="City"
+                                    <input type="text" name="city" class="form-control required-field"
+                                           placeholder="City"
                                            value="{{ old('city') }}">
                                     <span class="error-message text-danger"></span>
                                     @if ($errors->has('city'))
@@ -112,7 +115,8 @@
                             <div class="col-md-8">
                                 <label class="col-form-label">Email <span class="text-danger">*</span></label>
                                 <div class="form-group">
-                                    <input type="email" name="email" class="form-control required-field" placeholder="Email"
+                                    <input type="email" name="email" class="form-control required-field"
+                                           placeholder="Email"
                                            value="{{ old('email') }}">
                                     <span class="error-message text-danger"></span>
                                     @if ($errors->has('email'))
@@ -123,7 +127,7 @@
                             <div class="col-md-4">
                                 <label class="col-form-label">Email Status <span class="text-danger">*</span></label>
                                 <div class="form-group">
-                                            <select name="email_status_id" class="form-control select2 required-field"
+                                    <select name="email_status_id" class="form-control select2 required-field"
                                             data-placeholder="Select Status">
                                         <option></option>
                                         @foreach($emailStatues as $state)
@@ -143,7 +147,8 @@
                             <div class="col-md-8">
                                 <label class="col-form-label">Anniversary <span class="text-danger">*</span></label>
                                 <div class="form-group">
-                                    <input type="text" name="anniversary" class="form-control flatpickr-minimum required-field"
+                                    <input type="text" name="anniversary"
+                                           class="form-control flatpickr-minimum required-field"
                                            placeholder="Select Date"
                                            value="{{ old('anniversary') }}">
                                     <span class="error-message text-danger"></span>
@@ -197,7 +202,7 @@
                                        placeholder="(999) 999-9999"
                                        data-inputmask="'mask': '(999) 999-9999'"
                                        value="{{ old('cell_phone_no') }}">
-                                 @if ($errors->has('cell_phone_no'))
+                                @if ($errors->has('cell_phone_no'))
                                     <span class="text-danger">{{ $errors->first('cell_phone_no') }}</span>
                                 @endif
                             </div>
@@ -209,7 +214,7 @@
                                        placeholder="(999) 999-9999"
                                        data-inputmask="'mask': '(999) 999-9999'"
                                        value="{{ old('work_phone_no') }}">
-                                                @if ($errors->has('work_phone_no'))
+                                @if ($errors->has('work_phone_no'))
                                     <span class="text-danger">{{ $errors->first('work_phone_no') }}</span>
                                 @endif
                             </div>
@@ -221,7 +226,7 @@
                                        placeholder="(999) 999-9999"
                                        data-inputmask="'mask': '(999) 999-9999'"
                                        value="{{ old('fax_phone_no') }}">
-                                        @if ($errors->has('fax_phone_no'))
+                                @if ($errors->has('fax_phone_no'))
                                     <span class="text-danger">{{ $errors->first('fax_phone_no') }}</span>
                                 @endif
                             </div>
@@ -289,7 +294,7 @@
                                 <div class="col-md-6">
                                     <label class="col-form-label">Status <span class="text-danger">*</span></label>
                                     <div class="form-group">
-                                            <select name="policy_status_id" class="form-control select2 required-field"
+                                        <select name="policy_status_id" class="form-control select2 required-field"
                                                 data-placeholder="Select Status">
                                             <option></option>
                                             @foreach($policyStatuses as $state)
@@ -365,7 +370,8 @@
                                 <div class="col-md-6">
                                     <label class="col-form-label">Sold Date <span class="text-danger">*</span></label>
                                     <div class="form-group">
-                                                    <input type="text" name="sold_date" class="form-control flatpickr-minimum required-field"
+                                        <input type="text" name="sold_date"
+                                               class="form-control flatpickr-minimum required-field"
                                                placeholder="Select Date"
                                                value="{{ old('sold_date') }}">
                                         <span class="error-message text-danger"></span>
@@ -463,7 +469,7 @@
                                             @endforeach
                                         </select>
                                         <span class="error-message text-danger"></span>
-                                                @if ($errors->has('agency_id'))
+                                        @if ($errors->has('agency_id'))
                                             <span class="text-danger">{{ $errors->first('agency_id') }}</span>
                                         @endif
                                     </div>
@@ -488,9 +494,11 @@
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label class="col-form-label">First Name <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">First Name <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
-                                                    <input type="text" name="first_name[0]" class="form-control required-field"
+                                                    <input type="text" name="first_name[0]"
+                                                           class="form-control required-field"
                                                            placeholder="First Name"
                                                            value="{{ old('first_name[0]') }}">
                                                     <span class="error-message text-danger"></span>
@@ -501,9 +509,11 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="col-form-label">Last Name <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Last Name <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
-                                                    <input type="text" name="last_name[0]" class="form-control required-field"
+                                                    <input type="text" name="last_name[0]"
+                                                           class="form-control required-field"
                                                            placeholder="Last Name"
                                                            value="{{ old('last_name') }}">
                                                     <span class="error-message text-danger"></span>
@@ -514,7 +524,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="col-form-label">Date Of Birth <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Date Of Birth <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
                                                     <input type="date" name="dob[0]"
                                                            class="form-control required-field"
@@ -527,9 +538,11 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="col-form-label">Age <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Age <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
-                                                    <input type="number" name="age[0]" class="form-control required-field"
+                                                    <input type="number" name="age[0]"
+                                                           class="form-control required-field"
                                                            placeholder="Age"
                                                            value="{{ old('age') }}">
                                                     <span class="error-message text-danger"></span>
@@ -572,9 +585,11 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="col-form-label">Marital Status <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Marital Status <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
-                                                    <select name="marital_status_id[0]" class="form-control required-field"
+                                                    <select name="marital_status_id[0]"
+                                                            class="form-control required-field"
                                                             style="width: 100%; appearance: auto; -webkit-appearance: auto;">
                                                         <option value="">Select Status</option>
                                                         @foreach($maritalStatus as $state)
@@ -590,9 +605,11 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="col-form-label">Relation to Insured <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Relation to Insured <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
-                                                        <select name="relationship_id[0]" class="form-control required-field"
+                                                    <select name="relationship_id[0]"
+                                                            class="form-control required-field"
                                                             style="width: 100%; appearance: auto; -webkit-appearance: auto;">
                                                         <option value="">Select Relation</option>
                                                         @foreach($relationships as $state)
@@ -607,10 +624,13 @@
                                                     @endif
                                                 </div>
                                             </div>
+                                            @if($policyType->id != 7 && $policyType->id != 5)
                                             <div class="col-md-4">
-                                                <label class="col-form-label">Driver License <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Driver License <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
-                                                    <input type="text" name="license_no[0]" class="form-control required-field"
+                                                    <input type="text" name="license_no[0]"
+                                                           class="form-control"
                                                            placeholder="License No"
                                                            value="{{ old('license_no') }}">
                                                     <span class="error-message text-danger"></span>
@@ -621,11 +641,12 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="col-form-label">License State <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">License State <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
-                                                    <select name="us_state_id[0]" class="form-control required-field"
+                                                    <select name="us_state_id[0]" class="form-control"
                                                             style="width: 100%; appearance: auto; -webkit-appearance: auto;">
-                                                        <option value="">Select State</option>
+                                                        <option value="">None</option>
                                                         @foreach($states as $state)
                                                             <option
                                                                 value="{{ $state->id }}" {{ old('us_state_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
@@ -639,9 +660,11 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="col-form-label">License Year <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">License Year <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
-                                                    <input type="number" name="license_year[0]" class="form-control required-field"
+                                                    <input type="number" name="license_year[0]"
+                                                           class="form-control"
                                                            placeholder="License Year"
                                                            value="{{ old('license_year') }}">
                                                     <span class="error-message text-danger"></span>
@@ -651,10 +674,14 @@
                                                     @endif
                                                 </div>
                                             </div>
+
+                                            @endif
                                             <div class="col-md-12">
-                                                <label class="col-form-label">Cell Phone <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Cell Phone <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
-                                                    <input type="text" name="cell_no[0]" class="form-control cell_no required-field"
+                                                    <input type="text" name="cell_no[0]"
+                                                           class="form-control cell_no required-field"
                                                            placeholder="(999) 999-9999"
                                                            data-inputmask="'mask': '(999) 999-9999'"
                                                            value="{{ old('cell_no') }}">
@@ -668,7 +695,8 @@
                                             <div class="col-md-4">
                                                 <label class="col-form-label">Education Level <span class="text-danger">*</span></label>
                                                 <div class="form-group">
-                                                    <select name="education_level_id[0]" class="form-control required-field     "
+                                                    <select name="education_level_id[0]"
+                                                            class="form-control required-field     "
                                                             style="width: 100%; appearance: auto; -webkit-appearance: auto;">
                                                         <option value="">Select Education Level</option>
                                                         @foreach($educationLevels as $state)
@@ -684,9 +712,11 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="col-form-label">Occupation <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Occupation <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
-                                                    <input type="text" name="occupation[0]" class="form-control required-field"
+                                                    <input type="text" name="occupation[0]"
+                                                           class="form-control required-field"
                                                            placeholder="Occupation"
                                                            value="{{ old('occupation') }}">
                                                     <span class="error-message text-danger"></span>
@@ -697,9 +727,11 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="col-form-label">Industry <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Industry <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
-                                                    <input type="text" name="industry[0]" class="form-control required-field"
+                                                    <input type="text" name="industry[0]"
+                                                           class="form-control required-field"
                                                            placeholder="Industry"
                                                            value="{{ old('industry') }}">
                                                     <span class="error-message text-danger"></span>
@@ -727,7 +759,8 @@
                                         <div class="col-md-12">
                                             <label class="col-form-label">Type of Business</label>
                                             <div class="form-group">
-                                                <input type="text" name="type_of_business" class="form-control required-field"
+                                                <input type="text" name="type_of_business"
+                                                       class="form-control required-field"
                                                        value="{{ old('type_of_business') }}">
                                                 <span class="error-message text-danger"></span>
                                                 @if ($errors->has('type_of_business'))
@@ -739,7 +772,8 @@
                                         <div class="col-md-12">
                                             <label class="col-form-label">Year Of Experience</label>
                                             <div class="form-group">
-                                                <input type="text" name="year_of_experience" class="form-control required-field"
+                                                <input type="text" name="year_of_experience"
+                                                       class="form-control required-field"
                                                        value="{{ old('year_of_experience') }}">
                                                 <span class="error-message text-danger"></span>
                                                 @if ($errors->has('year_of_experience'))
@@ -751,7 +785,8 @@
                                         <div class="col-md-12">
                                             <label class="col-form-label">Special License?</label>
                                             <div class="form-group">
-                                                <input type="text" name="special_license" class="form-control required-field"
+                                                <input type="text" name="special_license"
+                                                       class="form-control required-field"
                                                        value="{{ old('special_license') }}">
                                                 <span class="error-message text-danger"></span>
                                                 @if ($errors->has('special_license'))
@@ -763,7 +798,8 @@
                                         <div class="col-md-12">
                                             <label class="col-form-label">Employment #</label>
                                             <div class="form-group">
-                                                <input type="number" name="employment_number" class="form-control required-field"
+                                                <input type="number" name="employment_number"
+                                                       class="form-control required-field"
                                                        value="{{ old('employment_number') }}">
                                                 <span class="error-message text-danger"></span>
                                                 @if ($errors->has('employment_number'))
@@ -775,7 +811,8 @@
                                         <div class="col-md-12">
                                             <label class="col-form-label">Payroll</label>
                                             <div class="form-group">
-                                                <input type="text" name="employment_payroll" class="form-control required-field"
+                                                <input type="text" name="employment_payroll"
+                                                       class="form-control required-field"
                                                        data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                        value="${{ old('employment_payroll') }}">
                                                 <span class="error-message text-danger"></span>
@@ -794,7 +831,8 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Current Inst</label>
                                                 <div class="form-group">
-                                                    <input type="text" name="current_inst" class="form-control required-field"
+                                                    <input type="text" name="current_inst"
+                                                           class="form-control required-field"
                                                            value="${{ old('current_inst') }}">
                                                     <span class="error-message text-danger"></span>
                                                     @if ($errors->has('current_inst'))
@@ -827,7 +865,8 @@
                                         <fieldset class="border p-3">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <input type="checkbox" class="form-check-inline required-field" value="1"
+                                                    <input type="checkbox" class="form-check-inline required-field"
+                                                           value="1"
                                                            name="is_general_liability" id="">
                                                     @if($policyType->id == 14)
                                                         EPLI
@@ -842,7 +881,8 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">General Aggregate</label>
                                                 <div class="form-group">
-                                                    <select name="general_aggregate" class="form-control select2 required-field"
+                                                    <select name="general_aggregate"
+                                                            class="form-control select2 required-field"
                                                             style="width: 100%"
                                                             data-placeholder="Select Option">
                                                         <option></option>
@@ -862,7 +902,8 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Products Aggregate</label>
                                                 <div class="form-group">
-                                                    <select name="product_aggregate" class="form-control select2 required-field"
+                                                    <select name="product_aggregate"
+                                                            class="form-control select2 required-field"
                                                             style="width: 100%"
                                                             data-placeholder="Select Option">
                                                         <option></option>
@@ -882,7 +923,8 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Personal & Advertising Injury</label>
                                                 <div class="form-group">
-                                                    <select name="personal_injury" class="form-control select2 required-field"
+                                                    <select name="personal_injury"
+                                                            class="form-control select2 required-field"
                                                             style="width: 100%"
                                                             data-placeholder="Select Option">
                                                         <option></option>
@@ -902,7 +944,8 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Each Occurrence</label>
                                                 <div class="form-group">
-                                                        <select name="each_occurrence" class="form-control select2 required-field"
+                                                    <select name="each_occurrence"
+                                                            class="form-control select2 required-field"
                                                             style="width: 100%"
                                                             data-placeholder="Select Option">
                                                         <option></option>
@@ -923,7 +966,8 @@
                                                 <div class="col-md-12">
                                                     <label class="col-form-label">Fire Damage</label>
                                                     <div class="form-group">
-                                                        <select name="fire_damage" class="form-control select2 required-field"
+                                                        <select name="fire_damage"
+                                                                class="form-control select2 required-field"
                                                                 style="width: 100%"
                                                                 data-placeholder="Select Option">
                                                             <option></option>
@@ -944,7 +988,8 @@
                                                 <div class="col-md-12">
                                                     <label class="col-form-label">Medical Expenses</label>
                                                     <div class="form-group">
-                                                        <select name="medical_expense" class="form-control select2 required-field"
+                                                        <select name="medical_expense"
+                                                                class="form-control select2 required-field"
                                                                 style="width: 100%"
                                                                 data-placeholder="Select Option">
                                                             <option></option>
@@ -971,7 +1016,8 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Annual Receipt</label>
                                                 <div class="form-group">
-                                                    <input type="text" name="annual_receipt" class="form-control required-field"
+                                                    <input type="text" name="annual_receipt"
+                                                           class="form-control required-field"
                                                            data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                            value="${{ old('annual_receipt') }}">
                                                     <span class="error-message text-danger"></span>
@@ -998,7 +1044,8 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Building</label>
                                                 <div class="form-group">
-                                                    <input type="text" name="building" class="form-control required-field"
+                                                    <input type="text" name="building"
+                                                           class="form-control required-field"
                                                            data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                            value="${{ old('building') }}">
                                                     <span class="error-message text-danger"></span>
@@ -1011,7 +1058,8 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Contents</label>
                                                 <div class="form-group">
-                                                    <input type="text" name="contents" class="form-control required-field"
+                                                    <input type="text" name="contents"
+                                                           class="form-control required-field"
                                                            data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                            value="${{ old('contents') }}">
                                                     <span class="error-message text-danger"></span>
@@ -1024,7 +1072,8 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Loss Of Earning</label>
                                                 <div class="form-group">
-                                                    <input type="text" name="loss_of_earning" class="form-control required-field"
+                                                    <input type="text" name="loss_of_earning"
+                                                           class="form-control required-field"
                                                            data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                            value="${{ old('loss_of_earning') }}">
                                                     <span class="error-message text-danger"></span>
@@ -1109,7 +1158,8 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Owned / Leased</label>
                                                 <div class="form-group">
-                                                    <select name="property_owner" class="form-control select2 required-field"
+                                                    <select name="property_owner"
+                                                            class="form-control select2 required-field"
                                                             style="width: 100%"
                                                             data-placeholder="Select Option">
                                                         <option></option>
@@ -1127,7 +1177,8 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Year Built</label>
                                                 <div class="form-group">
-                                                    <input type="text" name="built_year" class="form-control required-field"
+                                                    <input type="text" name="built_year"
+                                                           class="form-control required-field"
                                                            value="{{ old('built_year') }}">
                                                     <span class="error-message text-danger"></span>
                                                     @if ($errors->has('built_year'))
@@ -1139,7 +1190,8 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Area</label>
                                                 <div class="form-group">
-                                                    <input type="text" name="property_area" class="form-control required-field"
+                                                    <input type="text" name="property_area"
+                                                           class="form-control required-field"
                                                            value="{{ old('property_area') }}">
                                                     <span class="error-message text-danger"></span>
                                                     @if ($errors->has('property_area'))
@@ -1151,7 +1203,8 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Age Of Roof</label>
                                                 <div class="form-group">
-                                                    <input type="text" name="age_of_roof" class="form-control required-field"
+                                                    <input type="text" name="age_of_roof"
+                                                           class="form-control required-field"
                                                            value="{{ old('age_of_roof') }}">
                                                     <span class="error-message text-danger"></span>
                                                     @if ($errors->has('age_of_roof'))
@@ -1163,7 +1216,8 @@
                                             <div class="col-md-12">
                                                 <label class="col-form-label">Construction</label>
                                                 <div class="form-group">
-                                                    <input type="text" name="construction" class="form-control required-field"
+                                                    <input type="text" name="construction"
+                                                           class="form-control required-field"
                                                            value="{{ old('construction') }}">
                                                     <span class="error-message text-danger"></span>
                                                     @if ($errors->has('construction'))
@@ -1191,9 +1245,11 @@
                                             <h3>Coverage</h3>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Dwelling/Building <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Dwelling/Building <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="text" name="dwelling_building" class="form-control required-field"
+                                                        <input type="text" name="dwelling_building"
+                                                               class="form-control required-field"
                                                                data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                                value="{{ old('dwelling_building') }}">
                                                         <span class="error-message text-danger"></span>
@@ -1204,9 +1260,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Liability Limits <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Liability Limits <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <select name="liability_limit" class="form-control select2 required-field"
+                                                        <select name="liability_limit"
+                                                                class="form-control select2 required-field"
                                                                 style="width: 100%"
                                                                 data-placeholder="Select Option">
                                                             <option value="">Select Option</option>
@@ -1225,9 +1283,11 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Contents <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Contents <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="text" name="contents" class="form-control required-field"
+                                                        <input type="text" name="contents"
+                                                               class="form-control required-field"
                                                                data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                                value="{{ old('contents') }}">
                                                         <span class="error-message text-danger"></span>
@@ -1240,15 +1300,16 @@
                                                 <div class="col-md-6">
                                                     <label class="col-form-label">Medical Payment</label>
                                                     <div class="form-group">
-                                                        <select name="medical_payment" class="form-control select2 required-field"
+                                                        <select name="medical_payment"
+                                                                class="form-control select2 required-field"
                                                                 style="width: 100%"
                                                                 data-placeholder="Select Option">
                                                             <option value="">Select Option</option>
-                                                            <option value="0">$0.00</option>
-                                                            <option value="500">$500.00</option>
-                                                            <option value="1000">$1000.00</option>
-                                                            <option value="2000">$2000.00</option>
-                                                            <option value="5000">$5000.00</option>
+                                                            <option value="None">None</option>
+                                                            <option value="500">500</option>
+                                                            <option value="1000">1000</option>
+                                                            <option value="2000">2000</option>
+                                                            <option value="5000">5000</option>
 
                                                         </select>
                                                         <span class="error-message text-danger"></span>
@@ -1260,7 +1321,8 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Additional Structure <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Additional Structure <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
                                                         <input type="text" name="additional_structure"
                                                                class="form-control required-field"
@@ -1276,7 +1338,8 @@
                                                 <div class="col-md-6">
                                                     <label class="col-form-label">Deductible</label>
                                                     <div class="form-group">
-                                                        <select name="deductible" class="form-control select2 required-field"
+                                                        <select name="deductible"
+                                                                class="form-control select2 required-field"
                                                                 style="width: 100%"
                                                                 data-placeholder="Select Option">
                                                             <option value="">Select Option</option>
@@ -1296,7 +1359,8 @@
                                                 <div class="col-md-6">
                                                     <label class="col-form-label">Loss of Use <span class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="text" name="loss_of_use" class="form-control required-field"
+                                                        <input type="text" name="loss_of_use"
+                                                               class="form-control required-field"
                                                                data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                                value="{{ old('loss_of_use') }}">
                                                         <span class="error-message text-danger"></span>
@@ -1316,7 +1380,8 @@
                                             <h3>Rating Information</h3>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Usage <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Usage <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
                                                         <select name="usage" class="form-control select2 required-field"
                                                                 style="width: 100%"
@@ -1336,9 +1401,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Construction <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Construction <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <select name="construction" class="form-control select2 required-field"
+                                                        <select name="construction"
+                                                                class="form-control select2 required-field"
                                                                 style="width: 100%"
                                                                 data-placeholder="Select Option">
                                                             <option value="">Select Option</option>
@@ -1360,9 +1427,11 @@
 
 
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Year Built <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Year Built <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="number" name="built_year" class="form-control required-field"
+                                                        <input type="number" name="built_year"
+                                                               class="form-control required-field"
                                                                value="{{ old('built_year') }}">
                                                         <span class="error-message text-danger"></span>
                                                         @if ($errors->has('built_year'))
@@ -1372,9 +1441,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Square Footage <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Square Footage <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="number" name="square_footage" class="form-control required-field"
+                                                        <input type="number" name="square_footage"
+                                                               class="form-control required-field"
                                                                value="{{ old('square_footage') }}">
                                                         <span class="error-message text-danger"></span>
                                                         @if ($errors->has('square_footage'))
@@ -1385,9 +1456,11 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Rooms <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Rooms <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="number" name="rooms" class="form-control required-field"
+                                                        <input type="number" name="rooms"
+                                                               class="form-control required-field"
                                                                value="{{ old('rooms') }}">
                                                         <span class="error-message text-danger"></span>
                                                         @if ($errors->has('rooms'))
@@ -1400,7 +1473,8 @@
                                                 <div class="col-md-6">
                                                     <label class="col-form-label">Age Of Roof <span class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="number" name="age_of_roof" class="form-control required-field"
+                                                        <input type="number" name="age_of_roof"
+                                                               class="form-control required-field"
                                                                value="{{ old('age_of_roof') }}">
                                                         <span class="error-message text-danger"></span>
                                                         @if ($errors->has('age_of_roof'))
@@ -1457,9 +1531,11 @@
                                             <h3>Coverage</h3>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Value <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Value <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="text" name="value" class="form-control required-field"
+                                                        <input type="text" name="value"
+                                                               class="form-control required-field"
                                                                data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                                value="{{ old('value') }}">
                                                         <span class="error-message text-danger"></span>
@@ -1472,7 +1548,8 @@
                                                 <div class="col-md-6">
                                                     <label class="col-form-label">Liability Limits</label>
                                                     <div class="form-group">
-                                                        <select name="liability_limit" class="form-control select2 required-field"
+                                                        <select name="liability_limit"
+                                                                class="form-control select2 required-field"
                                                                 style="width: 100%"
                                                                 data-placeholder="Select Option">
                                                             <option value="">Select Option</option>
@@ -1491,9 +1568,11 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Contents <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Contents <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="text" name="contents" class="form-control required-field"
+                                                        <input type="text" name="contents"
+                                                               class="form-control required-field"
                                                                data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                                value="{{ old('contents') }}">
                                                         <span class="error-message text-danger"></span>
@@ -1525,7 +1604,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Theft <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Theft <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
                                                         <input type="text" name="theft"
                                                                class="form-control required-field"
@@ -1542,7 +1622,8 @@
                                                 <div class="col-md-6">
                                                     <label class="col-form-label">Deductible</label>
                                                     <div class="form-group">
-                                                        <select name="deductible" class="form-control select2 required-field"
+                                                        <select name="deductible"
+                                                                class="form-control select2 required-field"
                                                                 style="width: 100%"
                                                                 data-placeholder="Select Option">
                                                             <option value="">Select Option</option>
@@ -1562,7 +1643,8 @@
 
 
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Adjacent Structure <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Adjacent Structure <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
                                                         <input type="text" name="adjacent_structure"
                                                                class="form-control required-field"
@@ -1576,9 +1658,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Replacement Cost <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Replacement Cost <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="text" name="replacement_cost" class="form-control required-field"
+                                                        <input type="text" name="replacement_cost"
+                                                               class="form-control required-field"
                                                                data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                                value="{{ old('replacement_cost') }}">
                                                         <span class="error-message text-danger"></span>
@@ -1599,9 +1683,11 @@
                                             <div class="row">
 
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Make <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Make <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="number" name="make" class="form-control required-field"
+                                                        <input type="number" name="make"
+                                                               class="form-control required-field"
                                                                value="{{ old('make') }}">
                                                         <span class="error-message text-danger"></span>
                                                         @if ($errors->has('make'))
@@ -1611,9 +1697,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Model <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Model <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="number" name="model" class="form-control required-field"
+                                                        <input type="number" name="model"
+                                                               class="form-control required-field"
                                                                value="{{ old('model') }}">
                                                         <span class="error-message text-danger"></span>
                                                         @if ($errors->has('model'))
@@ -1624,9 +1712,11 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Year Built <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Year Built <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="number" name="built_year" class="form-control required-field"
+                                                        <input type="number" name="built_year"
+                                                               class="form-control required-field"
                                                                value="{{ old('built_year') }}">
                                                         <span class="error-message text-danger"></span>
                                                         @if ($errors->has('built_year'))
@@ -1636,9 +1726,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Length X Width <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Length X Width <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="number" name="dimensions" class="form-control required-field"
+                                                        <input type="number" name="dimensions"
+                                                               class="form-control required-field"
                                                                value="{{ old('dimensions') }}">
                                                         <span class="error-message text-danger"></span>
                                                         @if ($errors->has('dimensions'))
@@ -1650,9 +1742,11 @@
 
 
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Tie Down <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Tie Down <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="text" name="tied_down" class="form-control required-field"
+                                                        <input type="text" name="tied_down"
+                                                               class="form-control required-field"
                                                                value="{{ old('tied_down') }}">
                                                         <span class="error-message text-danger"></span>
                                                         @if ($errors->has('tied_down'))
@@ -1663,9 +1757,11 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Type Of Siding <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Type Of Siding <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="text" name="type_of_siding" class="form-control required-field"
+                                                        <input type="text" name="type_of_siding"
+                                                               class="form-control required-field"
                                                                value="{{ old('type_of_siding') }}">
                                                         <span class="error-message text-danger"></span>
                                                         @if ($errors->has('type_of_siding'))
@@ -1676,9 +1772,11 @@
                                                 </div>
 
                                                 <div class="col-md-12">
-                                                    <label class="col-form-label">Park Name <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Park Name <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="text" name="park_name" class="form-control required-field"
+                                                        <input type="text" name="park_name"
+                                                               class="form-control required-field"
                                                                value="{{ old('park_name') }}">
                                                         <span class="error-message text-danger"></span>
                                                         @if ($errors->has('park_name'))
@@ -1688,9 +1786,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Skirted <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Skirted <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="text" name="skirted" class="form-control required-field"
+                                                        <input type="text" name="skirted"
+                                                               class="form-control required-field"
                                                                value="{{ old('skirted') }}">
                                                         <span class="error-message text-danger"></span>
                                                         @if ($errors->has('skirted'))
@@ -1701,9 +1801,11 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label class="col-form-label">Fire Place <span class="text-danger">*</span></label>
+                                                    <label class="col-form-label">Fire Place <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="form-group">
-                                                        <input type="text" name="fire_place" class="form-control required-field"
+                                                        <input type="text" name="fire_place"
+                                                               class="form-control required-field"
                                                                value="{{ old('fire_place') }}">
                                                         <span class="error-message text-danger"></span>
                                                         @if ($errors->has('fire_place'))
@@ -1742,12 +1844,15 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Bodily Injury <span class="text-danger">*</span></label>
+                                    <label class="col-form-label">Bodily Injury <span
+                                            class="text-danger">*</span></label>
                                     <div class="form-group">
-                                        <select name="body_injury" class="form-control select2 required-field" style="width: 100%"
+                                        <select name="body_injury" class="form-control select2 required-field"
+                                                style="width: 100%"
                                                 data-placeholder="Select Option">
                                             <span class="error-message text-danger"></span>
                                             <option value="">Select Option</option>
+                                            <option value="None">None</option>
                                             <option value="10/10">10/10</option>
                                             <option value="1020">10/20</option>
                                             <option value="15/30">15/30</option>
@@ -1770,12 +1875,15 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Property Damage <span class="text-danger">*</span></label>
+                                    <label class="col-form-label">Property Damage <span
+                                            class="text-danger">*</span></label>
                                     <div class="form-group">
-                                        <select name="property_damage" class="form-control select2 required-field" style="width: 100%"
+                                        <select name="property_damage" class="form-control select2 required-field"
+                                                style="width: 100%"
                                                 data-placeholder="Select Option">
                                             <span class="error-message text-danger"></span>
                                             <option value="">Select Option</option>
+                                            <option value="None">None</option>
                                             <option value="5">5</option>
                                             <option value="10">10</option>
                                             <option value="15">15</option>
@@ -1795,9 +1903,10 @@
                                 <div class="col-md-6">
                                     <label class="col-form-label">Medical Payment</label>
                                     <div class="form-group">
-                                        <select name="medical_payments" class="form-control select2 required-field" style="width: 100%"
+                                        <select name="medical_payments" class="form-control select2 required-field"
+                                                style="width: 100%"
                                                 data-placeholder="Select Option">
-                                            <span class="error-message text-danger"></span>
+                                            <option value="">Select Option</option>
                                             <option value="None">None</option>
                                             <option value="500">500</option>
                                             <option value="1000">1000</option>
@@ -1805,7 +1914,8 @@
                                             <option value="5000">5000</option>
 
                                         </select>
-                                        @if ($errors->has('medical_payments'))
+                                        <span class="error-message text-danger"></span>
+                                    @if ($errors->has('medical_payments'))
                                             <span class="text-danger">{{ $errors->first('medical_payments') }}</span>
                                         @endif
                                     </div>
@@ -1813,7 +1923,8 @@
                                 <div class="col-md-6">
                                     <label class="col-form-label">PIP <span class="text-danger">*</span></label>
                                     <div class="form-group">
-                                        <select name="pip" class="form-control select2 required-field" style="width: 100%"
+                                        <select name="pip" class="form-control select2 required-field"
+                                                style="width: 100%"
                                                 data-placeholder="Select Option">
                                             <span class="error-message text-danger"></span>
                                             <option value="">Select Option</option>
@@ -1833,7 +1944,8 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Uninsured Bodily Injury <span class="text-danger">*</span></label>
+                                    <label class="col-form-label">Uninsured Bodily Injury <span
+                                            class="text-danger">*</span></label>
                                     <div class="form-group">
                                         <select name="uninsured_body_injury" class="form-control select2 required-field"
                                                 style="width: 100%"
@@ -1865,9 +1977,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Uninsured Property Damage <span class="text-danger">*</span></label>
+                                    <label class="col-form-label">Uninsured Property Damage <span
+                                            class="text-danger">*</span></label>
                                     <div class="form-group">
-                                        <select name="uninsured_property_damage" class="form-control select2 required-field"
+                                        <select name="uninsured_property_damage"
+                                                class="form-control select2 required-field"
                                                 style="width: 100%"
                                                 data-placeholder="Select Option">
                                             <span class="error-message text-danger"></span>
@@ -1894,12 +2008,13 @@
                                 <div class="col-md-6">
                                     <label class="col-form-label">Under Insured Bodily Injury <span class="text-danger">*</span></label>
                                     <div class="form-group">
-                                        <select name="under_insured_body_injury" class="form-control select2 required-field"
+                                        <select name="under_insured_body_injury"
+                                                class="form-control select2 required-field"
                                                 style="width: 100%"
                                                 data-placeholder="Select Option">
                                             <span class="error-message text-danger"></span>
                                             <option value="">Select Option</option>
-                                                        <option value="None">None</option>
+                                            <option value="None">None</option>
 
                                             <option value="10/10">10/10</option>
                                             <option value="1020">10/20</option>
@@ -1924,9 +2039,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Under Insured Property Damage <span class="text-danger">*</span></label>
+                                    <label class="col-form-label">Under Insured Property Damage <span
+                                            class="text-danger">*</span></label>
                                     <div class="form-group">
-                                                <select name="under_insured_property_damage" class="form-control select2 required-field"
+                                        <select name="under_insured_property_damage"
+                                                class="form-control select2 required-field"
                                                 style="width: 100%"
                                                 data-placeholder="Select Option">
                                             <span class="error-message text-danger"></span>
@@ -1967,7 +2084,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="col-form-label">
-                                                    VIN  
+                                                    VIN
                                                     <span class="text-danger">*</span>
                                                     <small>(17 characters: uppercase letters and numbers, excluding
                                                         I, O, Q — e.g., 1HGCM82633A123456)</small>
@@ -1978,15 +2095,16 @@
                                                            pattern="[A-Za-z0-9]{17}"
                                                            value="{{ old('vin.0') }}">
 
-                                                <span class="error-message text-danger"></span>
-                                                @if ($errors->has('vin'))
+                                                    <span class="error-message text-danger"></span>
+                                                    @if ($errors->has('vin'))
                                                         <span class="text-danger">{{ $errors->first('vin') }}</span>
                                                     @endif
                                                 </div>
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label class="col-form-label">Year <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Year <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
                                                     <select name="year_id[0]" class="form-control required-field"
                                                             style="width: 100%; appearance: auto; -webkit-appearance: auto;"
@@ -2007,7 +2125,8 @@
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label class="col-form-label">Make <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Make <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
                                                     <select name="vehicle_make_id[0]" id="vehicle_make_id[0]"
                                                             class="form-control  vehicle-make required-field"
@@ -2029,7 +2148,8 @@
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label class="col-form-label">Model <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Model <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
                                                     <select name="vehicle_model_id[0]" id="vehicle_model_id[0]"
                                                             class="form-control required-field"
@@ -2046,7 +2166,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="col-form-label">Comprehensive <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Comprehensive <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
                                                     <select name="comprehensive[0]" class="form-control required-field"
                                                             style="width: 100%; appearance: auto; -webkit-appearance: auto;"
@@ -2057,8 +2178,6 @@
                                                         <option value="500">500</option>
                                                         <option value="750">750</option>
                                                         <option value="1000">1000</option>
-
-
                                                     </select>
                                                     <span class="error-message text-danger"></span>
                                                     @if ($errors->has('comprehensive'))
@@ -2070,12 +2189,13 @@
 
 
                                             <div class="col-md-6">
-                                                <label class="col-form-label">Collision <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Collision <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
                                                     <select name="collision[0]" class="form-control required-field  "
                                                             style="width: 100%; appearance: auto; -webkit-appearance: auto;"
                                                             data-placeholder="Select Option">
-                                                                <option value="">Select Collision</option>
+                                                        <option value="">Select Collision</option>
                                                         <option value="None">None</option>
                                                         <option value="250">250</option>
                                                         <option value="500">500</option>
@@ -2093,10 +2213,10 @@
                                             <div class="col-md-6">
                                                 <label class="col-form-label">Rental <span class="text-danger">*</span></label>
                                                 <div class="form-group">
-                                                    <select name="rental[0]" class="form-control required-field"
+                                                    <select name="rental[0]" class="form-control"
                                                             style="width: 100%; appearance: auto; -webkit-appearance: auto;"
                                                             data-placeholder="Select Option">
-                                                        <option value="">Select Rental</option>
+                                                        <option value="None">None</option>
                                                         <option value="20">20</option>
                                                         <option value="30">30</option>
                                                         <option value="50">50</option>
@@ -2127,12 +2247,13 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="col-form-label">Custom Equipment <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Custom Equipment <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="form-group">
                                                     <input type="text" name="custom_equipment[0]"
                                                            class="form-control required-field"
                                                            data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
-                                                           value="${{ old('custom_equipment') }}">  
+                                                           value="${{ old('custom_equipment') }}">
                                                     <span class="error-message text-danger"></span>
                                                     @if ($errors->has('custom_equipment'))
                                                         <span
@@ -2171,9 +2292,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="col-form-label">Prorated Endorsement <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Prorated Endorsement <span
+                                                class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="prorated_endorsement" class="form-control required-field"
+                                            <input type="text" name="prorated_endorsement"
+                                                   class="form-control required-field"
                                                    data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                    value="${{ old('prorated_endorsement') }}">
                                             <span class="error-message text-danger"></span>
@@ -2186,7 +2309,8 @@
                                     <div class="col-md-12">
                                         <label class="col-form-label">Premium Add Ons <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="premium_addon" class="form-control required-field      "
+                                            <input type="text" name="premium_addon"
+                                                   class="form-control required-field      "
                                                    data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                    value="${{ old('premium_addon') }}">
                                             <span class="error-message text-danger"></span>
@@ -2223,7 +2347,8 @@
 
                                     <hr>
                                     <div class="col-md-12">
-                                        <label class="col-form-label fw-bold">TOTAL <span class="text-danger">*</span></label>
+                                        <label class="col-form-label fw-bold">TOTAL <span
+                                                class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="total" class="form-control required-field"
                                                    data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
@@ -2239,7 +2364,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-12">
-                                        <label class="col-form-label">Down Payment <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Down Payment <span
+                                                class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="down_payment" class="form-control required-field"
                                                    data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
@@ -2254,18 +2380,20 @@
                                     <div class="col-md-12">
                                         <label class="col-form-label">Monthly Payment <span class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="monthly_payment" class="form-control required-field"
+                                            <input type="text" name="monthly_payment"
+                                                   class="form-control required-field"
                                                    data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                    value="${{ old('monthly_payment') }}">
                                             <span class="error-message text-danger"></span>
-                                                    @if ($errors->has('monthly_payment'))
+                                            @if ($errors->has('monthly_payment'))
                                                 <span
                                                     class="text-danger">{{ $errors->first('monthly_payment') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="col-form-label">Initial Agency Commission <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Initial Agency Commission <span
+                                                class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" id="initial_agency_commission"
                                                    name="initial_agency_commission" class="form-control required-field"
@@ -2279,9 +2407,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="col-form-label">Primary Agency Commission <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Primary Agency Commission <span
+                                                class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="primary_agency_commission" class="form-control required-field"
+                                            <input type="text" name="primary_agency_commission"
+                                                   class="form-control required-field"
                                                    data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                    value="${{ old('primary_agency_commission') }}">
                                             <span class="error-message text-danger"></span>
@@ -2292,9 +2422,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="col-form-label">Secondary Agency Commission <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Secondary Agency Commission <span
+                                                class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="secondary_agency_commission" class="form-control required-field"
+                                            <input type="text" name="secondary_agency_commission"
+                                                   class="form-control required-field"
                                                    data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                    value="${{ old('secondary_agency_commission') }}">
                                             <span class="error-message text-danger"></span>
@@ -2310,9 +2442,11 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="col-md-12">
-                                        <label class="col-form-label">Total Premium <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Total Premium <span
+                                                class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="total_premium" class="form-control required-field      "
+                                            <input type="text" name="total_premium"
+                                                   class="form-control required-field      "
                                                    data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
                                                    value="${{ old('total_premium') }}">
                                             <span class="error-message text-danger"></span>
@@ -2349,7 +2483,8 @@
 
                                     <hr>
                                     <div class="col-md-12">
-                                        <label class="col-form-label fw-bold">PRORATED TOTAL <span class="text-danger">*</span></label>
+                                        <label class="col-form-label fw-bold">PRORATED TOTAL <span
+                                                class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <input type="text" name="total_prorated" class="form-control required-field"
                                                    data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
@@ -2364,7 +2499,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-12">
-                                            <label class="col-form-label">Payment Option <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Payment Option <span class="text-danger">*</span></label>
                                         <div class="form-group">
                                             <select name="payment_option" class="form-control select2 required-field"
                                                     style="width: 100%"
@@ -2402,9 +2537,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="col-form-label">Financial Company <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Financial Company <span
+                                                class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <select name="financial_company_id" class="form-control select2 required-field"
+                                            <select name="financial_company_id"
+                                                    class="form-control select2 required-field"
                                                     style="width: 100%"
                                                     data-placeholder="Select Option">
                                                 <option value="">Select Option</option>
@@ -2430,12 +2567,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="col-md-12">
-                                        <label class="col-form-label">Coverage <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Coverage <span
+                                                class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="coverage" class="form-control required-field" id="coverage"
+                                            <input type="text" name="coverage" class="form-control required-field"
+                                                   id="coverage"
                                                    value="{{ old('coverage') }}">
                                             <span class="error-message text-danger"></span>
-                                                @if ($errors->has('coverage'))
+                                            @if ($errors->has('coverage'))
                                                 <span
                                                     class="text-danger">{{ $errors->first('coverage') }}</span>
                                             @endif
@@ -2443,9 +2582,11 @@
                                     </div>
 
                                     <div class="col-md-12">
-                                        <label class="col-form-label">Referral Resource <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Referral Resource <span
+                                                class="text-danger">*</span></label>
                                         <div class="form-group">
-                                            <input type="text" name="referral_resource" class="form-control required-field"
+                                            <input type="text" name="referral_resource"
+                                                   class="form-control required-field"
                                                    value="{{ old('referral_resource') }}">
                                             <span class="error-message text-danger"></span>
                                             @if ($errors->has('referral_resource'))
@@ -2458,9 +2599,11 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-12">
-                                        <label class="col-form-label">Memo / Notes <span class="text-danger">*</span>       </label>
+                                        <label class="col-form-label">Memo / Notes <span class="text-danger">*</span>
+                                        </label>
                                         <div class="form-group">
-                                            <textarea class="form-control required-field" rows="10" name="notes"></textarea>
+                                            <textarea class="form-control required-field" rows="10"
+                                                      name="notes"></textarea>
                                             <span class="error-message text-danger"></span>
                                             @if ($errors->has('notes'))
                                                 <span
@@ -2474,7 +2617,7 @@
                             </div>
 
                     </div>
-                    
+
                 </div>
 
             </div>
@@ -2520,14 +2663,14 @@
             }
 
             // Real-time validation for required fields
-            $(document).on('input change blur', '.required-field', function() {
+            $(document).on('input change blur', '.required-field', function () {
                 let $input = $(this);
-                
+
                 // Only validate if the field should be validated based on policy type
                 if (!shouldValidateField($input)) {
                     return;
                 }
-                
+
                 // let value = $input.val().trim();
                 let inputName = $input.attr('name');
                 let $errorSpan = $input.closest('.form-group').find('.error-message');
@@ -2573,12 +2716,12 @@
                 // Validate each required field
                 $('.required-field').each(function () {
                     let $input = $(this);
-                    
+
                     // Only validate if the field should be validated based on policy type
                     if (!shouldValidateField($input)) {
                         return;
                     }
-                    
+
                     let isCheckbox = $input.is(':checkbox');
                     let value = isCheckbox ? $input.is(':checked') : $input.val().trim();
                     let $tabPane = $input.closest('.tab-pane');
@@ -2742,7 +2885,6 @@
                 placeholder: "Select an option",
                 allowClear: true
             });
-
 
 
             flatpickr(".flatpickr-minimum");

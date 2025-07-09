@@ -34,11 +34,8 @@
             font-weight: bold;
         }
         .logo {
-            text-align: left;
-            font-weight: bold;
-            margin-bottom: 100px;
-            width: 50px;
-            height: 30px;
+            width: 100px;   
+            height: 100px;
         }
 
         .custom-checkbox {
@@ -61,8 +58,8 @@
     </div>
     <div class="row align-items-center ">
         <div class="col-auto logo">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlEWoadzCCwI9_Z2amcJ2wMJPHhJbbybrVbw&s" alt="">
-        </div>
+        <img src="{{ asset('backend/img/acord-logo.png') }}" alt="ACORD Logo" >
+                            </div>
         <div class="col text-center title">
             Evidence Of Property Insurance
         </div>

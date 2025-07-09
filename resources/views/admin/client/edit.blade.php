@@ -263,7 +263,7 @@
                                     @elseif($policyType->id == 7 || $policyType->id == 9)
                                         Owners
                                     @elseif($policyType->id == 2 || $policyType->id == 3 || $policyType->id == 4
-                                        || $policyType->id == 5 || $policyType->id == 13 || $policyType->id == 10 || $policyType->id == 11 
+                                        || $policyType->id == 5 || $policyType->id == 13 || $policyType->id == 10 || $policyType->id == 11
                                         || $policyType->id == 12 || $policyType->id == 14 || $policyType->id == 15 || $policyType->id == 16)
                                         Contact Info
                                     @endif
@@ -637,12 +637,13 @@
                                                             @endif
                                                         </div>
                                                     </div>
+                                                    @if($policyType->id != 7 && $policyType->id != 5)
                                                     <div class="col-md-4">
                                                         <label class="col-form-label">Driver License <span
                                                         class="text-danger">*</span></label>
                                                         <div class="form-group">
                                                             <input type="text" name="license_no[{{$key}}]"
-                                                                   class="form-control required-field"
+                                                                   class="form-control"
                                                                    placeholder="License No"
                                                                    value="{{ $driver->license_no }}">
                                                             <span class="error-message text-danger"></span>
@@ -656,10 +657,10 @@
                                                         <label class="col-form-label">License State <span
                                                         class="text-danger">*</span></label>
                                                         <div class="form-group">
-                                                            <select name="us_state_id[{{$key}}]" class="form-control required-field"
+                                                            <select name="us_state_id[{{$key}}]" class="form-control"
                                                                     style="width: 100%; appearance: auto; -webkit-appearance: auto;"
                                                                     data-placeholder="Select State">
-                                                                <option value="">Select State</option>
+                                                                <option value="">None</option>
                                                                 @foreach($states as $state)
                                                                     <option
                                                                         value="{{ $state->id }}" {{ $driver->us_state_id == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
@@ -677,7 +678,7 @@
                                                         class="text-danger">*</span></label>
                                                         <div class="form-group">
                                                             <input type="number" name="license_year[{{$key}}]"
-                                                                   class="form-control required-field"
+                                                                   class="form-control"
                                                                    placeholder="License Year"
                                                                    value="{{ $driver->license_year }}">
                                                             <span class="error-message text-danger"></span>
@@ -687,6 +688,7 @@
                                                             @endif
                                                         </div>
                                                     </div>
+                                                    @endif
                                                     <div class="col-md-12">
                                                         <label class="col-form-label">Cell Phone <span
                                                                 class="text-danger">*</span></label>
@@ -885,9 +887,9 @@
                                                     <div class="form-group">
                                                         <input type="checkbox" class="form-check-inline" value="1"
 
-                                                        {{ isset($client->commercialLiability->general_liability) && 
-                                                            $client->commercialLiability->general_liability == '1' ? 'checked' : '' 
-                                                        }}   
+                                                        {{ isset($client->commercialLiability->general_liability) &&
+                                                            $client->commercialLiability->general_liability == '1' ? 'checked' : ''
+                                                        }}
 
                                                             name="is_general_liability" id="">
                                                         @if($policyType->id == 14)
@@ -2107,6 +2109,7 @@
                                             <select name="body_injury" class="form-control select2 required-field" style="width: 100%"
                                                     data-placeholder="Select Option">
                                                 <option value="">Select Option</option>
+                                                <option  {{isset($client->coverage->body_injury) && $client->coverage->body_injury == 'None' ? 'selected' : ''}} value="None">None</option>
                                                 <option
                                                     {{isset($client->coverage->body_injury) && $client->coverage->body_injury == '10/10' ? 'selected' : ''}} value="10/10">
                                                     10/10
@@ -2178,7 +2181,9 @@
                                                     style="width: 100%"
                                                     data-placeholder="Select Option">
                                                 <option value="">Select Option</option>
-                                                <option
+                                                    <option {{isset($client->coverage->property_damage) && $client->coverage->property_damage == 'None' ? 'selected' : ''}} value="None">None</option>
+
+                                                    <option
                                                     {{isset($client->coverage->property_damage) && $client->coverage->property_damage == '5' ? 'selected' : ''}} value="5">
                                                     5
                                                 </option>
@@ -2223,7 +2228,7 @@
                                                     style="width: 100%"
                                                     data-placeholder="Select Option">
                                                 <option value="">Select Option</option>
-                                                <option
+                                                 <option
                                                     {{isset($client->coverage->medical_payments) && $client->coverage->medical_payments == 'None' ? 'selected' : ''}}  value="None">
                                                     None
                                                 </option>
@@ -2300,6 +2305,8 @@
                                                     style="width: 100%"
                                                     data-placeholder="Select Option">
                                                 <option value="">Select Option</option>
+                                                <option {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == 'None' ? 'selected' : ''}} value="None">None</option>
+
                                                 <option
                                                     {{isset($client->coverage->uninsured_body_injury) && $client->coverage->uninsured_body_injury == '10/10' ? 'selected' : ''}} value="10/10">
                                                     10/10
@@ -2372,6 +2379,8 @@
                                                     style="width: 100%"
                                                     data-placeholder="Select Option">
                                                 <option value="">Select Option</option>
+                                                <option {{isset($client->coverage->uninsured_property_damage) && $client->coverage->uninsured_property_damage == 'None' ? 'selected' : ''}}  value="None">None</option>
+
                                                 <option
                                                     {{isset($client->coverage->uninsured_property_damage) && $client->coverage->uninsured_property_damage == '5' ? 'selected' : ''}} value="5">
                                                     5
@@ -2418,6 +2427,8 @@
                                                     style="width: 100%"
                                                     data-placeholder="Select Option">
                                                 <option value="">Select Option</option>
+                                                <option {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == 'None' ? 'selected' : ''}}  value="None">None</option>
+
                                                 <option
                                                     {{isset($client->coverage->under_insured_body_injury) && $client->coverage->under_insured_body_injury == '1010' ? 'selected' : ''}} value="10/10">
                                                     10/10
@@ -2489,6 +2500,7 @@
                                                     style="width: 100%"
                                                     data-placeholder="Select Option">
                                                 <option value="">Select Option</option>
+                                                <option {{isset($client->coverage->under_insured_property_damage) && $client->coverage->under_insured_property_damage == 'None' ? 'selected' : ''}} value="None">None</option>
                                                 <option
                                                     {{isset($client->coverage->under_insured_property_damage) && $client->coverage->under_insured_property_damage == '5' ? 'selected' : ''}} value="5">
                                                     5
@@ -2714,10 +2726,14 @@
                                                             <label class="col-form-label">Rental <span
                                                             class="text-danger">*</span></label>
                                                             <div class="form-group">
-                                                                <select name="rental[{{$key}}]" class="form-control required-field"
+                                                                <select name="rental[{{$key}}]" class="form-control"
                                                                         style="width: 100%"
                                                                         data-placeholder="Select Option">
                                                                     <option value="">Select Rental</option>
+                                                                    <option
+                                                                        {{$vehicle->rental == 'None' ? 'selected' : ''}} value="None">
+                                                                        None
+                                                                    </option>
                                                                     <option
                                                                         {{$vehicle->rental == '20' ? 'selected' : ''}} value="20">
                                                                         20
@@ -3186,14 +3202,14 @@
                 }
 
                 let value = $input.val().trim();
-               
+
                 let inputName = $input.attr('name');
                 let $errorSpan = $input.closest('.form-group').find('.error-message');
                 let $tabPane = $input.closest('.tab-pane');
                 let tabId = $tabPane.attr('id');
                 let $tabLink = $('.nav-link[href="#' + tabId + '"]');
 
-              
+
                 if (!value) {
                     // Show error
                     console.log('❌ Validation Error:', {

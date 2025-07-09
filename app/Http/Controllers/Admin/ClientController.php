@@ -76,7 +76,8 @@ class ClientController extends Controller
     public function create(Request $request)
     {
         $title = 'Add Client';
-        $states = UsState::all();
+        $states = UsState::orderBy('name', 'asc')->get();
+
         $emailStatues = EmailStatus::all();
         $languages = PrimaryLanguage::all();
         $policyStatuses = PolicyStatus::all();
@@ -432,7 +433,7 @@ class ClientController extends Controller
         }
 
         $title = 'Edit Client';
-        $states = UsState::all();
+        $states = UsState::orderBy('name', 'asc')->get();
         $emailStatues = EmailStatus::all();
         $languages = PrimaryLanguage::all();
         $policyStatuses = PolicyStatus::all();
@@ -578,9 +579,9 @@ class ClientController extends Controller
                             'gender_id' => $request->gender_id[$key],
                             'marital_status_id' => $request->marital_status_id[$key],
                             'relationship_id' => $request->relationship_id[$key],
-                            'license_no' => $request->license_no[$key],
-                            'us_state_id' => $request->us_state_id[$key],
-                            'license_year' => $request->license_year[$key],
+                            'license_no' => $request->license_no[$key] ?? NUll,
+                            'us_state_id' => $request->us_state_id[$key] ?? NUll,
+                            'license_year' => $request->license_year[$key] ?? NULL,
                             'cell_no' => $request->cell_no[$key],
                             'education_level_id' => $request->education_level_id[$key],
                             'occupation' => $request->occupation[$key],

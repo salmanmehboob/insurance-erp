@@ -160,7 +160,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('banks/force-delete/{id}', [BankController::class, 'forceDelete'])->name('force-delete-bank');
 
     Route::get('show-commission', [CommissionController::class, 'index'])->name('show-commission');
-    Route::get('add-commission', [CommissionController::class, 'create'])->name('add-commission');
+    Route::get('add-commission', [CommissionController::class, 'cre ate'])->name('add-commission');
     Route::post('store-commission', [CommissionController::class, 'store'])->name('store-commission');
     Route::get('commission/{id}/edit', [CommissionController::class, 'edit'])->name('edit-commission');
     Route::put('update-commission{id}', [CommissionController::class, 'update'])->name('update-commission');

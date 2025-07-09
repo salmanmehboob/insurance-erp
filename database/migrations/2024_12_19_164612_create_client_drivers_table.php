@@ -23,9 +23,9 @@ return new class extends Migration
             $table->unsignedBigInteger('marital_status_id');
             $table->unsignedBigInteger('relationship_id');
 
-            $table->string('license_no');
-            $table->unsignedBigInteger('us_state_id');
-            $table->string('license_year');
+            $table->string('license_no')->nullable();
+            $table->unsignedBigInteger('us_state_id')->nullable();
+            $table->string('license_year')->nullable();
             $table->string('cell_no');
             $table->unsignedBigInteger('education_level_id');
             $table->string('occupation');
