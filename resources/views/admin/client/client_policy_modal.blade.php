@@ -200,90 +200,210 @@
                                         <div class="col-12">
                                             <h1 class="mb-3">Forms</h1>
                                         </div>
-                                        <div class="col-md-6">
-                                            <a href="{{ route('create-agent/broker-form', $policy->client->id) }}"
-                                               class="text-primary w-100">Create Agent/Broker Form</a>
+                                        <div class="col-md-8">
+{{--                                              <a href="{{ route('create-agent/broker-form', $policy->client->id) }}"--}}
+{{--                                               class="text-primary w-100">Create Agent/Broker Form</a>  --}}
+
+                                               <a href="{{ route('show-upload-form', ['type' => 'agent_broker', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">AGENT/BROKER FORM</a>
                                         </div>
-                                        <div class="col-md-6">
-                                            <a target="_blank" href="{{route('view.form',['type' => 'agent_broker'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                        <div class="col-md-4">
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'agent_broker', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
                                         </div>
-                                        <div class="col-md-6">
-                                            <a href="{{ route('create-additional/remarks-form', $policy->client->id) }}"
-                                               class="text-primary w-100">Create Additional/Remarks Form</a>
+                                        <div class="col-md-8">
+{{--                                              <a href="{{ route('create-additional/remarks-form', $policy->client->id) }}"--}}
+{{--                                               class="text-primary w-100">Create Additional/Remarks Form</a> --}}
+                                               <a href="{{ route('show-upload-form', ['type' => 'additional_remarks', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">ADDITIONAL/REMARKS FORM</a>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <a target="_blank" href="{{route('view.form',['type' => 'additional_remarks'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                        <div class="col-md-4">
+{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'additional_remarks'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'additional_remarks', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <a href="{{ route('create-evidence/of/property-form', $policy->client->id) }}"
-                                               class="text-primary w-100">Evidence Of Property</a>
+                                        <div class="col-md-8">
+{{--                                              <a href="{{ route('create-evidence/of/property-form', $policy->client->id) }}"--}}
+{{--                                               class="text-primary w-100">Evidence Of Property</a> --}}
+                                               <a href="{{ route('show-upload-form', ['type' => 'evidence_of_property', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">EVIDENCE OF PROPERTY</a>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <a target="_blank" href="{{route('view.form',['type' => 'evidenceOfProperty'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                        <div class="col-md-4">
+{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'evidenceOfProperty'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'evidence_of_property', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <a href="{{ route('create-invoice-for-payment-form', $policy->client->id) }}"
-                                               class="text-primary w-100">Invoice For Payment</a>
+                                        <div class="col-md-8">
+{{--                                              <a href="{{ route('create-invoice-for-payment-form', $policy->client->id) }}"--}}
+{{--                                               class="text-primary w-100">Invoice For Payment</a> --}}
+                                               <a href="{{ route('show-upload-form', ['type' => 'invoice_for_payment', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">INVOICE FOR PAYMENT</a>
                                         </div>
-                                        <div class="col-md-6">
-                                            <a target="_blank" href="{{route('view.form',['type' => 'invoiceForPayment'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <a href="{{ route('create-property-loss-form', $policy->client->id) }}"
-                                               class="text-primary w-100">Property Loss Notice</a>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <a target="_blank" href="{{route('view.form',['type' => 'propertyLoss'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                        <div class="col-md-4">
+{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'invoiceForPayment'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'invoice_for_payment', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <a href="{{ route('create-property-insurance-form', $policy->client->id) }}"
-                                               class="text-primary w-100">Certificate Of Property Insurance</a>
+                                        <div class="col-md-8">
+{{--                                              <a href="{{ route('create-property-loss-form', $policy->client->id) }}"--}}
+{{--                                               class="text-primary w-100">Property Loss Notice</a> --}}
+                                               <a href="{{ route('show-upload-form', ['type' => 'property_loss', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">PROPERTY LOSS NOTICE</a>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <a target="_blank" href="{{route('view.form',['type' => 'propertyInsurance'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                        <div class="col-md-4">
+{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'propertyLoss'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'property_loss', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <a href="{{ route('create-liability-insurance-form', $policy->client->id) }}"
-                                               class="text-primary w-100">Certificate Of Liability Insurance</a>
+                                        <div class="col-md-8">
+{{--                                              <a href="{{ route('create-property-insurance-form', $policy->client->id) }}"--}}
+{{--                                               class="text-primary w-100">Certificate Of Property Insurance</a> --}}
+                                               <a href="{{ route('show-upload-form', ['type' => 'property_insurance', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">CERTIFICATE OF PROPERTY INSURANCE</a>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <a target="_blank" href="{{route('view.form',['type' => 'liabilityInsurance'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                        <div class="col-md-4">
+{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'propertyInsurance'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'property_insurance', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <a href="{{ route('create-insurance-card-form', $policy->client->id) }}"
-                                               class="text-primary w-100">INSURANCE IDENTIFICATION CARD</a>
+                                        <div class="col-md-8">
+{{--                                              <a href="{{ route('create-liability-insurance-form', $policy->client->id) }}"--}}
+{{--                                               class="text-primary w-100">Certificate Of Liability Insurance</a> --}}
+                                               <a href="{{ route('show-upload-form', ['type' => 'liability_insurance', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">CERTIFICATE OF LIABILITY INSURANCE</a>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceCard'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                        <div class="col-md-4">
+{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'liabilityInsurance'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'liability_insurance', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <a href="{{ route('create-general-liability-form', $policy->client->id) }}"
-                                               class="text-primary w-100">COMMERCIAL GENERAL LIABILITY SECTION</a>
+                                        <div class="col-md-8">
+{{--                                              <a href="{{ route('create-insurance-card-form', $policy->client->id) }}"--}}
+{{--                                               class="text-primary w-100">INSURANCE IDENTIFICATION CARD</a> --}}
+                                               <a href="{{ route('show-upload-form', ['type' => 'insurance_card', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">INSURANCE IDENTIFICATION CARD</a>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <a target="_blank" href="{{route('view.form',['type' => 'GeneralLiability'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"
-                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a>
+                                        <div class="col-md-4">
+{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceCard'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'insurance_card', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                        <div class="col-md-8">
+{{--                                              <a href="{{ route('create-general-liability-form', $policy->client->id) }}"--}}
+{{--                                               class="text-primary w-100">COMMERCIAL GENERAL LIABILITY SECTION</a> --}}
+                                               <a href="{{ route('show-upload-form', ['type' => 'general_liability', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">COMMERCIAL GENERAL LIABILITY SECTION</a>
+                                        </div>
+
+                                        <div class="col-md-4">
+{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'GeneralLiability'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'general_liability', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
+                                        </div>
+                                        <div class="col-md-8">
+{{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"--}}
+{{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
+                                               <a href="{{ route('show-upload-form', ['type' => 'insurance_application', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">COMMERCIAL INSURANCE APPLICATION</a>
+                                        </div>
+
+                                        <div class="col-md-4">
+{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'insurance_application', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            {{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
+                                            <a href="{{ route('show-upload-form', ['type' => 'dwelling_fire', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">DWELLING FIRE APPLICATION</a>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'dwelling_fire', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            {{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
+                                            <a href="{{ route('show-upload-form', ['type' => 'installation_builders', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">INSTALLATION BUILDERS RISK SECTION</a>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'installation_builders', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            {{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
+                                            <a href="{{ route('show-upload-form', ['type' => 'property_section', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">PROPERTY SECTION</a>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'property_section', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            {{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
+                                            <a href="{{ route('show-upload-form', ['type' => 'umbrella_section', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">UMBRELLA EXCESS SECTION</a>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'umbrella_section', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            {{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
+                                            <a href="{{ route('show-upload-form', ['type' => 'worker_compensation', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">WORKERS COMPENSATION APPLICATION</a>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'worker_compensation', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

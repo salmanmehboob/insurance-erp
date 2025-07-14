@@ -176,4 +176,9 @@ class Client extends Model
     {
         return $this->hasMany(ClientAttachment::class);
     }
+
+    public function uploadedForms()
+    {
+        return $this->hasMany(ClientUploadedForm::class);
+    }
 }

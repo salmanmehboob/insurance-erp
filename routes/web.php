@@ -233,4 +233,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('store/insurance/application', [FormsController::class, 'storeInsuranceApplicationForm'])->name('store-insurance-application');
 
 
+    Route::get('/create/{type}/{client_id}', [FormsController::class, 'showUploadForm'])->name('show-upload-form');
+    Route::get('view/form/{type}/{client_id?}', [FormsController::class, 'viewUploadedForm'])->name('view-uploaded-form');
+    Route::post('/forms/upload', [FormsController::class, 'uploadForm'])->name('upload-form');
+
 });

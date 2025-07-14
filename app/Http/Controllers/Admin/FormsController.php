@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\ClientPolicy;
+use App\Models\ClientUploadedForm;
 use App\Models\Forms\AdditionalRemarkForm;
 use App\Models\Forms\AgentBrokerForm;
 use App\Models\Forms\EvidenceOfPropertyForm;
@@ -146,7 +147,9 @@ class FormsController extends Controller
         $clientPolicy = ClientPolicy::with('client', 'insuranceCompany', 'agent.agencies')->where('client_id', $id)->first();
         $agencies = Agency::all();
 
-        return view('admin.clientForms.agent_broker.create', compact('clientPolicy', 'agencies'));
+        // return view('admin.clientForms.agent_broker.create', compact('clientPolicy', 'agencies'));
+
+        return view('admin.clientForms.agent_broker.upload', compact('clientPolicy'));
     }
 
     public function storeAgentBrokerForm(Request $request)
@@ -2169,6 +2172,62 @@ class FormsController extends Controller
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
+    }
+
+
+    public function showUploadForm($type, $client_id)
+    {
+        $client = \App\Models\Client::findOrFail($client_id);
+        return view('admin.clientForms.upload', [
+            'client' => $client,
+            'formType' => $type,
+        ]);
+    }
+
+
+    public function uploadForm(Request $request)
+    {
+        $request->validate([
+            'client_id' => 'required|exists:clients,id',
+            'form_type' => 'required|string',
+            'pdf_file' => 'required|file|mimes:pdf|max:10240', // 10MB max
+        ]);
+
+        try {
+            $clientId = $request->input('client_id');
+            $formType = $request->input('form_type');
+            $file = $request->file('pdf_file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $storagePath = "uploaded_form/$formType/{$clientId}/{$filename}";
+
+            // Store file in storage/app/public/{form_type}/{client_id}/filename
+            $file->storeAs("uploaded_form/$formType/{$clientId}", $filename, 'public');
+
+            // Save record in client_uploaded_forms
+            ClientUploadedForm::create([
+                'client_id' => $clientId,
+                'form_type' => $formType,
+                'path' => $storagePath,
+            ]);
+
+            return redirect()->back()->with('success', 'PDF uploaded successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to upload PDF: ' . $e->getMessage());
+        }
+    }
+
+    public function viewUploadedForm($type, $client_id = null)
+    {
+         $title = formatText($type) . ' Forms';
+        $uploadedForms = collect();
+        if ($client_id) {
+            $client = \App\Models\Client::findOrFail($client_id);
+            $uploadedForms = \App\Models\ClientUploadedForm::where('form_type', $type)
+                ->where('client_id', $client_id)
+                ->get();
+        }
+        return view('admin.clientForms.uploaded_forms', compact('title',
+            'uploadedForms', 'type', 'client_id' ,'client'));
     }
 
 }
