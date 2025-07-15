@@ -25,6 +25,28 @@
     };
 </script>
 
+<script>
+    function fetchUnreadCount() {
+        $.ajax({
+            url: 'chat/get-unread-count', // We'll create this route
+            method: 'GET',
+            success: function(data) {
+                if(data.count > 0) {
+                    $('#unread-count').text(data.count).show();
+                    // Optional: Add blinking effect
+                 } else {
+                    $('#unread-count').hide();
+                 }
+            }
+        });
+    }
+
+    // Call on page load and every 30 seconds
+    fetchUnreadCount();
+    setInterval(fetchUnreadCount, 10000);
+</script>
+
+
 @stack('script')
 
 

@@ -238,3 +238,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/forms/upload', [FormsController::class, 'uploadForm'])->name('upload-form');
 
 });
+
+// Chatify Messenger
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/chatify', '\Chatify\Http\Controllers\MessagesController@index')->name('chatify');
+    Route::post('/chatify/{route}', '\Chatify\Http\Controllers\MessagesController@api')->where('route', '.*');
+});
+
+Route::get('/chat/get-unread-count', function () {
+    $count = \App\Models\ChMessage::where('to_id', auth()->id())
+        ->where('seen', 0)
+        ->count();
+     return response()->json(['count' => $count]);
+})->middleware('auth');

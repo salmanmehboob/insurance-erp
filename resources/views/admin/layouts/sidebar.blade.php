@@ -224,6 +224,18 @@
             @endcan
 
 
+            <!-- Sidebar Chat Button -->
+
+            <li class="sidebar-item {{ request()->routeIs('chatify') ? 'active' : '' }}">
+                    <a target="_blank" class="sidebar-link" href="{{ route('chatify') }}">
+                    <i class="fa fa-comments"></i>
+                        <span class="align-middle">Chat</span>
+                        <span id="unread-count" class="bg bg-danger blinking p-1 rounded-3" style="display:none;"></span>
+                    </a>
+                </li>
+
+
+
         </ul>
     </div>
 </nav>
