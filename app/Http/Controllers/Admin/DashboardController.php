@@ -50,6 +50,7 @@ class DashboardController extends Controller
             $request->filled('location') ||
             $request->filled('policy_status');
 
+        $clientsExpiredSevenDays = NULL;
         // Fetch dropdown data
         $policyStatuses = DB::table('policy_statuses')->get();
         $policyTypes = DB::table('policy_types')->get();
