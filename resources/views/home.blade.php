@@ -197,6 +197,7 @@
                         </tr>
                         </thead>
                         <tbody>
+                        @if(isset($clientsExpiredSevenDays))
                         @foreach($clientsExpiredSevenDays as $client)
                             <tr>
                                 @php
@@ -218,7 +219,7 @@
 
                             </tr>
                         @endforeach
-
+                        @endif
                         </tbody>
                     </table>
                 </div>
