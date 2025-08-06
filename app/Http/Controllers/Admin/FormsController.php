@@ -147,9 +147,9 @@ class FormsController extends Controller
         $clientPolicy = ClientPolicy::with('client', 'insuranceCompany', 'agent.agencies')->where('client_id', $id)->first();
         $agencies = Agency::all();
 
-        // return view('admin.clientForms.agent_broker.create', compact('clientPolicy', 'agencies'));
+         return view('admin.clientForms.agent_broker.create', compact('clientPolicy', 'agencies'));
 
-        return view('admin.clientForms.agent_broker.upload', compact('clientPolicy'));
+//        return view('admin.clientForms.agent_broker.upload', compact('clientPolicy'));
     }
 
     public function storeAgentBrokerForm(Request $request)

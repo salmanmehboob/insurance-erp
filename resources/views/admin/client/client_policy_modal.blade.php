@@ -201,29 +201,31 @@
                                             <h1 class="mb-3">Forms</h1>
                                         </div>
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-agent/broker-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">Create Agent/Broker Form</a>  --}}
+                                              <a href="{{ route('create-agent/broker-form', $policy->client->id) }}"
+                                               class="text-primary w-100">Create Agent/Broker Form</a>
 
-                                               <a href="{{ route('show-upload-form', ['type' => 'agent_broker', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">AGENT/BROKER FORM</a>
+{{--                                               <a href="{{ route('show-upload-form', ['type' => 'agent_broker', 'client_id' => $policy->client->id]) }}"--}}
+{{--                                               class="text-primary w-100 text-uppercase">AGENT/BROKER FORM</a>--}}
                                         </div>
                                         <div class="col-md-4">
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'agent_broker', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
-                                                <i class="fa fa-eye"></i> View
-                                            </a>
+                                            <a target="_blank" href="{{route('view.form',['type' => 'agent_broker'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+
+{{--                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'agent_broker', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">--}}
+{{--                                                <i class="fa fa-eye"></i> View--}}
+{{--                                            </a>--}}
                                         </div>
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-additional/remarks-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">Create Additional/Remarks Form</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'additional_remarks', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">ADDITIONAL/REMARKS FORM</a>
+                                              <a href="{{ route('create-additional/remarks-form', $policy->client->id) }}"
+                                               class="text-primary w-100">Create Additional/Remarks Form</a>
+{{--                                               <a href="{{ route('show-upload-form', ['type' => 'additional_remarks', 'client_id' => $policy->client->id]) }}"--}}
+{{--                                               class="text-primary w-100 text-uppercase">ADDITIONAL/REMARKS FORM</a>--}}
                                         </div>
 
                                         <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'additional_remarks'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'additional_remarks', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
-                                                <i class="fa fa-eye"></i> View
-                                            </a>
+                                            <a target="_blank" href="{{route('view.form',['type' => 'additional_remarks'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+{{--                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'additional_remarks', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">--}}
+{{--                                                <i class="fa fa-eye"></i> View--}}
+{{--                                            </a>--}}
                                         </div>
 
                                         <div class="col-md-8">
