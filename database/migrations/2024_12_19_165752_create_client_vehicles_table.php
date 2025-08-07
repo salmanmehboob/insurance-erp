@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('client_vehicles', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id');
-            $table->string('vin');
-            $table->unsignedBigInteger('year_id');
-            $table->unsignedBigInteger('vehicle_make_id');
-            $table->unsignedBigInteger('vehicle_model_id');
-            $table->string('comprehensive');
-            $table->string('collision');
-            $table->string('rental');
-            $table->string('towing');
-            $table->string('custom_equipment');
+            $table->string('vin')->nullable();
+            $table->unsignedBigInteger('year_id')->nullable();
+            $table->unsignedBigInteger('vehicle_make_id')->nullable();
+            $table->unsignedBigInteger('vehicle_model_id')->nullable();
+            $table->string('comprehensive')->nullable();
+            $table->string('collision')->nullable();
+            $table->string('rental')->nullable();
+            $table->string('towing')->nullable();
+            $table->string('custom_equipment')->nullable();
 
             $table->timestamps();
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');

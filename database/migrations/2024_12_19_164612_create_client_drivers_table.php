@@ -14,22 +14,22 @@ return new class extends Migration
         Schema::create('client_drivers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->date('dob');
-            $table->integer('age');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->date('dob')->nullable();
+            $table->integer('age')->nullable();
             $table->string('ssn_no')->nullable();
-            $table->unsignedBigInteger('gender_id');
-            $table->unsignedBigInteger('marital_status_id');
-            $table->unsignedBigInteger('relationship_id');
+            $table->unsignedBigInteger('gender_id')->nullable();
+            $table->unsignedBigInteger('marital_status_id')->nullable();
+            $table->unsignedBigInteger('relationship_id')->nullable();
 
             $table->string('license_no')->nullable();
             $table->unsignedBigInteger('us_state_id')->nullable();
             $table->string('license_year')->nullable();
-            $table->string('cell_no');
-            $table->unsignedBigInteger('education_level_id');
-            $table->string('occupation');
-            $table->string('industry');
+            $table->string('cell_no')->nullable();
+            $table->unsignedBigInteger('education_level_id')->nullable();
+            $table->string('occupation')->nullable();
+            $table->string('industry')->nullable();
 
             $table->timestamps();
 

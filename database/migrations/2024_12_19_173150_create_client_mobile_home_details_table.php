@@ -14,26 +14,26 @@ return new class extends Migration
         Schema::create('client_mobile_home_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id');
-            $table->string('value');
-            $table->string('liability_limit');
-            $table->string('contents');
-            $table->string('flood');
-            $table->string('theft');
-            $table->string('deductible');
-            $table->string('adjacent_structure');
-            $table->string('replacement_cost');
+            $table->string('value')->nullable();
+            $table->string('liability_limit')->nullable();
+            $table->string('contents')->nullable();
+            $table->string('flood')->nullable();
+            $table->string('theft')->nullable();
+            $table->string('deductible')->nullable();
+            $table->string('adjacent_structure')->nullable();
+            $table->string('replacement_cost')->nullable();
 
-            $table->string('make');
-            $table->string('model');
-             $table->string('built_year');
-            $table->string('dimensions');
-            $table->string('tied_down');
-            $table->string('type_of_siding');
+            $table->string('make')->nullable();
+            $table->string('model')->nullable();
+             $table->string('built_year')->nullable();
+            $table->string('dimensions')->nullable();
+            $table->string('tied_down')->nullable();
+            $table->string('type_of_siding')->nullable();
 
-            $table->string('park_name');
-            $table->string('skirted');
-            $table->string('fire_place');
-            $table->boolean('is_inside_city_limit');
+            $table->string('park_name')->nullable();
+            $table->string('skirted')->nullable();
+            $table->string('fire_place')->nullable();
+            $table->boolean('is_inside_city_limit')->nullable();
             $table->timestamps();
 
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');

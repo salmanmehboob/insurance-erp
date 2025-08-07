@@ -17,18 +17,18 @@ return new class extends Migration
             $table->unsignedBigInteger('policy_type_id'); // Foreign key to US states
             $table->string('applicant_name');
             $table->string('business_name');
-            $table->string('address')->nullable();
+            $table->string('address');
             $table->string('city');
             $table->unsignedBigInteger('state_id'); // Foreign key to US states
             $table->string('zip_code');
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('home_phone_no');
             $table->string('cell_phone_no')->nullable();
             $table->string('work_phone_no')->nullable();
             $table->string('fax_phone_no')->nullable();
-            $table->unsignedBigInteger('email_status_id');
-             $table->unsignedBigInteger('primary_language_id');
-            $table->date('anniversary');
+            $table->unsignedBigInteger('email_status_id')->nullable();
+             $table->unsignedBigInteger('primary_language_id')->nullable();
+            $table->date('anniversary')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

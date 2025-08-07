@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('client_driver_id');
-            $table->date('date');
-            $table->text('violation');
+            $table->date('date')->nullable();
+            $table->text('violation')->nullable();
             $table->timestamps();
 
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');

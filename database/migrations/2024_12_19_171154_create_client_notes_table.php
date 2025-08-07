@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('client_notes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id');
-            $table->text('notes');
-            $table->string('coverage');
-            $table->string('referral_resource');
+            $table->text('notes')->nullable();
+            $table->string('coverage')->nullable();
+            $table->string('referral_resource')->nullable();
             $table->timestamps();
 
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');

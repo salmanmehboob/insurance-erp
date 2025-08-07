@@ -16,10 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('policy_status_id');
             $table->unsignedBigInteger('term_id');
-            $table->date('effective_date');
-            $table->date('expiration_date');
-            $table->date('sold_date');
-            $table->string('file_number');
+            $table->date('effective_date')->nullable();
+            $table->date('expiration_date')->nullable();
+            $table->date('sold_date')->nullable();
+            $table->string('file_number')->nullable();
             $table->string('policy_number');
             $table->unsignedBigInteger('insurance_company_id');
             $table->unsignedBigInteger('general_agent_id')->nullable();

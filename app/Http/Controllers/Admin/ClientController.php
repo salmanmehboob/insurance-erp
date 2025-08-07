@@ -118,40 +118,18 @@ class ClientController extends Controller
             'city' => 'required',
             'state_id' => 'required',
             'zip_code' => 'required',
-            'email' => 'required',
-            'email_status_id' => 'required',
-            'anniversary' => 'required',
-            'primary_language_id' => 'required',
             'home_phone_no' => 'required',
             'policy_status_id' => 'required',
-            'effective_date' => 'required',
             'term_id' => 'required',
-            'expiration_date' => 'required',
-            'file_number' => 'required',
-            'sold_date' => 'required',
             'policy_number' => 'required',
             'insurance_company_id' => 'required',
+            'general_agent_id' => 'required',
             'agent_id' => 'required',
             'agency_id' => 'required',
 
 
-            'initial_premium' => 'required',
-            'prorated_endorsement' => 'required',
-            'premium_addon' => 'required',
-            'company_fee' => 'nullable',
-            'agency_fee' => 'nullable',
-            'total_prorated' => 'required',
-            'down_payment' => 'required',
-            'monthly_payment' => 'required',
-            'initial_agency_commission' => 'required',
-            'primary_agency_commission' => 'required',
-            'secondary_agency_commission' => 'required',
-            'total_premium' => 'required',
-            'total' => 'required',
-            'payment_due_days' => 'required',
-            'coverage' => 'required',
-            'referral_resource' => 'required',
-            'notes' => 'required',
+
+
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -202,8 +180,8 @@ class ClientController extends Controller
             $clientPolicy = ClientPolicy::create($clientPolicyData);
 
 
-            // Create Client Drivers
-            if (!empty($request->first_name) && is_array($request->first_name)) {
+             // Create Client Drivers
+            if (($request->first_name[0] != null) && !empty($request->first_name) && is_array($request->first_name)) {
                 foreach ($request->first_name as $key => $firstName) {
                     ClientDriver::create([
                         'client_id' => $client->id,
@@ -477,42 +455,14 @@ class ClientController extends Controller
             'city' => 'required',
             'state_id' => 'required',
             'zip_code' => 'required',
-            'email' => 'required',
-            'email_status_id' => 'required',
-            'anniversary' => 'required',
-            'primary_language_id' => 'required',
             'home_phone_no' => 'required',
-             'policy_status_id' => 'required',
-            'effective_date' => 'required',
+            'policy_status_id' => 'required',
             'term_id' => 'required',
-            'expiration_date' => 'required',
-            'file_number' => 'required',
-            'sold_date' => 'required',
             'policy_number' => 'required',
             'insurance_company_id' => 'required',
+            'general_agent_id' => 'required',
             'agent_id' => 'required',
             'agency_id' => 'required',
-
-
-            'initial_premium' => 'required',
-            'prorated_endorsement' => 'required',
-            'premium_addon' => 'required',
-            'company_fee' => 'nullable',
-            'agency_fee' => 'nullable',
-            'total_prorated' => 'required',
-            'down_payment' => 'required',
-            'monthly_payment' => 'required',
-            'initial_agency_commission' => 'required',
-            'primary_agency_commission' => 'required',
-            'secondary_agency_commission' => 'required',
-            'total_premium' => 'required',
-//            'total_company_fee' => 'required',
-//            'total_agency_fee' => 'required',
-            'total' => 'required',
-            'payment_due_days' => 'required',
-            'coverage' => 'required',
-            'referral_resource' => 'required',
-            'notes' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -566,7 +516,7 @@ class ClientController extends Controller
             $client->policy()->updateOrCreate(['client_id' => $client->id], $clientPolicyData);
 
             // Update or Create Client Drivers
-            if (!empty($request->first_name) && is_array($request->first_name)) {
+            if (($request->first_name[0] != null) && !empty($request->first_name) && is_array($request->first_name)) {
                 foreach ($request->first_name as $key => $firstName) {
                     ClientDriver::updateOrCreate(
                         ['client_id' => $client->id],
