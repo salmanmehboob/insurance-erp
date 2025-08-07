@@ -15,7 +15,8 @@
         }
         .form-container {
             width: 8.5in; /* Standard US Letter width */
-            height: 11in; /* Standard US Letter height */
+            /*height: 11in;*/ /* Standard US Letter height */
+            height: 13in; /* Standard US Letter height */
             padding: 0.5in; /* Consistent margin inside the form content */
             box-sizing: border-box; /* Padding included in width/height */
             background-color: white;
@@ -363,7 +364,7 @@
                                 <!-- <td></td> -->
                                 <td  style="border-right: 0;">FAX (A/C, No)</td>
                                 <td  style="border-left: 0;">
-                                    <input type="text" value="" class="date-input"   name="agency_phone" placeholder="Phone" style="font-size: 8pt;">
+                                    <input type="text" value="" class="date-input"   name="agency_fax" placeholder="Phone" style="font-size: 8pt;">
 
                                 </td>
                             </tr>
@@ -382,11 +383,10 @@
                         <table style="width: 100%; border: none; ">
                             <tr>
                                 <td colspan="2" >
-                                    <input type="text" value="" class="date-input"   name="agency_address" placeholder="Address" style="font-size: 8pt;">
-
+                                    <input type="text" value="" class="date-input"   name="agency_city" placeholder="City" style="font-size: 8pt;">
                                 </td>
-                                <td >TX</td>
-                                <td colspan="2" >77504</td>
+                                <td ><input type="text" value="" class="date-input" name="agency_state" placeholder="State" style="font-size: 8pt;"></td>
+                                <td colspan="2" ><input type="text" value="" class="date-input" name="agency_zipcode" placeholder="Zip Code" style="font-size: 8pt;"></td>
                             </tr>
 
                         </table>
@@ -397,15 +397,15 @@
                         <table style="width: 100%; ">
                             <tr>
 
-                                <td colspan="2" >EMAIL</td>
+                                <td colspan="2" >Email: <input type="email" value="" class="date-input" name="email" placeholder="Email" style="font-size: 8pt;"></td>
                             </tr>
                             <tr>
-                                <td >CODE : </td>
-                                <td >SUBCODE : </td>
+                                <td >CODE : <input type="text" value="" class="date-input" name="code" placeholder="Code" style="font-size: 8pt;"></td>
+                                <td >SUBCODE : <input type="text" value="" class="date-input" name="sub_code" placeholder="SUB Code" style="font-size: 8pt;"></td>
                             </tr>
                             <tr>
 
-                                <td colspan="2" >AGENCY CUSTOMER ID : </td>
+                                <td colspan="2" >AGENCY CUSTOMER ID : <input type="text" value="" class="date-input" name="agency_customer_id" placeholder="AGENCY CUSTOMER ID" style="font-size: 8pt;"></td>
                             </tr>
                         </table>
                     </div>
@@ -414,17 +414,33 @@
 
                 <div style="margin-top: 5px ">
                     <div class="form-field-line" style="margin-left: 10px;">
-                        <label>INSURANCE COMPANY NAME</label>
+                        <label>INSURANCE COMPANY NAME: <input type="text" value="" class="date-input" name="insurance_company_name" placeholder="INSURANCE COMPANY NAME"
+                            style="font-size: 8pt;"></label>
 
                     </div>
-                    <div class="form-field-line" style="height: 137px; margin-left: 10px;">
-                        <label>No company selected</label>
+                    <div class="form-field-line" style="height: 20px; margin-left: 10px;">
+                        <label>STREET ADDRESS: <input type="text" value="" class="date-input" name="insurance_company_address" placeholder="Address"
+                            style="font-size: 8pt;"></label>
+                    </div>
+                    <div class="form-field-line" style="height: 20px; margin-left: 10px;">
+                        <label>CITY: <input type="text" value="" class="date-input" name="insurance_company_city" placeholder="City"
+                            style="font-size: 8pt;"></label>
+                    </div>
+                    <div class="form-field-line" style="height: 20px; margin-left: 10px;">
+                        <label>STATE: <input type="text" value="" class="date-input" name="insurance_company_state" placeholder="State"
+                            style="font-size: 8pt;"> </label>
+                    </div>
+                    <div class="form-field-line" style="height: 20px; margin-left: 10px;">
+                        <label>ZIP CODE: <input type="text" value="" class="date-input" name="insurance_company_zipcode" placeholder="Zip Code"
+                            style="font-size: 8pt;"></label>
                     </div>
                     <div class="form-field-line" style="margin-bottom: 0;">
                         <table style="width: 100%; border: none; ">
                             <tr>
-                                <td colspan="2" >Current Agency</td>
-                                <td colspan="2" >Current Producer</td>
+                                <td colspan="2" >Current Agency: <input type="text" value="" class="date-input" name="current_agency" placeholder="Current Agency"
+                            style="font-size: 8pt;"></td>
+                                <td colspan="2" >Current Producer: <input type="text" value="" class="date-input" name="current_producer" placeholder="Current Producer"
+                            style="font-size: 8pt;"></td>
                             </tr>
 
                         </table>
@@ -454,58 +470,30 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>JJH CONSTRUCTION LLC</td>
-                    <td></td>
-                    <td>8/10/2021</td>
-                    <td>8/10/2022</td>
-                    <td>Commercial</td>
-                </tr>
-                <tr>
-                    <td>JJH CONSTRUCTION LLC</td>
-                    <td></td>
-                    <td>8/10/2021</td>
-                    <td>8/10/2022</td>
-                    <td>Commercial</td>
-                </tr>
-                <tr>
-                    <td>JJH CONSTRUCTION LLC</td>
-                    <td></td>
-                    <td>8/10/2021</td>
-                    <td>8/10/2022</td>
-                    <td>Commercial</td>
-                </tr>
-                <tr>
-                    <td>JJH CONSTRUCTION LLC</td>
-                    <td></td>
-                    <td>8/10/2021</td>
-                    <td>8/10/2022</td>
-                    <td>Commercial</td>
-                </tr>
-                <tr>
-                    <td>JJH CONSTRUCTION LLC</td>
-                    <td></td>
-                    <td>8/10/2021</td>
-                    <td>8/10/2022</td>
-                    <td>Commercial</td>
-                </tr>
-                <tr>
-                    <td>JJH CONSTRUCTION LLC</td>
-                    <td></td>
-                    <td>8/10/2021</td>
-                    <td>8/10/2022</td>
-                    <td>Commercial</td>
-                </tr>
+
+                @for ($i = 0; $i < 10; $i++)    
+                    <tr>
+                        <td><input type="text" value="" class="form-control" name="name[{{ $i }}]" placeholder="Name"
+                        style="font-size: 8pt;"></td>
+                        <td><input type="text" value="" class="form-control" name="policy_number[{{ $i }}]" placeholder="Policy #"
+                            style="font-size: 8pt;"></td>
+                        <td><input type="date" value="" class="form-control" name="effective_date[{{ $i }}]" placeholder="Effective Date"
+                            style="font-size: 8pt;"></td>
+                        <td><input type="date" value="" class="form-control" name="expiration_date[{{ $i }}]" placeholder="Expiration Date"
+                            style="font-size: 8pt;"></td>
+                        <td><input type="text" value="" class="form-control" name="line_of_business[{{ $i }}]" placeholder="Business"
+                            style="font-size: 8pt;"></td>
+                    </tr>
+                @endfor
 
                 </tbody>
             </table>
 
             <div class="statement-text mt-[0.2in]" style="padding: 0 30px;">
                 <p style="font-weight: bold; font-size: 14px;">Please be advised that we wish to name
-                    <input type="text" class="w-[80pt] inline-block" value="" style="height: 10pt; margin: 0 4pt;">
-                    <input type="text" class="w-[80pt] inline-block" value="" style="height: 10pt; margin: 0 4pt;">
+                    <input type="text" class="w-[80pt] inline-block" name="advice_producer_name" placeholder="Producer" value="" style="height: 10pt; margin: 0 4pt;">
                     as our exclusive representative effective
-                    <input type="text" class="w-[80pt] inline-block" value="" style="height: 10pt; margin: 0 4pt;">
+                    <input type="text" class="w-[80pt] inline-block" value="" name="advice_producer_effective_date" placeholder="Effective Date" style="height: 10pt; margin: 0 4pt;">
                     for the lines of business shown above, currently in force or submitted
                     by application.
                 </p>
@@ -519,9 +507,9 @@
 
             <div class="mt-[0.4in]" style="justify-self: center ; width: 80%;">
                 <div >
-                    <div style="width: 70%; float: left; margin-right: 15px;">
+                    {{-- <div style="width: 70%; float: left; margin-right: 15px;">
                         <div class="signature-line mt-[0.4in]">
-                            <input type="text" class="line-input">
+                            <input type="text" class="line-input" name="insured_title" placeholder="Title">
                             <span class="line-label">TITLE (IF APPLICABLE)</span>
                         </div>
                     </div>
@@ -530,51 +518,56 @@
                             <input type="text" class="line-input">
                             <span class="line-label">TITLE (IF APPLICABLE)</span>
                         </div>
-                    </div>
-                    <!-- <div class="left-sig">
-                        <div class="signature-line" style="width: 100%;">
-                            <input type="text" class="line-input">
-                            <span class="line-label">INSURED'S SIGNATURE</span>
-                        </div>
-                    </div>
-                    <div class="date-field">
-                        <div class="signature-line" >
-                            <input type="text" value="07/17/2025" class="line-input">
-                            <span class="line-label">DATE</span>
-                        </div>
-                    </div> -->
+                    </div> --}}
+
+                    <table style="width: 100%; " style="margin-top: 30px;">
+                        <tr>
+                            <td colspan="2" style="border: none;">
+                                <div class="signature-line mt-[0.4in]">
+                                    <input type="text" class="line-input" value="" name="insured_signature" placeholder="Signature">
+                                    <span class="line-label">INSURED'S SIGNATURE</span>
+                                </div>
+                            </td>
+                            <td style="border: none;">
+                                <div class="signature-line mt-[0.4in]">
+                                    <input type="text" value="" class="line-input" name="issued_date" placeholder="Issue Date">
+                                    <span class="line-label">DATE</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
 
                 <div class="signature-line mt-[0.4in]">
-                    <input type="text" class="line-input">
+                    <input type="text" class="line-input" name="insured_title" placeholder="Title">
                     <span class="line-label">TITLE (IF APPLICABLE)</span>
                 </div>
 
                 <div class="signature-line mt-[0.4in]">
-                    <input type="text" class="line-input">
+                    <input type="text" class="line-input" name="insured_company_name" placeholder="Company Name">
                     <span class="line-label">COMPANY NAME (IF APPLICABLE)</span>
                 </div>
 
                 <div class="signature-line mt-[0.4in]">
-                    <input type="text" value="" class="line-input"> <span class="line-label text-left !left-0 " style="transform: translateX(0);">STREET ADDRESS OF INSURED</span>
+                    <input type="text" value="" class="line-input" name="insured_company_address" placeholder="Address"> <span class="line-label text-left !left-0 " style="transform: translateX(0);">STREET ADDRESS OF INSURED</span>
                 </div>
                 <table style="width: 100%; " style="margin-top: 30px;">
                     <tr>
                         <td colspan="2" style="border: none;">
                             <div class="signature-line mt-[0.4in]">
-                                <input type="text" class="line-input">
+                                <input type="text" class="line-input" name="insured_company_city" placeholder="City">
                                 <span class="line-label">City of Insured</span>
                             </div>
                         </td>
                         <td  style="border: none;">
                             <div class="signature-line mt-[0.4in]">
-                                <input type="text" class="line-input">
+                                <input type="text" class="line-input" name="insured_company_state" placeholder="State">
                                 <span class="line-label">State of Insured</span>
                             </div>
                         </td>
                         <td    style="border: none;">
                             <div class="signature-line mt-[0.4in]">
-                                <input type="text" class="line-input">
+                                <input type="text" class="line-input" name="insured_company_zipcode" placeholder="Zip Code">
                                 <span class="line-label">Zipcode of Insured</span>
                             </div>
                         </td>
