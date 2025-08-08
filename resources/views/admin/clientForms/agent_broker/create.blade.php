@@ -16,7 +16,7 @@
         .form-container {
             width: 8.5in; /* Standard US Letter width */
             /*height: 11in;*/ /* Standard US Letter height */
-            height: 13in; /* Standard US Letter height */
+            height: 12in; /* Standard US Letter height */
             padding: 0.5in; /* Consistent margin inside the form content */
             box-sizing: border-box; /* Padding included in width/height */
             background-color: white;
@@ -471,7 +471,7 @@
                 </thead>
                 <tbody>
 
-                @for ($i = 0; $i < 10; $i++)    
+                @for ($i = 0; $i < 5; $i++)    
                     <tr>
                         <td><input type="text" value="" class="form-control" name="name[{{ $i }}]" placeholder="Name"
                         style="font-size: 8pt;"></td>

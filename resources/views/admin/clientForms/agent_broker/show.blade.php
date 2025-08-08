@@ -23,7 +23,7 @@
             /* Standard US Letter width */
             /*height: 11in;*/
             /* Standard US Letter height */
-            height: 13.5in;
+            height: 12in;
             /* Standard US Letter height */
             padding: 0.5in;
             /* Consistent margin inside the form content */
@@ -360,7 +360,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-top: 25pt;
+            margin-top: 10pt;
             /* Space from content above */
             /* padding-top: 5pt; */
             border-top: 0.5pt solid #ccc;
@@ -602,7 +602,7 @@
             </thead>
             <tbody>
 
-                @foreach($form->companies->take(6) as $company)
+                @foreach($form->companies->take(5) as $company)
                     <tr>
                         <td style="padding: 10px; text-align: center;" id="print-namedInsured">{{ $company->name ?? '' }}</td>
                         <td style="padding: 10px; text-align: center;" id="print-policyNumber">{{ $company->policy_number ?? '' }}</td>
@@ -633,7 +633,7 @@
             </p>
         </div>
 
-        <div class="mt-[0.4in]" style="justify-self: center ; width: 80%;">
+        <div class="mt-1" style="justify-self: center ; width: 80%;">
             <div>
                 {{-- <div style="width: 70%; float: left; margin-right: 15px;">
                     <div class="signature-line mt-[0.4in]">
@@ -648,7 +648,7 @@
                     </div>
                 </div> --}}
 
-                <table style="width: 100%; " style="margin-top: 30px;">
+                <table style="width: 100%;">
                     <tr>
                         <td colspan="2" style="border: none;">
                             <div style="text-align: center;">
