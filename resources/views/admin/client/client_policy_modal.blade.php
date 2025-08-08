@@ -243,16 +243,15 @@
                                         </div>
 
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-invoice-for-payment-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">Invoice For Payment</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'invoice_for_payment', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">INVOICE FOR PAYMENT</a>
+                                             <a href="{{ route('create-invoice-for-payment-form', $policy->client->id) }}" class="text-primary w-100">Invoice For Payment</a>
+                                               {{-- <a href="{{ route('show-upload-form', ['type' => 'invoice_for_payment', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">INVOICE FOR PAYMENT</a> --}}
                                         </div>
                                         <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'invoiceForPayment'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'invoice_for_payment', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            <a target="_blank" href="{{route('view.form',['type' => 'invoiceForPayment'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                            {{-- <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'invoice_for_payment', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
-                                            </a>
+                                            </a> --}}
                                         </div>
 
                                         <div class="col-md-8">

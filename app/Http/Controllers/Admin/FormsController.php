@@ -333,7 +333,7 @@ class FormsController extends Controller
             // Check if the data was successfully created
             if ($additionalRemarksForm) {
                 DB::commit();
-                return redirect()->back()->with('success', 'Form submitted successfully!');
+                return redirect()->route('dashboard')->with('success', 'Form submitted successfully!');
             } else {
                 DB::rollback();
                 return redirect()->back()->withErrors(['error' => 'Failed to create the record.']);
@@ -582,7 +582,7 @@ class FormsController extends Controller
             }
 
             DB::commit();
-            return redirect()->back()->with('success', 'Invoice Payment created successfully.');
+            return redirect()->route('dashboard')->with('success', 'Invoice Payment created successfully.');
         } catch (\Exception $e) {
             dd($e->getMessage());
             DB::rollback();

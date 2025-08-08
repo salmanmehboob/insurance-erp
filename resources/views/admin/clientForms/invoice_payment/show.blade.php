@@ -1,258 +1,408 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice For Payment</title>
+@extends('admin.layouts.form')
+@push('styles')
     <style>
+        /* Base styles for screen viewing and print intent */
         body {
-            font-family: Arial, sans-serif;
-            width: 6.5in;
-            margin: 0.5in auto;
+            font-family: 'Arial', sans-serif; /* Common form font */
+            font-size: 9pt; /* Base font size */
+            color: #000;
+            margin: 0;
             padding: 0;
-            line-height: 1.2;
-            font-size: 12px;
+            display: flex; /* For centering the form on screen */
+            justify-content: center;
+            background-color: #f0f0f0; /* Light background for screen view */
+        }
+        .invoice-container {
+            width: 8.5in; /* Standard US Letter width */
+            min-height: 9in; /* Min height to ensure page size, content will expand */
+            padding: 0.5in; /* Consistent margin inside the form content */
+            box-sizing: border-box; /* Padding included in width/height */
+            background-color: white;
+            border: 1px solid #ccc; /* Optional: visual boundary on screen */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Subtle shadow for screen view */
+            display: flex; /* Use flexbox for overall layout */
+            flex-direction: column;
         }
 
-        .header {
-            margin-bottom: 10px;
-        }
-
-        .company-name {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-        .company-details {
-            margin-bottom: 2px;
-        }
-
-        .contact-info {
+        /* Generic Field Line - for labels followed by an underline */
+        .field-line {
             display: flex;
-            gap: 20px;
-            margin-bottom: 10px;
+            align-items: flex-end; /* Align label baseline with input line */
+            line-height: 1.0;
+            margin-bottom: 3pt; /* Small vertical spacing */
         }
-
-        hr {
+        .field-line label {
+            white-space: nowrap;
+            font-size: 9pt;
+            color: #333;
+            flex-shrink: 0;
+            margin-right: 4pt;
+            padding-bottom: 0.5pt;
+        }
+        .field-line input[type="text"] {
+            flex-grow: 1;
             border: none;
-            border-top: 1px solid black;
-            margin: 10px 0;
+            border-bottom: 0.5pt solid black;
+            padding: 0 2pt;
+            font-size: 9pt;
+            height: 12pt; /* Line height for inputs */
+            background-color: transparent;
+            box-sizing: border-box;
+            line-height: 1;
         }
 
+        /* Invoice Header - Top Section Layout (Three Columns) */
+        .invoice-header-grid {
+            display: grid;
+            grid-template-columns: 1fr auto auto; /* Left column expands, two right columns auto-width */
+            gap: 0.5in; /* Gap between columns */
+            margin-bottom: 0.2in;
+            align-items: flex-end; /* Align all column content to the bottom */
+        }
+        .invoice-header-grid .agency-info {
+            font-size: 9pt;
+            line-height: 1.3;
+        }
+        .invoice-header-grid .agency-info .agency-name {
+            font-size: 15pt; 
+            font-weight: bold;
+            margin-bottom: 15pt;
+        }
+        .invoice-header-grid .agency-info .contact-info {
+            display: flex;
+            align-items: center;
+            margin-top: 5pt; /* Space from address */
+        }
+        .invoice-header-grid .agency-info .contact-info span {
+            margin-right: 5pt;
+            white-space: nowrap;
+        }
+        .invoice-header-grid .agency-info .contact-info input {
+            flex-grow: 0;
+            width: 90pt; /* Fixed width for phone/fax numbers */
+            height: 12pt;
+            border-bottom: 0.5pt solid black;
+            padding: 0 2pt;
+            font-size: 9pt;
+            background-color: transparent;
+        }
+        .invoice-header-grid .agency-info .contact-info .phone-label {
+            margin-right: 2pt;
+        }
+        .invoice-header-grid .agency-info .contact-info .fax-label {
+            margin-left: 15pt; /* Space between phone and fax */
+            margin-right: 2pt;
+        }
+
+        .invoice-header-grid .invoice-date-col,
+        .invoice-header-grid .policy-number-col {
+            padding-bottom: 10pt; /* Push content up slightly to align underlines */
+        }
+        .invoice-header-grid .invoice-date-col .field-line input,
+        .invoice-header-grid .policy-number-col .field-line input {
+            width: 80pt; /* Fixed width for date and policy number */
+            height: 12pt;
+            font-size: 9pt;
+        }
+
+        /* Invoice Title */
         .invoice-title {
-            font-size: 14px;
             font-weight: bold;
-            margin-top: 20px;
+            font-size: 12pt; /* Larger font for main Invoice title */
+            margin-bottom: 0.2in;
+            margin-top: 7px;
         }
 
-        .invoice-meta-container {
+        /* Insured/Company Information */
+        .insured-company-section {
+            margin-bottom: 0.3in;
+            line-height: 1.4;
+        }
+        .insured-company-section .field-group {
             display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
+            align-items: flex-start; /* Align groups at top */
+            margin-bottom: 5pt; /* Space between groups */
         }
-
-        .invoice-meta {
-            text-align: right;
+        .insured-company-section .label-column {
+            width: 70pt; /* Fixed width for labels (Insured, Company, Company Fax) */
+            flex-shrink: 0;
+            font-size: 9pt;
+            padding-top: 0.5pt; /* Align with first line of content */
         }
-
-        .invoice-meta div {
-            margin-bottom: 2px;
-        }
-
-        .client-info {
-            margin-bottom: 20px;
-        }
-
-        .info-row {
+        .insured-company-section .info-column {
+            flex-grow: 1;
             display: flex;
-            margin-bottom: 4px;
+            flex-direction: column;
+        }
+        .insured-company-section .info-column .info-line {
+            border-bottom: 0.5pt solid black;
+            height: 12pt;
+            font-size: 9pt;
+            line-height: 1.2;
+            padding: 0 2pt;
+            margin-bottom: 4pt; /* Space between lines within a field */
+        }
+        .insured-company-section .info-column .info-line:last-child {
+            margin-bottom: 0;
         }
 
-        .label {
-            width: 100px;
-            text-align: right;
-            padding-right: 10px;
+        /* Item Table - CRUCIAL CHANGES HERE */
+        .item-table-container {
+            flex-grow: 1; /* Allows table to expand and push footer down */
+            margin-bottom: 0.3in;
         }
-
-        .value {
-            flex: 1;
-            min-height: 18px;
-            border-bottom: 1px solid black;
-            max-width: 250px;
-        }
-
-        .address-line {
-            margin-left: 110px;
-            border-bottom: 1px solid black;
-            max-width: 250px;
-            margin-bottom: 4px;
-        }
-
-        table {
+        .item-table {
+            border-collapse: collapse; /* Ensure no gaps between cells */
             width: 100%;
-            border-collapse: collapse;
-            margin: 30px 0 20px 0;
         }
-
-        th {
-            border-top: 1px solid black;
-            border-bottom: 1px solid black;
-            padding: 6px 4px;
+        .item-table th, .item-table td {
+            border: none; /* NO BORDERS on cells themselves */
+            padding: 3pt 5pt; /* Padding inside text areas */
+            text-align: left;
+            vertical-align: bottom; /* Align text to bottom to meet underlines */
+            font-size: 9pt;
+            line-height: 1.2;
+            height: 20pt; /* Minimum height for table rows, adjust as needed */
         }
-
-        td {
-            border-top: 1px solid black;
-            padding: 6px 4px;
+        .item-table th {
+            font-weight: bold; /* Table headers are bold in this image */
+            background-color: white; /* Ensure no background */
+            border-bottom: 0.5pt solid black; /* Underline for header */
+            padding-bottom: 2pt; /* Space between header text and underline */
         }
+        /* Specific column widths for the table headers */
+        .item-table th:nth-child(1) { width: 15%; text-align: left;} /* Item column */
+        .item-table th:nth-child(2) { width: 65%; text-align: left;} /* Description column */
+        .item-table th:nth-child(3) { width: 20%; text-align: right; } /* Amount column - right aligned */
 
-        th:first-child, td:first-child {
-            width: 30%;
+        /* Styles for table data cells to mimic underlines */
+        .item-table td {
+            position: relative; /* For absolute positioning of input/underline */
+            padding: 0; /* Remove default padding for precise control */
+            height: 20pt; /* Fixed height for data rows */
         }
-
-        th:last-child, td:last-child {
-            width: 20%;
-            text-align: right;
-        }
-
-        .total-amount {
-            text-align: right;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .notes {
-            margin-top: 30px;
-        }
-
-        .button-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .labels {
-            width: 100px;
-            text-align: right;
-            padding-right: 90px;
-        }
-
-        .labelss {
-            text-align: right;
-            padding-right: 170px;
-        }
-
-        .button {
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: white;
+        .item-table td .table-data-input {
+            width: 100%;
+            height: 100%; /* Fill the cell height */
             border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
+            border-bottom: 0.5pt solid black; /* The underline for data */
+            font-size: 9pt;
+            padding: 0 5pt; /* Match padding of headers */
+            background: transparent;
+            box-sizing: border-box;
+            text-align: left; /* Default text align */
+            line-height: 1; /* Control text height within input */
+        }
+        .item-table td:nth-child(3) .table-data-input {
+            text-align: right; /* Amount data right aligned */
         }
 
-        .button:hover {
-            background-color: #0056b3;
+        /* No border for the row with total amount */
+        .total-amount-row {
+            border-top: 1px solid black; /* Top border for total row */
+        }
+        .total-amount-row td {
+            border: none;
+            padding-top: 5pt; /* More space above total */
+            font-weight: bold;
+            font-size: 10pt;
+            height: auto; /* Allow content to dictate height */
+        }
+        .total-amount-row .total-label {
+            text-align: right;
+        }
+        .total-amount-row .total-value-container {
+            display: flex;
+            justify-content: flex-end; /* Align the input to the right */
+        }
+        .total-amount-row .total-value-input {
+            border-bottom: 0.5pt solid black; /* Underline for total amount */
+            width: 80pt; /* Fixed width for total amount box */
+            text-align: right;
+            padding: 0 5pt;
+            height: 15pt;
+            font-size: 10pt;
+            background: transparent;
+            box-sizing: border-box;
+            border-top: none; /* Ensure no top border */
+            border-left: none; /* Ensure no left border */
+            border-right: none; /* Ensure no right border */
         }
 
+
+        /* Notes Section */
+        .notes-section {
+            margin-top: auto; /* Pushes notes and total to the bottom */
+            padding-top: 0.1in;
+            border-top: 0.5pt solid #ccc; /* Separator line */
+            font-size: 8pt;
+        }
+
+        /* Print Specific Styles */
         @media print {
-            .print-button {
-                display: none;
-            }
-
             body {
+                background-color: white;
+                margin: 0;
+                padding: 0;
+                display: block; /* Remove flex on print */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                orphans: 3;
+                widows: 3;
+            }
+            .invoice-container {
+                border: none;
+                box-shadow: none;
                 margin: 0;
                 padding: 0.5in;
+                min-height: 11in; /* Ensure full page print */
+            }
+            input[type="text"], .info-column .info-line, .total-amount-row .total-value-input, .item-table td .table-data-input {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                vertical-align: baseline;
+                padding-bottom: 0;
+                height: auto; /* Let content determine height */
+                min-height: 12pt; /* Maintain minimum line height */
+            }
+            .field-line label, .agency-info div, .notes-section {
+                padding-bottom: 0;
+            }
+            .item-table th, .item-table td {
+                height: 20pt; /* Maintain row height for print */
+                padding: 3pt 5pt; /* Keep padding consistent */
+            }
+            .item-table td .table-data-input {
+                height: 100%; /* Fill cell */
+                min-height: 12pt; /* Ensure input box has height */
+            }
+            .total-amount-row .total-value-input {
+                height: 15pt; /* Maintain height for total amount */
+            }
+            /* Adjust negative margin for print if needed */
+            .invoice-header-grid .invoice-date-col,
+            .invoice-header-grid .policy-number-col {
+                padding-bottom: 10pt; /* Keep alignment */
             }
         }
     </style>
-</head>
-<body>
-<div class="container">
-    <div class="print-button">
-        <button class="btn btn-primary" onclick="printOriginal()">Print</button>
-    </div>
+@endpush
 
-    <div id="original">
-        <div class="header">
-            <div class="company-name">{{$form->agency_name}}</div>
-            <div class="company-details">{{$form->agency_address}}</div>
-            <div class="company-details">{{$form->agency_city}}, {{$form->agency_state}} {{$form->agency_zipcode}}</div>
-            <div class="contact-info">
-                <div>Phone: {{$form->agency_phone}}</div>
-                <div>Fax: ({{$form->agency_fax}}</div>
+@section('content')
+
+<div class="form-container">
+
+        <div class="invoice-container">
+            <div class="invoice-header-grid">
+                <div class="agency-info">
+                    <div class="agency-name">Aim Insurance Of Texas</div>
+                    <div><p class="mb-4">Agency Name: <span style="border-bottom: 1px solid black;">{{$form->agency_name}}</span></p></div>
+                    <div><p class="mb-4">Address: <span style="border-bottom: 1px solid black;">{{$form->agency_address}}</span></p></div>
+                    <div class="contact-info">
+                        <span class="phone-label">City: <span style="border-bottom: 1px solid black;">{{$form->agency_city}}</span></span>
+                        <span class="phone-label">State: <span style="border-bottom: 1px solid black;">{{$form->agency_state}}</span></span>
+                        <span class="phone-label">Zip Code: <span style="border-bottom: 1px solid black;">{{$form->agency_zipcode}}</span></span>
+                    </div>
+                                            
+                    <div class="contact-info">
+                        <span class="phone-label">Phone: <span style="border-bottom: 1px solid black;">{{$form->agency_phone}}</span></span>
+                        <span class="fax-label">Fax: <span style="border-bottom: 1px solid black;">{{$form->agency_fax}}</span></span>
+                    </div>
+                </div>
             </div>
-        </div>
+            <hr>
+            <div class="invoice-title">Invoice</div>
+                <div style="display: flex;">
+                    <div class="insured-company-section" style="width: 55%;">
+                        <div class="field-group">
+                            <div class="label-column">Insured:</div>
+                            <div class="info-column">
+                                <div class="info-line">
+                                    <div class="value">{{$form->insured_company_name}}</div>
+                                </div>
+                                <div class="info-line">
+                                    <div class="value">{{$form->insured_company_address}}</div>
+                                </div>
+                                <div class="info-line">
+                                    <div class="value">{{$form->insured_company_city}}</div>
+                                </div>
+                                <div class="info-line">
+                                    <div class="value">{{$form->insured_company_state}}</div>
+                                </div>
+                                <div class="info-line">
+                                    <div class="value">{{$form->insured_company_zipcode}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <div class="label-column">Company:</div>
+                            <div class="info-column">
+                                <div class="info-line">
+                                    <div class="value">{{$form->company_name}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <div class="label-column">Company Fax:</div>
+                            <div class="info-column">
+                                <div class="info-line">
+                                    <div class="value">{{$form->company_fax}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width: 40%; float: right; justify-items: self-end;">
+                        <div class="invoice-date-col flex items-end">
+                            <div class="field-line">
+                                <label>Invoice Date:</label>
+                                {{$form->invoice_date}}
+                            </div>
+                        </div>
+                    
+                        <div class="policy-number-col flex items-end" style="font-weight: 600;">
+                            <div class="field-line">
+                                <label>Policy Number:</label>
+                                {{$form->policy_number}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="item-table-container">
+                    <table class="item-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Item</th>
+                                <th style="text-align: center;">Description</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($form->items as $item)
+                            <tr>
+                                <td style="text-align: center;">{{$item->item_name}}</td>
+                                <td style="text-align: center;">{{$item->description}}</td>
+                                <td style="text-align: right;">${{$item->amount}}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-amount-row">
+                                <td colspan="2" class="total-label">TOTAL AMOUNT:</td>
+                                <td><div class="total-value-container">${{$form->total_amount}}</div></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
 
-        <hr>
-
-        <div class="invoice-title">Invoice</div>
-
-        <div class="invoice-meta-container">
-            <div class="invoice-meta">
-                <span class="labels">Invoice Date:</span> <span>{{$form->invoice_date}}</span>
-                <div><span class="labelss">  <b>Policy Number:</b> {{$form->policy_number}}</span></div>
+                <div class="notes-section">
+                    <label>NOTES:</label> 
+                    <p>
+                        {{$form->note}}
+                    </p>
+                </div>
             </div>
-        </div>
-
-        <div class="client-info">
-            <div class="info-row">
-                <div class="label">Insured:</div>
-                <div class="value">{{$form->insured_company_name}}</div>
-            </div>
-            <div class="address-line">{{$form->insured_company_address}}</div>
-            <div class="address-line">{{$form->insured_company_city}}
-                , {{$form->insured_company_state}} {{$form->insured_company_zipcode}}</div>
-            <br>
-            <div class="address-line"></div>
-            <div class="info-row">
-                <div class="label">Company:</div>
-                <div class="value">{{$form->company_name}}</div>
-            </div>
-            <div class="info-row">
-                <div class="label">Company Fax:</div>
-                <div class="value">{{$form->company_fax}}</div>
-            </div>
-        </div>
-
-        <table>
-            <thead>
-            <tr>
-                <th>Item</th>
-                <th>Description</th>
-                <th>Amount</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($form->items as $item)
-                <tr>
-                    <td>{{$item->item_name}}</td>
-                    <td>{{$item->description}}</td>
-                    <td>${{$item->amount}}</td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-        <br><br><br><br>
-        <hr style="border-top: 1px solid black;">
-        <div class="total-amount"><span>TOTAL AMOUNT:</span> ${{$form->total_amount}}
-        </div>
-        <div class="notes">NOTES:
-            <p>
-                {{$form->note}}
-            </p>
-        </div>
-    </div>
 
 </div>
-<script>
-    function printOriginal() {
-         window.print();
-    }
-</script>
 
-</body>
-</html>
+@endsection
