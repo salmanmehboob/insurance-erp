@@ -481,7 +481,7 @@ class FormsController extends Controller
             // Check if the data was successfully created
             if ($evidence) {
                 DB::commit();
-                return redirect()->back()->with('success', 'Evidence of Property Form created successfully for ' . $evidence->client->applicant_name);
+                return redirect()->route('dashboard')->with('success', 'Evidence of Property Form created successfully for ' . $evidence->client->applicant_name);
             } else {
                 DB::rollback();
                 return redirect()->back()->withErrors(['error' => 'Failed to create the record.']);

@@ -202,13 +202,13 @@
                                         </div>
                                         <div class="col-md-8">
                                               <a href="{{ route('create-agent/broker-form', $policy->client->id) }}"
-                                               class="text-primary w-100">Create Agent/Broker Form</a>
+                                               class="text-primary w-100">CREATE AGENT/BROKER FORM</a>
 
 {{--                                               <a href="{{ route('show-upload-form', ['type' => 'agent_broker', 'client_id' => $policy->client->id]) }}"--}}
 {{--                                               class="text-primary w-100 text-uppercase">AGENT/BROKER FORM</a>--}}
                                         </div>
                                         <div class="col-md-4">
-                                            <a target="_blank" href="{{route('view.form',['type' => 'agent_broker'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                            <a target="_blank" href="{{route('view.form', ['type' => 'agent_broker'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
 
 {{--                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'agent_broker', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">--}}
 {{--                                                <i class="fa fa-eye"></i> View--}}
@@ -216,39 +216,38 @@
                                         </div>
                                         <div class="col-md-8">
                                               <a href="{{ route('create-additional/remarks-form', $policy->client->id) }}"
-                                               class="text-primary w-100">Create Additional/Remarks Form</a>
+                                               class="text-primary w-100">CREATE ADDITIONAL/REMARKS FORM</a>
 {{--                                               <a href="{{ route('show-upload-form', ['type' => 'additional_remarks', 'client_id' => $policy->client->id]) }}"--}}
 {{--                                               class="text-primary w-100 text-uppercase">ADDITIONAL/REMARKS FORM</a>--}}
                                         </div>
 
                                         <div class="col-md-4">
-                                            <a target="_blank" href="{{route('view.form',['type' => 'additional_remarks'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                            <a target="_blank" href="{{route('view.form', ['type' => 'additional_remarks'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
 {{--                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'additional_remarks', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">--}}
 {{--                                                <i class="fa fa-eye"></i> View--}}
 {{--                                            </a>--}}
                                         </div>
 
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-evidence/of/property-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">Evidence Of Property</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'evidence_of_property', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">EVIDENCE OF PROPERTY</a>
+                                              <a href="{{ route('create-evidence/of/property-form', $policy->client->id) }}" class="text-primary w-100">EVIDENCE OF PROPERTY</a>
+                                               {{-- <a href="{{ route('show-upload-form', ['type' => 'evidence_of_property', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">EVIDENCE OF PROPERTY</a> --}}
                                         </div>
 
                                         <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'evidenceOfProperty'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'evidence_of_property', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            <a target="_blank" href="{{route('view.form',['type' => 'evidenceOfProperty'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                            {{-- <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'evidence_of_property', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
-                                            </a>
+                                            </a> --}}
                                         </div>
 
                                         <div class="col-md-8">
-                                             <a href="{{ route('create-invoice-for-payment-form', $policy->client->id) }}" class="text-primary w-100">Invoice For Payment</a>
+                                             <a href="{{ route('create-invoice-for-payment-form', $policy->client->id) }}" class="text-primary w-100">INVOICE FOR PAYMENT</a>
                                                {{-- <a href="{{ route('show-upload-form', ['type' => 'invoice_for_payment', 'client_id' => $policy->client->id]) }}"
                                                class="text-primary w-100 text-uppercase">INVOICE FOR PAYMENT</a> --}}
                                         </div>
                                         <div class="col-md-4">
-                                            <a target="_blank" href="{{route('view.form',['type' => 'invoiceForPayment'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                            <a target="_blank" href="{{route('view.form', ['type' => 'invoiceForPayment'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
                                             {{-- <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'invoice_for_payment', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a> --}}
