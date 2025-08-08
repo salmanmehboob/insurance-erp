@@ -477,9 +477,9 @@
                         style="font-size: 8pt;"></td>
                         <td><input type="text" value="" class="form-control" name="policy_number[{{ $i }}]" placeholder="Policy #"
                             style="font-size: 8pt;"></td>
-                        <td><input type="date" value="" class="form-control" name="effective_date[{{ $i }}]" placeholder="Effective Date"
+                        <td><input type="text" value="" class="form-control" name="effective_date[{{ $i }}]" placeholder="Effective Date"
                             style="font-size: 8pt;"></td>
-                        <td><input type="date" value="" class="form-control" name="expiration_date[{{ $i }}]" placeholder="Expiration Date"
+                        <td><input type="text" value="" class="form-control" name="expiration_date[{{ $i }}]" placeholder="Expiration Date"
                             style="font-size: 8pt;"></td>
                         <td><input type="text" value="" class="form-control" name="line_of_business[{{ $i }}]" placeholder="Business"
                             style="font-size: 8pt;"></td>
