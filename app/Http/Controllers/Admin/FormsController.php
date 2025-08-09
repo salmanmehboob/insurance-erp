@@ -1155,7 +1155,7 @@ class FormsController extends Controller
 
 
             DB::commit();
-            return redirect()->back()->with('success', 'Property Insurance created successfully.');
+            return redirect()->route('dashboard')->with('success', 'Property Insurance created successfully.');
         } catch (\Exception $e) {
             dd($e->getMessage());
             DB::rollback();
