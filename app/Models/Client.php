@@ -9,7 +9,7 @@ use Symfony\Component\Mime\Email;
 
 class Client extends Model
 {
-    use HasFactory, SoftDeletes;
+    use  SoftDeletes;
 
     protected $fillable = [
         'user_id',

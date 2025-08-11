@@ -15,7 +15,7 @@
         <!-- Summary Cards -->
         <div class="row">
             <div class="col-md-3">
-                <div class="card bg-primary text-white">
+                <div class="card bg-primary ">
                     <div class="card-body">
                         <h6 class="card-title text-white">Total Payments</h6>
                         <h4 class="mb-0">{{ number_format($summary['count']) }}</h4>
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card bg-info text-white">
+                <div class="card bg-info ">
                     <div class="card-body">
                         <h6 class="card-title text-white ">Agency Fees</h6>
                         <h4 class="mb-0">${{ number_format($summary['total_agency_fee'], 2) }}</h4>
@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card bg-warning text-white">
+                <div class="card bg-warning ">
                     <div class="card-body">
                         <h6 class="card-title text-white ">Total Balance</h6>
                         <h4 class="mb-0">${{ number_format($summary['total_balance'], 2) }}</h4>
@@ -103,17 +103,32 @@
                                 <label for="payment_for">Payment For</label>
                                 <select name="payment_for" id="payment_for" class="form-control">
                                     <option value="">All</option>
-{{--                                    @foreach($paymentForOptions as $option)--}}
-{{--                                        <option value="{{ $option }}" {{ $request->get('payment_for') == $option ? 'selected' : '' }}>--}}
-{{--                                            {{ $option }}--}}
-{{--                                        </option>--}}
-{{--                                    @endforeach--}}
+                                    {{--                                    @foreach($paymentForOptions as $option)--}}
+                                    {{--                                        <option value="{{ $option }}" {{ $request->get('payment_for') == $option ? 'selected' : '' }}>--}}
+                                    {{--                                            {{ $option }}--}}
+                                    {{--                                        </option>--}}
+                                    {{--                                    @endforeach--}}
 
-                                    <option value="Downpayment" {{ $request->get('payment_for') == 'Downpayment' ? 'selected' : '' }}>Downpayment</option>
-                                    <option value="Monthly Payment" {{ $request->get('payment_for') == 'Monthly Payment' ? 'selected' : '' }}>Monthly Payment</option>
-                                    <option value="Endorsement" {{ $request->get('payment_for') == 'Endorsement' ? 'selected' : '' }}>Endorsement</option>
-                                    <option value="Remaining Balance" {{ $request->get('payment_for') == 'Remaining Balance' ? 'selected' : '' }}>Remaining Balance</option>
-                                    <option value="Other" {{ $request->get('payment_for') == 'Other' ? 'selected' : '' }}>Other</option>
+                                    <option
+                                        value="Downpayment" {{ $request->get('payment_for') == 'Downpayment' ? 'selected' : '' }}>
+                                        Downpayment
+                                    </option>
+                                    <option
+                                        value="Monthly Payment" {{ $request->get('payment_for') == 'Monthly Payment' ? 'selected' : '' }}>
+                                        Monthly Payment
+                                    </option>
+                                    <option
+                                        value="Endorsement" {{ $request->get('payment_for') == 'Endorsement' ? 'selected' : '' }}>
+                                        Endorsement
+                                    </option>
+                                    <option
+                                        value="Remaining Balance" {{ $request->get('payment_for') == 'Remaining Balance' ? 'selected' : '' }}>
+                                        Remaining Balance
+                                    </option>
+                                    <option
+                                        value="Other" {{ $request->get('payment_for') == 'Other' ? 'selected' : '' }}>
+                                        Other
+                                    </option>
                                 </select>
                             </div>
                         </div>

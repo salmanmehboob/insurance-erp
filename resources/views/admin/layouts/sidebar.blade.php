@@ -236,6 +236,13 @@
                                 <span class="align-middle">Payment Report</span>
                             </a>
                         </li>
+                        <li class="sidebar-item {{ request()->routeIs('transaction-report.new-policy') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('transaction-report.new-policy') }}">
+                                <i class="align-middle" data-feather="file-plus"></i>
+                                <span class="align-middle">New Policy</span>
+                            </a>
+                        </li>
+
                     </ul>
                 </li>
             @endcan

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClientPayment;
 use App\Models\Payment;
 use App\Models\Client;
 use App\Models\InsuranceCompany;
 use App\Models\Agent;
 use App\Models\Agency;
 use App\Models\BankAccount;
+use App\Models\PolicyType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -122,4 +124,53 @@ class TransactionReportController extends Controller
             'request'
         ));
     }
+
+    public function newPolicyReport(Request $request)
+    {
+        $policyType = $request->get('policy_type');
+        $agencyLocationId = $request->get('agency_location_id');
+
+        // Base filter builder (no eager loads) to reuse for summary and ids
+        $base = Client::query();
+
+        if ($policyType) {
+            $base->where('policy_type_id', $policyType);
+        }
+
+        if ($agencyLocationId) {
+            $base->whereHas('policy', function ($q) use ($agencyLocationId) {
+                $q->where('agency_id', $agencyLocationId);
+            });
+        }
+
+        // Paged list with needed relations
+        $clients = (clone $base)
+            ->with(['policy.agent', 'policy.agency', 'payment' ,'policyType'])
+            ->orderByDesc('created_at')
+            ->get();
+
+
+        // Dropdowns
+        $agencies = Agency::orderBy('agency_name')->get();
+
+        $policyTypes = PolicyType::all();
+
+        // Summary using ClientPayment for amounts/commissions
+        $clientIds = (clone $base)->pluck('id');
+
+        $summary = [
+            'count' => (clone $base)->count(),
+            'total_initial_premium' => ClientPayment::whereIn('client_id', $clientIds)->sum('initial_premium'),
+            'total_initial_agency_commission' => ClientPayment::whereIn('client_id', $clientIds)->sum('initial_agency_commission'),
+        ];
+
+         return view('admin.transaction_report.new_policy', compact(
+            'clients',
+            'agencies',
+            'policyTypes',
+            'summary',
+            'request'
+        ));
+    }
+
 }
