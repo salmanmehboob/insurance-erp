@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\PaymentCheckController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\ReminderController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\TransactionReportController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -189,6 +190,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('add-client-quote', [ClientController::class, 'createQuote'])->name('add-client-quote');
     Route::post('store-client-quote', [ClientController::class, 'storeQuote'])->name('store-client-quote');
 
+    // Transaction Reports
+    Route::get('transaction-report/payment', [TransactionReportController::class, 'paymentReport'])->name('transaction-report.payment');
+
 
 
     Route::get('view/form/{type}', [FormsController::class, 'viewForm'])->name('view.form');
@@ -245,9 +249,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/chatify/{route}', '\Chatify\Http\Controllers\MessagesController@api')->where('route', '.*');
 });
 
-Route::get('/chat/get-unread-count', function () {
-    $count = \App\Models\ChMessage::where('to_id', auth()->id())
-        ->where('seen', 0)
-        ->count();
-     return response()->json(['count' => $count]);
-})->middleware('auth');
+// Route::get('/chat/get-unread-count', function () {
+//     $count = \App\Models\ChMessage::where('to_id', auth()->id())
+//         ->where('seen', 0)
+//         ->count();
+//      return response()->json(['count' => $count]);
+// })->middleware('auth');

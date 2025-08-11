@@ -42,8 +42,8 @@
     }
 
     // Call on page load and every 30 seconds
-    fetchUnreadCount();
-    setInterval(fetchUnreadCount, 10000);
+    // fetchUnreadCount();
+    // setInterval(fetchUnreadCount, 10000);
 </script>
 
 

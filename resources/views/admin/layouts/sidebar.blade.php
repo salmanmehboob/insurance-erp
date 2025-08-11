@@ -223,6 +223,23 @@
                 </li>
             @endcan
 
+            @can('view-payment')
+                <li class="sidebar-item">
+                    <a data-bs-target="#transactionReports" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                        <i class="align-middle" data-feather="bar-chart-2"></i> <span
+                            class="align-middle">Transaction Reports</span>
+                    </a>
+                    <ul id="transactionReports" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                        <li class="sidebar-item {{ request()->routeIs('transaction-report.payment') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('transaction-report.payment') }}">
+                                <i class="align-middle" data-feather="credit-card"></i>
+                                <span class="align-middle">Payment Report</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endcan
+
 
             <!-- Sidebar Chat Button -->
 

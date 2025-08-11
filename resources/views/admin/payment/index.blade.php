@@ -38,7 +38,7 @@
             </div>
 
             <div class="card-body">
-                <table id="payment-table" class="table table-striped datatables-reponsive">
+                <table id="payment-report-table" class="table table-striped datatables-reponsive">
                     <thead>
                     <tr>
                         <th>Receipt #</th>
