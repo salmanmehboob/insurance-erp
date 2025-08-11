@@ -242,6 +242,12 @@
                                 <span class="align-middle">New Policy</span>
                             </a>
                         </li>
+                        <li class="sidebar-item {{ request()->routeIs('transaction-report.renewal') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('transaction-report.renewal') }}">
+                                <i class="align-middle" data-feather="file-plus"></i>
+                                <span class="align-middle">Renewal</span>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>

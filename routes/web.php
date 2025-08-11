@@ -193,6 +193,7 @@ Route::middleware(['auth'])->group(function () {
     // Transaction Reports
     Route::get('transaction-report/payment', [TransactionReportController::class, 'paymentReport'])->name('transaction-report.payment');
     Route::get('transaction-reports/new-policy', [TransactionReportController::class, 'newPolicyReport'])->name('transaction-report.new-policy');
+    Route::get('transaction-reports/renewal', [TransactionReportController::class, 'renewalReport'])->name('transaction-report.renewal');
 
 
 
