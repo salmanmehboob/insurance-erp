@@ -1,796 +1,1225 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.form')
 @push('styles')
     <style>
-        /* Reset and base styles */
-        * {
+        .acord-logo {
+            height: 55pt !important;
+            vertical-align: middle;
+            margin-right: 5pt;
+        }
+        /* Base styles for screen viewing and print intent */
+        body {
+            font-family: 'Arial', sans-serif;
+            /* Common form font */
+            font-size: 9pt;
+            /* Base font size, uses points for print accuracy */
+            color: #000;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-            font-size: 10pt;
+            display: flex;
+            /* For centering the form on screen */
+            justify-content: center;
+            background-color: #f0f0f0;
+            /* Light background for screen view */
         }
 
-        body {
-            margin-top: 2%;
-        }
-
-        /* Form container */
         .form-container {
             width: 8.5in;
-            margin: 0 auto;
-            border: 1px solid #000;
+            /* Standard US Letter width */
+            min-height: 11in;
+            /* Standard US Letter height */
+            padding: 0.5in;
+            /* Consistent margin inside the form content */
+            box-sizing: border-box;
+            /* Padding included in width/height */
+            background-color: white;
+            border: 1px solid #ccc;
+            /* Optional: visual boundary on screen */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for screen view */
         }
 
-        /* Header */
-        .header {
+        /* Reusable Form Field Line (Label + Underline Input) */
+        .form-field-line {
             display: flex;
-            border-bottom: 1px solid #000;
+            /* align-items: flex-end; Aligns label baseline with input line */
+            margin-bottom: 0.08in;
+            /* Vertical spacing between form lines */
+            line-height: 1.0;
+            /* Tighter line height for labels */
         }
 
-        .logo-section {
-            width: 15%;
-            padding: 5px;
+        .form-field-line label {
+            /* white-space: nowrap; Prevent label from wrapping */
+            font-size: 8pt;
+            /* Label font size */
+            color: #333;
+            /* flex-shrink: 0; Prevent label from shrinking */
+            margin-right: 4pt;
+            /* Space between label and input */
+            padding-bottom: 0.5pt;
+            /* Fine-tune label baseline alignment */
         }
 
-        .logo {
-            max-width: 100%;
-            height: auto;
+        .form-field-line input[type="text"] {
+            flex-grow: 1;
+            /* Input takes remaining width */
+            border: none;
+            border-bottom: 0.5pt solid black;
+            /* The underline */
+            padding: 0 2pt;
+            font-size: 8pt;
+            /* Input text size */
+            height: 11pt;
+            /* Explicit height to control line vertical position */
+            background-color: transparent;
+            box-sizing: border-box;
+            line-height: 1;
+            /* Keep input text tight */
         }
 
-        .title-section {
-            width: 60%;
+        /* Specific styles for multi-part address lines (e.g., Pasadena TX 77504) */
+        .address-line-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            border-right: 1px solid #000;
+            align-items: flex-end;
+            margin-bottom: 0.08in;
+            /* Consistent spacing */
+            gap: 0.2in;
+            /* Horizontal space between City, State, Zip groups */
         }
 
-        .title {
-            font-size: 16pt;
-            font-weight: bold;
+        .address-line-item {
+            display: flex;
+            align-items: flex-end;
+            line-height: 1.0;
         }
 
-        .date-section {
-            width: 25%;
-            border-bottom: 1px solid #000;
+        .address-line-item label {
+            white-space: nowrap;
+            font-size: 8pt;
+            color: #333;
+            flex-shrink: 0;
+            margin-right: 4pt;
+            padding-bottom: 0.5pt;
         }
 
-        .date-label {
-            padding: 5px;
+        .address-line-item input[type="text"] {
+            border: none;
+            border-bottom: 0.5pt solid black;
+            padding: 0 2pt;
+            font-size: 8pt;
+            height: 11pt;
+            background-color: transparent;
+            box-sizing: border-box;
+            line-height: 1;
+        }
+
+        .address-line-item.city input {
+            width: 80pt;
+            flex-grow: 0;
+        }
+
+        .address-line-item.state input {
+            width: 30pt;
+            flex-grow: 0;
+        }
+
+        .address-line-item.zip input {
+            width: 45pt;
+            flex-grow: 0;
+        }
+
+
+        /* Header Section Styling */
+        .header-title {
+            font-size: 14pt;
             font-weight: bold;
             text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .date-value {
-            padding: 5px;
+        .acord-logo {
+            height: 18pt;
+            /* Height based on typical logo size */
+            vertical-align: middle;
+            margin-right: 5pt;
+        }
+
+        /* Smallest font for the date label */
+        .date-field-label {
+            font-size: 6.5pt;
+        }
+
+        /* Date input needs to be right-aligned within its fixed width */
+        .date-input {
+            text-align: right;
+            width: 70pt;
+            /* Fixed width for the date input field */
+        }
+
+        table.insuredtable td {
+            padding: 5pt 3pt
+        }
+
+        /* Table styling */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            /* margin-top: 15pt; Space before table */
+            /* margin-bottom: 15pt; Space after table */
+        }
+
+        table th,
+        table td {
+            border: 0.5pt solid black;
+            /* Fine border for cells */
+            padding: 2pt 3pt;
+            /* Tight padding inside cells */
+            text-align: left;
+            vertical-align: middle;
+            /* Center content vertically */
+            font-size: 8pt;
+            line-height: 1.2;
+        }
+
+        table th {
+            font-weight: normal;
+            /* ACORD headers are usually not bold */
             text-align: center;
-            font-weight: bold;
+            background-color: #f8f8f8;
+            /* Very subtle header background */
         }
 
-        /* Form grid */
-        .grid-container {
+        /* Authorization Statement Text Styling */
+        .statement-text {
+            line-height: 1.3;
+            margin-bottom: 10pt;
+            font-size: 9pt;
+        }
+
+        .statement-text input {
+            border: none;
+            border-bottom: 0.5pt solid black;
+            font-size: 9pt;
+            /* Match surrounding text size */
+            padding: 0 2pt;
+            height: 12pt;
+            /* Ensure enough height for the line */
+            vertical-align: bottom;
+            /* Align with text baseline */
+            display: inline-block;
+            /* Allows width to be set */
+        }
+
+        /* Signature lines and labels */
+        .signature-line {
+            display: flex;
+            align-items: flex-end;
+            /* Align the label/title to the bottom of the line */
+            padding-bottom: 2pt;
+            /* Space below the line for clarity */
+            margin-top: 15pt;
+            /* Space between signature areas */
+            position: relative;
+            /* For absolute positioning of labels */
+        }
+
+        .signature-line .line-input {
+            flex-grow: 1;
+            border: none;
+            border-bottom: 0.5pt solid black;
+            height: 10pt;
+            /* Height for the actual line */
+            padding: 0 2pt;
+            font-size: 8pt;
+            /* For actual signature/printed name if typed */
+            background-color: transparent;
+        }
+
+        .signature-line .line-label {
+            position: absolute;
+            /* Position label below the line */
+            top: 12pt;
+            /* Adjust based on line-input height + label font size */
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 7pt;
+            font-weight: bold;
+            /* Labels often bold */
+            white-space: nowrap;
+        }
+
+        .signature-group {
+            display: flex;
+            width: 100%;
+            margin-top: 20pt;
+            /* Space before first signature block */
+        }
+
+        .signature-group>div {
+            flex: 1;
+            /* Each column takes equal width */
             display: flex;
             flex-direction: column;
+            align-items: flex-start;
         }
 
-        .grid-row {
+        .signature-group .date-field {
+            text-align: right;
+            /* For date label */
+            flex-grow: 1;
+            /* Take remaining space */
             display: flex;
-            border-bottom: 1px solid #000;
+            /* Make date field itself a flex container */
+            justify-content: flex-end;
+            /* Push content to the right */
+            align-items: flex-end;
         }
 
-        .grid-col {
-            border-right: 1px solid #000;
-            padding: 5px;
+        .signature-group .date-field .line-input {
+            width: 60pt;
+            /* Specific width for date input */
+            flex-grow: 0;
+            /* Don't let it grow */
+            text-align: right;
+            /* Text inside date field aligns right */
         }
 
-        .grid-col:last-child {
-            border-right: none;
+        .signature-group .date-field .line-label {
+            right: 0;
+            /* Align date label to the right */
+            left: auto;
+            /* Remove left constraint */
+            text-align: right;
+            bottom: -8pt;
+            /* Ensure label is below line */
         }
 
-        /* Grid column widths */
-        .col-60 {
-            width: 60%;
+        .signature-group .left-sig {
+            margin-right: 20pt;
+            /* Space between signature and date areas */
         }
 
-        .col-40 {
-            width: 40%;
+        /* Styling for City/State/Zip in the signature section */
+        .signature-address-line-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.2in;
+            /* Space above this line */
+            gap: 0.1in;
+            /* Small gap between City, State, Zip fields */
         }
 
-        .col-33 {
-            width: 33.33%;
+        .signature-address-line-item {
+            display: flex;
+            align-items: flex-end;
+            line-height: 1.0;
         }
 
-        .col-30 {
-            width: 30%;
-        }
-
-        .col-25 {
-            width: 25%;
-        }
-
-        .col-20 {
-            width: 20%;
-        }
-
-        .col-15 {
-            width: 15%;
-        }
-
-        .col-10 {
-            width: 10%;
-        }
-
-        /* Labels */
-        .label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 3px;
+        .signature-address-line-item input[type="text"] {
+            border: none;
+            border-bottom: 0.5pt solid black;
+            padding: 0 2pt;
             font-size: 8pt;
-        }
-
-        .section-header {
-            font-weight: bold;
-            padding: 2px 5px;
-            text-align: center;
-            border-bottom: 1px solid #000;
-        }
-
-        /* Checkboxes */
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .checkbox {
-            width: 10px;
-            height: 10px;
-            border: 1px solid #000;
-            display: inline-block;
-            margin-right: 5px;
-        }
-
-        /* Value fields */
-        .value {
-            min-height: 15px;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .indent {
-            padding-left: 15px;
-        }
-
-        /* Specific section styles */
-        .tall-section {
-            min-height: 120px;
-        }
-
-        /* Textarea styles */
-        textarea {
-            width: 100%;
-            border: 1px solid #ccc;
-            font-family: Arial, sans-serif;
-            font-size: 10pt;
-            padding: 2px;
-            resize: vertical;
+            height: 11pt;
+            background-color: transparent;
             box-sizing: border-box;
+            line-height: 1;
         }
 
-        textarea:focus {
-            outline: none;
-            border-color: #000;
+        .signature-address-line-item label {
+            white-space: nowrap;
+            font-size: 8pt;
+            color: #333;
+            flex-shrink: 0;
+            margin-left: 4pt;
+            /* Space between input and label */
+            padding-bottom: 0.5pt;
         }
 
-        /* Print styles */
+        .signature-address-line-item.city input {
+            flex-grow: 1;
+        }
+
+        /* City input fills available space */
+        .signature-address-line-item.state input {
+            width: 25pt;
+            flex-grow: 0;
+        }
+
+        /* Fixed width for State */
+        .signature-address-line-item.zip input {
+            width: 45pt;
+            flex-grow: 0;
+        }
+
+        /* Fixed width for Zip */
+
+
+        /* Footer Section */
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 25pt;
+            /* Space from content above */
+            /* padding-top: 5pt; */
+            border-top: 0.5pt solid #ccc;
+            font-size: 6pt;
+            /* color: #555; */
+        }
+
+        .footer-copyright {
+            /* flex-grow: 1; */
+            text-align: center;
+        }
+
+        .checkboxtd span {
+            vertical-align: super;
+        }
+
+        .checkboxtd td {
+            border: 0;
+        }
+
+        /* PRINT MEDIA QUERIES - CRITICAL for accurate printing */
         @media print {
+            .page-break {
+                page-break-after: always;
+
+            }
+
             body {
-                padding: 0;
                 background-color: white;
+                /* No background on print */
+                margin: 0;
+                padding: 0;
+                display: block;
+                /* Remove flex on print to avoid centering issues */
+                -webkit-print-color-adjust: exact;
+                /* Crucial for background colors/borders */
+                print-color-adjust: exact;
+                orphans: 3;
+                /* Prevent single lines at page breaks */
+                widows: 3;
+                /* Prevent single lines at page breaks */
             }
 
             .form-container {
-                width: 100%;
-                box-shadow: none;
-            }
-
-            textarea {
                 border: none;
-                background: transparent;
-                resize: none;
+                /* Remove screen-only border on print */
+                box-shadow: none;
+                /* Remove screen-only shadow on print */
+                margin: 0;
+                /* Remove auto margins on print */
+                padding: 0.5in;
+                /* Keep internal padding as form margin */
+                width: 8.5in;
+                height: 11in;
+            }
+
+            /* Ensure all inputs and text align perfectly for print */
+            input[type="text"] {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                vertical-align: baseline;
+                /* Align text exactly on the baseline */
+                padding-bottom: 0;
+                /* Remove any padding that might push text off line */
+                height: auto;
+                /* Let content determine height, but maintain min-height */
+                min-height: 11pt;
+                /* Maintain minimum line height for input areas */
+            }
+
+            .form-field-line label,
+            .address-line-item label,
+            .signature-address-line-item label {
+                padding-bottom: 0;
+                /* Ensure labels are tightly aligned */
+            }
+
+            .signature-line .line-label {
+                bottom: -7pt;
+                /* Fine-tune label position below signature lines for print */
+            }
+
+            .statement-text input {
+                height: auto;
+                min-height: 12pt;
+            }
+
+            /* Adjust grid gaps if they cause issues on print, sometimes unitless works best */
+            .grid {
+                /* You might need to override Tailwind's responsive gaps if they break print layout */
+                /* gap: 0; will remove all gaps, then re-add specific ones if needed */
+                /* For example: */
+                /* column-gap: 0.5in !important; */
+                /* row-gap: 0.1in !important; */
+            }
+
+            .grid>div {
+                padding: 0;
+                /* Ensure no unwanted padding from Tailwind on grid cells */
+            }
+
+            /* Prevent elements from being split across page breaks where possible */
+            .signature-group,
+            .statement-text,
+            table {
+                page-break-inside: avoid;
+            }
+
+            table thead {
+                display: table-header-group;
+                /* Ensure table headers repeat on new page */
+            }
+
+            table tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
             }
         }
 
-        .ins-form-body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .ins-form-table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-            margin-bottom: 20px;
-        }
-
-        .ins-form-table td,
-        .ins-form-table th {
-            border: 1px solid black;
-            padding: 3px 5px;
-            vertical-align: top;
-            font-size: 12px;
-        }
-
-        .ins-form-header {
-            font-weight: bold;
-        }
-
-        .ins-form-section-header {
-            font-weight: bold;
-        }
-
-        .ins-form-checkbox-container {
-            display: inline-block;
-            margin-right: 5px;
-        }
-
-        .ins-form-checkbox {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border: 1px solid black;
-            margin-right: 3px;
-            vertical-align: middle;
-        }
-
-        .ins-form-small-text {
-            font-size: 10px;
-        }
-
-        .ins-form-label {
-            font-size: 10px;
-            text-transform: uppercase;
-        }
-
-        .ins-form-footer {
-            font-size: 10px;
-            text-align: center;
-            margin-top: 5px;
-        }
-
-        .ins-form-description-box {
-            height: 200px;
-        }
-
-        .ins-form-checkbox-block {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .ins-form-checkbox-item {
-            width: 25%;
+        .kol-table td {
+            border: 0;
         }
     </style>
 @endpush
 @section('content')
 
-    <form action="{{ route('store-property-loss') }}" method="POST" class=" mt-4">
-        @csrf
+        <form action="{{ route('store-property-loss') }}" method="POST" class=" mt-4">
+            @csrf
 
-        <input type="hidden" name="client_id" value="{{ $clientPolicy->client_id }}">
-
-
-            <!-- Header -->
-            <div class="header">
-                <div class="logo-section">
-                    <img src="https://i.ibb.co/bYYGFHD/Untitled-design-11.png" width="50px" height="auto" alt="ACORD"
-                         class="logo">
-                </div>
-                <div class="title-section">
-                    <span class="title">PROPERTY LOSS NOTICE</span>
-                </div>
-                <div class="date-section">
-                    <div class="date-label">DATE (MM/DD/YYYY)</div>
-                    <div class="date-value">
-                        <textarea rows="1" placeholder="Date" name="invoice_date"
-                                  style="text-align: center; font-weight: bold;">02/23/2025</textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Agency Info -->
-            <div class="grid-row">
-                <div class="grid-col col-60">
-                    <div class="label">AGENCY</div>
-                    <div class="value">
-                        <textarea rows="1" name="agency_name" placeholder="Name">Aim Insurance Of Texas</textarea>
-                        <textarea rows="1" name="agency_address" placeholder="Address">3322 Shaver St</textarea>
-                        <textarea rows="1" style="width: 50%" name="agency_city" placeholder="City">Pasadena</textarea>
-                        <textarea rows="1" style="width: 20%" name="agency_state" placeholder="State">TX</textarea>
-                        <textarea rows="1" style="width: 20%" name="agency_zipcode"
-                                  placeholder="Zipcode">77504</textarea>
+            <input type="hidden" name="client_id" value="{{ $clientPolicy->client_id }}">
+            <div class="form-container">
+                <div class="flex justify-between items-end">
+                    <div class="text-xs font-bold mr-4 flex-shrink-0" style="font-size: 9pt;">
+                        <img src="{{asset('backend/img/acord-logo.png')}}" alt="ACORD Logo" class="acord-logo">
 
                     </div>
-                    <div>
-                        <h3 style="border: solid 1px black;   width: 100%; font-weight: 100;">
-                            <b>Contact Name:</b> <textarea rows="1" name="agency_contact_name" placeholder="Name"
-                                                           style="width: auto;">Ibrahim</textarea>
-                        </h3>
-                        <h3 style="border: solid 1px black;   width: 100%; font-weight: 100;">
-                            <b>Phone (A/C,No,Ext):</b> <textarea rows="1" name="agency_phone" placeholder="Phone"
-                                                                 style="width: auto;">(713)9473434</textarea>
-                        </h3>
-                        <h3 style="border: solid 1px black;   width: 100%; font-weight: 100;">
-                            <b>FAX (A/C,No,Ext):</b> <textarea rows="1" name="agency_fax" placeholder="Fax"
-                                                               style="width: auto;">(713)9463969</textarea>
-                        </h3>
-                        <h3 style="border: solid 1px black;   width: 100%; font-weight: 100;">
-                            <b>Email Address:</b> <textarea rows="1" name="agency_email" placeholder="Email"
-                                                            style="width: auto;"></textarea>
-                        </h3>
-                        <h3 style="border: solid 1px black;   width: 100%; font-weight: 100;">
-                            <b>Code:</b> <textarea rows="1" name="agency_code" placeholder="Agency Code"
-                                                   style="width: auto;"></textarea>
-                            <b>SubCode</b> <textarea rows="1" name="agency_subcode" placeholder="Agency SUb Code"
-                                                     style="width: auto;"></textarea>
-                        </h3>
-                        <h3 style="border: solid 1px black;   width: 100%; font-weight: 100;">
-                            <b>Agency Customer Id:</b> <textarea rows="1" name="agency_customer_id"
-                                                                 placeholder="Agency Customer Id"
-                                                                 style="width: auto;"></textarea>
-                        </h3>
+                    <div class="flex-grow header-title">
+                        PROPERTY LOSS NOTICE
                     </div>
-                </div>
-
-                <div class="grid-col col-40">
-                    <div class="grid-row" style="border-top: none; border-left: none; border-right: none;">
-                        <div class="grid-col col-60" style="border-right: 1px solid #000;">
-                            <div class="label">INSURED LOCATION CODE</div>
-                            <div class="value">
-                                <textarea rows="1" name="location_code" placeholder="Location Code"></textarea>
-                            </div>
+                    <div class="text-right flex-shrink-0 ml-4" style="border:1px solid #000; padding: 1px 5px;">
+                        <div class="" style="text-align: center;">
+                            <label class="date-field-label">DATE (MM/DD/YYYY):</label>
+                            <p><input type="text" class="date-input" placeholder="Date" name="invoice_date" style="font-size: 8pt; text-align: left;"></p>
                         </div>
-                        <div class="grid-col col-40">
-                            <div class="label">DATE OF LOSS AND TIME</div>
-                            <div class="value">
-                                <textarea rows="1" name="date_of_loss" placeholder="Enter Date"></textarea>
-                                <div style="display: flex; justify-content: flex-end; padding-top: 5px;">
-                                    <div class="checkbox-container" style="margin-right: 10px;">
-                                        <input type="checkbox" name="time_of_loss" value="am"
-                                               style="width: 10px; height: 10px;">
-                                        <span>AM</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2  gap-y-[0.1in]" style="border: 1px solid black;">
+                    <div style="border-right: 1px solid black; margin-top: 5px ;">
+                        <div class="form-field-line">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td rowspan="2" style="border: none;">New Agency</td>
+
+                                </tr>
+
+                            </table>
+                            <!-- <label>NEW AGENCY</label>
+                                <input type="text" value="" class="flex-grow"> -->
+                        </div>
+                        <div class="form-field-line">
+                            <p style="padding: 2px 5px;"><input type="text" value="" class="date-input" name="agency_name" placeholder="Name" style="font-size: 8pt;text-align: left;width: 100%;"></p><br>
+                            <p style="padding: 2px 5px;"><input type="text" value="" class="date-input" name="agency_address" placeholder="Address" style="font-size: 8pt;text-align: left;width: 100%;"></p>
+                        </div>
+                        <div class="form-field-line" style="margin-bottom: 0; ">
+                            <table style="width: 100%; border: none; ">
+                                <tr>
+                                    <td colspan="2"><input type="text" value="" class="date-input" name="agency_city" placeholder="City"
+                                        style="font-size: 8pt;text-align: left;width: 100%;"></td>
+                                    <td><input type="text" value="" class="date-input" name="agency_state" placeholder="State"
+                                        style="font-size: 8pt;text-align: left;width: 100%;"></td>
+                                    <td colspan="2"><input type="text" value="" class="date-input" name="agency_zipcode" placeholder="Zipcode"
+                                        style="font-size: 8pt;text-align: left;width: 100%;"></td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+                        <div class="form-field-line" style="margin-bottom: 0;">
+
+                            <table style="width: 100%; ">
+                                <tr>
+
+                                    <td colspan="2">Contact : <input type="text" value="" class="date-input" name="agency_contact_name" placeholder="Name"
+                                        style="font-size: 8pt;text-align: left;width: 100%;"></td>
+                                </tr>
+                                <tr>
+
+                                    <td colspan="2">Phone : <input type="text" value="" class="date-input" name="agency_phone" placeholder="Phone"
+                                        style="font-size: 8pt;text-align: left;width: 100%;"></td>
+                                </tr>
+                                <tr>
+
+                                    <td colspan="2">Fax : <input type="text" value="" class="date-input" name="agency_fax" placeholder="Fax"
+                                        style="font-size: 8pt;text-align: left;width: 100%;"></td>
+                                </tr>
+                                <tr>
+
+
+                                    <td colspan="2">Email : <input type="text" value="" class="date-input" name="agency_email" placeholder="Email"
+                                        style="font-size: 8pt;text-align: left;width: 100%;"></td>
+                                </tr>
+
+                                <tr>
+                                    <td>CODE : <input type="text" value="" class="date-input" name="agency_code" placeholder="Code"
+                                        style="font-size: 8pt;text-align: left;width: 100%;"></td>
+                                    <td>SUBCODE : <input type="text" value="" class="date-input" name="agency_subcode" placeholder="Sub Code"
+                                        style="font-size: 8pt;text-align: left;width: 100%;"></td>
+                                </tr>
+                                <tr>
+
+                                    <td colspan="2">AGENCY CUSTOMER ID : <input type="text" value="" class="date-input" name="agency_customer_id" placeholder="Agency Customer Id"
+                                        style="font-size: 8pt;text-align: left;width: 100%;"></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div style="margin-top: 5px ">
+                        <table>
+                            <tr>
+                                <td>Insured Location Code <br> <textarea rows="1" name="location_code" placeholder="Location Code" style="width: 100%;"></textarea></td>
+                                <td>Date of loss an time <br> <textarea rows="1" name="date_of_loss" placeholder="Enter Date" style="width: 100%;"></textarea></td>
+                                <td><input type="checkbox" name="time_of_loss" value="am"> AM <br> <input type="checkbox" name="time_of_loss" value="pm"> PM </td>
+                            </tr>
+                        </table>
+                        <h5 style="text-align: center; font-size: 10px ; font-weight: 600;">Priority Home Policy</h5>
+                        <table>
+                            <tr>
+                                <td>CARRIER <br> <textarea rows="1" name="property_carrier" placeholder="Carrier" style="width: 100%;"></textarea></td>
+
+                                <td>Niac Code <br><textarea rows="1" name="property_naic_code" placeholder="NAIC Code" style="width: 100%;"></textarea></td>
+                            </tr>
+                            <tr>
+                                <td>Policy Number <br> <textarea rows="1" name="property_policy_number" placeholder="Policy #" style="width: 100%;"></textarea></td>
+
+                                <td>Line of Business <br> <textarea rows="1" name="property_business" placeholder="Business" style="width: 100%;"></textarea></td>
+                            </tr>
+                        </table>
+                        <h5 style="text-align: center; font-size: 10px ; font-weight: 600;">Flood Policy</h5>
+                        <table>
+                            <tr>
+                                <td>CARRIER <br><textarea rows="1" name="flood_carrier" placeholder="Carrier" style="width: 100%;"></textarea></td>
+
+                                <td>Niac Code <br><textarea rows="1" name="flood_naic_code" placeholder="NAIC Code" style="width: 100%;"></textarea></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Policy Number <br> <textarea rows="1" name="flood_policy_number" placeholder="Policy #" style="width: 100%;"></textarea></td>
+
+                            </tr>
+                        </table>
+                        <h5 style="text-align: center; font-size: 10px ; font-weight: 600;">Wind Policy</h5>
+                        <table>
+                            <tr>
+                                <td>CARRIER <br> <textarea rows="1" name="wind_carrier" placeholder="Carrier" style="width: 100%;"></textarea></td>
+
+                                <td>Niac Code <br> <textarea rows="1" name="wind_naic_code" placeholder="NAIC Code" style="width: 100%;"></textarea></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Policy Number <br> <textarea rows="1" name="wind_policy_number" placeholder="Policy #" style="width: 100%;"></textarea></td>
+
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+                <div style="font-size: 12px; font-weight: 600; margin-top: 5px; margin-bottom: -5px;">Insured</div>
+                <div class="grid grid-cols-2  gap-y-[0.1in]" style="border: 1px solid black; margin-top: 10px;">
+                    <div style="">
+                        <table>
+                            <tr>
+                                <td colspan="3">
+                                    NAME OF INSURED (First, Middle, Last) <br> <textarea rows="3" name="insured_name" style="width: 100%;" placeholder="Name"></textarea>                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Date of birth <br> <textarea rows="1" name="insured_dob" style="width: 100%;"></textarea></td>
+                                <td>FEIN <br> <textarea rows="1" name="insured_fein" style="width: 100%;"></textarea></td>
+                                <td>Marital status <br> <textarea rows="1" name="insured_marital_status" style="width: 100%;"></textarea> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><span>Primary Phone : </span><textarea rows="1" name="insured_phone_primary" style="width: 100%;" placeholder="Phone"></textarea><br> 
+                                    <div>
+                                        <span class="ins-form-checkbox-container">
+                                            <input type="radio" name="insured_phone_primary_type" value="home" class="ins-form-checkbox" checked>
+                                            <span class="ins-form-small-text">HOME</span>
+                                        </span>
+                                        <span class="ins-form-checkbox-container">
+                                            <input type="radio" name="insured_phone_primary_type" value="bus" class="ins-form-checkbox" >
+                                            <span class="ins-form-small-text">BUS</span>
+                                        </span>
+                                        <span class="ins-form-checkbox-container">
+                                            <input type="radio" name="insured_phone_primary_type" value="cell" class="ins-form-checkbox">
+                                            <span class="ins-form-small-text">CELL</span>
+                                        </span>
                                     </div>
-                                    <div class="checkbox-container">
-                                        <input type="checkbox" name="time_of_loss" value="pm"
-                                               style="width: 10px; height: 10px;">
-                                        <span>PM</span>
+                                </td>
+                                <td>Secondary Phone : </span><textarea rows="1" name="insured_phone_secondary" style="width: 100%;" placeholder="Phone"></textarea> <br> 
+                                    <div>
+                                        <span class="ins-form-checkbox-container">
+                                        <input type="radio" name="insured_phone_secondary_type" value="home"
+                                                class="ins-form-checkbox">
+                                        <span class="ins-form-small-text">HOME</span>
+                                        </span>
+                                        <span class="ins-form-checkbox-container">
+                                        <input type="radio" name="insured_phone_secondary_type" value="bus"
+                                                class="ins-form-checkbox">
+                                        <span class="ins-form-small-text">BUS</span>
+                                        </span>
+                                        <span class="ins-form-checkbox-container">
+                                        <input type="radio" name="insured_phone_secondary_type" value="cell"
+                                                class="ins-form-checkbox">
+                                        <span class="ins-form-small-text">CELL</span>
+                                        </span>
                                     </div>
-                                </div>
-                            </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">Name of Spouse <br> <textarea rows="3" name="spouse_name" style="width: 100%;" placeholder="Name"></textarea></td>
+                            </tr>
+                            <tr>
+                                <td>Date of birth <br> <textarea rows="1" name="spouse_dob" style="width: 100%;"></textarea></td>
+                                <td>FEIN <br> <textarea rows="1" name="spouse_fein" style="width: 100%;"></textarea></td>
+                                <td>Marital status <br> <textarea rows="1" name="spouse_marital_status" style="width: 100%;"></textarea> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Primary Phone <br> <textarea rows="1" name="spouse_phone_primary" placeholder="Phone"></textarea> <br> 
+                                    <div>
+                                        <span class="ins-form-checkbox-container">
+                                            <input type="radio" name="spouse_phone_primary_type" value="home"
+                                                    class="ins-form-checkbox" checked>
+                                            <span class="ins-form-small-text">HOME</span>
+                                        </span>
+                                        <span class="ins-form-checkbox-container">
+                                            <input type="radio" name="spouse_phone_primary_type" value="bus"
+                                                    class="ins-form-checkbox">
+                                            <span class="ins-form-small-text">BUS</span>
+                                        </span>
+                                        <span class="ins-form-checkbox-container">
+                                            <input type="radio" name="spouse_phone_primary_type" value="cell"
+                                                    class="ins-form-checkbox">
+                                            <span class="ins-form-small-text">CELL</span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>Secondary Phone <br> <textarea rows="1" name="spouse_phone_secondary" placeholder="Phone"></textarea> <br> 
+                                    <div>
+                                        <span class="ins-form-checkbox-container">
+                                            <input type="radio" name="spouse_phone_secondary_type" value="home"
+                                                    class="ins-form-checkbox">
+                                            <span class="ins-form-small-text">HOME</span>
+                                            </span>
+                                            <span class="ins-form-checkbox-container">
+                                            <input type="radio" name="spouse_phone_secondary_type" value="bus"
+                                                    class="ins-form-checkbox">
+                                            <span class="ins-form-small-text">BUS</span>
+                                            </span>
+                                            <span class="ins-form-checkbox-container">
+                                            <input type="radio" name="spouse_phone_secondary_type" value="cell"
+                                                    class="ins-form-checkbox">
+                                            <span class="ins-form-small-text">CELL</span>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                    </div>
+                    <div style=" ">
+                        <div class="form-field-line">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td rowspan="2" style="border: none;">Insured Mailing Addess</td>
+                                </tr>
+                            </table>
+                            <!-- <label>NEW AGENCY</label>
+                                <input type="text" value="" class="flex-grow"> -->
+                        </div>
+                        <div>
+                            <p style="padding: 2px 5px;"><textarea rows="1" name="insured_address" style="width: 100%;" placeholder="Address"></textarea></p>
+                        </div>
+                        <div style="margin-bottom: 0; ">
+                            <table style="width: 100%; border: none; ">
+                                <tr>
+                                    <td colspan="2"><textarea  name="insured_city" style="width: 100%;" placeholder="City"></textarea></td>
+                                    <td><textarea  name="insured_state" style="width: 100%;" placeholder="State"></textarea></td>
+                                    <td colspan="2"><textarea  name="insured_zipcode" style="width: 100%;" placeholder="Zip Code"></textarea></td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+                        <div class="form-field-line" style="margin-bottom: 0;">
+
+                            <table style="width: 100%; ">
+                                <tr>
+                                    <td colspan="2">Primary EMail : <textarea rows="1" name="insured_email_primary" style="width: 100%;"></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Secondary EMail : <textarea rows="1" name="insured_email_secondary" style="width: 100%;"></textarea></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <p style="padding: 2px 5px;">Spouse Mailing Addess <br> <textarea name="spouse_address" style="width: 100%;" placeholder="Address"></textarea></p>
+                        </div>
+                        <div style="margin-bottom: 0; ">
+                            <table style="width: 100%; border: none; ">
+                                <tr>
+                                    <td colspan="2"><textarea  name="spouse_city" style="width: 100%;" placeholder="City"></textarea></td>
+                                    <td><textarea  name="spouse_state" style="width: 100%;" placeholder="State"></textarea></td>
+                                    <td colspan="2"><textarea  name="spouse_zipcode" style="width: 100%;" placeholder="Zip Code"></textarea></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="form-field-line" style="margin-bottom: 0;">
+
+                            <table style="width: 100%; ">
+                                <tr>
+
+                                    <td colspan="2">Primary EMail : <textarea rows="1" name="spouse_email_primary" style="width: 100%;" placeholder="email"></textarea></td>
+                                </tr>
+                                <tr>
+
+                                    <td colspan="2">Secondary EMail : <textarea rows="1" name="spouse_email_secondary" style="width: 100%;" placeholder="email"></textarea></td>
+                                </tr>
+
+
+
+                            </table>
                         </div>
                     </div>
-                    <div class="section-header">PROPERTY / HOME POLICY</div>
-                    <div class="grid-row" style="border-top: none; border-left: none; border-right: none;">
-                        <div class="grid-col col-75" style="border-right: 1px solid #000;">
-                            <div class="label">CARRIER</div>
-                            <div class="value">
-                                <textarea rows="1" name="property_carrier"
-                                          placeholder="Carrier">No Company Selected</textarea>
-                            </div>
-                        </div>
-                        <div class="grid-col col-25">
-                            <div class="label">NAIC CODE</div>
-                            <div class="value">
-                                <textarea rows="1" name="property_naic_code" placeholder="NAIC Code"></textarea>
-                            </div>
-                        </div>
+
+
+                </div>
+                <div style="display: flex; margin-top: 5px;">
+                    <div style="font-size: 12px; font-weight: 600;  margin-bottom: -5px;">Contact</div>
+                </div>
+
+                <div class="grid grid-cols-2  gap-y-[0.1in]" style="border: 1px solid black; margin-top: 10px;">
+                    <div style="">
+                        <table>
+                            <tr>
+                                <td colspan="3">Name of Contact <br> <textarea rows="1" name="contact_name" style="width: 100%;" placeholder="Name"></textarea></td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">Primary Phone <br> <textarea rows="1" name="contact_phone_primary" style="width: 100%;" placeholder="Phone"></textarea> <br>
+                                    <div>
+                                        <span class="ins-form-checkbox-container">
+                                        <input type="radio" name="contact_phone_primary_type" value="home"
+                                                class="ins-form-checkbox" checked>
+                                        <span class="ins-form-small-text">HOME</span>
+                                        </span>
+                                        <span class="ins-form-checkbox-container">
+                                        <input type="radio" name="contact_phone_primary_type" value="bus"
+                                                class="ins-form-checkbox">
+                                        <span class="ins-form-small-text">BUS</span>
+                                        </span>
+                                        <span class="ins-form-checkbox-container">
+                                        <input type="radio" name="contact_phone_primary_type" value="cell"
+                                                class="ins-form-checkbox">
+                                        <span class="ins-form-small-text">CELL</span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>Secondary Phone <br> <textarea rows="1" name="contact_phone_secondary" style="width: 100%;" placeholder="Phone"></textarea> <br> 
+                                    <div>
+                                        <span class="ins-form-checkbox-container">
+                                            <input type="radio" name="contact_phone_secondary_type" value="home" class="ins-form-checkbox" checked>
+                                            <span class="ins-form-small-text">HOME</span>
+                                        </span>
+                                        <span class="ins-form-checkbox-container">
+                                            <input type="radio" name="contact_phone_secondary_type" value="bus" class="ins-form-checkbox">
+                                            <span class="ins-form-small-text">BUS</span>
+                                        </span>
+                                        <span class="ins-form-checkbox-container">
+                                            <input type="radio" name="contact_phone_secondary_type" value="cell" class="ins-form-checkbox">
+                                            <span class="ins-form-small-text">CELL</span>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">When to contact <br> <textarea rows="1" name="contact_when"></textarea></td>
+                            </tr>
+
+                        </table>
+
+
                     </div>
-                    <div class="grid-row" style="border-top: none; border-left: none; border-right: none;">
-                        <div class="grid-col col-60" style="border-right: 1px solid #000;">
-                            <div class="label">POLICY NUMBER</div>
-                            <div class="value">
-                                <textarea rows="1" name="property_policy_number" placeholder="Policy #"></textarea>
-                            </div>
+                    <div style=" ">
+                        <div class="form-field-line">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td rowspan="2" style="border: none;">Contact Mailing Addess<br> <textarea rows="1" name="contact_address" style="width: 100%;" placeholder="Address"></textarea></td>
+                                </tr>
+                            </table>
+                            <!-- <label>NEW AGENCY</label>
+                                <input type="text" value="" class="flex-grow"> -->
                         </div>
-                        <div class="grid-col col-40">
-                            <div class="label">LINE OF BUSINESS</div>
-                            <div class="value">
-                                <textarea rows="1" name="property_business" placeholder="Business"></textarea>
-                            </div>
+                        <div style="margin-bottom: 0; ">
+                            <table style="width: 100%; border: none; ">
+                                <tr>
+                                    <td colspan="2"><textarea rows="1" name="contact_city" style="width: 100%;" placeholder="City"></textarea></td>
+                                    <td><textarea rows="1" name="contact_state" style="width: 100%;" placeholder="State"></textarea></td>
+                                    <td colspan="2"><textarea rows="1" name="contact_zipcode" style="width: 100%;" placeholder="Zip Code"></textarea></td>
+                                </tr>
+                            </table>
                         </div>
-                    </div>
-                    <div class="section-header">FLOOD POLICY</div>
-                    <div class="grid-row" style="border-top: none; border-left: none; border-right: none;">
-                        <div class="grid-col col-75" style="border-right: 1px solid #000;">
-                            <div class="label">CARRIER</div>
-                            <div class="value">
-                                <textarea rows="1" name="flood_carrier"
-                                          placeholder="Carrier">No Company Selected</textarea>
-                            </div>
-                        </div>
-                        <div class="grid-col col-25">
-                            <div class="label">NAIC CODE</div>
-                            <div class="value">
-                                <textarea rows="1" name="flood_naic_code" placeholder="NAIC Code"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid-row" style="border-top: none; border-left: none; border-right: none;">
-                        <div class="grid-col col-100">
-                            <div class="label">POLICY NUMBER</div>
-                            <div class="value">
-                                <textarea rows="1" name="flood_policy_number" placeholder="Policy #"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="section-header">WIND POLICY</div>
-                    <div class="grid-row" style="border-top: none; border-left: none; border-right: none;">
-                        <div class="grid-col col-75" style="border-right: 1px solid #000;">
-                            <div class="label">CARRIER</div>
-                            <div class="value">
-                                <textarea rows="1" name="wind_carrier" placeholder="Carrier"></textarea>
-                            </div>
-                        </div>
-                        <div class="grid-col col-25">
-                            <div class="label">NAIC CODE</div>
-                            <div class="value">
-                                <textarea rows="1" name="wind_naic_code" placeholder="NAIC Code"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid-row" style="border-top: none; border-left: none; border-right: none;">
-                        <div class="grid-col col-100">
-                            <div class="label">POLICY NUMBER</div>
-                            <div class="value">
-                                <textarea rows="1" name="wind_policy_number" placeholder="Policy #"></textarea>
-                            </div>
+
+
+                        <div class="form-field-line" style="margin-bottom: 0;">
+
+                            <table style="width: 100%; ">
+                                <tr>
+                                    <td colspan="2">Primary EMail : <textarea rows="1" name="contact_email_primary" style="width: 100%;" placeholder="phone"></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Secondary EMail : <textarea rows="1" name="contact_email_secondary" style="width: 100%;" placeholder="phone"></textarea></td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
+                <div style="font-size: 12px; font-weight: 600; margin-top: 5px; margin-bottom: -5px;">Loss</div>
+                <table style="width: 100%; margin-top: 20px;">
+                    <tr>
+                        <td>Location of loss:<br> <textarea rows="1" name="loss_location" style="width: 100%;" placeholder="Location"></textarea></td>
+                        <td>Police or fire department contacted : <textarea rows="1" name="loss_police_contact" style="width: 100%;" placeholder="Contact"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Street: 
+                            <br> <textarea rows="1" name="loss_address" style="width: 100%;" placeholder="Address"></textarea>
+                            <br> <textarea rows="1" name="loss_city" style="width: 100%;" placeholder="City"></textarea>
+                            <br> <textarea rows="1" name="loss_state" style="width: 100%;" placeholder="state"></textarea>
+                            <br> <textarea rows="1" name="loss_zipcode" style="width: 100%;" placeholder="zipcode"></textarea>
+
+                        </td>
+                        <td rowspan="2" style="vertical-align: top;">Report Number : <textarea rows="1" name="loss_police_report" style="width: 100%;" placeholder="Report"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Country : <textarea rows="1" name="loss_country" style="width: 100%;" placeholder="Country"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table class="kol-table">
+                                <tr>
+                                    <td class="kind-of-loss-cell" rowspan="2">KIND OF LOSS</td>
+                                    <td>
+                                        <div class="checkbox-group">
+                                            <div class="checkbox-item">
+                                                <input type="radio" name="loss_type" value="fire">
+                                                <label>FIRE</label>
+                                            </div>
+                                            <div class="checkbox-item">
+                                                <input type="radio" name="loss_type" value="theft">
+                                                <label>THEFT</label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox-group">
+                                            <div class="checkbox-item">
+                                                <input type="radio" name="loss_type" value="lightning">
+                                                <label>LIGHTNING</label>
+                                            </div>
+                                            <div class="checkbox-item">
+                                                <input type="radio" name="loss_type" value="hail">
+                                                <label>HAIL</label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox-group">
+                                            <div class="checkbox-item">
+                                                <input type="radio" name="loss_type" value="flood">
+                                                <label>FLOOD</label>
+                                            </div>
+                                            <div class="checkbox-item">
+                                                <input type="radio" name="loss_type" value="wind">
+                                                <label>WIND</label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox-group">
+                                            <div class="checkbox-item">
+                                                <input type="radio" name="loss_type" value="other">
+                                                <label>Other</label>
+                                            </div>
+                                            <div class="checkbox-item">
+                                                <textarea rows="1" name="loss_type_other" placeholder="other kind" style="width: 100%;"></textarea>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <!-- <td class="text-field-cell" colspan="2">
+                                            <input type="text">
+                                        </td> -->
+                                    <td style="border-left: 1px solid black;" class="amount-cell" rowspan="2">PROBABLE AMOUNT:
+                                        <textarea rows="1" name="loss_amount" style="width: 100%;" placeholder="Amount"></textarea></td>
+                                </tr>
+                            </table>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="ins-form-label">DESCRIPTION OF LOSS & DAMAGE</div>
+                            <textarea rows="3" name="loss_description" style="width: 100%;"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Reported By: <br> <textarea rows="1" name="report_by" style="width: 100%;"></textarea></td>
+                        <td>Reported To: <br> <textarea rows="1" name="report_to" style="width: 100%;"></textarea></td>
+                    </tr>
+                </table>
+
+
+                <div class="footer-content">
+                    <div class="flex-shrink-0" style="font-weight: bold; font-size: 9px;">
+                        ACORD 38 (2007/01)
+                    </div>
+                    <div class="footer-copyright" style=" font-weight: bold; font-size: 9px;">
+                        &copy; ACORD CORPORATION 1996-2007. All rights reserved.
+                    </div>
+                </div>
+                <p style="text-align: center; font-weight: bold; font-size: 9px; margin-top: 10px;">The ACORD name and logo are
+                    registered marks of ACORD</p>
+                <div class="page-break"></div>
+                <table>
+                    <tr>
+                        <td>
+                            <p style="font-size: 12px; margin-top: 5px;">Applicable in Alabama
+                                Any person who knowingly presents a false or fraudulent claim for payment of a loss or benefit or
+                                who
+                                knowingly presents false information in an application for insurance is guilty of a
+                                crime and may be subject to restitution, fines, or confinement in prison, or any combination
+                                thereof.</p>
+                            <p style="font-size: 12px; margin-top: 5px;">Applicable in Alaska
+                                Any person who knowingly and with intent to injure, defraud, or deceive an insurance company files
+                                a claim containing false, incomplete, or misleading information may be prosecuted under state law.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">Applicable in Arizona
+                                For your protection Arizona law requires the following statement to appear on this form. Any person
+                                who knowingly presents a false or fraudulent claim for payment of a loss is subject to criminal and
+                                civil penalties.</p>
+                            <p style="font-size: 12px; margin-top: 5px;">Applicable in Arkansas
+                                Any person who knowingly presents a false or fraudulent claim for payment of a loss or benefit or
+                                knowingly presents false information in an application for insurance is guilty of a crime and may be
+                                subject to fines and confinement in prison.</p>
+                            <p style="font-size: 12px; margin-top: 5px;">Applicable in California
+                                For your protection California law requires the following to appear on this form. Any person who
+                                knowingly presents false or fraudulent claim for the payment of a loss is guilty of a crime and may
+                                be subject to fines and confinement in state prison.</p>
+                            <p style="font-size: 12px; margin-top: 5px;">Applicable in Colorado
+                                It is unlawful to knowingly provide false, incomplete, or misleading facts or information to an
+                                insurance company for the purpose of defrauding or attempting to defraud the company. Penalties may
+                                include imprisonment, fines, denial of insurance and civil damages. Any insurance company or agent
+                                of an insurance company who knowingly provides false, incomplete, or misleading facts or information
+                                to a policyholder or claimant for the purpose of defrauding or attempting to defraud the
+                                policyholder or claimant with regard to a settlement or award payable for insurance proceeds shall
+                                be reported to the Colorado Division of Insurance within the Department of Regulatory Agencies.</p>
+                            <p style="font-size: 12px; margin-top: 5px;">Applicable in Delaware
+                                Any person who knowingly, and with intent to injure, defraud or deceive any insurer, files a
+                                statement of claim containing any false, incomplete, or misleading information is guilty of a
+                                felony.</p>
+                            <p style="font-size: 12px; margin-top: 5px;">Applicable in the District of Columbia
+                                WARNING: It is a crime to provide false or misleading information to an insurer for the purpose of
+                                defrauding the insurer or any other person. Penalties include imprisonment and/or fines. In
+                                addition, an insurer may deny insurance benefits if false information materially related to a claim
+                                was provided by the applicant.</p>
+                            <p style="font-size: 12px; margin-top: 5px;">Applicable in Florida
+                                Any person who knowingly and with intent to injure, defraud, or deceive any insurer files a
+                                statement of claim containing any false, incomplete, or misleading information is guilty of a felony
+                                of the third degree.</p>
+                            <p style="font-size: 12px; margin-top: 5px;">Applicable in Hawaii
+                                Any person who intentionally or knowingly misrepresents or conceals material facts, opinions,
+                                intention, or law to obtain or attempt to obtain coverage, benefits, recovery, or compensation
+                                commits the offense of insurance fraud which is a crime punishable by fines or imprisonment or both.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">Applicable in Idaho
+                                Any person who knowingly, and with intent to defraud or deceive any insurance company, files a
+                                statement containing any false, incomplete or misleading information is guilty of a felony.</p>
+                            <p style="font-size: 12px; margin-top: 5px;">Applicable in Indiana
+                                Any person who knowingly and with intent to defraud an insurer files a statement of claim containing
+                                any false, incomplete, or misleading information commits a felony.</p>
+                            <p style="font-size: 12px; margin-top: 5px;">Applicable in Kansas
+                                Any person who, knowingly and with intent to defraud, presents, causes to be presented or prepares
+                                with knowledge or belief that it will be presented to or by an insurer, purported insurer, broker or
+                                any agent thereof, any written, electronic, electronic impulse, facsimile, magnetic, oral, or
+                                telephonic communication or statement as part of, or in support of, an application for the issuance
+                                of, or the rating of an insurance policy for personal or commercial insurance, or a claim for
+                                payment or other benefit pursuant to an insurance policy for commercial or personal insurance which
+                                such person knows to contain materially false information concerning any fact material thereto; or
+                                conceals, for the purpose of misleading, information concerning any fact material thereto commits a
+                                fraudulent insurance act.</p>
+                            <p style="font-size: 12px; margin-top: 5px;">Applicable in Kentucky
+                                Any person who knowingly and with intent to defraud any insurance company or other person files a
+                                statement of claim containing any materially false information or conceals, for the purpose of
+                                misleading, information concerning any fact material thereto commits a fraudulent insurance act,
+                                which is a crime.</p>
+                        </td>
+                    </tr>
+                </table>
+                <div class="footer-content">
+                    <div class="flex-shrink-0" style="font-weight: bold; font-size: 9px;">
+                        ACORD 38 (2007/01)
+                    </div>
+                    <div class="footer-copyright" style=" font-weight: bold; font-size: 9px;">
+                        &copy; ACORD CORPORATION 1996-2007. All rights reserved.
+                    </div>
+                </div>
+                <p style="text-align: center; font-weight: bold; font-size: 9px; margin-top: 10px;">The ACORD name and logo are
+                    registered marks of ACORD</p>
+
+                <div class="page-break"></div>
+                <table>
+                    <tr>
+                        <td>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Louisiana: Any person who knowingly presents a false or fraudulent claim for payment
+                                of a loss or benefit or knowingly presents false information in an application for insurance is
+                                guilty of a crime and may be subject to fines and confinement in prison.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Maine: A crime to knowingly provide false, incomplete or misleading information to an
+                                insurance company for the purpose of defrauding the company. Penalties may include imprisonment,
+                                fines or denial of insurance benefits.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Maryland: Any person who knowingly and willfully presents a false or fraudulent claim
+                                for payment of a loss or benefit or who knowingly presents willfully false information in an
+                                application for insurance is guilty of a crime and may be subject to fines and confinement in
+                                prison.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Michigan: Any person who knowingly presents a false or fraudulent claim for payment of
+                                a loss or benefit or knowingly presents false information in an application for insurance is guilty
+                                of a crime and may be subject to fines and confinement in prison.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Minnesota: A person who files a claim with intent to defraud or helps commit a fraud
+                                against an insurer is guilty of a crime.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Nevada: Pursuant to NRS 686A.291, any person who knowingly and willfully files a
+                                statement of claim that contains any false, incomplete or misleading information concerning a
+                                material fact is guilty of a category D felony.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in New Hampshire: Any person who, with a purpose to injure, defraud or deceive any
+                                insurance company, files a statement of claim containing any false, incomplete or misleading
+                                information is subject to prosecution and punishment for insurance fraud as provided in RSA 638:20.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in New Jersey: Any person who knowingly files a statement of claim containing any false
+                                or misleading information is subject to criminal and civil penalties.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in New Mexico: Any person who knowingly presents a false or fraudulent claim for payment
+                                of a loss or benefit or knowingly presents false information in an application for insurance is
+                                guilty of a crime and may be subject to civil fines and criminal penalties.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in New York: Any person who knowingly and with intent to defraud any insurance company or
+                                other person files an application for insurance or statement of claim containing any materially
+                                false information, or conceals for the purpose of misleading, information concerning any fact
+                                material thereto, commits a fraudulent insurance act, which is a crime, and shall also be subject to
+                                a civil penalty not to exceed five thousand dollars and the stated value of the claim for each such
+                                violation.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Ohio: Any person who, with intent to defraud or knowing that he is facilitating a
+                                fraud against an insurer, submits an application or files a claim containing a false or deceptive
+                                statement is guilty of insurance fraud.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Oklahoma: WARNING: Any person who knowingly, and with intent to injure, defraud or
+                                deceive any insurer, makes any claim for the proceeds of an insurance policy containing any false,
+                                incomplete or misleading information is guilty of a felony.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Oregon: Any person who knowingly and with intent to defraud or solicit another to
+                                defraud the insurer by submitting an application containing a false statement as to any material
+                                fact may be violating state law.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Pennsylvania: Any person who knowingly and with intent to defraud any insurance
+                                company or other person files an application for insurance or statement of claim containing any
+                                materially false information or conceals for the purpose of misleading, information concerning any
+                                fact material thereto commits a fraudulent insurance act, which is a crime and subjects such person
+                                to criminal and civil penalties.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Puerto Rico: Any person who knowingly and with the intention of defrauding presents
+                                false information in an insurance application, or presents, helps, or causes the presentation of a
+                                fraudulent claim for the payment of a loss or any other benefit, or presents more than one claim for
+                                the same damage or loss, shall incur a felony and, upon conviction, shall be sanctioned for each
+                                violation by a fine of not less than five thousand dollars ($5,000) and not more than ten thousand
+                                dollars ($10,000), or fixed term of imprisonment for three (3) years, or both penalties. Should
+                                aggravating circumstances be present, the penalty thus established may be increased to a maximum of
+                                five (5) years, if extenuating circumstances are present, it may be reduced to a minimum of two (2)
+                                years.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Rhode Island: Any person who knowingly presents a false or fraudulent claim for
+                                payment of a loss or benefit or knowingly presents false information in an application for insurance
+                                is guilty of a crime and may be subject to fines and confinement in prison.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Tennessee: It is a crime to knowingly provide false, incomplete or misleading
+                                information to an insurance company for the purpose of defrauding the company. Penalties include
+                                imprisonment, fines and denial of insurance benefits.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Texas: Any person who knowingly presents a false or fraudulent claim for the payment
+                                of a loss is guilty of a crime and may be subject to fines and confinement in state prison.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Virginia: It is a crime to knowingly provide false, incomplete or misleading
+                                information to an insurance company for the purpose of defrauding the company. Penalties include
+                                imprisonment, fines and denial of insurance benefits.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in Washington: It is a crime to knowingly provide false, incomplete or misleading
+                                information to an insurance company for the purpose of defrauding the company. Penalties include
+                                imprisonment, fines and denial of insurance benefits.
+                            </p>
+                            <p style="font-size: 12px; margin-top: 5px;">
+                                Applicable in West Virginia: Any person who knowingly presents a false or fraudulent claim for
+                                payment of a loss or benefit or knowingly presents false information in an application for insurance
+                                is guilty of a crime and may be subject to fines and confinement in prison.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <div class="footer-content">
+                    <div class="flex-shrink-0" style="font-weight: bold; font-size: 9px;">
+                        ACORD 38 (2007/01)
+                    </div>
+                    <div class="footer-copyright" style=" font-weight: bold; font-size: 9px;">
+                        &copy; ACORD CORPORATION 1996-2007. All rights reserved.
+                    </div>
+                </div>
+                <p style="text-align: center; font-weight: bold; font-size: 9px; margin-top: 10px;">The ACORD name and logo are
+                    registered marks of ACORD</p>
+
             </div>
-
-            <!-- FIRST TABLE: INSURED INFO -->
-            <table class="ins-form-table">
-                <tr>
-                    <td colspan="3" class="ins-form-header">INSURED</td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div class="ins-form-label">NAME OF INSURED (First, Middle, Last)</div>
-                        <textarea rows="1" name="insured_name">JJH CONSTRUCTION LLC</textarea>
-                    </td>
-                    <td>
-                        <div class="ins-form-label">INSURED'S MAILING ADDRESS</div>
-                        <textarea rows="3" name="insured_address">22402 Sierra Lake Ct</textarea>
-                        <textarea rows="3" name="insured_city">Katy</textarea>
-                        <textarea rows="3" name="insured_state">TX</textarea>
-                        <textarea rows="3" name="insured_zipcode">77494</textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="ins-form-label">DATE OF BIRTH</div>
-                        <textarea rows="1" name="insured_dob">11/14/1984</textarea></td>
-                    <td>
-                        <div class="ins-form-label">FEIN (if applicable)</div>
-                        <textarea rows="1" name="insured_fein"></textarea></td>
-                    <td>
-                        <div class="ins-form-label">MARITAL STATUS / CIVIL UNION (if applicable)</div>
-                        <textarea rows="1" name="insured_marital_status">Single</textarea></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="ins-form-label">PRIMARY PHONE #</div>
-                        <textarea rows="1" name="insured_phone_primary">(713)516-4040</textarea>
-                        <div>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="insured_phone_primary_type" value="home"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">HOME</span>
-                            </span>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="insured_phone_primary_type" value="bus"
-                                     class="ins-form-checkbox" checked>
-                              <span class="ins-form-small-text">BUS</span>
-                            </span>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="insured_phone_primary_type" value="cell"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">CELL</span>
-                            </span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="ins-form-label">SECONDARY PHONE #</div>
-                        <textarea rows="1" name="insured_phone_secondary"></textarea>
-                        <div>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="insured_phone_secondary_type" value="home"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">HOME</span>
-                            </span>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="insured_phone_secondary_type" value="bus"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">BUS</span>
-                            </span>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="insured_phone_secondary_type" value="cell"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">CELL</span>
-                            </span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="ins-form-label">PRIMARY E-MAIL ADDRESS:</div>
-                        <textarea rows="1" name="insured_email_primary"></textarea>
-                        <hr>
-                        <div class="ins-form-label">SECONDARY E-MAIL ADDRESS:</div>
-                        <textarea rows="1" name="insured_email_secondary"></textarea>
-                    </td>
-                </tr>
-                <!-- SPOUSE SECTION -->
-                <tr>
-                    <td colspan="2">
-                        <div class="ins-form-label">NAME OF SPOUSE</div>
-                        <textarea rows="1" name="spouse_name"></textarea>
-                    </td>
-                    <td>
-                        <div class="ins-form-label">SPOUSE'S MAILING ADDRESS</div>
-                        <textarea rows="3" name="spouse_address"></textarea>
-                        <textarea rows="3" name="spouse_city"></textarea>
-                        <textarea rows="3" name="spouse_state"></textarea>
-                        <textarea rows="3" name="spouse_zipcode"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="ins-form-label">DATE OF BIRTH</div>
-                        <textarea rows="1" name="spouse_dob"></textarea></td>
-                    <td>
-                        <div class="ins-form-label">FEIN (if applicable)</div>
-                        <textarea rows="1" name="spouse_fein"></textarea></td>
-                    <td>
-                        <div class="ins-form-label">MARITAL STATUS / CIVIL UNION</div>
-                        <textarea rows="1" name="spouse_marital_status"></textarea></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="ins-form-label">PRIMARY PHONE #</div>
-                        <textarea rows="1" name="spouse_phone_primary"></textarea>
-                        <div>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="spouse_phone_primary_type" value="home"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">HOME</span>
-                            </span>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="spouse_phone_primary_type" value="bus"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">BUS</span>
-                            </span>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="spouse_phone_primary_type" value="cell"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">CELL</span>
-                            </span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="ins-form-label">SECONDARY PHONE #</div>
-                        <textarea rows="1" name="spouse_phone_secondary"></textarea>
-                        <div>
-                        <span class="ins-form-checkbox-container">
-                              <input type="radio" name="spouse_phone_secondary_type" value="home"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">HOME</span>
-                            </span>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="spouse_phone_secondary_type" value="bus"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">BUS</span>
-                            </span>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="spouse_phone_secondary_type" value="cell"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">CELL</span>
-                            </span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="ins-form-label">PRIMARY E-MAIL ADDRESS:</div>
-                        <textarea rows="1" name="spouse_email_primary"></textarea>
-                        <hr>
-                        <div class="ins-form-label">SECONDARY E-MAIL ADDRESS:</div>
-                        <textarea rows="1" name="spouse_email_secondary"></textarea>
-                    </td>
-                </tr>
-                <!-- CONTACT SECTION -->
-                <tr>
-                    <td colspan="3" class="ins-form-header">CONTACT</td>
-
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div class="ins-form-label">NAME OF CONTACT</div>
-                        <textarea rows="1" name="contact_name"></textarea>
-                    </td>
-                    <td>
-                        <div class="ins-form-label">CONTACT'S MAILING ADDRESS</div>
-                        <textarea rows="1" name="contact_address"></textarea>
-                        <textarea rows="1" name="contact_city"></textarea>
-                        <textarea rows="1" name="contact_state"></textarea>
-                        <textarea rows="1" name="contact_zipcode"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="ins-form-label">PRIMARY PHONE #</div>
-                        <textarea rows="1" name="contact_phone_primary"></textarea>
-                        <div>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="contact_phone_primary_type" value="home"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">HOME</span>
-                            </span>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="contact_phone_primary_type" value="bus"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">BUS</span>
-                            </span>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="contact_phone_primary_type" value="cell"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">CELL</span>
-                            </span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="ins-form-label">SECONDARY PHONE #</div>
-                        <textarea rows="1" name="contact_phone_secondary"></textarea>
-                        <div>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="contact_phone_secondary_type" value="home"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">HOME</span>
-                            </span>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="contact_phone_secondary_type" value="bus"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">BUS</span>
-                            </span>
-                            <span class="ins-form-checkbox-container">
-                              <input type="radio" name="contact_phone_secondary_type" value="cell"
-                                     class="ins-form-checkbox">
-                              <span class="ins-form-small-text">CELL</span>
-                            </span>
-                        </div>
-                    </td>
-                    <td rowspan="2">
-                        <div class="ins-form-label">PRIMARY E-MAIL ADDRESS:</div>
-                        <textarea rows="1" name="contact_email_primary"></textarea>
-                        <hr>
-                        <div class="ins-form-label">SECONDARY E-MAIL ADDRESS:</div>
-                        <textarea rows="1" name="contact_email_secondary"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div class="ins-form-label">WHEN TO CONTACT</div>
-                        <textarea rows="1" name="contact_when"></textarea>
-                    </td>
-                </tr>
-            </table>
-
-            <!-- SECOND TABLE: LOSS SECTION -->
-            <table class="ins-form-table">
-                <tr>
-                    <td colspan="2" class="ins-form-header">LOSS</td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="ins-form-label">LOCATION OF LOSS</div>
-                        <textarea rows="1" name="loss_location"></textarea></td>
-                    <td>
-                        <div class="ins-form-label">POLICE OR FIRE DEPARTMENT CONTACTED</div>
-                        <textarea rows="1" name="loss_police_contact"></textarea></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="ins-form-label">STREET:</div>
-                        <textarea rows="1" name="loss_address"></textarea>
-                        <textarea rows="1" name="loss_city"></textarea>
-                        <textarea rows="1" name="loss_state"></textarea>
-                        <textarea rows="1" name="loss_zipcode"></textarea>
-                    </td>
-                    <td>
-                        <div class="ins-form-label">REPORT NUMBER</div>
-                        <textarea rows="1" name="loss_police_report"></textarea>
-                    </td>
-
-                </tr>
-
-                <tr>
-                    <td>
-                        <div class="ins-form-label">COUNTRY:</div>
-                        <textarea rows="1" name="loss_country"></textarea></td>
-
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div class="ins-form-label">DESCRIBE LOCATION OF LOSS IF NOT AT SPECIFIC STREET ADDRESS:</div>
-                        <textarea rows="3" name="loss_location"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="ins-form-label">KIND OF LOSS</div>
-                        <div class="ins-form-checkbox-block">
-                            <div class="ins-form-checkbox-item">
-                                <input type="radio" name="loss_type" value="fire">
-                                <span class="ins-form-small-text">FIRE</span>
-                            </div>
-                            <div class="ins-form-checkbox-item">
-                                <input type="radio" name="loss_type" value="lightning">
-                                <span class="ins-form-small-text">LIGHTNING</span>
-                            </div>
-                            <div class="ins-form-checkbox-item">
-                                <input type="radio" name="loss_type" value="flood">
-                                <span class="ins-form-small-text">FLOOD</span>
-                            </div>
-                            <div class="ins-form-checkbox-item">
-                                <input type="radio" name="loss_type" value="other">
-                                <span class="ins-form-small-text">OTHER</span>
-                            </div>
-                        </div>
-                        <div class="ins-form-checkbox-block" style="margin-top: 5px;">
-                            <div class="ins-form-checkbox-item">
-                                <input type="radio" name="loss_type" value="theft">
-                                <span class="ins-form-small-text">THEFT</span>
-                            </div>
-                            <div class="ins-form-checkbox-item">
-                                <input type="radio" name="loss_type" value="hail">
-                                <span class="ins-form-small-text">HAIL</span>
-                            </div>
-                            <div class="ins-form-checkbox-item">
-                                <input type="radio" name="loss_type" value="wind">
-                                <span class="ins-form-small-text">WIND</span>
-                            </div>
-                            <div class="ins-form-checkbox-item">
-                                <textarea rows="1" name="loss_type_other" placeholder="other kind"></textarea>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="ins-form-label">PROBABLE AMOUNT ENTIRE LOSS</div>
-                        <textarea rows="1" name="loss_amount"></textarea></td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="ins-form-description-box">
-                        <div class="ins-form-label">DESCRIPTION OF LOSS & DAMAGE</div>
-                        <textarea rows="10" name="loss_description"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="ins-form-label">REPORTED BY</div>
-                        <textarea rows="1" name="report_by"></textarea></td>
-                    <td>
-                        <div class="ins-form-label">REPORTED TO</div>
-                        <textarea rows="1" name="report_to"></textarea></td>
-                </tr>
-            </table>
-
-        <div class="row mt-12 mt-3 ">
-            <div class="col-md-12 text-center">
-                <button type="submit" class="btn btn-primary float-end m-1">Submit</button>
-                <button type="reset" class="btn btn-secondary float-end m-1">Reset</button>
+            <div class="row mt-10 pb-3">
+                <div class="col-md-12 text-center">
+                    <button type="submit" class="btn btn-primary m-1">Submit</button>
+                    <button type="reset" class="btn btn-secondary m-1">Reset</button>
+                </div>
             </div>
-        </div>
-
     </form>
+
 @endsection

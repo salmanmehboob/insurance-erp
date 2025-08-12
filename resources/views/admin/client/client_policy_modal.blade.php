@@ -254,17 +254,17 @@
                                         </div>
 
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-property-loss-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">Property Loss Notice</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'property_loss', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">PROPERTY LOSS NOTICE</a>
+                                              <a href="{{ route('create-property-loss-form', $policy->client->id) }}"
+                                               class="text-primary w-100">PROPERTY LOSS NOTICE</a> 
+                                               {{-- <a href="{{ route('show-upload-form', ['type' => 'property_loss', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">PROPERTY LOSS NOTICE</a> --}}
                                         </div>
 
                                         <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'propertyLoss'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'property_loss', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            <a target="_blank" href="{{route('view.form',['type' => 'propertyLoss'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                            {{-- <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'property_loss', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
-                                            </a>
+                                            </a> --}}
                                         </div>
 
                                         <div class="col-md-8">
@@ -274,7 +274,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <a target="_blank" href="{{route('view.form',['type' => 'propertyInsurance'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                            <a target="_blank" href="{{route('view.form', ['type' => 'propertyInsurance'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
                                             {{-- <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'property_insurance', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a> --}}

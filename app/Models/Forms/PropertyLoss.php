@@ -17,7 +17,7 @@ class PropertyLoss extends Model
     protected $table = 'property_loss';
     protected $fillable = [
         'client_id',
-        'invoice_no',
+        'invoice_date',
         'agency_name',
         'agency_address',
         'agency_city',

@@ -708,7 +708,6 @@ class FormsController extends Controller
             // Store main invoice payment
             $invoicePayment = PropertyLoss::create([
                 'client_id' => $request->client_id,
-                'invoice_no' => $request->invoice_no,
                 'invoice_date' => $request->invoice_date,
 
                 // Agency Info
@@ -812,7 +811,7 @@ class FormsController extends Controller
 
 
             DB::commit();
-            return redirect()->back()->with('success', 'Property Loss created successfully.');
+            return redirect()->route('dashboard')->with('success', 'Property Loss created successfully.');
         } catch (\Exception $e) {
             dd($e->getMessage());
             DB::rollback();
