@@ -295,17 +295,17 @@
                                         </div>
 
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-insurance-card-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">INSURANCE IDENTIFICATION CARD</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'insurance_card', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">INSURANCE IDENTIFICATION CARD</a>
+                                             <a href="{{ route('create-insurance-card-form', $policy->client->id) }}"
+                                               class="text-primary w-100">INSURANCE IDENTIFICATION CARD</a>
+                                               {{-- <a href="{{ route('show-upload-form', ['type' => 'insurance_card', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">INSURANCE IDENTIFICATION CARD</a> --}}
                                         </div>
 
                                         <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceCard'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'insurance_card', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceCard'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                            {{-- <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'insurance_card', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
-                                            </a>
+                                            </a> --}}
                                         </div>
 
                                         <div class="col-md-8">

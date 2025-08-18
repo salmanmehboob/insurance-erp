@@ -1534,7 +1534,7 @@ class FormsController extends Controller
             // Check if the data was successfully created
             if ($insuranceCardForm) {
                 DB::commit();
-                return redirect()->back()->with('success', 'Form submitted successfully!');
+                return redirect()->route('dashboard')->with('success', 'Form submitted successfully!');
             } else {
                 DB::rollback();
                 return redirect()->back()->withErrors(['error' => 'Failed to create the record.']);
