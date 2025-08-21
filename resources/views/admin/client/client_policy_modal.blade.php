@@ -309,17 +309,17 @@
                                         </div>
 
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-general-liability-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">COMMERCIAL GENERAL LIABILITY SECTION</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'general_liability', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">COMMERCIAL GENERAL LIABILITY SECTION</a>
+                                             <a href="{{ route('create-general-liability-form', $policy->client->id) }}"
+                                              class="text-primary w-100">COMMERCIAL GENERAL LIABILITY SECTION</a>
+                                               {{-- <a href="{{ route('show-upload-form', ['type' => 'general_liability', 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">COMMERCIAL GENERAL LIABILITY SECTION</a> --}}
                                         </div>
 
                                         <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'GeneralLiability'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'general_liability', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            <a target="_blank" href="{{route('view.form',['type' => 'GeneralLiability'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                            {{-- <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'general_liability', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
-                                            </a>
+                                            </a> --}}
                                         </div>
                                         <div class="col-md-8">
 {{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"--}}
