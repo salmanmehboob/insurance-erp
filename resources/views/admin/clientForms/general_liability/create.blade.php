@@ -462,10 +462,10 @@
 
         <input type="hidden" name="client_id" value="{{  $clientPolicy->client_id }}">
         <input type="hidden" name="created_by" value="{{  auth()->user()->id }}">
-        
+
         <div class="flex justify-between items-end">
             <div style="font-size: 9pt;" class="flex-shrink-0">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==" alt="ACORD Logo" class="acord-logo">
+                <img src="{{asset('backend/img/acord-logo.png')}}" alt="ACORD Logo" class="acord-logo">
             </div>
             <div class="flex-grow header-title">
                 COMMERCIAL GENERAL LIABILITY SECTION
@@ -481,13 +481,13 @@
         <table class="responsive-table">
             <tr>
                 <td>Agency Name <br> <input type="text" name="agency_name" placeholder="Agency Name"></td>
-                <td>Career <br> <input type="text" name="career" placeholder="Career"></td>
+                <td>Carrier <br> <input type="text" name="carrier" placeholder="Carrier"></td>
                 <td>NAIC Code <br> <input type="text" name="naic_code" placeholder="NAIC Code"></td>
             </tr>
             <tr>
                 <td>Policy Number <br> <input type="text" name="policy_number" placeholder="Policy Number"></td>
                 <td>Effective Date <br> <input type="text" name="effective_date" placeholder="MM/DD/YYYY"></td>
-                <td>Named Insured <br> <input type="text" name="named_insured" placeholder="Named Insured"></td>
+                <td>Named Insured <br> <input type="text" name="insured_name" placeholder="Named Insured"></td>
             </tr>
             <tr>
                 <td colspan="3"><b>IMPORTANT - If CLAIMS MADE</b> is checked in the COVERAGE / LIMITS section below, this is an application for a claims made policy.<br> Read all provisions of the policy carefully.</td>
@@ -503,7 +503,7 @@
                 <td rowspan="3">
                     <div class="interest-options">
                         <div class="checkbox-item">
-                            <input type="checkbox">
+                            <input type="checkbox" name="coverage_general" value="1">
                             <label>COMMERCIAL GENERAL LIABILITY</label>
                         </div>
                         <div class="checkbox-item" style="margin-left: 20px;">
@@ -517,15 +517,15 @@
                             <label>OWNER'S & CONTRACTOR'S PROTECTIVE</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" name="coverage_occurrence_other">
-                            <input type="text" name="coverage_other_description" placeholder="Other description" style="margin-left: 5px;">
+                            <input type="checkbox">
+                            <input type="text" name="coverage_occurrence_other" placeholder="Other description" style="margin-left: 5px;">
                         </div>
                     </div>
                 </td>
                 <td>
                     <div class="title">GENERAL AGGREGATE</div>
                 </td>
-                <td>$<input type="text" name="general_aggregate_limit" style="width: 60%;"></td>
+                <td>$<input type="text" name="coverage_general_limit" style="width: 60%;"></td>
                 <td style="text-align: center;">PREMIUMS </td>
             </tr>
             <tr>
@@ -568,52 +568,52 @@
                             <td><input type="checkbox" name="deductible_per_claim" value="1"> PER CLAIM</td>
                         </tr>
                         <tr>
-                            <td><input type="checkbox" name="deductible_per_occurrence_check" value="1"></td>
-                            <td>$<input type="text" style="width: 50%" name="deductible_per_occurrence_cost"></td>
+                            <td><input type="checkbox" name="deductible_other" value="1"></td>
+                            <td>$<input type="text" style="width: 50%" name="deductible_other_cost"></td>
                             <td><input type="checkbox" name="deductible_per_occurrence" value="1"> PER OCCURRENCE</td>
                         </tr>
                     </table>
                 </td>
                 <td>PERSONAL & ADVERTISING INJURY</td>
-                <td>$<input type="text" name="personal_advertising_limit" style="width: 60%;"></td>
+                <td>$<input type="text" name="deductible_personal_injury" style="width: 60%;"></td>
             </tr>
             <tr>
                 <td>EACH OCCURRENCE</td>
-                <td>$<input type="text" name="each_occurrence_limit" style="width: 60%;"></td>
-                <td rowspan="2">OTHER <input type="text" name="other_premium" style="width: 50%;"></td>
+                <td>$<input type="text" name="deductible_each_occurrence" style="width: 60%;"></td>
+                <td rowspan="2">OTHER <input type="text" name="coverage_premium_other" style="width: 50%;"></td>
             </tr>
             <tr>
                 <td>DAMAGE TO RENTED PREMISES (each occurrence)</td>
-                <td>$<input type="text" name="rented_premises_limit" style="width: 60%;"></td>
+                <td>$<input type="text" name="deductible_damage_rented" style="width: 60%;"></td>
             </tr>
             <tr>
                 <td>MEDICAL EXPENSE (Any one person)</td>
-                <td>$<input type="text" name="medical_expense_limit" style="width: 60%;"></td>
-                <td rowspan="2">TOTAL <input type="text" name="total_premium" style="width: 50%;"></td>
+                <td>$<input type="text" name="deductible_expense" style="width: 60%;"></td>
+                <td rowspan="2">TOTAL <input type="text" name="coverage_premium_total" style="width: 50%;"></td>
             </tr>
             <tr>
                 <td>EMPLOYEE BENEFITS</td>
-                <td>$<input type="text" name="employee_benefits_limit" style="width: 60%;"></td>
+                <td>$<input type="text" name="deductible_benefits" style="width: 60%;"></td>
             </tr>
             <tr>
-                <td><input type="text" name="additional_coverage" placeholder="Additional coverage"></td>
-                <td>$<input type="text" name="additional_limit" style="width: 60%;"></td>
-                <td><input type="text" name="additional_premium" style="width: 70%;"></td>
+                <td><input type="text" name="deductible_other_benefits" placeholder="Additional coverage"></td>
+                <td></td>
+                <td></td>
             </tr>
             <tr>
                 <td colspan="4">OTHER COVERAGES, RESTRICTIONS AND/OR ENDORSEMENTS (For hired/non-owned auto coverages attach the applicable state Business Auto Section, ACORD 137)
-                <br><textarea name="other_coverages" rows="3" style="width: 100%; margin-top: 5px;"></textarea></td>
+                <br><textarea name="other_coverage" rows="3" style="width: 100%; margin-top: 5px;"></textarea></td>
             </tr>
             <tr>
                 <td colspan="4">
                     <table class="sixcoltab">
                         <tr>
                             <td>1. UM/UIM COVERAGE</td>
-                            <td><input type="checkbox" name="um_uim_available"> IS</td>
-                            <td><input type="checkbox" name="um_uim_not_available"> IS NOT AVAILABLE</td>
+                            <td><input type="checkbox" name="um_coverage" value="1"> IS</td>
+                            <td><input type="checkbox" name="um_coverage" value="0"> IS NOT AVAILABLE</td>
                             <td>2. MEDICAL PAYMENT COVERAGE</td>
-                            <td><input type="checkbox" name="medical_payment_available"> IS</td>
-                            <td><input type="checkbox" name="medical_payment_not_available"> IS NOT AVAILABLE</td>
+                            <td><input type="checkbox" name="medical_coverage" value="1"> IS</td>
+                            <td><input type="checkbox" name="medical_coverage" value="0"> IS NOT AVAILABLE</td>
                         </tr>
                     </table>
                 </td>
@@ -641,21 +641,21 @@
                     <th>PRODUCTS</th>
                 </tr>
                 <tr>
-                    <td><input type="text" name="loc_1" style="width: 100%;"></td>
-                    <td><input type="text" name="haz_1" style="width: 100%;"></td>
-                    <td><input type="text" name="class_code_1" style="width: 100%;"></td>
-                    <td><input type="text" name="premium_basis_1" style="width: 100%;"></td>
-                    <td><input type="text" name="exposure_1" style="width: 100%;"></td>
-                    <td><input type="text" name="terr_1" style="width: 100%;"></td>
-                    <td><input type="text" name="rate_prem_ops_1" style="width: 100%;"></td>
-                    <td><input type="text" name="rate_products_1" style="width: 100%;"></td>
-                    <td><input type="text" name="premium_prem_ops_1" style="width: 100%;"></td>
-                    <td><input type="text" name="premium_products_1" style="width: 100%;"></td>
+                    <td><input type="text" name="loc_one" style="width: 100%;"></td>
+                    <td><input type="text" name="haze_one" style="width: 100%;"></td>
+                    <td><input type="text" name="class_code_one" style="width: 100%;"></td>
+                    <td><input type="text" name="premium_basis_one" style="width: 100%;"></td>
+                    <td><input type="text" name="exposure_one" style="width: 100%;"></td>
+                    <td><input type="text" name="terr_one" style="width: 100%;"></td>
+                    <td><input type="text" name="ops_rate_one" style="width: 100%;"></td>
+                    <td><input type="text" name="product_rate_one" style="width: 100%;"></td>
+                    <td><input type="text" name="ops_premium_one" style="width: 100%;"></td>
+                    <td><input type="text" name="product_premium_one" style="width: 100%;"></td>
                 </tr>
                 <tr style="height:35pt">
                     <td colspan="10">
                         CLASSIFICATION DESCRIPTION
-                        <br><textarea name="classification_description_1" rows="2" style="width: 100%; margin-top: 3px;"></textarea>
+                        <br><textarea name="classification_one" rows="2" style="width: 100%; margin-top: 3px;"></textarea>
                     </td>
                 </tr>
                 <!-- Repeat for additional rows -->
@@ -676,21 +676,56 @@
                     <th>PRODUCTS</th>
                 </tr>
                 <tr>
-                    <td><input type="text" name="loc_2" style="width: 100%;"></td>
-                    <td><input type="text" name="haz_2" style="width: 100%;"></td>
-                    <td><input type="text" name="class_code_2" style="width: 100%;"></td>
-                    <td><input type="text" name="premium_basis_2" style="width: 100%;"></td>
-                    <td><input type="text" name="exposure_2" style="width: 100%;"></td>
-                    <td><input type="text" name="terr_2" style="width: 100%;"></td>
-                    <td><input type="text" name="rate_prem_ops_2" style="width: 100%;"></td>
-                    <td><input type="text" name="rate_products_2" style="width: 100%;"></td>
-                    <td><input type="text" name="premium_prem_ops_2" style="width: 100%;"></td>
-                    <td><input type="text" name="premium_products_2" style="width: 100%;"></td>
+                    <td><input type="text" name="loc_two" style="width: 100%;"></td>
+                    <td><input type="text" name="haze_two" style="width: 100%;"></td>
+                    <td><input type="text" name="class_code_two" style="width: 100%;"></td>
+                    <td><input type="text" name="premium_basis_two" style="width: 100%;"></td>
+                    <td><input type="text" name="exposure_two" style="width: 100%;"></td>
+                    <td><input type="text" name="terr_two" style="width: 100%;"></td>
+                    <td><input type="text" name="ops_rate_two" style="width: 100%;"></td>
+                    <td><input type="text" name="product_rate_two" style="width: 100%;"></td>
+                    <td><input type="text" name="ops_premium_two" style="width: 100%;"></td>
+                    <td><input type="text" name="product_premium_two" style="width: 100%;"></td>
                 </tr>
                 <tr style="height:35pt">
                     <td colspan="10">
                         CLASSIFICATION DESCRIPTION
-                        <br><textarea name="classification_description_2" rows="2" style="width: 100%; margin-top: 3px;"></textarea>
+                        <br><textarea name="classification_two" rows="2" style="width: 100%; margin-top: 3px;"></textarea>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th rowspan="2">LOC #</th>
+                    <th rowspan="2">HAZ #</th>
+                    <th rowspan="2">CLASS CODE</th>
+                    <th rowspan="2">PREMIUM BASIS</th>
+                    <th rowspan="2">EXPOSURE</th>
+                    <th rowspan="2">TERR</th>
+                    <th colspan="2">RATE</th>
+                    <th colspan="2">PREMIUM</th>
+                </tr>
+                <tr>
+                    <th>PREM / OPS</th>
+                    <th>PRODUCTS</th>
+                    <th>PREM / OPS</th>
+                    <th>PRODUCTS</th>
+                </tr>
+                <tr>
+                    <td><input type="text" name="loc_three" style="width: 100%;"></td>
+                    <td><input type="text" name="haze_three" style="width: 100%;"></td>
+                    <td><input type="text" name="class_code_three" style="width: 100%;"></td>
+                    <td><input type="text" name="premium_basis_three" style="width: 100%;"></td>
+                    <td><input type="text" name="exposure_three" style="width: 100%;"></td>
+                    <td><input type="text" name="terr_three" style="width: 100%;"></td>
+                    <td><input type="text" name="ops_rate_three" style="width: 100%;"></td>
+                    <td><input type="text" name="product_rate_three" style="width: 100%;"></td>
+                    <td><input type="text" name="ops_premium_three" style="width: 100%;"></td>
+                    <td><input type="text" name="product_premium_three" style="width: 100%;"></td>
+                </tr>
+                <tr style="height:35pt">
+                    <td colspan="10">
+                        CLASSIFICATION DESCRIPTION
+                        <br><textarea name="classification_three" rows="2" style="width: 100%; margin-top: 3px;"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -707,29 +742,21 @@
             <tbody>
                 <tr>
                     <td>EXPLAIN ALL 'YES" RESPONSES</td>
-                    <td>Y/N</td>
+                    <td><input type="radio" name="claim_made" value="1"> Yes <input type="radio" name="claim_made" value="0"> No</td>
                 </tr>
                 <tr>
-                    <td colspan="2">1. PROPOSED RETROACTIVE DATE: <input type="text" name="retroactive_date" style="margin-left: 10px; width: 60%;"></td>
+                    <td colspan="2">1. PROPOSED RETROACTIVE DATE: <input type="text" name="claim_made_proposed_date" style="margin-left: 10px; width: 60%;"></td>
                 </tr>
                 <tr>
-                    <td colspan="2">2. ENTRY DATE INTO UNINTERRUPTED CLAIMS MADE COVERAGE: <input type="text" name="entry_date" style="margin-left: 10px; width: 60%;"></td>
+                    <td colspan="2">2. ENTRY DATE INTO UNINTERRUPTED CLAIMS MADE COVERAGE: <input type="text" name="claim_made_entry_date" style="margin-left: 10px; width: 60%;"></td>
                 </tr>
                 <tr>
-                    <td>3. HAS ANY PRODUCT, WORK, ACCIDENT, OR LOCATION BEEN EXCLUDED, UNINSURED OR SELF-INSURED FROM ANY PREVIOUS COVERAGE?</td>
-                    <td>
-                        <input type="radio" name="excluded_coverage" value="Y"> Y
-                        <input type="radio" name="excluded_coverage" value="N"> N
-                        <br><textarea name="excluded_coverage_explanation" rows="3" style="width: 100%; margin-top: 5px;"></textarea>
-                    </td>
+                    <td>3. HAS ANY PRODUCT, WORK, ACCIDENT, OR LOCATION BEEN EXCLUDED, UNINSURED OR SELF-INSURED FROM ANY PREVIOUS COVERAGE? <textarea name="claim_made_previous_coverage" rows="3" style="width: 100%; margin-top: 5px;"></textarea></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>4. WAS TAIL COVERAGE PURCHASED UNDER ANY PREVIOUS POLICY?</td>
-                    <td>
-                        <input type="radio" name="tail_coverage" value="Y"> Y
-                        <input type="radio" name="tail_coverage" value="N"> N
-                        <br><textarea name="tail_coverage_explanation" rows="3" style="width: 100%; margin-top: 5px;"></textarea>
-                    </td>
+                    <td>4. WAS TAIL COVERAGE PURCHASED UNDER ANY PREVIOUS POLICY? <textarea name="claim_made_previous_policy" rows="3" style="width: 100%; margin-top: 5px;"></textarea></td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>
@@ -742,24 +769,24 @@
                         <span>1.</span>
                         <span>DEDUCTIBLE PER CLAIM:</span>
                         <span style="margin-left: 20px;">$</span>
-                        <input type="text" name="ebl_deductible" style="width: 50%;">
+                        <input type="text" name="employee_deductible" style="width: 50%;">
                     </td>
                     <td>
                         <span>3.</span>
                         <span>NUMBER OF EMPLOYEES COVERED BY EMPLOYEE BENEFITS PLANS:</span>
-                        <input type="text" name="ebl_covered_employees" style="width: 30%;">
+                        <input type="text" name="employee_number" style="width: 30%;">
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <span>2.</span>
                         <span>NUMBER OF EMPLOYEES:</span>
-                        <input type="text" name="ebl_total_employees" style="width: 50%;">
+                        <input type="text" name="employee_covered" style="width: 50%;">
                     </td>
                     <td>
                         <span>4.</span>
                         <span>RETROACTIVE DATE:</span>
-                        <input type="text" name="ebl_retroactive_date" style="width: 50%;">
+                        <input type="text" name="employee_retroactive_date" style="width: 50%;">
                     </td>
                 </tr>
             </tbody>
@@ -773,54 +800,49 @@
             <tbody>
                 <tr>
                     <td>EXPLAIN ALL "YES" RESPONSES (For all past or present operations)</td>
-                    <td>Y / N</td>
+                    <td style="width: 11%;">Y / N</td>
                 </tr>
                 <tr>
-                    <td>1. DOES APPLICANT DRAW PLANS, DESIGNS, OR SPECIFICATIONS FOR OTHERS?</td>
+                    <td>1. DOES APPLICANT DRAW PLANS, DESIGNS, OR SPECIFICATIONS FOR OTHERS? <textarea name="contractor_draw_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="plans_designs" value="Y"> Y
-                        <input type="radio" name="plans_designs" value="N"> N
-                        <br><textarea name="plans_designs_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="contractor_draw" value="1"> Y
+                        <input type="radio" name="contractor_draw" value="0"> N
                     </td>
                 </tr>
                 <tr>
-                    <td>2. DO ANY OPERATIONS INCLUDE BLASTING OR UTILIZE OR STORE EXPLOSIVE MATERIAL?</td>
+                    <td>2. DO ANY OPERATIONS INCLUDE BLASTING OR UTILIZE OR STORE EXPLOSIVE MATERIAL? <textarea name="contractor_operation_material_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="explosive_material" value="Y"> Y
-                        <input type="radio" name="explosive_material" value="N"> N
-                        <br><textarea name="explosive_material_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="contractor_operation_material" value="1"> Y
+                        <input type="radio" name="contractor_operation_material" value="0"> N
                     </td>
                 </tr>
                 <tr>
-                    <td>3. DO ANY OPERATIONS INCLUDE EXCAVATION, TUNNELING, UNDERGROUND WORK OR EARTH MOVING?</td>
+                    <td>3. DO ANY OPERATIONS INCLUDE EXCAVATION, TUNNELING, UNDERGROUND WORK OR EARTH MOVING? <textarea name="contractor_operation_moving_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="excavation_work" value="Y"> Y
-                        <input type="radio" name="excavation_work" value="N"> N
-                        <br><textarea name="excavation_work_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="contractor_operation_moving" value="1"> Y
+                        <input type="radio" name="contractor_operation_moving" value="0"> N
                     </td>
                 </tr>
                 <tr>
-                    <td>4. DO YOUR SUBCONTRACTORS CARRY COVERAGES OR LIMITS LESS THAN YOURS?</td>
+                    <td>4. DO YOUR SUBCONTRACTORS CARRY COVERAGES OR LIMITS LESS THAN YOURS? <textarea name="subcontractor_coverage_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="subcontractor_coverage" value="Y"> Y
-                        <input type="radio" name="subcontractor_coverage" value="N"> N
-                        <br><textarea name="subcontractor_coverage_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="subcontractor_coverage" value="1"> Y
+                        <input type="radio" name="subcontractor_coverage" value="0"> N
+                        <br>
                     </td>
                 </tr>
                 <tr>
-                    <td>5. ARE SUBCONTRACTORS ALLOWED TO WORK WITHOUT PROVIDING YOU WITH A CERTIFICATE OF INSURANCE?</td>
+                    <td>5. ARE SUBCONTRACTORS ALLOWED TO WORK WITHOUT PROVIDING YOU WITH A CERTIFICATE OF INSURANCE? <textarea name="contractor_sub_contractor_insurance_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="subcontractor_certificate" value="Y"> Y
-                        <input type="radio" name="subcontractor_certificate" value="N"> N
-                        <br><textarea name="subcontractor_certificate_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="contractor_sub_contractor_insurance" value="1"> Y
+                        <input type="radio" name="contractor_sub_contractor_insurance" value="0"> N
                     </td>
                 </tr>
                 <tr>
-                    <td>6. DOES APPLICANT LEASE EQUIPMENT TO OTHERS WITH OR WITHOUT OPERATORS?</td>
+                    <td>6. DOES APPLICANT LEASE EQUIPMENT TO OTHERS WITH OR WITHOUT OPERATORS? <textarea name="contractor_lease_equipment_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="lease_equipment" value="Y"> Y
-                        <input type="radio" name="lease_equipment" value="N"> N
-                        <br><textarea name="lease_equipment_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="contractor_lease_equipment" value="1"> Y
+                        <input type="radio" name="contractor_lease_equipment" value="0"> N
                     </td>
                 </tr>
                 <tr>
@@ -835,19 +857,19 @@
                             </tr>
                             <tr>
                                 <td style="height: 50px; border-top: 0;">
-                                    <textarea name="subcontracted_work_description" rows="3" style="width: 100%;"></textarea>
+                                    <textarea name="sub_contractor_type" rows="3" style="width: 100%;"></textarea>
                                 </td>
                                 <td style="border-top: 0;">
-                                    <input type="text" name="subcontractor_payment" style="width: 100%;">
+                                    <input type="text" name="sub_contractor_paid" style="width: 100%;">
                                 </td>
                                 <td style="border-top: 0;">
-                                    <input type="text" name="subcontracted_percentage" style="width: 100%;">
+                                    <input type="text" name="sub_contractor_percentage" style="width: 100%;">
                                 </td>
                                 <td style="border-top: 0;">
-                                    <input type="text" name="full_time_staff" style="width: 100%;">
+                                    <input type="text" name="sub_contractor_full_time" style="width: 100%;">
                                 </td>
                                 <td style="border-top: 0;">
-                                    <input type="text" name="part_time_staff" style="width: 100%;">
+                                    <input type="text" name="sub_contractor_part_time" style="width: 100%;">
                                 </td>
                             </tr>
                         </table>
@@ -869,31 +891,31 @@
                     <td>Principal Components</td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="product_1" style="width: 100%;"></td>
-                    <td><input type="text" name="gross_sales_1" style="width: 100%;"></td>
-                    <td><input type="text" name="units_1" style="width: 100%;"></td>
-                    <td><input type="text" name="time_market_1" style="width: 100%;"></td>
-                    <td><input type="text" name="expected_life_1" style="width: 100%;"></td>
-                    <td><input type="text" name="intended_use_1" style="width: 100%;"></td>
-                    <td><input type="text" name="components_1" style="width: 100%;"></td>
+                    <td><input type="text" name="product_one" style="width: 100%;"></td>
+                    <td><input type="text" name="product_salary_one" style="width: 100%;"></td>
+                    <td><input type="text" name="product_unit_one" style="width: 100%;"></td>
+                    <td><input type="text" name="product_time_one" style="width: 100%;"></td>
+                    <td><input type="text" name="product_life_one" style="width: 100%;"></td>
+                    <td><input type="text" name="product_insured_one" style="width: 100%;"></td>
+                    <td><input type="text" name="product_component_one" style="width: 100%;"></td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="product_2" style="width: 100%;"></td>
-                    <td><input type="text" name="gross_sales_2" style="width: 100%;"></td>
-                    <td><input type="text" name="units_2" style="width: 100%;"></td>
-                    <td><input type="text" name="time_market_2" style="width: 100%;"></td>
-                    <td><input type="text" name="expected_life_2" style="width: 100%;"></td>
-                    <td><input type="text" name="intended_use_2" style="width: 100%;"></td>
-                    <td><input type="text" name="components_2" style="width: 100%;"></td>
+                    <td><input type="text" name="product_two" style="width: 100%;"></td>
+                    <td><input type="text" name="product_salary_two" style="width: 100%;"></td>
+                    <td><input type="text" name="product_unit_two" style="width: 100%;"></td>
+                    <td><input type="text" name="product_time_two" style="width: 100%;"></td>
+                    <td><input type="text" name="product_life_two" style="width: 100%;"></td>
+                    <td><input type="text" name="product_insured_two" style="width: 100%;"></td>
+                    <td><input type="text" name="product_component_two" style="width: 100%;"></td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="product_3" style="width: 100%;"></td>
-                    <td><input type="text" name="gross_sales_3" style="width: 100%;"></td>
-                    <td><input type="text" name="units_3" style="width: 100%;"></td>
-                    <td><input type="text" name="time_market_3" style="width: 100%;"></td>
-                    <td><input type="text" name="expected_life_3" style="width: 100%;"></td>
-                    <td><input type="text" name="intended_use_3" style="width: 100%;"></td>
-                    <td><input type="text" name="components_3" style="width: 100%;"></td>
+                    <td><input type="text" name="product_three" style="width: 100%;"></td>
+                    <td><input type="text" name="product_salary_three" style="width: 100%;"></td>
+                    <td><input type="text" name="product_unit_three" style="width: 100%;"></td>
+                    <td><input type="text" name="product_time_three" style="width: 100%;"></td>
+                    <td><input type="text" name="product_life_three" style="width: 100%;"></td>
+                    <td><input type="text" name="product_insured_three" style="width: 100%;"></td>
+                    <td><input type="text" name="product_component_three" style="width: 100%;"></td>
                 </tr>
             </tbody>
         </table>
@@ -902,86 +924,76 @@
             <tbody>
                 <tr>
                     <th>EXPLAIN ALL "YES" RESPONSES (For all past or present products or operations) PLEASE ATTACH LITERATURE, BROCHURES, LABELS, WARNINGS, ETC.</th>
-                    <th>Y / N</th>
+                    <th style="width: 11%; ">Y / N</th>
                 </tr>
                 <tr>
-                    <td>1. DOES APPLICANT INSTALL, SERVICE OR DEMONSTRATE PRODUCTS?</td>
+                    <td>1. DOES APPLICANT INSTALL, SERVICE OR DEMONSTRATE PRODUCTS? <textarea name="product_install_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="install_service" value="Y"> Y
-                        <input type="radio" name="install_service" value="N"> N
-                        <br><textarea name="install_service_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="product_install" value="1"> Y
+                        <input type="radio" name="product_install" value="0"> N
                     </td>
                 </tr>
                 <tr>
-                    <td>2. FOREIGN PRODUCTS SOLD, DISTRIBUTED, USED AS COMPONENTS? (If "YES", attach ACORD 815)</td>
+                    <td>2. FOREIGN PRODUCTS SOLD, DISTRIBUTED, USED AS COMPONENTS? (If "YES", attach ACORD 815) <textarea name="product_sold_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="foreign_products" value="Y"> Y
-                        <input type="radio" name="foreign_products" value="N"> N
-                        <br><textarea name="foreign_products_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="product_sold" value="1"> Y
+                        <input type="radio" name="product_sold" value="0"> N
                     </td>
                 </tr>
                 <tr>
-                    <td>3. RESEARCH AND DEVELOPMENT CONDUCTED OR NEW PRODUCTS PLANNED?</td>
+                    <td>3. RESEARCH AND DEVELOPMENT CONDUCTED OR NEW PRODUCTS PLANNED? <textarea name="product_research_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="research_development" value="Y"> Y
-                        <input type="radio" name="research_development" value="N"> N
-                        <br><textarea name="research_development_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="product_research" value="1"> Y
+                        <input type="radio" name="product_research" value="0"> N
                     </td>
                 </tr>
                 <tr>
-                    <td>4. GUARANTEES, WARRANTIES, HOLD HARMLESS AGREEMENTS?</td>
+                    <td>4. GUARANTEES, WARRANTIES, HOLD HARMLESS AGREEMENTS? <textarea name="product_warranty_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="warranties" value="Y"> Y
-                        <input type="radio" name="warranties" value="N"> N
-                        <br><textarea name="warranties_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="product_warranty" value="1"> Y
+                        <input type="radio" name="product_warranty" value="0"> N
                     </td>
                 </tr>
                 <tr>
-                    <td>5. PRODUCTS RELATED TO AIRCRAFT/SPACE INDUSTRY?</td>
+                    <td>5. PRODUCTS RELATED TO AIRCRAFT/SPACE INDUSTRY? <textarea name="product_aircraft_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="aircraft_products" value="Y"> Y
-                        <input type="radio" name="aircraft_products" value="N"> N
-                        <br><textarea name="aircraft_products_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="product_aircraft" value="1"> Y
+                        <input type="radio" name="product_aircraft" value="0"> N
                     </td>
                 </tr>
                 <tr>
-                    <td>6. PRODUCTS RECALLED, DISCONTINUED, CHANGED?</td>
+                    <td>6. PRODUCTS RECALLED, DISCONTINUED, CHANGED? <textarea name="product_recall_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="recalled_products" value="Y"> Y
-                        <input type="radio" name="recalled_products" value="N"> N
-                        <br><textarea name="recalled_products_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="product_recall" value="1"> Y
+                        <input type="radio" name="product_recall" value="0"> N
                     </td>
                 </tr>
                 <tr>
-                    <td>7. PRODUCTS OF OTHERS SOLD OR RE-PACKAGED UNDER APPLICANT LABEL?</td>
+                    <td>7. PRODUCTS OF OTHERS SOLD OR RE-PACKAGED UNDER APPLICANT LABEL? <textarea name="product_other_sold_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="repackaged_products" value="Y"> Y
-                        <input type="radio" name="repackaged_products" value="N"> N
-                        <br><textarea name="repackaged_products_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="product_other_sold" value="1"> Y
+                        <input type="radio" name="product_other_sold" value="0"> N
                     </td>
                 </tr>
                 <tr>
-                    <td>8. PRODUCTS UNDER LABEL OF OTHERS?</td>
+                    <td>8. PRODUCTS UNDER LABEL OF OTHERS? <textarea name="product_label_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="other_labels" value="Y"> Y
-                        <input type="radio" name="other_labels" value="N"> N
-                        <br><textarea name="other_labels_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="product_label" value="1"> Y
+                        <input type="radio" name="product_label" value="0"> N
                     </td>
                 </tr>
                 <tr>
-                    <td>9. VENDORS COVERAGE REQUIRED?</td>
+                    <td>9. VENDORS COVERAGE REQUIRED? <textarea name="product_vendor_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="vendors_coverage" value="Y"> Y
-                        <input type="radio" name="vendors_coverage" value="N"> N
-                        <br><textarea name="vendors_coverage_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="product_vendor" value="1"> Y
+                        <input type="radio" name="product_vendor" value="0"> N
                     </td>
                 </tr>
                 <tr>
-                    <td>10. DOES ANY NAMED INSURED SELL TO OTHER NAMED INSUREDS?</td>
+                    <td>10. DOES ANY NAMED INSURED SELL TO OTHER NAMED INSUREDS? <textarea name="product_insured_detail" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td>
-                        <input type="radio" name="named_insured_sales" value="Y"> Y
-                        <input type="radio" name="named_insured_sales" value="N"> N
-                        <br><textarea name="named_insured_sales_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
+                        <input type="radio" name="product_insured" value="1"> Y
+                        <input type="radio" name="product_insured" value="0"> N
                     </td>
                 </tr>
             </tbody>
@@ -1001,41 +1013,40 @@
                     <div class="title">INTEREST</div>
                     <div class="interest-options">
                         <div class="checkbox-item">
-                            <input type="checkbox" name="additional_insured">
+                            <input type="checkbox" name="interest_additional" value="1">
                             <label>ADDITIONAL INSURED</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" name="employee_lessor">
+                            <input type="checkbox" name="interest_employee" value="1">
                             <label>EMPLOYEE AS LESSOR</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" name="lenders_loss_payable">
+                            <input type="checkbox" name="interest_lender" value="1">
                             <label>LENDER'S LOSS PAYABLE</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" name="lienholder">
+                            <input type="checkbox" name="interest_holder" value="1">
                             <label>LIENHOLDER</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" name="loss_payee">
+                            <input type="checkbox" name="interest_loss" value="1">
                             <label>LOSS PAYEE</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" name="mortgagee">
-                            <label>MORTGAGEE</label>
+                            <input type="checkbox" name="interest_mortgage" value="1">
+                            <label>MORTGAGE</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" name="other_interest">
-                            <input type="text" name="other_interest_description" placeholder="Other" style="width: 60%; margin-left: 5px;">
+                            <input type="text" name="interest_other" placeholder="Other" style="width: 60%; margin-left: 5px;">
                         </div>
                     </div>
                 </td>
                 <td colspan="4" style="height: 80px; position: relative;">
                     <div style="display: flex; align-items: flex-end;">
                         <span class="label" style="font-weight: bold;">NAME AND ADDRESS</span>
-                        <div style="flex-grow: 1; border-bottom: 1px solid black;"></div>
+                        <div style="flex-grow: 1; border-bottom: 1px solid black;"> <input placeholder="Name" name="interest_name" style="width: 100%; margin-top: 5px;"></div>
                     </div>
-                    <textarea name="name_address" rows="3" style="width: 100%; margin-top: 5px;"></textarea>
+                    <textarea placeholder="Address" name="interest_address" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
                     <table style="width: 100%; border-collapse: collapse; margin-top: 5px; border-left: none; border-right: none;">
                         <tr>
                             <td style="width: 25%; border: none;">
@@ -1046,14 +1057,12 @@
                             </td>
                             <td style="width: 25%; border: none;">
                                 <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                    <span class="label" style="font-weight: bold;">EVIDENCE:</span>
-                                    <input type="checkbox" name="evidence" style="margin-right: 3px;">
-                                </div>
-                            </td>
-                            <td style="width: 50%; border: none;">
-                                <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                    <input type="radio" name="interest_type" value="evidence">
+                                    <span class="label" style="font-weight: bold; margin-right: 10px">EVIDENCE</span>
+                                    
+
+                                    <input type="radio" name="interest_type" value="certificate">
                                     <span class="label" style="font-weight: bold;">CERTIFICATE</span>
-                                    <input type="text" name="certificate" style="width: 50px; margin-left: 5px;">
                                 </div>
                             </td>
                         </tr>
@@ -1061,7 +1070,7 @@
                     <div style="position: absolute; bottom: 5px; width: 95%;">
                         <div class="field-row" style="margin-top: 0;">
                             <span class="label" style="font-weight: bold;">REFERENCE / LOAN #:</span>
-                            <input type="text" name="reference_loan_number">
+                            <input type="text" name="interest_reference" style="width: 100%; margin-top: 5px;">
                         </div>
                     </div>
                 </td>
@@ -1091,7 +1100,7 @@
                     </table>
                     <div class="field-row" style="margin-top: 5px;">
                         <span class="label" style="margin: 5px;">ITEM DESCRIPTION</span>
-                        <input type="text" name="item_description" style="margin: 5px; width: 80%;">
+                        <input type="text" name="interest_item_description" style="margin: 5px; width: 80%;">
                     </div>
                 </td>
             </tr>
@@ -1107,36 +1116,20 @@
                     <th>Y/N</th>
                 </tr>
                 <tr>
-                    <td>1. ANY MEDICAL FACILITIES PROVIDED OR MEDICAL PROFESSIONALS EMPLOYED OR CONTRACTED?</td>
-                    <td>
-                        <input type="radio" name="medical_facilities" value="Y"> Y
-                        <input type="radio" name="medical_facilities" value="N"> N
-                        <br><textarea name="medical_facilities_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
-                    </td>
+                    <td>1. ANY MEDICAL FACILITIES PROVIDED OR MEDICAL PROFESSIONALS EMPLOYED OR CONTRACTED? <textarea name="information_q_one" maxlength="1" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>2. ANY EXPOSURE TO RADIOACTIVE/NUCLEAR MATERIALS?</td>
-                    <td>
-                        <input type="radio" name="radioactive_materials" value="Y"> Y
-                        <input type="radio" name="radioactive_materials" value="N"> N
-                        <br><textarea name="radioactive_materials_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
-                    </td>
+                    <td>2. ANY EXPOSURE TO RADIOACTIVE/NUCLEAR MATERIALS? <textarea name="information_q_two" rows="2" maxlength="1" style="width: 100%; margin-top: 5px;"></textarea></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>3. DO/HAVE PAST, PRESENT OR DISCONTINUED OPERATIONS INVOLVE STORING, TREATING, DISCHARGING, APPLYING, DISPOSING, OR TRANSPORTING OF HAZARDOUS MATERIAL? (e.g., landfills, wastes, fuel tanks, etc)</td>
-                    <td>
-                        <input type="radio" name="hazardous_materials" value="Y"> Y
-                        <input type="radio" name="hazardous_materials" value="N"> N
-                        <br><textarea name="hazardous_materials_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
-                    </td>
+                    <td>3. DO/HAVE PAST, PRESENT OR DISCONTINUED OPERATIONS INVOLVE STORING, TREATING, DISCHARGING, APPLYING, DISPOSING, OR TRANSPORTING OF HAZARDOUS MATERIAL? (e.g., landfills, wastes, fuel tanks, etc) <textarea name="information_q_three" maxlength="1" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>4. ANY OPERATIONS SOLD, ACQUIRED, OR DISCONTINUED IN LAST FIVE (5) YEARS?</td>
-                    <td>
-                        <input type="radio" name="operations_changes" value="Y"> Y
-                        <input type="radio" name="operations_changes" value="N"> N
-                        <br><textarea name="operations_changes_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
-                    </td>
+                    <td>4. ANY OPERATIONS SOLD, ACQUIRED, OR DISCONTINUED IN LAST FIVE (5) YEARS? <textarea name="information_q_four" rows="2" maxlength="1" style="width: 100%; margin-top: 5px;"></textarea></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td>5. DO YOU RENT OR LOAN EQUIPMENT TO OTHERS?
@@ -1147,55 +1140,37 @@
                                 <td style="font-size: 9px;"><b>INSTRUCTION GIVEN (Y/N)</b></td>
                             </tr>
                             <tr>
-                                <td><input type="text" name="equipment_type_1" style="width: 100%;"></td>
-                                <td><input type="checkbox" name="small_tools"> SMALL TOOLS</td>
-                                <td><input type="checkbox" name="large_equipment"> LARGE EQUIPMENT</td>
-                                <td><input type="text" name="instruction_given_1" style="width: 100%;"></td>
+                                <td><input type="text" name="information_equipment_one" style="width: 100%;"></td>
+                                <td><input type="checkbox" name="information_equipment_type_one" value="SMALL TOOLS"> SMALL TOOLS</td>
+                                <td><input type="checkbox" name="information_equipment_type_one" value="LARGE EQUIPMENT"> LARGE EQUIPMENT</td>
+                                <td><input type="text" name="information_equipment_instruction_one" style="width: 100%;"></td>
                             </tr>
                             <tr>
-                                <td><input type="text" name="equipment_type_2" style="width: 100%;"></td>
-                                <td><input type="checkbox" name="other_equipment_type"> OTHER TYPE</td>
-                                <td><input type="text" name="other_equipment_description" style="width: 100%;"></td>
-                                <td><input type="text" name="instruction_given_2" style="width: 100%;"></td>
+                                <td><input type="text" name="information_equipment_two" style="width: 100%;"></td>
+                                <td><input type="checkbox" name="information_equipment_type_two" value="OTHER TYPE"> OTHER TYPE</td>
+                                <td colspan="2"><input type="text" name="information_equipment_instruction_two"  style="width: 100%;"></td>
                             </tr>
                         </table>
                     </td>
                     <td>
-                        <input type="radio" name="rent_loan_equipment" value="Y"> Y
-                        <input type="radio" name="rent_loan_equipment" value="N"> N
+                        <textarea name="information_q_five" rows="2" maxlength="1" style="width: 100%; margin-top: 5px;"></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <td>6. ANY WATERCRAFT, DOCKS, FLOATS OWNED, HIRED OR LEASED?</td>
-                    <td>
-                        <input type="radio" name="watercraft" value="Y"> Y
-                        <input type="radio" name="watercraft" value="N"> N
-                        <br><textarea name="watercraft_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
-                    </td>
+                    <td>6. ANY WATERCRAFT, DOCKS, FLOATS OWNED, HIRED OR LEASED? <textarea name="information_q_six" maxlength="1" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>7. ANY PARKING FACILITIES OWNED/RENTED?</td>
-                    <td>
-                        <input type="radio" name="parking_facilities" value="Y"> Y
-                        <input type="radio" name="parking_facilities" value="N"> N
-                        <br><textarea name="parking_facilities_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
-                    </td>
+                    <td>7. ANY PARKING FACILITIES OWNED/RENTED? <textarea name="information_q_seven" rows="2" maxlength="1" style="width: 100%; margin-top: 5px;"></textarea></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>8. IS A FEE CHARGED FOR PARKING?</td>
-                    <td>
-                        <input type="radio" name="parking_fee" value="Y"> Y
-                        <input type="radio" name="parking_fee" value="N"> N
-                        <br><textarea name="parking_fee_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
-                    </td>
+                    <td>8. IS A FEE CHARGED FOR PARKING? <textarea name="information_q_eight" rows="2" maxlength="1" style="width: 100%; margin-top: 5px;"></textarea></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>9. RECREATION FACILITIES PROVIDED?</td>
-                    <td>
-                        <input type="radio" name="recreation_facilities" value="Y"> Y
-                        <input type="radio" name="recreation_facilities" value="N"> N
-                        <br><textarea name="recreation_facilities_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
-                    </td>
+                    <td>9. RECREATION FACILITIES PROVIDED? <textarea name="information_q_nine" rows="2" maxlength="1" style="width: 100%; margin-top: 5px;"></textarea></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td>10. ARE THERE ANY LODGING OPERATIONS INCLUDING APARTMENTS? (If "YES", answer the following):
@@ -1206,51 +1181,47 @@
                                 <td style="font-size: 9px;"><b>DESCRIBE OTHER LODGING OPERATIONS</b></td>
                             </tr>
                             <tr>
-                                <td><input type="text" name="number_apartments" style="width: 100%;"></td>
-                                <td><input type="text" name="total_apartment_area" style="width: 80%;"> Sq.ft</td>
-                                <td><textarea name="other_lodging_description" rows="2" style="width: 100%;"></textarea></td>
+                                <td><input type="text" name="information_q_apt" style="width: 100%;"></td>
+                                <td><input type="text" name="information_q_apt_area" style="width: 80%;"> Sq.ft</td>
+                                <td><textarea name="information_q_apt_description" rows="2" style="width: 100%;"></textarea></td>
                             </tr>
                         </table>
                     </td>
                     <td>
-                        <input type="radio" name="lodging_operations" value="Y"> Y
-                        <input type="radio" name="lodging_operations" value="N"> N
+                        <input type="radio" name="information_q_ten" value="1"> Y
+                        <input type="radio" name="information_q_ten" value="0"> N
                     </td>
                 </tr>
                 <tr>
                     <td>11. IS THERE A SWIMMING POOL ON PREMISES? (Check all that apply)
                         <table style="margin-top: 10px;">
                             <tr>
-                                <td style="border: 0;"><input type="checkbox" name="approved_fence"> APPROVED FENCE</td>
-                                <td style="border: 0;"><input type="checkbox" name="limited_access"> LIMITED ACCESS</td>
-                                <td style="border: 0;"><input type="checkbox" name="diving_board"> DIVING BOARD</td>
-                                <td style="border: 0;"><input type="checkbox" name="slide"> SLIDE</td>
+                                <td style="border: 0;"><input type="checkbox" name="information_approved_fence"> APPROVED FENCE</td>
+                                <td style="border: 0;"><input type="checkbox" name="information_limited_access"> LIMITED ACCESS</td>
+                                <td style="border: 0;"><input type="checkbox" name="information_diving_board"> DIVING BOARD</td>
+                                <td style="border: 0;"><input type="checkbox" name="information_slide"> SLIDE</td>
                             </tr>
                             <tr>
-                                <td style="border: 0;"><input type="checkbox" name="above_ground"> ABOVE GROUND</td>
-                                <td style="border: 0;"><input type="checkbox" name="in_ground"> IN GROUND</td>
-                                <td style="border: 0;"><input type="checkbox" name="life_guard"> LIFE GUARD</td>
+                                <td style="border: 0;"><input type="checkbox" name="information_above_ground"> ABOVE GROUND</td>
+                                <td style="border: 0;"><input type="checkbox" name="information_in_ground"> IN GROUND</td>
+                                <td style="border: 0;"><input type="checkbox" name="information_life_guard"> LIFE GUARD</td>
                                 <td style="border: 0;"></td>
                             </tr>
                         </table>
                     </td>
                     <td>
-                        <input type="radio" name="swimming_pool" value="Y"> Y
-                        <input type="radio" name="swimming_pool" value="N"> N
+                        <input type="radio" name="information_q_eleven" value="1"> Y
+                        <input type="radio" name="information_q_eleven" value="0"> N
                     </td>
                 </tr>
                 <tr>
-                    <td>12. ARE SOCIAL EVENTS SPONSORED?</td>
-                    <td>
-                        <input type="radio" name="social_events" value="Y"> Y
-                        <input type="radio" name="social_events" value="N"> N
-                        <br><textarea name="social_events_explanation" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
-                    </td>
+                    <td>12. ARE SOCIAL EVENTS SPONSORED? <textarea name="information_q_twelve" maxlength="1" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>13. ARE ATHLETIC TEAMS SPONSORED?
+                    <td>13. ARE ATHLETIC TEAMS SPONSORED? <textarea name="information_q_thirteen" maxlength="1" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
                         <div style="display: flex; margin-top: 10px;">
-                            <table style="width: 48%; margin-right: 20px;">
+                            <table style="width: 100%; margin-right: 20px;">
                                 <tr>
                                     <td style="font-size: 9px;"><b>TYPE OF SPORT</b></td>
                                     <td style="font-size: 9px;"><b>CONTACT SPORT (Y/N)</b></td>
@@ -1261,48 +1232,29 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" name="sport_type_1" style="width: 100%;"></td>
-                                    <td><input type="text" name="contact_sport_1" style="width: 100%;"></td>
-                                    <td><input type="text" name="age_group_1" style="width: 100%;"></td>
-                                </tr>
-                            </table>
-                            <table style="width: 48%;">
-                                <tr>
-                                    <td style="font-size: 9px;"><b>TYPE OF SPORT</b></td>
-                                    <td style="font-size: 9px;"><b>CONTACT SPORT (Y/N)</b></td>
-                                    <td style="font-size: 9px;"><b>AGE GROUP</b><br>
-                                        <input type="checkbox" name="age_13_18_2"> 13-18<br>
-                                        <input type="checkbox" name="age_12_under_2"> 12 & under
-                                        <input type="checkbox" name="age_over_18_2"> over 18
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" name="sport_type_2" style="width: 100%;"></td>
-                                    <td><input type="text" name="contact_sport_2" style="width: 100%;"></td>
-                                    <td><input type="text" name="age_group_2" style="width: 100%;"></td>
+                                    <td><input type="text" name="information_sport_type" style="width: 100%;"></td>
+                                    <td><input type="text" name="information_sport_contact" style="width: 100%;"></td>
+                                    <td><input type="text" name="information_sport_age" style="width: 100%;"></td>
                                 </tr>
                             </table>
                         </div>
                     </td>
-                    <td>
-                        <input type="radio" name="athletic_teams" value="Y"> Y
-                        <input type="radio" name="athletic_teams" value="N"> N
-                    </td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>14. ARE STRUCTURAL ALTERATIONS CONTEMPLATED?</td>
+                    <td>14. ARE STRUCTURAL ALTERATIONS CONTEMPLATED? <textarea name="information_fourteen" maxlength="1" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td><br><br><br></td>
                 </tr>
                 <tr>
-                    <td>15. ANY DEMOLITION EXPOSURE CONTEMPLATED?</td>
+                    <td>15. ANY DEMOLITION EXPOSURE CONTEMPLATED? <textarea name="information_fifteen" maxlength="1" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td><br><br><br></td>
                 </tr>
                 <tr>
-                    <td>16. HAS APPLICANT BEEN ACTIVE IN OR IS CURRENTLY ACTIVE IN JOINT VENTURES?</td>
+                    <td>16. HAS APPLICANT BEEN ACTIVE IN OR IS CURRENTLY ACTIVE IN JOINT VENTURES? <textarea name="information_sixteen" maxlength="1" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td><br><br><br></td>
                 </tr>
                 <tr>
-                    <td>17. DO YOU LEASE EMPLOYEES TO OR FROM OTHER EMPLOYERS?
+                    <td>17. DO YOU LEASE EMPLOYEES TO OR FROM OTHER EMPLOYERS? <textarea name="information_seventeen" maxlength="1" rows="2" style="width: 100%; margin-top: 5px;"></textarea>
                         <div style="display: flex;">
                             <table style="width: 48%; margin-right: 20px;">
                                 <tr>
@@ -1310,8 +1262,12 @@
                                     <td style="width: 80px; font-size: 9px;"><b>WORKERS COMPENSATION COVERAGE CARRIED (Y/N)</b></td>
                                 </tr>
                                 <tr>
-                                    <td>---</td>
-                                    <td>---</td>
+                                    <td><input type="text" name="information_lease_to_one" style="width: 100%;" placeholder="Lease to "></td>
+                                    <td><input type="text" name="information_lease_to_one_coverage" style="width: 100%;" placeholder="Coverage"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="information_lease_to_two" style="width: 100%;" placeholder="Lease to "></td>
+                                    <td><input type="text" name="information_lease_to_two_coverage" style="width: 100%;" placeholder="Coverage"></td>
                                 </tr>
                             </table>
                             <table style="width: 48%;">
@@ -1320,8 +1276,13 @@
                                     <td style="width: 80px; font-size: 9px;"><b>WORKERS COMPENSATION COVERAGE CARRIED (Y/N)</b></td>
                                 </tr>
                                 <tr>
-                                    <td>---</td>
-                                    <td>---</td>
+                                    <td><input type="text" name="information_lease_from_one" style="width: 100%;" placeholder="Lease from "></td>
+                                    <td><input type="text" name="information_lease_from_one_coverage" style="width: 100%;" placeholder="Coverage"></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><input type="text" name="information_lease_from_two" style="width: 100%;" placeholder="Lease from "></td>
+                                    <td><input type="text" name="information_lease_from_two_coverage" style="width: 100%;" placeholder="Coverage"></td>
                                 </tr>
                             </table>
                         </div>
@@ -1330,23 +1291,23 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td>18.  IS THERE A LABOR INTERCHANGE WITH ANY OTHER BUSINESS OR SUBSIDIARIES?</td>
+                    <td>18.  IS THERE A LABOR INTERCHANGE WITH ANY OTHER BUSINESS OR SUBSIDIARIES? <textarea name="information_eighteen" maxlength="1" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td><br><br><br></td>
                 </tr>
                 <tr>
-                    <td>19. ARE DAY CARE FACILITIES OPERATED OR CONTROLLED?</td>
+                    <td>19. ARE DAY CARE FACILITIES OPERATED OR CONTROLLED? <textarea name="information_nineteen" rows="2" maxlength="1" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td><br><br><br></td>
                 </tr>
                 <tr>
-                    <td>20.  HAVE ANY CRIMES OCCURRED OR BEEN ATTEMPTED ON YOUR PREMISES WITHIN THE LAST THREE (3) YEARS?</td>
+                    <td>20.  HAVE ANY CRIMES OCCURRED OR BEEN ATTEMPTED ON YOUR PREMISES WITHIN THE LAST THREE (3) YEARS? <textarea maxlength="1" name="information_twenty" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td><br><br><br></td>
                 </tr>
                 <tr>
-                    <td>21.  IS THERE A FORMAL, WRITTEN SAFETY AND SECURITY POLICY IN EFFECT?</td>
+                    <td>21.  IS THERE A FORMAL, WRITTEN SAFETY AND SECURITY POLICY IN EFFECT? <textarea name="information_twenty_one" maxlength="1" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td><br><br><br></td>
                 </tr>
                 <tr>
-                    <td>22. DOES THE BUSINESSES' PROMOTIONAL LITERATURE MAKE ANY REPRESENTATIONS ABOUT THE SAFETY OR SECURITY OF THE PREMISES?</td>
+                    <td>22. DOES THE BUSINESSES' PROMOTIONAL LITERATURE MAKE ANY REPRESENTATIONS ABOUT THE SAFETY OR SECURITY OF THE PREMISES? <textarea name="information_twenty_two" maxlength="1" rows="2" style="width: 100%; margin-top: 5px;"></textarea></td>
                     <td><br><br><br></td>
                 </tr>
             </tbody>
@@ -1363,10 +1324,12 @@
         <p style="text-align: center; font-weight: bold; font-size: 9px; margin-top: 10px;">The ACORD name and logo are
             registered marks of ACORD</p> -->
         <div class="page-break"></div>
-        <div style="font-size: 12px; font-weight: 600; margin-top: 5px; ">Remarks</div>
+        <div style="font-size: 12px; font-weight: 600; margin-top: 5px; ">Remarks </div>
         <table>
             <tr>
-                <td colspan="6" style="height: 150px;"></td>
+                <td colspan="6">
+                    <textarea name="remarks" rows="4" style="width: 100%; margin-top: 5px;"></textarea>
+                </td>
             </tr>
         </table>
         <div style="font-size: 12px; font-weight: 600; margin-top: 5px; ">Signature</div>
@@ -1401,15 +1364,15 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2">Producere Signature <br> --- </td>
-                <td colspan="2">Producere Name <br> --- </td>
-                <td colspan="2"> State Producer license # <br> ---</td>
+                <td colspan="2">Producere Signature <br> <input type="text" name="procedure_signature" style="width: 100%; margin-top: 5px;"></td>
+                <td colspan="2">Producere Name <br> <input type="text" name="procedure_name" style="width: 100%; margin-top: 5px;"></td>
+                <td colspan="2"> State Producer license # <br> <input type="text" name="procedure_license" style="width: 100%; margin-top: 5px;"></td>
 
             </tr>
             <tr>
-                <td colspan="3">Applicant Signature <br> ---</td>
-                <td colspan="1">Date <br> ---</td>
-                <td colspan="2">National Producer # <br> ---</td>
+                <td colspan="3">Applicant Signature <br> <input type="text" name="applicant_signature" style="width: 100%; margin-top: 5px;"></td>
+                <td colspan="1">Date <br> <input type="text" name="applicant_date" style="width: 100%; margin-top: 5px;"></td>
+                <td colspan="2">National Producer # <br> <input type="text" name="procedure_no" style="width: 100%; margin-top: 5px;"></td>
 
             </tr>
         </table>
@@ -1429,8 +1392,8 @@
 
             <div class="row mt-10 pb-3">
                 <div class="col-md-12 text-center">
-                    <button type="submit" class="btn btn-primary m-1">Submit</button>
-                    <button type="reset" class="btn btn-secondary m-1">Reset</button>
+                    <button type="submit" class="m-1">Submit</button>
+                    <button type="reset" class="m-1">Reset</button>
                 </div>
             </div>
         </form>     
