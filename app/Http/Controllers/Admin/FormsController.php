@@ -1557,6 +1557,7 @@ class FormsController extends Controller
 
     public function storeGeneralLiabilityForm(Request $request)
     {
+
         // Optional: Validate data here if needed
 
         DB::beginTransaction();
@@ -1566,7 +1567,7 @@ class FormsController extends Controller
             $form = GeneralLiability::create($request->all());
 
             DB::commit();
-            return redirect()->back()->with('success', 'Form submitted successfully!');
+            return redirect()->route('dashboard')->with('success', 'Form submitted successfully!');
         } catch (\Exception $e) {
             dd($e->getMessage());
             DB::rollBack();
