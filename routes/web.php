@@ -228,10 +228,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('general/liability/form/{id}/create', [FormsController::class, 'CreateGeneralLiabilityForm'])->name('create-general-liability-form');
     Route::post('store/general/liability', [FormsController::class, 'storeGeneralLiabilityForm'])->name('store-general-liability');
 
-    // COMMERCIAL GENERAL LIABILITY SECTION
+    // INSURANCE APPLICATION FORM
     Route::get('insurance/application/form/{id}/create', [FormsController::class, 'CreateInsuranceApplicationForm'])->name('create-insurance-application-form');
     Route::post('store/insurance/application', [FormsController::class, 'storeInsuranceApplicationForm'])->name('store-insurance-application');
 
+    // Commercial APPLICATION FORM
+    Route::get('commercial/insurance/application/form/{id}/create', [FormsController::class, 'CreateCommercialInsuranceApplicationForm'])->name('create-commercial-insurance-application-form');
+    Route::post('store/commercial/insurance/application', [FormsController::class, 'storeCommercialInsuranceApplicationForm'])->name('store-commercial-insurance-application');
+
+    
 
     Route::get('/create/{type}/{client_id}', [FormsController::class, 'showUploadForm'])->name('show-upload-form');
     Route::get('view/form/{type}/{client_id?}', [FormsController::class, 'viewUploadedForm'])->name('view-uploaded-form');

@@ -1,7 +1,6 @@
 @extends('admin.layouts.app')
 
 @section('content')
-
     <!-- Page header -->
     <div class="page-header page-header-light">
         <div class="page-header-content header-elements-md-inline">
@@ -20,41 +19,44 @@
         <div class="card">
 
             <div class="card-body">
-                @if($type === 'agent_broker')
+                @if ($type === 'agent_broker')
                     @include('admin.clientForms.agent_broker.index')
                 @endif
 
-                @if($type === 'additional_remarks')
+                @if ($type === 'additional_remarks')
                     @include('admin.clientForms.additional_remarks.index')
                 @endif
 
-                @if($type === 'evidenceOfProperty')
+                @if ($type === 'evidenceOfProperty')
                     @include('admin.clientForms.evidence_property.index')
                 @endif
 
-                @if($type === 'invoiceForPayment')
+                @if ($type === 'invoiceForPayment')
                     @include('admin.clientForms.invoice_payment.index')
                 @endif
 
-                @if($type === 'propertyLoss')
+                @if ($type === 'propertyLoss')
                     @include('admin.clientForms.property_loss.index')
                 @endif
 
-                @if($type === 'propertyInsurance')
+                @if ($type === 'propertyInsurance')
                     @include('admin.clientForms.property_insurance.index')
                 @endif
 
-                @if($type === 'liabilityInsurance')
+                @if ($type === 'liabilityInsurance')
                     @include('admin.clientForms.liability_insurance.index')
                 @endif
-                @if($type === 'InsuranceCard')
+                @if ($type === 'InsuranceCard')
                     @include('admin.clientForms.insurance_card.index')
                 @endif
-                @if($type === 'GeneralLiability')
+                @if ($type === 'GeneralLiability')
                     @include('admin.clientForms.general_liability.index')
                 @endif
-                @if($type === 'InsuranceApplication')
+                @if ($type === 'InsuranceApplication')
                     @include('admin.clientForms.insurance_application.index')
+                @endif
+                @if ($type === 'CommercialApplicationForm')
+                    @include('admin.clientForms.commercial_insurance_application.index')
                 @endif
             </div>
         </div>
@@ -66,5 +68,4 @@
 
 @push('script')
     <script src="{{ asset('backend/js/datatables.js') }}"></script>
-
 @endpush

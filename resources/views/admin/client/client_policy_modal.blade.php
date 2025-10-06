@@ -355,20 +355,22 @@
                                             </a> --}}
                                         </div>
                                         <div class="col-md-8">
-                                            {{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}" --}}
-                                            {{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
-                                            <a href="{{ route('show-upload-form', ['type' => 'insurance_application', 'client_id' => $policy->client->id]) }}"
+                                            <a href="{{ route('create-commercial-insurance-application-form', $policy->client->id) }}"
+                                                class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a>
+                                            {{-- <a href="{{ route('show-upload-form', ['type' => 'insurance_application', 'client_id' => $policy->client->id]) }}"
                                                 class="text-primary w-100 text-uppercase">COMMERCIAL INSURANCE
-                                                APPLICATION</a>
+                                                APPLICATION</a> --}}
                                         </div>
 
                                         <div class="col-md-4">
-                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
                                             <a target="_blank"
+                                                href="{{ route('view.form', ['type' => 'CommercialApplicationForm']) }}"
+                                                class="btn btn-info w-100 mb-2">View Forms</a>
+                                            {{-- <a target="_blank"
                                                 href="{{ route('view-uploaded-form', ['type' => 'insurance_application', 'client_id' => $policy->client->id]) }}"
                                                 class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
-                                            </a>
+                                            </a> --}}
                                         </div>
 
                                         <div class="col-md-8">
@@ -585,7 +587,7 @@
                     if (result.isConfirmed) {
                         deleteElement.slideUp(function() {
                             $(this)
-                        .remove(); // Remove the element after animation completes
+                                .remove(); // Remove the element after animation completes
                         });
 
                         // // Show a success message
