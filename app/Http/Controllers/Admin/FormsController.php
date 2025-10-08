@@ -24,6 +24,7 @@ use App\Models\Forms\InvoicePaymentItem;
 use App\Models\Forms\LiabilityInsurance;
 use App\Models\Forms\PropertyInsurance;
 use App\Models\Forms\PropertyLoss;
+use App\Models\InstallationBuilderRiskSection;
 use App\Models\InsuranceCompany;
 use App\Models\PolicyType;
 use Exception;
@@ -79,6 +80,10 @@ class FormsController extends Controller
 
         if ($type === 'CommercialApplicationForm') {
             $forms = CommercialInsuranceApplication::all();
+        }
+        
+        if ($type === 'InstallationBuilderRisk') {
+            $forms = InstallationBuilderRiskSection::all();
         }
 
         return view('admin.clientForms.index', compact('title', 'forms', 'type'));
@@ -148,6 +153,11 @@ class FormsController extends Controller
         if ($type === 'CommercialApplicationForm') {
             $form = CommercialInsuranceApplication::with(['client', 'createdBy', 'applicationInfo', 'business', 'otherInfo', 'history'])->findOrFail($id);
             return view('admin.clientForms.commercial_insurance_application.show', compact('title', 'form', 'type'));
+        }
+
+        if ($type === 'InstallationBuilderRisk') {
+            $form = InstallationBuilderRiskSection::find($id);
+            return view('admin.clientForms.Installation_builder_risk.show', compact('title', 'form', 'type'));
         }
 
     }
@@ -2697,6 +2707,212 @@ class FormsController extends Controller
         }
     }
 
+
+    public function CreateInstallationBuilderRiskForm($id)
+    {
+        $clientPolicy = ClientPolicy::with('client.policy.agency', 'insuranceCompany', 'agency', 'agent')->where('client_id', $id)->first();
+
+        return view('admin.clientForms.Installation_builder_risk.create', compact('clientPolicy'));
+    }
+
+
+    public function storeInstallationBuilderRisk(Request $request)
+    {
+        // Start database transaction
+        DB::beginTransaction();
+
+        try {
+
+            $installationBuilderForm = InstallationBuilderRiskSection::create([
+               'client_id' => $request->client_id,
+                'invoice_date' => $request->invoice_date,
+                'agency_name' => $request->agency_name,
+                'career' => $request->career,
+                'naic_code' => $request->naic_code,
+                'policy_number' => $request->policy_number,
+                'effective_date' => $request->effective_date,
+                'name_insured' => $request->name_insured,
+                'insallationCheck' => $request->insallationCheck,
+                'buildingRiskCheck' => $request->buildingRiskCheck,
+                'limit_sing_loc' => $request->limit_sing_loc,
+                'limit_per_disaster' => $request->limit_per_disaster,
+                'limit_temp_loc' => $request->limit_temp_loc,
+                'transit_limit' => $request->transit_limit,
+                'earthQuakeCheck' => $request->earthQuakeCheck,
+                'earthQuakeSubLimit' => $request->earthQuakeSubLimit,
+                'earthQuakeDeductible' => $request->earthQuakeDeductible,
+                'flood' => $request->flood,
+                'floodSubLimit' => $request->floodSubLimit,
+                'floodDeductible' => $request->floodDeductible,
+                'otherCauseCheck' => $request->otherCauseCheck,
+                'otherCauseField' => $request->otherCauseField,
+                'otherCauseSubLim' => $request->otherCauseSubLim,
+                'otherCauseDeductible' => $request->otherCauseDeductible,
+                'specialCause' => $request->specialCause,
+                'specialCauseSubLim' => $request->specialCauseSubLim,
+                'specialCauseDeductible' => $request->specialCauseDeductible,
+                'broadCause' => $request->broadCause,
+                'basicSubLim' => $request->basicSubLim,
+                'broadDeductible' => $request->broadDeductible,
+                'operationTerritory' => $request->operationTerritory,
+                'pastMonth' => $request->pastMonth,
+                'nextMonth' => $request->nextMonth,
+                'resi_annualNum' => $request->resi_annualNum,
+                'resi_duration' => $request->resi_duration,
+                'resi_max' => $request->resi_max,
+                'resi_avg' => $request->resi_avg,
+                'resi_maxCost' => $request->resi_maxCost,
+                'resi_minCost' => $request->resi_minCost,
+                'resi_avgCost' => $request->resi_avgCost,
+                'resi_materialPerc' => $request->resi_materialPerc,
+                'commercial_annualNum' => $request->commercial_annualNum,
+                'commercial_duration' => $request->commercial_duration,
+                'commercial_max' => $request->commercial_max,
+                'commercial_avg' => $request->commercial_avg,
+                'commercial_maxCost' => $request->commercial_maxCost,
+                'commercial_minCost' => $request->commercial_minCost,
+                'commercial_avgCost' => $request->commercial_avgCost,
+                'commercial_materialPerc' => $request->commercial_materialPerc,
+                'accordCheck' => $request->accordCheck,
+                'sec1_Lender' => $request->sec1_Lender,
+                'sec1_LienHolder' => $request->sec1_LienHolder,
+                'sec1_LossPayee' => $request->sec1_LossPayee,
+                'sec1_otherCheck' => $request->sec1_otherCheck,
+                'sec1_otherCheckField' => $request->sec1_otherCheckField,
+                'sec1_nameAddress' => $request->sec1_nameAddress,
+                'sec1_rank' => $request->sec1_rank,
+                'sec1_referenceNo' => $request->sec1_referenceNo,
+                'sec1_certificateReq' => $request->sec1_certificateReq,
+                'sec1_loc' => $request->sec1_loc,
+                'sec1_building' => $request->sec1_building,
+                'sec1_scheduledItem' => $request->sec1_scheduledItem,
+                'sec1_intrestOther' => $request->sec1_intrestOther,
+                'sec1_description' => $request->sec1_description,
+                'sec2_Lender' => $request->sec2_Lender,
+                'sec2_LienHolder' => $request->sec2_LienHolder,
+                'sec2_LossPayee' => $request->sec2_LossPayee,
+                'sec2_otherCheck' => $request->sec2_otherCheck,
+                'sec2_otherCheckField' => $request->sec2_otherCheckField,
+                'sec2_nameAddress' => $request->sec2_nameAddress,
+                'sec2_rank' => $request->sec2_rank,
+                'sec2_referenceNo' => $request->sec2_referenceNo,
+                'sec2_certificateReq' => $request->sec2_certificateReq,
+                'sec2_loc' => $request->sec2_loc,
+                'sec2_building' => $request->sec2_building,
+                'sec2_scheduledItem' => $request->sec2_scheduledItem,
+                'sec2_intrestOther' => $request->sec2_intrestOther,
+                'sec2_description' => $request->sec2_description,
+                'sec3_Lender' => $request->sec3_Lender,
+                'sec3_LienHolder' => $request->sec3_LienHolder,
+                'sec3_LossPayee' => $request->sec3_LossPayee,
+                'sec3_otherCheck' => $request->sec3_otherCheck,
+                'sec3_otherCheckField' => $request->sec3_otherCheckField,
+                'sec3_nameAddress' => $request->sec3_nameAddress,
+                'sec3_rank' => $request->sec3_rank,
+                'sec3_referenceNo' => $request->sec3_referenceNo,
+                'sec3_certificateReq' => $request->sec3_certificateReq,
+                'sec3_loc' => $request->sec3_loc,
+                'sec3_building' => $request->sec3_building,
+                'sec3_scheduledItem' => $request->sec3_scheduledItem,
+                'sec3_intrestOther' => $request->sec3_intrestOther,
+                'sec3_description' => $request->sec3_description,
+                'riggingHosting' => $request->riggingHosting,
+                'estimatePercentagRigging' => $request->estimatePercentagRigging,
+                'jobsiteSecurity' => $request->jobsiteSecurity,
+                'remarks' => $request->remarks,
+                'p2_limit_loc' => $request->p2_limit_loc,
+                'p2_limit_temp_loc' => $request->p2_limit_temp_loc,
+                'p2_transit_limit' => $request->p2_transit_limit,
+                'p2_earthQuake' => $request->p2_earthQuake,
+                'p2_earthQuakeSubLim' => $request->p2_earthQuakeSubLim,
+                'p2_earthQuakeDeductible' => $request->p2_earthQuakeDeductible,
+                'p2_FLOOD' => $request->p2_FLOOD,
+                'p2_FLOODSubLim' => $request->p2_FLOODSubLim,
+                'p2_FLOODDeductible' => $request->p2_FLOODDeductible,
+                'p2_otherCauseCheck' => $request->p2_otherCauseCheck,
+                'p2_otherCauseCheckField' => $request->p2_otherCauseCheckField,
+                'p2_otherCauseSubLim' => $request->p2_otherCauseSubLim,
+                'p2_otherCauseDeductible' => $request->p2_otherCauseDeductible,
+                'p2_Special' => $request->p2_Special,
+                'p2_SpecialSubLim' => $request->p2_SpecialSubLim,
+                'p2_SpecialDeductible' => $request->p2_SpecialDeductible,
+                'p2_BROAD' => $request->p2_BROAD,
+                'p2_BASIC' => $request->p2_BASIC,
+                'p2_BASICDeductible' => $request->p2_BASICDeductible,
+                'p2_commencement' => $request->p2_commencement,
+                'p2_completion' => $request->p2_completion,
+                'p2_contractAmount' => $request->p2_contractAmount,
+                'p2_ownerSupplied' => $request->p2_ownerSupplied,
+                'p2_jobSecurity' => $request->p2_jobSecurity,
+                'p2_workedPerformed' => $request->p2_workedPerformed,
+                'p2_insuredJobNumber' => $request->p2_insuredJobNumber,
+                'p2_sec1_Lender' => $request->p2_sec1_Lender,
+                'p2_sec1_LienHolder' => $request->p2_sec1_LienHolder,
+                'p2_sec1_LossPayee' => $request->p2_sec1_LossPayee,
+                'p2_sec1_otherCheck' => $request->p2_sec1_otherCheck,
+                'p2_sec1_otherCheckField' => $request->p2_sec1_otherCheckField,
+                'p2_sec1_nameAddress' => $request->p2_sec1_nameAddress,
+                'p2_sec1_rank' => $request->p2_sec1_rank,
+                'p2_sec1_referenceNo' => $request->p2_sec1_referenceNo,
+                'p2_sec1_certificateReq' => $request->p2_sec1_certificateReq,
+                'p2_sec1_loc' => $request->p2_sec1_loc,
+                'p2_sec1_building' => $request->p2_sec1_building,
+                'p2_sec1_scheduledItem' => $request->p2_sec1_scheduledItem,
+                'p2_sec1_intrestOther' => $request->p2_sec1_intrestOther,
+                'p2_sec1_description' => $request->p2_sec1_description,
+                'p2_sec2_Lender' => $request->p2_sec2_Lender,
+                'p2_sec2_LienHolder' => $request->p2_sec2_LienHolder,
+                'p2_sec2_LossPayee' => $request->p2_sec2_LossPayee,
+                'p2_sec2_otherCheck' => $request->p2_sec2_otherCheck,
+                'p2_sec2_otherCheckField' => $request->p2_sec2_otherCheckField,
+                'p2_sec2_nameAddress' => $request->p2_sec2_nameAddress,
+                'p2_sec2_rank' => $request->p2_sec2_rank,
+                'p2_sec2_referenceNo' => $request->p2_sec2_referenceNo,
+                'p2_sec2_certificateReq' => $request->p2_sec2_certificateReq,
+                'p2_sec2_loc' => $request->p2_sec2_loc,
+                'p2_sec2_building' => $request->p2_sec2_building,
+                'p2_sec2_scheduledItem' => $request->p2_sec2_scheduledItem,
+                'p2_sec2_intrestOther' => $request->p2_sec2_intrestOther,
+                'p2_sec2_description' => $request->p2_sec2_description,
+                'p2_sec3_Lender' => $request->p2_sec3_Lender,
+                'p2_sec3_LienHolder' => $request->p2_sec3_LienHolder,
+                'p2_sec3_LossPayee' => $request->p2_sec3_LossPayee,
+                'p2_sec3_otherCheck' => $request->p2_sec3_otherCheck,
+                'p2_sec3_otherCheckField' => $request->p2_sec3_otherCheckField,
+                'p2_sec3_nameAddress' => $request->p2_sec3_nameAddress,
+                'p2_sec3_rank' => $request->p2_sec3_rank,
+                'p2_sec3_referenceNo' => $request->p2_sec3_referenceNo,
+                'p2_sec3_certificateReq' => $request->p2_sec3_certificateReq,
+                'p2_sec3_loc' => $request->p2_sec3_loc,
+                'p2_sec3_building' => $request->p2_sec3_building,
+                'p2_sec3_scheduledItem' => $request->p2_sec3_scheduledItem,
+                'p2_sec3_intrestOther' => $request->p2_sec3_intrestOther,
+                'p2_sec3_description' => $request->p2_sec3_description,
+                'P2_amountShipped' => $request->P2_amountShipped,
+                'P2_applicatsVehcles' => $request->P2_applicatsVehcles,
+                'P2_contractorCarrier' => $request->P2_contractorCarrier,
+                'P2_distanceInvolved' => $request->P2_distanceInvolved,
+                'p2_riggingHosting' => $request->p2_riggingHosting,
+                'p2_remarks' => $request->p2_remarks,
+                'agency_id' => $request->agency_id,
+                'P2_producerSignature' => $request->p2_producerSignature,
+                'P2_producerName' => $request->p2_producerName,
+                'P2_producerLicense' => $request->p2_producerLicense,
+                'P2_applicantSignature' => $request->p2_applicantSignature,
+                'P2_applicationdate' => $request->p2_applicationdate,
+                'P2_nationalProducerNo' => $request->p2_nationalProducerNo,
+                'created_by' => $request->created_by,
+            ]);
+
+            DB::commit();
+            return redirect()->route('dashboard')->with('success', 'Form submitted successfully!');
+            
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            DB::rollback();
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
 
     public function showUploadForm($type, $client_id)
     {

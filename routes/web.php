@@ -236,7 +236,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('commercial/insurance/application/form/{id}/create', [FormsController::class, 'CreateCommercialInsuranceApplicationForm'])->name('create-commercial-insurance-application-form');
     Route::post('store/commercial/insurance/application', [FormsController::class, 'storeCommercialInsuranceApplicationForm'])->name('store-commercial-insurance-application');
 
-    
+    // Installation Building Risk
+    Route::get('installation/builder/risk/form/{id}/create', [FormsController::class, 'CreateInstallationBuilderRiskForm'])->name('create-installation-builder-risk-form');
+    Route::post('store/installation/builder/risk', [FormsController::class, 'storeInstallationBuilderRisk'])->name('store-installation-builder-risk');
 
     Route::get('/create/{type}/{client_id}', [FormsController::class, 'showUploadForm'])->name('show-upload-form');
     Route::get('view/form/{type}/{client_id?}', [FormsController::class, 'viewUploadedForm'])->name('view-uploaded-form');

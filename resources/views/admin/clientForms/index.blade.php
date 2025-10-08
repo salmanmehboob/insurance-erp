@@ -58,6 +58,9 @@
                 @if ($type === 'CommercialApplicationForm')
                     @include('admin.clientForms.commercial_insurance_application.index')
                 @endif
+                @if ($type === 'InstallationBuilderRisk')
+                    @include('admin.clientForms.Installation_builder_risk.index')
+                @endif
             </div>
         </div>
         <!-- /basic datatable -->
