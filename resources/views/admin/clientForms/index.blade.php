@@ -61,6 +61,9 @@
                 @if ($type === 'InstallationBuilderRisk')
                     @include('admin.clientForms.Installation_builder_risk.index')
                 @endif
+                @if ($type === 'PropertySection')
+                    @include('admin.clientForms.property_section.index')
+                @endif
             </div>
         </div>
         <!-- /basic datatable -->
