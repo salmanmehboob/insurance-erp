@@ -374,19 +374,18 @@
                                         </div>
 
                                         <div class="col-md-8">
-                                            {{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}" --}}
-                                            {{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
-                                            <a href="{{ route('show-upload-form', ['type' => 'dwelling_fire', 'client_id' => $policy->client->id]) }}"
-                                                class="text-primary w-100 text-uppercase">DWELLING FIRE APPLICATION</a>
+                                            <a href="{{ route('create-dwelling-application-form', $policy->client->id) }}" class="text-primary w-100">DWELLING FIRE APPLICATION</a>
+                                            {{-- <a href="{{ route('show-upload-form', ['type' => 'dwelling_fire', 'client_id' => $policy->client->id]) }}"
+                                                class="text-primary w-100 text-uppercase">DWELLING FIRE APPLICATION</a> --}}
                                         </div>
 
                                         <div class="col-md-4">
-                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank"
+                                            <a target="_blank" href="{{route('view.form',['type' => 'DwellingFireApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a>
+                                            {{-- <a target="_blank"
                                                 href="{{ route('view-uploaded-form', ['type' => 'dwelling_fire', 'client_id' => $policy->client->id]) }}"
                                                 class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
-                                            </a>
+                                            </a> --}}
                                         </div>
 
                                         <div class="col-md-8">
