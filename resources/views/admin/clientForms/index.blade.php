@@ -64,6 +64,9 @@
                 @if ($type === 'PropertySection')
                     @include('admin.clientForms.property_section.index')
                 @endif
+                @if ($type === 'DwellingFireApplication')
+                    @include('admin.clientForms.dwelling.index')
+                @endif
             </div>
         </div>
         <!-- /basic datatable -->

@@ -244,6 +244,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('property/section/form/{id}/create', [FormsController::class, 'CreatePropertySectionForm'])->name('create-property-section-form');
     Route::post('store/property/section', [FormsController::class, 'storePropertySection'])->name('store-property-section');
 
+    // Dwelling Fire Application
+    Route::get('dwelling/fire/application/{id}/create', [FormsController::class, 'CreateDwellingForm'])->name('create-dwelling-application-form');
+    Route::post('store/dwelling/fire', [FormsController::class, 'storeDwellingForm'])->name('store-dwelling-application');
+
+
     Route::get('/create/{type}/{client_id}', [FormsController::class, 'showUploadForm'])->name('show-upload-form');
     Route::get('view/form/{type}/{client_id?}', [FormsController::class, 'viewUploadedForm'])->name('view-uploaded-form');
     Route::post('/forms/upload', [FormsController::class, 'uploadForm'])->name('upload-form');
