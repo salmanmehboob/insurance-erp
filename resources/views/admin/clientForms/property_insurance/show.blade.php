@@ -1,10 +1,682 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CERTIFICATE OF PROPERTY INSURANCE</title>
-    <style type="text/css">
+@extends('admin.layouts.form')
+@push('styles')
+    <style>
+        .acord-logo {
+            height: 50pt !important;
+            vertical-align: middle;
+            margin-right: 2pt;
+        }
+
+        /* Base styles for screen viewing and print intent */
+        body {
+            font-family: 'Arial', sans-serif;
+            /* Common form font */
+            font-size: 8pt;
+            /* Base font size, uses points for print accuracy */
+            color: #000;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            /* For centering the form on screen */
+            justify-content: center;
+            background-color: #f0f0f0;
+            /* Light background for screen view */
+        }
+
+        .form-container {
+            width: 8.5in;
+            /* Standard US Letter width */
+            /* min-height: 11in; Min height to ensure page size, content will expand */
+            /* padding: 0.25in 0.5in; Top/bottom padding, left/right padding */
+            box-sizing: border-box;
+            /* Padding included in width/height */
+            background-color: white;
+            border: 1px solid #000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for screen view */
+            display: flex;
+            /* Use flexbox for overall layout */
+            flex-direction: column;
+        }
+
+        /* Reusable Form Field Line (Label + Underline Input) */
+        .form-field-line {
+            display: flex;
+            align-items: flex-end;
+            /* Aligns label baseline with input line */
+            line-height: 1.0;
+            margin-bottom: 2pt;
+            /* Small vertical spacing */
+        }
+
+        .form-field-line label {
+            white-space: nowrap;
+            /* Prevent label from wrapping */
+            font-size: 7pt;
+            /* Label font size */
+            color: #333;
+            flex-shrink: 0;
+            /* Prevent label from shrinking */
+            margin-right: 2pt;
+            /* Space between label and input */
+            padding-bottom: 0.5pt;
+            /* Fine-tune label baseline alignment */
+        }
+
+        .form-field-line input[type="text"] {
+            flex-grow: 1;
+            /* Input takes remaining width */
+            border: none;
+            border-bottom: 0.5pt solid black;
+            /* The underline */
+            padding: 0 1pt;
+            font-size: 8pt;
+            /* Input text size */
+            height: 10pt;
+            /* Explicit height to control line vertical position */
+            background-color: transparent;
+            box-sizing: border-box;
+            line-height: 1;
+            /* Keep input text tight */
+        }
+
+        .form-field-line.no-label input {
+            margin-right: 0;
+            /* No margin if no label */
+        }
+
+        /* Header Section */
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            /* margin-bottom: 0.05in; */
+        }
+
+        .acord-logo-text {
+            display: flex;
+            align-items: flex-end;
+            font-size: 8pt;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin: 10px;
+        }
+
+        .acord-logo {
+            height: 15pt;
+            vertical-align: middle;
+            margin-right: 2pt;
+        }
+
+        .header-right-meta {
+            display: flex;
+            align-items: flex-end;
+            font-size: 7pt;
+            padding: 5px;
+            border: 1px solid #000;
+        }
+
+        .header-right-meta .form-field-line {
+            margin-left: 0.2in;
+            margin-bottom: 0;
+        }
+
+        .header-right-meta .form-field-line label {
+            font-size: 6pt;
+        }
+
+        .header-right-meta .form-field-line input {
+            width: 60pt;
+            height: 9pt;
+            font-size: 7pt;
+            text-align: right;
+        }
+
+        .main-title {
+            font-size: 11pt;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.05in;
+        }
+
+        .header-statement {
+            font-size: 7pt;
+            line-height: 1.2;
+            text-align: justify;
+            padding: 5px;
+            /* margin-bottom: 0.1in;
+                    padding-bottom: 0.05in;
+                    border-bottom: 0.5pt solid black; */
+        }
+
+        /* Producer / Insured Section */
+
+
+        /* Table specific styling for the Producer/Insured Section */
+        .producer-insured-table {
+            border-collapse: collapse;
+            /* Collapse borders for single lines */
+            width: 100%;
+            border: 0.5pt solid black;
+            /* Outer border for the entire table */
+            font-size: 8pt;
+            line-height: 1.2;
+        }
+
+        .producer-insured-table td {
+            border: 0.5pt solid black;
+            /* Inner borders for cells */
+            padding: 0;
+            /* No default padding for precise control */
+            vertical-align: top;
+            /* Align content to the top of the cell */
+            box-sizing: border-box;
+        }
+
+        /* Column specific styling */
+        .producer-insured-table .left-col {
+            width: 50%;
+            /* Left column takes half width */
+        }
+
+        .producer-insured-table .right-col {
+            width: 50%;
+            /* Right column takes half width */
+        }
+
+        /* Cell content padding for better visual spacing */
+        .cell-content {
+            padding: 5pt;
+            /* Internal padding for cell content */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Headers within cells */
+        .cell-header {
+            font-weight: bold;
+            font-size: 7pt;
+            /* Smaller font for internal headers */
+            margin-bottom: 2pt;
+        }
+
+        /* Generic Field line within cells */
+        .field-line-cell {
+            display: flex;
+            align-items: flex-end;
+            /* Align label baseline with input line */
+            line-height: 1.0;
+            margin-bottom: 2pt;
+            /* Small vertical spacing */
+        }
+
+        .field-line-cell label {
+            white-space: nowrap;
+            font-size: 7pt;
+            color: #333;
+            flex-shrink: 0;
+            margin-right: 2pt;
+            padding-bottom: 0.5pt;
+        }
+
+        .field-line-cell input[type="text"] {
+            flex-grow: 1;
+            border: none;
+            border-bottom: 0.5pt solid black;
+            padding: 0 1pt;
+            font-size: 8pt;
+            height: 10pt;
+            background-color: transparent;
+            box-sizing: border-box;
+            line-height: 1;
+        }
+
+        .field-line-cell.no-label input {
+            margin-right: 0;
+            /* No margin if no label */
+        }
+
+        /* Specific styles for the "CONTACT" line in the right column */
+        .contact-info-line {
+            display: flex;
+            align-items: flex-end;
+            margin-top: 3pt;
+            font-size: 7pt;
+        }
+
+        .contact-info-line span {
+            margin-right: 2pt;
+        }
+
+        .contact-info-line input {
+            flex-grow: 0;
+            width: 70pt;
+            /* Fixed width for phone/fax numbers */
+            height: 9pt;
+            border-bottom: 0.5pt solid black;
+            padding: 0 1pt;
+            font-size: 7pt;
+            background-color: transparent;
+        }
+
+        .contact-info-line .fax-label {
+            margin-left: 10pt;
+        }
+
+        /* City, State, Zip */
+        .city-state-zip {
+            display: flex;
+            align-items: flex-end;
+            margin-top: 3pt;
+            gap: 5pt;
+            /* Gap between city, state, zip inputs */
+        }
+
+        .city-state-zip .field-line-cell {
+            margin-bottom: 0;
+            flex: 1;
+            /* Allow each part to take equal space */
+        }
+
+        .city-state-zip .field-line-cell input {
+            width: auto;
+            /* Auto width for inputs within this flex container */
+            flex-grow: 1;
+        }
+
+        .city-state-zip .field-line-cell.state input {
+            width: 25pt;
+            /* Fixed width for State */
+            flex-grow: 0;
+        }
+
+        .city-state-zip .field-line-cell.zip input {
+            width: 40pt;
+            /* Fixed width for Zip */
+            flex-grow: 0;
+        }
+
+        /* Insurer(s) Affording Coverage section */
+        .insurer-coverage-section {
+            padding-top: 5pt;
+            /* Space from above fields */
+        }
+
+        .insurer-coverage-title {
+            font-size: 7pt;
+            font-weight: bold;
+            margin-bottom: 2pt;
+            padding-bottom: 2pt;
+            border-bottom: 0.5pt solid black;
+        }
+
+        .insurer-line {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 2pt;
+        }
+
+        .insurer-line label {
+            white-space: nowrap;
+            font-size: 7pt;
+            flex-shrink: 0;
+            margin-right: 2pt;
+            padding-bottom: 0.5pt;
+        }
+
+        .insurer-line input {
+            flex-grow: 1;
+            border: none;
+            border-bottom: 0.5pt solid black;
+            padding: 0 1pt;
+            font-size: 8pt;
+            height: 10pt;
+            background-color: transparent;
+        }
+
+        .insurer-line .naic-code-input {
+            width: 45pt;
+            /* Fixed width for NAIC # */
+            flex-grow: 0;
+            margin-left: 5pt;
+            text-align: right;
+        }
+
+        /* Print Specific Styles */
+        @media print {
+            body {
+                background-color: white;
+                margin: 0;
+                padding: 0;
+                display: block;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                orphans: 3;
+                widows: 3;
+            }
+
+            .section-container {
+                border: none;
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+                /* Remove container padding for full page control */
+                width: 8.5in;
+                /* Ensure full page width for positioning */
+            }
+
+            .producer-insured-table {
+                width: 7.5in;
+                /* Set fixed width for print to match form */
+                margin: 0.5in auto 0.1in auto;
+                /* Center table on print page, adjust top/bottom margin */
+            }
+
+            .producer-insured-table td {
+                padding: 0;
+                /* Keep padding at 0 for inputs to fill cell */
+            }
+
+            .cell-content {
+                padding: 5pt;
+                /* Maintain internal content padding */
+            }
+
+            input[type="text"] {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                vertical-align: baseline;
+                padding-bottom: 0;
+                height: auto;
+                min-height: 9pt;
+                /* Ensure inputs have a minimum height */
+            }
+
+            .field-line-cell label,
+            .contact-info-line span,
+            .insurer-line label {
+                padding-bottom: 0;
+            }
+
+            .producer-insured-table .cell-header {
+                font-size: 7pt;
+                /* Ensure font size consistency */
+            }
+
+            .insurer-line input {
+                min-height: 9pt;
+                /* Ensure input box has height */
+            }
+        }
+
+        /* Coverage Section */
+        .coverage-section {
+            /* margin-bottom: 0.1in; */
+        }
+
+        .coverage-title {
+            font-size: 9pt;
+            font-weight: bold;
+            margin-bottom: 5pt;
+            padding-bottom: 2pt;
+            border-bottom: 0.5pt solid black;
+        }
+
+        .coverage-meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.1in;
+            margin-bottom: 0.1in;
+        }
+
+        .coverage-meta-grid .form-field-line {
+            margin-bottom: 0;
+        }
+
+        .coverage-meta-grid .form-field-line label {
+            font-size: 7pt;
+        }
+
+        .coverage-meta-grid .form-field-line input {
+            font-size: 8pt;
+            height: 10pt;
+        }
+
+        /* Main Coverage Table */
+        .coverage-table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 0.5pt solid black;
+            /* Outer border */
+            font-size: 7pt;
+            line-height: 1.2;
+        }
+
+        .coverage-table th,
+        .coverage-table td {
+            border: 0.5pt solid black;
+            /* Inner borders */
+            padding: 2pt 3pt;
+            vertical-align: top;
+            box-sizing: border-box;
+        }
+
+        .coverage-table th {
+            font-weight: bold;
+            text-align: center;
+            background-color: #f8f8f8;
+            height: 20pt;
+            /* Fixed height for header cells */
+        }
+
+        .coverage-table td {
+            position: relative;
+            height: 15pt;
+            /* Fixed height for data rows */
+        }
+
+        .coverage-table .col-checkbox {
+            width: 15pt;
+            text-align: center;
+            padding: 0;
+        }
+
+        .coverage-table .col-type {
+            width: 15%;
+        }
+
+        .coverage-table .col-deductibles {
+            width: 15%;
+        }
+
+        .coverage-table .col-policy-number {
+            width: 15%;
+        }
+
+        .coverage-table .col-date {
+            width: 15%;
+        }
+
+        .coverage-table .col-covered-property {
+            width: 15%;
+        }
+
+        .coverage-table .col-limit {
+            width: 10%;
+            text-align: right;
+        }
+
+        .coverage-table .col-checkbox input[type="checkbox"] {
+            margin: 0;
+            vertical-align: middle;
+            transform: scale(0.7);
+            /* Smaller checkboxes */
+        }
+
+        .coverage-table .limit-input {
+            width: calc(100% - 2pt);
+            /* Full width minus padding */
+            border: none;
+            border-bottom: 0.5pt solid black;
+            font-size: 7pt;
+            height: 9pt;
+            padding: 0 1pt;
+            text-align: right;
+            background-color: transparent;
+            box-sizing: border-box;
+            position: absolute;
+            bottom: 1pt;
+            /* Align to bottom of cell */
+            right: 1pt;
+        }
+
+        .coverage-table .policy-number-input,
+        .coverage-table .date-input {
+            width: calc(100% - 2pt);
+            border: none;
+            border-bottom: 0.5pt solid black;
+            font-size: 7pt;
+            height: 9pt;
+            padding: 0 1pt;
+            background-color: transparent;
+            box-sizing: border-box;
+            position: absolute;
+            bottom: 1pt;
+            left: 1pt;
+        }
+
+        /* Special Conditions / Other Coverages */
+        .special-conditions {
+            font-size: 7pt;
+            line-height: 1.2;
+            margin-top: 0.1in;
+            padding-top: 5pt;
+            border-top: 0.5pt solid black;
+            margin-bottom: 0.1in;
+        }
+
+        /* Certificate Holder / Cancellation Section */
+        .certificate-cancel-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.1in;
+            flex-grow: 1;
+            /* Allows this section to fill remaining space */
+        }
+
+        .certificate-holder-box {
+            border: 1pt solid black;
+            padding: 0.1in;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .certificate-holder-title {
+            font-size: 9pt;
+            font-weight: bold;
+            margin-bottom: 5pt;
+            padding-bottom: 2pt;
+            border-bottom: 0.5pt solid black;
+        }
+
+        .certificate-holder-address {
+            flex-grow: 1;
+            /* Allow address area to expand */
+            border: none;
+            resize: none;
+            font-family: 'Arial', sans-serif;
+            font-size: 8pt;
+            line-height: 1.2;
+            padding: 0;
+            outline: none;
+        }
+
+        .cancellation-box {
+            border: 1pt solid black;
+            padding: 0.1in;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cancellation-title {
+            font-size: 9pt;
+            font-weight: bold;
+            margin-bottom: 5pt;
+            padding-bottom: 2pt;
+            border-bottom: 0.5pt solid black;
+        }
+
+        .cancellation-text {
+            font-size: 8pt;
+            line-height: 1.2;
+            flex-grow: 1;
+            margin-bottom: 5pt;
+        }
+
+        .cancellation-representative {
+            font-size: 8pt;
+            font-weight: bold;
+            text-align: right;
+            margin-top: auto;
+            /* Push to bottom */
+        }
+
+        .cancellation-representative input {
+            width: 100%;
+            border: none;
+            border-bottom: 0.5pt solid black;
+            padding: 0 2pt;
+            font-size: 8pt;
+            height: 10pt;
+            background-color: transparent;
+            box-sizing: border-box;
+        }
+
+        /* Footer Section */
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 5px;
+            font-size: 6pt;
+            font-weight: 600;
+            /* color: #555; */
+        }
+
+        .footer-copyright {
+            flex-grow: 1;
+            text-align: right;
+        }
+
+        /* PRINT MEDIA QUERIES - CRITICAL for accurate printing */
+
+        .w50 {
+            width: 50%;
+        }
+
+        /* .table-producer table td.50per{width: 50%;} */
+        .table-producer table td {
+            padding: 3px;
+        }
+
+        .tableinnertd td {
+            border-left: 0.5pt solid black;
+            border-right: 0.5pt solid black;
+            border-top: 0.5pt solid black;
+            border-bottom: 0.5pt solid black;
+            padding: 4px;
+            vertical-align: middle;
+            box-sizing: border-box;
+        }
+
+        .certificate td {
+            width: 50%;
+            border: 1px solid black;
+            vertical-align: text-top;
+            padding: 5px;
+        }
 
         .s1 {
             color: black;
@@ -22,6 +694,10 @@
             font-weight: normal;
             text-decoration: none;
             font-size: 5.5pt;
+        }
+
+        .property-coverage-p {
+            padding-bottom: 15pt;
         }
 
         .s3 {
@@ -130,1002 +806,849 @@
             overflow: visible;
         }
 
+        input,
+        textarea {
+            font-family: Arial, sans-serif;
+            font-size: 8pt;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-        .property-coverage-p {
-            margin-top: 3pt;
-            padding-bottom: 11pt;
+        *,
+        ::after,
+        ::before {
+
+            border-color: #000000 !important;
+        }
+
+        input,
+        optgroup,
+        select,
+        textarea {
+            border: 1px solid;
         }
     </style>
-</head>
-<body>
-<div class="container">
-    <div class="print-button">
-        <button class="btn btn-primary" onclick="printOriginal()">Print</button>
+@endpush
+@section('content')
+    <div>
+            <div>
+                <div class="header-top">
+                    <div class="acord-logo-text">
+                        <img src="{{asset('backend/img/acord-logo.png')}}" alt="ACORD Logo"
+                            class="acord-logo inline-block align-middle">
+                    </div>
+                    <div class="main-title">
+                        CERTIFICATE OF PROPERTY INSURANCE
+                    </div>
+                    <div class="header-right-meta">
+                        <div class="" style="text-align: center;">
+                            <label>DATE (MM/DD/YYYY):</label>
+                            <p>{{$form->invoice_date}}</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-container">
+                <!-- Top Header Section -->
+                <div class="header-statement">
+                    THIS CERTIFICATE IS ISSUED AS A MATTER OF INFORMATION ONLY AND CONFERS NO RIGHTS UPON THE CERTIFICATE
+                    HOLDER. THIS
+                    CERTIFICATE DOES NOT AFFIRMATIVELY OR NEGATIVELY AMEND, EXTEND OR ALTER THE COVERAGE AFFORDED BY THE
+                    POLICIES
+                    BELOW. THIS CERTIFICATE OF INSURANCE DOES NOT CONSTITUTE A CONTRACT BETWEEN THE ISSUING INSURER(S),
+                    AUTHORIZED
+                    REPRESENTATIVE OR PRODUCER, AND THE CERTIFICATE HOLDER.
+                </div>
+
+                <!-- Producer / Insured Section -->
+
+                <div class="section-container">
+                    <table class="producer-insured-table">
+                        <tr>
+                            <td class="left-col">
+                                <div class="cell-content">
+                                    <div class="cell-header">PRODUCER</div>
+                                    <div class="field-line-cell no-label">
+                                        {{$form->producer_name}}
+                                    </div>
+                                    <div class="field-line-cell no-label">
+                                        {{$form->producer_address}}
+                                    </div>
+                                    <div class="city-state-zip">
+                                        <div class="field-line-cell">
+                                            {{$form->producer_phone}}
+                                        </div>
+                                        <div class="field-line-cell zip">
+                                            {{$form->producer_fax}} 
+                                        </div>
+                                    </div>
+                                    <div class="city-state-zip">
+                                        <div class="field-line-cell">
+                                            {{$form->producer_city}}
+                                        </div>
+                                        <div class="field-line-cell state">
+                                            {{$form->producer_state}}
+                                        </div>
+                                        <div class="field-line-cell zip">
+                                            {{$form->producer_zipcode}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr style="margin-top: 10px; margin-bottom: 10px; border-color: #000;">
+                                <div class="cell-content">
+                                    <div class="cell-header">INSURED</div>
+                                    <div class="field-line-cell no-label">
+                                        {{$form->insured_name}}
+                                    </div>
+                                    <div class="field-line-cell no-label">
+                                        {{$form->insured_address}}
+                                    </div>
+                                    <div class="city-state-zip">
+                                        <div class="field-line-cell">
+                                            {{ $form->insured_phone }}
+                                        </div>
+
+                                        <div class="field-line-cell zip">
+                                            {{ $form->insured_fax }}
+                                        </div>
+                                    </div>
+                                    <div class="city-state-zip">
+                                        <div class="field-line-cell">
+                                            {{$form->insured_city}}
+                                        </div>
+                                        <div class="field-line-cell state">
+                                            {{$form->insured_state}}
+                                        </div>
+                                        <div class="field-line-cell zip">
+                                            {{$form->insured_zipcode}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="right-col">
+                                <div class="cell-content">
+                                    <div class="field-line-cell">
+                                        <label>CONTACT NAME:</label>
+                                        {{$form->contact_name}}
+                                    </div>
+                                    <div class="contact-info-line">
+                                        <span>PHONE</span>
+                                        {{$form->contact_phone_no}}
+                                        <span class="fax-label">FAX</span>
+                                        {{$form->contact_fax_no}}
+                                    </div>
+                                    <div class="field-line-cell">
+                                        <label>E-MAIL ADDRESS:</label>
+                                        {{$form->contact_email}}
+                                    </div>
+                                    <div class="field-line-cell">
+                                        <label>PRODUCER CUSTOMER ID:</label>
+                                        {{$form->producer_customer_id}}
+                                    </div>
+
+                                    <div class="insurer-coverage-section">
+                                        <div class="insurer-coverage-title">INSURER(S) AFFORDING COVERAGE</div>
+                                        <div class="insurer-line">
+                                            <label>INSURER A:</label>
+                                            {{$form->insurer_a}}
+                                            <label class="ml-auto">NAIC #</label>
+                                            {{$form->insurer_a_naic}}
+                                        </div>
+                                        <div class="insurer-line">
+                                            <label>INSURER B:</label>
+                                            {{$form->insurer_b}}
+                                            <label class="ml-auto">NAIC #</label>
+                                            {{$form->insurer_b_naic}}
+                                        </div>
+                                        <div class="insurer-line">
+                                            <label>INSURER C:</label>
+                                            {{$form->insurer_c}}
+                                            <label class="ml-auto">NAIC #</label>
+                                            {{$form->insurer_c_naic}}
+                                        </div>
+                                        <div class="insurer-line">
+                                            <label>INSURER D:</label>
+                                            {{$form->insurer_d}}
+                                            <label class="ml-auto">NAIC #</label>
+                                            {{$form->insurer_d_naic}}
+                                        </div>
+                                        <div class="insurer-line">
+                                            <label>INSURER E:</label>
+                                            {{$form->insurer_e}}
+                                            <label class="ml-auto">NAIC #</label>
+                                            {{$form->insurer_e_naic}}
+                                        </div>
+                                        <div class="insurer-line">
+                                            <label>INSURER F:</label>
+                                            {{$form->insurer_f}}
+                                            <label class="ml-auto">NAIC #</label>
+                                            {{$form->insurer_f_naic}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+
+
+            </div>
+            <div style="display: flex;
+                justify-content: space-between;
+                width: 100%; margin-top: 10px; font-size: 11px;">
+                <h2><b>COVERAGES Certificate NUMBER: {{$form->certificate_no}}</b>
+                </h2>
+                <h2><b>REVISION NUMBER : {{$form->revision_no}}</b></h2>
+            </div>
+            <div class="form-container" style="margin-top: 10px;">
+
+
+                <!-- Coverages Section -->
+                <div class="coverage-section">
+                    <!-- Main Coverage Table -->
+                    <table style="border-collapse:collapse; " cellspacing="0">
+                        <tr style="height:36pt">
+                            <td style="width:577pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                colspan="10">
+                                <p class="s8" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">LOCATION OF <span class="s2">PREMISES /
+                                        DESCRIPTION OF PROPERTY (Attach ACORD 101, Additional Remarlcs Schedule,
+                                        if more space is required)</span>
+                                </p>
+                                <p>{{$form->property_description}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:36pt">
+                            <td style="width:577pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                colspan="10">
+                                <p class="s9"
+                                    style="padding-left: 9pt; text-indent: 0pt; line-height: 7pt; text-align: left;">
+                                    THIS IS TO CERTIFY THAT THE POLICIES OF INSURANCE LISTED BELOW HAVE BEEN ISSUED TO THE
+                                    INSURED NAMED ABOVE FOR THE POLICY PERIOD
+                                </p>
+                                <p class="s9"
+                                    style="padding-left: 9pt; padding-right: 50pt; text-indent: 0pt; line-height: 112%; text-align: left;">
+                                    INDICATED. NOTWITHSTANDING ANY REQUIREMENT, TERM OR CONDITION OF ANY CONTRACT OR OTHER
+                                    DOCUMENT WITH RESPECT TO WHICH THIS CERTIFICATE MAY BE ISSUED OR MAY PERTAIN, THE
+                                    INSURANCE
+                                    AFFORDED BY THE POLICIES DESCRIBED HEREIN IS SUBJECT TO ALL THE TERMS, EXCLUSIONS AND
+                                    CONDITIONS OF SUCH POLICIES. LIMITS SHOWN MAY HAVE BEEN REDUCED BY PAID CLAIMS.
+                                </p>
+                            </td>
+                        </tr>
+                        <tr style="height:18pt">
+                            <td
+                                style="width:19pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p class="s9"
+                                    style="padding-left: 3pt; padding-right: 1pt; text-indent: -1pt; text-align: left;">INSR
+                                    LTR</p>
+                            </td>
+                            <td style="width:122pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                colspan="3">
+                                <p class="s8"
+                                    style="padding-top: 5pt; padding-left: 31pt; text-indent: 0pt; text-align: left;">
+                                    TYPE OF INSURANCE</p>
+                            </td>
+                            <td
+                                style="width:138pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p class="s8"
+                                    style="padding-top: 5pt; padding-left: 45pt; text-indent: 0pt; text-align: left;">
+                                    POLICY NUMBER</p>
+                            </td>
+                            <td
+                                style="width:65pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p class="s9"
+                                    style="padding-left: 4pt; padding-right: 4pt; text-indent: 1pt; line-height: 93%; text-align: left;">
+                                    POLICY EFFECTIVE DATE (MM/DD/YYYY)
+                                </p>
+                            </td>
+                            <td
+                                style="width:65pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p class="s9"
+                                    style="padding-left: 4pt; padding-right: 4pt; text-indent: 0pt; line-height: 93%; text-align: left;">
+                                    POLICY EXPIRATION DATE (MM/DD/YYYY)
+                                </p>
+                            </td>
+                            <td style="width:90pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                colspan="2">
+                                <p class="s2"
+                                    style="padding-top: 5pt; padding-left: 14pt; text-indent: 0pt; text-align: left;">
+                                    COVERED PROPERTY</p>
+                            </td>
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p class="s8"
+                                    style="padding-top: 5pt; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                                    LIMITS</p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td style="width:19pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="11">
+                                <p style="text-indent: 0pt; text-align: left;"></p>
+                            </td>
+                            <td style="width:65pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                colspan="2" rowspan="2">
+                                <p class="s8" style="padding-right: 17pt; text-indent: 0pt; text-align: right;">PROPERTY</p>
+                                <p class="s10" style="padding-top: 5pt; text-indent: 0pt; text-align: right;">
+                                    <input type="checkbox" {{$form->property_causes_loss == 1 ? 'Checked disabled' : 'disabled'}} />CAUSES OF
+                                    LOSS
+                                </p>
+                            </td>
+                            <td style="width:57pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="2">
+                                <p class="s10" style="padding-left: 1pt; text-indent: 0pt; text-align: left;">DEDUCTIBLES
+                                </p>
+                                {{$form->property_deductible}}
+                            </td>
+                            <td style="width:138pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="11">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->property_policy_number}}</p>
+                            </td>
+                            <td style="width:65pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="11">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->property_effective_date}}</p>
+                            </td>
+                            <td style="width:65pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="11">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->property_expiration_date}}</p>
+                            </td>
+                            <td style="width:14pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="11">
+                                <p style="text-indent: 0pt; text-align: left; padding-bottom: 10pt;"><input type="checkbox" name="property_coverage_building" {{$form->property_coverage_building == 1 ? 'Checked disabled' : 'disabled'}} /></p>
+                                <p style="text-indent: 0pt; text-align: left; padding-bottom: 10pt;"><input type="checkbox" name="property_coverage_personal" {{$form->property_coverage_personal == 1 ? 'Checked disabled' : 'disabled'}} /></p>
+                                <p style="text-indent: 0pt; text-align: left; padding-bottom: 10pt;"><input type="checkbox" name="property_coverage_income" {{$form->property_coverage_income == 1 ? 'Checked disabled' : 'disabled'}} /></p>
+                                <p style="text-indent: 0pt; text-align: left; padding-bottom: 10pt;"><input type="checkbox" name="property_coverage_expense" {{$form->property_coverage_expense == 1 ? 'Checked disabled' : 'disabled'}} /></p>
+                                <p style="text-indent: 0pt; text-align: left; padding-bottom: 10pt;"><input type="checkbox" name="property_coverage_rental" {{$form->property_coverage_rental == 1 ? 'Checked disabled' : 'disabled'}} /></p>
+                                <p style="text-indent: 0pt; text-align: left; padding-bottom: 10pt;"><input type="checkbox" name="property_coverage_b_building" {{$form->property_coverage_b_building == 1 ? 'Checked disabled' : 'disabled'}} /></p>
+                                <p style="text-indent: 0pt; text-align: left; padding-bottom: 10pt;"><input type="checkbox" name="property_coverage_b_prop" {{$form->property_coverage_b_prop == 1 ? 'Checked disabled' : 'disabled'}} /></p>
+                                <p style="text-indent: 0pt; text-align: left; padding-bottom: 10pt;"><input type="checkbox" name="property_coverage_b_pp" {{$form->property_coverage_other_one == 1 ? 'Checked disabled' : 'disabled'}} /></p>
+                                <p style="text-indent: 0pt; text-align: left; padding-bottom: 10pt;"><input type="checkbox" name="property_coverage_other_one" {{$form->property_coverage_other_two == 1 ? 'Checked disabled' : 'disabled'}} /></p>
+
+                            </td>
+                            <td style="width:76pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="11">
+                                <p class="s2 property-coverage-p"
+                                    style="padding-left: 1pt; text-indent: 0pt; text-align: left;">BUILDING</p>
+                                <p class="s2 property-coverage-p"
+                                    style="padding-left: 1pt; text-indent: 0pt; text-align: left;">PERSONAL PROPERTY</p>
+                                <p class="s2 property-coverage-p"
+                                    style="padding-left: 1pt; text-indent: 0pt; text-align: left;">EXTRA EXPENSE</p>
+                                <p class="s2 property-coverage-p"
+                                    style="padding-left: 1pt; text-indent: 0pt; text-align: left;"> RENTAL VALUE</p>
+                                <p class="s2 property-coverage-p"
+                                    style="padding-left: 1pt; text-indent: 0pt; text-align: left;">BLANKET BUILDING</p>
+                                <p class="s2 property-coverage-p"
+                                    style="padding-left: 1pt; text-indent: 0pt; text-align: left;"> BLANKET PERS PROP</p>
+                                <p class="s2 property-coverage-p"
+                                    style="padding-left: 1pt; text-indent: 0pt; text-align: left;"> BLANKET BLDG & PP</p>
+                                <p class="property-coverage-p"
+                                    style="padding-left: 1pt; text-indent: 0pt; text-align: left;">
+                                    {{$form->property_coverage_other_one}}
+                                </p>
+                                <p class="property-coverage-p"
+                                    style="padding-left: 1pt; text-indent: 0pt; text-align: left;">
+                                    {{$form->property_coverage_other_two}}
+                                </p>
+
+                            </td>
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->property_coverage_building_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->property_coverage_personal_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td
+                                style="width:14pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->property_basic ? 'Checked disabled' : 'disabled'}} /></p>
+                            </td>
+                            <td
+                                style="width:51pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p class="s10"
+                                    style="padding-left: 1pt; text-indent: 0pt; line-height: 6pt; text-align: left;">
+                                    BASIC</p>
+                            </td>
+                            <td style="width:57pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="2">
+                                <p class="s10"
+                                    style="margin-bottom: 3px; margin-top: 3px; padding-left: 1pt; text-indent: 0pt; line-height: 6pt; text-align: left;">
+                                    BUILDING</p>
+                                {{$form->property_building}}
+                            </td>
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->property_coverage_income_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:6pt">
+                            <td style="width:14pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="2">
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->property_broad ? 'Checked disabled' : 'disabled'}} /></p>
+                            </td>
+                            <td style="width:51pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="2">
+                                <p class="s10"
+                                    style="padding-left: 1pt; text-indent: 0pt; line-height: 7pt; text-align: left;">
+                                    BROAD</p>
+                            </td>
+                            <td style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="2">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->property_coverage_expense_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:6pt">
+                            <td style="width:57pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="2">
+                                <p class="s2"
+                                    style="margin-bottom: 3px; margin-top: 3px; padding-left: 1pt; text-indent: 0pt; line-height: 4pt; text-align: left;">
+                                    CONTENTS</p>
+                                {{$form->property_contents}}
+
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td
+                                style="width:14pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->property_special ? 'Checked disabled' : 'disabled'}} /></p>
+                            </td>
+                            <td
+                                style="width:51pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p class="s2" style="padding-left: 1pt; text-indent: 0pt; text-align: left;">SPECIAL</p>
+                            </td>
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->property_coverage_rental_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td
+                                style="width:14pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->property_earthquake ? 'Checked disabled' : 'disabled'}} /></p>
+                            </td>
+                            <td
+                                style="width:51pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p class="s2" style="padding-left: 1pt; text-indent: 0pt; text-align: left;">EARTHQUAKE</p>
+                            </td>
+                            <td
+                                style="width:57pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->property_other_one}}</p>
+                            </td>
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->property_coverage_b_building_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td
+                                style="width:14pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->property_wind ? 'Checked disabled' : 'disabled'}} /></p>
+                            </td>
+                            <td
+                                style="width:51pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p class="s10"
+                                    style="padding-left: 2pt; text-indent: 0pt; line-height: 7pt; text-align: left;">
+                                    WIND</p>
+                            </td>
+                            <td
+                                style="width:57pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">
+                                    {{$form->property_other_two}}
+                                </p>
+                            </td>
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->property_coverage_b_prop_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td
+                                style="width:14pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->property_flood ? 'Checked disabled' : 'disabled'}} />
+                                </p>
+                            </td>
+                            <td
+                                style="width:51pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p class="s2" style="padding-left: 1pt; text-indent: 0pt; text-align: left;">FLOOD</p>
+                            </td>
+                            <td
+                                style="width:57pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                            </td>
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">
+                                    {{$form->property_coverage_b_pp_limit}}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td
+                                style="width:14pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->property_other_one ? 'Checked disabled' : 'disabled'}} /></p>
+                            </td>
+                            <td
+                                style="width:51pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                {{$form->property_other_one}}
+                            </td>
+                            <td
+                                style="width:57pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                            </td>
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->property_coverage_other_one_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td
+                                style="width:14pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->property_other_two ? 'Checked disabled' : 'disabled'}} /></p>
+                            </td>
+                            <td
+                                style="width:51pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                {{$form->property_other_two}}
+                            </td>
+                            <td
+                                style="width:57pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                            </td>
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->property_coverage_other_two_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td style="width:19pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="4">
+                            </td>
+                            <td style="width:122pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                colspan="3" rowspan="4">
+                                <p class="s5"
+                                    style="padding-left: 15pt; text-indent: 0pt; line-height: 7pt; text-align: left;">
+                                    INLAND MARINE</p>
+                                <p class="s2"
+                                    style="padding-top: 5pt; padding-left: 15pt; padding-right: 63pt; text-indent: -14pt; line-height: 190%; text-align: left;">
+
+                                    <input type="checkbox" {{$form->inland_causes ? 'Checked disabled' : 'disabled'}} />
+                                    CAUSES OF LOSS NAMED PERILS
+                                </p>
+
+                            </td>
+                            <td style="width:138pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="2">
+                                <p style="padding-left: 1pt; text-indent: 0pt; text-align: left;">TYPE OF POLICY:
+                                    {{$form->inland_policy_type}}
+                                </p>
+                            </td>
+                            <td style="width:65pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="4">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->inland_policy_effective_date}}</p>
+                            </td>
+                            <td style="width:65pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="4">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->inland_policy_expiration_date}}</p>
+                            </td>
+                            <td style="width:14pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="4">
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->inland_coverage_one ? 'Checked disabled' : 'disabled'}} />
+                                </p>
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->inland_coverage_two ? 'Checked disabled' : 'disabled'}} />
+                                </p>
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->inland_coverage_three ? 'Checked disabled' : 'disabled'}} /></p>
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->inland_coverage_four ? 'Checked disabled' : 'disabled'}} /></p>
+                            </td>
+                            <td style="width:76pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="4">
+                                <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt">{{$form->inland_coverage_one}} </p>
+                                <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt"> {{$form->inland_coverage_two}} </p>
+                                <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt"> {{$form->inland_coverage_three}} </p>
+                                <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt"> {{$form->inland_coverage_four}} </p>
+                            </td>
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->inland_coverage_one_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->inland_coverage_two_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td style="width:138pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="2">
+                                <p class="s2" style="padding-left: 1pt; text-indent: 0pt; text-align: left;">POLICY NUMBER:
+                                    {{$form->inland_policy_number}}
+                                </p>
+                            </td>
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->inland_coverage_three_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->inland_coverage_four_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td style="width:19pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left;"></p>
+                            </td>
+                            <td style="width:122pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                colspan="3" rowspan="3">
+                                <p class="s5"
+                                    style="padding-right: 71pt; text-indent: 0pt; line-height: 7pt; text-align: center;">
+
+                                    CRIME</p>
+                                <p style="padding-right: 72pt; text-indent: 0pt; text-align: center;">TYPE OF POLICY:
+                                    {{$form->crime_policy_type}}
+                                </p>
+                            </td>
+                            <td style="width:138pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->crime_policy_number}}</p>
+                            </td>
+                            <td style="width:65pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->crime_effective_date}}</p>
+                            </td>
+                            <td style="width:65pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->crime_expiration_date}}</p>
+                            </td>
+                            <td style="width:14pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->inland_coverage_one ? 'Checked disabled' : 'disabled'}}/></p>
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->inland_coverage_two ? 'Checked disabled' : 'disabled'}}/></p>
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->inland_coverage_three ? 'Checked disabled' : 'disabled'}}/></p>
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->inland_coverage_four ? 'Checked disabled' : 'disabled'}}/></p>
+                            </td>
+                            <td style="width:76pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt">{{$form->inland_coverage_one}} </p>
+                                <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt"> {{$form->inland_coverage_two}} </p>
+                                <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt"> {{$form->inland_coverage_three}} </p>
+                                <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt"> {{$form->inland_coverage_four}} </p>
+                            </td>
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt;text-align: left;">
+                                    {{$form->crime_coverage_one_limit}}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt;text-align: left;">
+                                    {{$form->crime_coverage_two_limit}}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt;text-align: left;">
+                                    {{$form->crime_coverage_three_limit}}
+                                </p>
+                            </td>
+                        </tr>
+
+
+                        <tr style="height:12pt">
+                            <td style="width:19pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left;"></p>
+                            </td>
+                            <td style="width:122pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                colspan="3" rowspan="3">
+                                <p class="s5"
+                                    style="padding-right: 71pt; text-indent: 0pt; line-height: 7pt; text-align: center;">
+
+                                    BOILER MACHINERY / EQUIPMENT BREAKDOWN</p>
+
+                            </td>
+                            <td style="width:138pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt;text-align: left;">{{$form->machinery_policy_number}}</p>
+                            </td>
+                            <td style="width:65pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt;text-align: left;">{{$form->crime_effective_date}}</p>
+                            </td>
+                            <td style="width:65pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt;text-align: left;">{{$form->machinery_expiration_date}}</p>
+                            </td>
+                            <td style="width:14pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->machinery_coverage_one ? 'Checked disabled' : 'disabled'}} /></p>
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->machinery_coverage_two ? 'Checked disabled' : 'disabled'}} /></p>
+                            </td>
+                            <td style="width:76pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt">{{$form->machinery_coverage_one}} </p>
+                                <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt"> {{$form->machinery_coverage_two}} </p>
+                            </td>
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt;text-align: left;">
+                                    {{$form->machinery_coverage_one_limit}}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt;text-align: left;">
+                                    {{$form->machinery_coverage_two_limit}}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td style="width:122pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                colspan="3">
+                                <p style="text-indent: 0pt; text-align: left;"></p>
+                            </td>
+
+                        </tr>
+
+                        <tr style="height:12pt">
+                            <td style="width:19pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left;"></p>
+                            </td>
+                            <td style="width:122pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                colspan="3" rowspan="3">
+                                <p style=" text-indent: 0pt; line-height: 7pt; text-align: center;">
+                                    {{ $form->other_type}}
+                                </p>
+
+                            </td>
+                            <td style="width:138pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->other_policy_number}}</p>
+                            </td>
+                            <td style="width:65pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->other_effective_date}}</p>
+                            </td>
+                            <td style="width:65pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->other_expiration_date}}</p>
+                            </td>
+                            <td style="width:14pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->other_coverage_one ? 'Checked disabled' : 'disabled'}} />
+                                </p>
+                                <p style="text-indent: 0pt; text-align: left;"><input type="checkbox" {{$form->other_coverage_two ? 'Checked disabled' : 'disabled'}} />
+                                </p>
+                            </td>
+                            <td style="width:76pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                rowspan="3">
+                                <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt">{{$form->other_coverage_one}} </p>
+                                <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt"> {{$form->other_coverage_two}} </p>
+                            </td>
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->other_coverage_one_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td
+                                style="width:78pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                                <p style="text-indent: 0pt; text-align: left;">{{$form->other_coverage_two_limit}}</p>
+                            </td>
+                        </tr>
+                        <tr style="height:12pt">
+                            <td style="width:122pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                colspan="3">
+                                <p style="text-indent: 0pt; text-align: left;"></p>
+                            </td>
+
+                        </tr>
+
+                        <tr style="height:67pt">
+                            <td style="width:577pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                                colspan="10">
+                                <p class="s8" style="padding-left: 2pt; text-indent: 0pt; text-align: left;">
+                                    SPECIAL CONDITIONS / OTHER COVERAGES (ACORD 101, Additional Remarks Schedule, may be
+                                    attached if more space is required)
+                                </p>
+                                <p>
+                                    {{$form->special_condition}}
+                                </p>    
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <p style="padding-top: 3px; text-indent: 0pt; text-align: left;">
+                CERTIFICATE HOLDER <span style="margin-left: 14.5%;">CANCELLATION</span>
+            </p>
+
+            <div class="form-container" style="margin-top: 10px;">
+                <!-- Certificate Holder / Cancellation Section -->
+                <table style="border-collapse:collapse; margin-left:6pt; width:99%" cellspacing="0">
+                    <tr style="height:47pt">
+                        <td style="width:289pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
+                            rowspan="2">
+                            <p style="text-indent: 0pt;text-align: left;">
+                                {{$form->certificate_holder}}
+                            </p>
+                        </td>
+                        <td
+                            style="width:288pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                            <p class="s12"
+                                style="padding-left: 9pt; padding-right: 20pt; text-indent: 0pt; line-height: 112%; text-align: left;">
+                                SHOULD ANY OF THE ABOVE DESCRIBED POLICIES BE CANCELLED BEFORE THE EXPIRATION DATE THEREOF,
+                                NOTICE WILL BE DELIVERED IN
+                                <span class="s9">ACCORDANCE WITH THE POLICY PROVISIONS.</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="height:35pt">
+                        <td
+                            style="width:288pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
+                            <p style="padding-left: 2pt; text-indent: 0pt; text-align: left;">
+                                AUTHORIZED REPRESENTATIVE: 
+                                <p style="text-indent: 0pt;text-align: left;">
+                                    {{$form->authorize_representative}}
+                                </p>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+
+                <!-- Footer Section -->
+                <div class="footer-content">
+                    <div class="flex-shrink-0">
+                        ACORD 101 (2008/01)
+                    </div>
+                    <div class="footer-copyright">
+                        &copy; 2008 ACORD CORPORATION. All rights reserved.<br>
+
+                    </div>
+                </div>
+                <div>
+
+                    <p style="text-align: center;
+                        font-size: 10px;
+                        font-weight: 600;">The ACORD name and logo are registered marks of ACORD</p>
+                </div>
+            </div>
     </div>
 
-    <div class="container-fluid">
-        <table border="0" cellspacing="0" cellpadding="0">
-            <tr>
-                <td><img width="87" height="37"
-                         src="data:image/jpg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAAlAFcDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9UqKK5OT4r+EIvHUXgtvEFkPFMsRnTS/M/fFB3xQB1lFZPiTxXo/g/TJNQ1vUrbTLKPlprlwqivOL79qH4aNYSTR+LreK1wQb5Y3Mae+cUAeh+J/Gei+DrBrzWdSg0+3Xq8rYrxXxF+054g1hGi+Gvw31nxc+Sq312Pslln1EoDkj/gNdjdSfDbRNNtvGetanY3EMqCWDVtRk3EqehTPOKr3H7U3wt0yBZp/FFra2ROFunRliP44oA8V1Cy/bH8aO7xXfgvwVZSfdhj3Xc6D/AHyE/lXH67+zr+2Bdo0tr8bbfzs5EKR+Un0zk19nXvxO8Kad4NfxZc6/ZReG0j8xtSMn7kL6k1x8f7VXwmkt7S4HjnS1trs4t52chJT/ALJxzQB+f3jL41ftk/sh3EeseOorXxp4UikH2i5RTKmz08zA2E/Q1+kPwV+KWn/Gn4X+HvGemKY7TVrYTrG3VDkgj8waw/jr4++H+mfD6403xhr2mWGn+IraW1thfP8AJc7lwQODnhh+dcN8GviZ8JPgV8LvDngyPxpp1vBYxGGF5iyByzlhyRj+LFAH0ZRXwhofxf8AjFq/xeuxpt1c3+nSNKYLVY98DKF42jOMAYIbuSRgYooA93/aC+Oms+H7pfAnw304a98S7+EyRQSAiCxi6efM2DgAkYABzg9MV+d3xv8ACnin9l/9oP4XfFLUtL1AXk13/wATjUZ5mne+dWQyM3Hyg56ZNfr1b6Fp9pqdxqMNnBFf3Cqs1wqAPIBnAJ6nGT+deB/tf/F/QPhIngOfxPptpd6Bf6zHa3tzeQiRbeIkbm5H+cUAfHnxZ1u5+K/7fOi6P8XZJrb4UQJ9o0i3uFZrC7bgoWGMfNyDn0r9FYPEngOOxtPDlvd6a1tcp5EGnxqGR1xjaFAxiri6J4M+JXhqzQ2Wl69ohQNBGY0liCkcYHIFS6D8L/CHha8W70jw3pmm3KjAltbZI2A+oFAH5teDbcePv+Cgmuaf8ZgbPQNB3f8ACOaNeoRZYByhQEbeCPxr6m/bI+NvgvRvgnr/AIR0+3i8Ua/rNlJYafodjF5pd3UqpPGAoJFfQ3ivwR4Y8WRo3iHRtP1SOLlTfQq4X/vocVx41P4U/Cq4M1omiaRduMbdPhUyN7YjBNAH5a/ETwN46+C37F3hX4R6wk6eJvHOvtdJpqFnNlB+6Co3pkluK6y00Q+L/iZ4O/Zt+M1v/wAIz4S0OKJtHbSoT5eou/I3yDBXJAA4PINfpTam1+I2qWep/wDCKRiGDDQ3+qQqJRg8GMc/riuq1XwRoGvX9vf6lo1lfXsAHlzzwq7pg5GCRxg0Afmn8el0r4oft6fDf4cBhaeC/AsUU0wmyIg8Z3OucYOUCfWvZv29/iX4X8e/B+4+G3gzS18beMdVZLezsrO33i2HTzC5ACkdsdx2r661H4X+EdXvJbu98N6Zd3UpzJNNbKzMenJIrR0HwhonhdHXSNKtNNVzlhbRBM/lQB5F+xX8Ite+Cf7PXhjwz4lujc6xBEXljLFlg3HPlqfQfzJor3SigA715x8fPgR4Y/aJ+Hd74R8U25kspyHjmj4kgkH3XU+ozRRQB+VnxO+Hfjj9izxLPoXgf4teIRpkTEJaOCsKgdPkDkV0/wAKf2gPjj8SNSg06f4pXNikh2mWPTo2YfiWFFFAH2N4c/Y71zxNDBeeNPjR4z8R2s4EjWNtdPYRfQ+XJyK9r+HnwB8CfC7bJoPh+1hvR1v5kEly/wDvSkbj+dFFAHoQ60d6KKAEBpc9KKKADvRRRQB//9kA"/>
-                </td>
-            </tr>
-        </table>
-
-        <table style="border-collapse:collapse;margin-left:6.6pt" cellspacing="0">
-            <tr style="height:23pt">
-                <td style="width:490pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="6">
-                    <p class="s1" style="padding-top: 2pt;padding-left: 145pt;text-indent: 0pt;text-align: left;">
-                        CERTIFICATE OF PROPERTY INSURANCE</p>
-                </td>
-                <td style="width:87pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="2">
-                    <p class="s2"
-                       style="padding-top: 2pt;padding-left: 6pt;padding-right: 3pt;text-indent: 0pt;text-align: center;">
-                        DATE (MM/DD/YYYY)</p>
-                    <p class="s3"
-                       style="padding-top: 5pt;padding-left: 6pt;text-indent: 0pt;line-height: 8pt;text-align: center;">
-                        {{$form->invoice_date}}
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:41pt">
-                <td style="width:577pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="8">
-                    <p class="s3" style="padding-left: 9pt;text-indent: 0pt;line-height: 9pt;text-align: justify;">
-                        THIS
-                        CERTIFICATE IS ISSUED AS A MATTER OF INFORMATION ONLY AND CONFERS NO RIGHTS UPON THE
-                        CERTIFICATE
-                        HOLDER. THIS</p>
-                    <p class="s3"
-                       style="padding-left: 9pt;padding-right: 71pt;text-indent: 0pt;text-align: justify;">
-                        CERTIFICATE DOES NOT AFFIRMATIVELY OR NEGATIVELY AMEND, EXTEND OR ALTER THE COVERAGE
-                        AFFORDED BY THE
-                        POLICIES BELOW. THIS CERTIFICATE OF INSURANCE DOES NOT CONSTITUTE A CONTRACT BETWEEN THE
-                        ISSUING
-                        INSURER(S), AUTHORIZED REPRESENTATIVE OR PRODUCER, AND THE CERTIFICATE HOLDER.</p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td
-                    style="width:160pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt">
-                    <p class="s2" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">PRODUCER</p>
-                </td>
-                <td style="width:76pt;border-top-style:solid;border-top-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td
-                    style="width:53pt;border-top-style:solid;border-top-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:288pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="5">
-                    <p class="s5"
-                       style="padding-top: 2pt;padding-left: 2pt;text-indent: 0pt;line-height: 7pt;text-align: left;">
-                            <span>
-                         Contact Name :   {{$form->contact_name}}
-                        </span>
-                    </p>
-
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:160pt;border-left-style:solid;border-left-width:2pt">
-                    <p class="s3"
-                       style="padding-left: 5pt;text-indent: 0pt;text-align: left;"> {{$form->producer_name}}</p>
-                </td>
-                <td style="width:76pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:53pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/>
-
-                    </p>
-                </td>
-                <td style="width:176pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="2">
-                    <p class="s5"
-                       style="padding-top: 2pt;padding-left: 2pt;text-indent: 0pt;line-height: 7pt;text-align: left;">
-                        PHONE (A/C No): {{$form->contact_phone_no}}</p>
-                </td>
-                <td
-                    style="width:79pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt">
-                    <p class="s5"
-                       style="padding-top: 2pt;padding-left: 2pt;text-indent: 0pt;line-height: 7pt;text-align: left;">
-                        FAX (A/C No): {{$form->contact_fax_no}}</p>
-                </td>
-                <td style="width:79pt;border-top-style:solid;border-top-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="2">
-                    <p class="s3" style="padding-left: 5pt;text-indent: 0pt;line-height: 9pt;text-align: left;">
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:160pt;border-left-style:solid;border-left-width:2pt">
-                    <p class="s3"
-                       style="padding-left: 5pt;text-indent: 0pt;text-align: left;"> {{$form->producer_address}}</p>
-                </td>
-                <td style="width:76pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:53pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:288pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="5">
-                    <p class="s5"
-                       style="padding-top: 2pt;padding-left: 2pt;text-indent: 0pt;line-height: 7pt;text-align: left;">
-                        Email Address: {{$form->contact_email}}</p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:160pt;border-left-style:solid;border-left-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:76pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:53pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:288pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="5">
-                    <p class="s5"
-                       style="padding-top: 2pt;padding-left: 2pt;text-indent: 0pt;line-height: 7pt;text-align: left;">
-                        PRODUCER CUSTOMER ID: {{$form->producer_customer_id}}</p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td
-                    style="width:160pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt">
-                    <p class="s4"
-                       style="padding-left: 5pt;text-indent: 0pt;text-align: left;"> {{$form->producer_city}}</p>
-                </td>
-                <td style="width:76pt;border-bottom-style:solid;border-bottom-width:2pt">
-                    <p class="s4"
-                       style="padding-right: 3pt;text-indent: 0pt;text-align: right;">{{$form->producer_state}}</p>
-                </td>
-                <td
-                    style="width:53pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s4"
-                       style="padding-left: 5pt;text-indent: 0pt;text-align: left;">{{$form->producer_zipcode}}</p>
-                </td>
-                <td style="width:235pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="4">
-                    <p class="s5"
-                       style="padding-top: 3pt;padding-left: 67pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
-                        INSURER(S) AFFORDING COVERAGE</p>
-                </td>
-                <td
-                    style="width:53pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s5"
-                       style="padding-top: 3pt;padding-left: 18pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
-                        NAIC
-                        #</p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td
-                    style="width:160pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt">
-                    <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 7pt;text-align: left;">
-                        INSURED</p>
-                </td>
-                <td style="width:76pt;border-top-style:solid;border-top-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td
-                    style="width:53pt;border-top-style:solid;border-top-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:235pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="4">
-                    <p class="s5"
-                       style="padding-top: 2pt;padding-left: 2pt;text-indent: 0pt;line-height: 7pt;text-align: left;">
-                        INSURER A: {{$form->insurer_a}}</p>
-                </td>
-                <td
-                    style="width:53pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s5"
-                       style="padding-top: 3pt;padding-left: 18pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
-                        {{$form->insurer_a_naic}}</p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:160pt;border-left-style:solid;border-left-width:2pt">
-                    <p class="s3"
-                       style="padding-left: 5pt;text-indent: 0pt;line-height: 9pt;text-align: left;">{{$form->insured_name}}</p>
-                </td>
-                <td style="width:76pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:53pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:235pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="4">
-                    <p class="s5"
-                       style="padding-top: 2pt;padding-left: 2pt;text-indent: 0pt;line-height: 7pt;text-align: left;">
-                        INSURER B: {{$form->insurer_b}}</p>
-                </td>
-                <td
-                    style="width:53pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s5"
-                       style="padding-top: 3pt;padding-left: 18pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
-                        {{$form->insurer_b_naic}}</p>
-                </td>
-
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:160pt;border-left-style:solid;border-left-width:2pt" rowspan="2">
-                    <p class="s3" style="padding-left: 5pt;text-indent: 0pt;line-height: 9pt;text-align: left;">
-                        {{$form->insured_address}}</p>
-                </td>
-                <td style="width:76pt" rowspan="2">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:53pt;border-right-style:solid;border-right-width:2pt" rowspan="2">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:235pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="4">
-                    <p class="s5"
-                       style="padding-top: 2pt;padding-left: 2pt;text-indent: 0pt;line-height: 7pt;text-align: left;">
-                        INSURER C: {{$form->insurer_c}}</p>
-                </td>
-                <td
-                    style="width:53pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s5"
-                       style="padding-top: 3pt;padding-left: 18pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
-                        {{$form->insurer_c_naic}}</p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:235pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="4">
-                        <p class="s5"
-                           style="padding-top: 1pt;padding-left: 2pt;text-indent: 0pt;line-height: 8pt;text-align: left;">
-                            INSURER D: {{$form->insurer_d}}</p>
-                </td>
-                <td
-                    style="width:53pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s5"
-                       style="padding-top: 3pt;padding-left: 18pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
-                        {{$form->insurer_d_naic}}</p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:160pt;border-left-style:solid;border-left-width:2pt">
-                    <p class="s4"
-                       style="padding-left: 5pt;text-indent: 0pt;text-align: left;"> {{$form->insured_city}}</p>
-                </td>
-                <td style="width:76pt">
-                    <p class="s4"
-                       style="padding-right: 3pt;text-indent: 0pt;text-align: right;">{{$form->insured_state}}</p>
-                </td>
-                <td style="width:53pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s4"
-                       style="padding-left: 5pt;text-indent: 0pt;text-align: left;">{{$form->insured_zipcode}}</p>
-                </td>
-                <td style="width:235pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="4">
-                    <p class="s5"
-                       style="padding-top: 1pt;padding-left: 2pt;text-indent: 0pt;line-height: 8pt;text-align: left;">
-                        INSURER E: {{$form->insurer_e}}</p>
-                </td>
-                <td
-                    style="width:53pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s5"
-                       style="padding-top: 3pt;padding-left: 18pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
-                        {{$form->insurer_e_naic}}</p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td
-                    style="width:160pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:76pt;border-bottom-style:solid;border-bottom-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td
-                    style="width:53pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:235pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="4">
-                    <p class="s5"
-                       style="padding-top: 1pt;padding-left: 2pt;text-indent: 0pt;line-height: 8pt;text-align: left;">
-                        INSURER F: {{$form->insurer_f}}</p>
-                </td>
-                <td
-                    style="width:53pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s5"
-                       style="padding-top: 3pt;padding-left: 18pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
-                        {{$form->insurer_f_naic}}</p>
-                </td>
-            </tr>
-        </table>
-
-        <p style="padding-bottom: 1pt;padding-left: 9pt;text-indent: 0pt;text-align: left;">
-            <span class="s7" style="margin-left: 20pt">COVERAGES</span>
-            <span class="s7">CERTIFICATE NUMBER: {{$form->certificate_no}}</span>
-            <span class="s7">REVISION NUMBER:  {{$form->revision_no}}</span>
-        </p>
-        <table style="border-collapse:collapse;margin-left:6.6pt" cellspacing="0">
-            <tr style="height:36pt">
-                <td style="width:577pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="10">
-                    <p class="s8" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">LOCATION OF <span
-                            class="s2">PREMISES / DESCRIPTION OF PROPERTY (Attach ACORD 101, Additional Remarlcs Schedule,
-                            if more space is required)</span>
-                    </p>
-                    <p>{{$form->property_description}}</p>
-                </td>
-            </tr>
-            <tr style="height:36pt">
-                <td style="width:577pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="10">
-                    <p class="s9" style="padding-left: 9pt;text-indent: 0pt;line-height: 7pt;text-align: left;">THIS
-                        IS TO
-                        CERTIFY THAT THE POLICIES OF INSURANCE LISTED BELOW HAVE BEEN ISSUED TO THE INSURED NAMED
-                        ABOVE FOR
-                        THE POLICY PERIOD</p>
-                    <p class="s9"
-                       style="padding-left: 9pt;padding-right: 50pt;text-indent: 0pt;line-height: 112%;text-align: left;">
-                        INDICATED. NOTWITHSTANDING ANY REQUIREMENT, TERM OR CONDITION OF ANY CONTRACT OR OTHER
-                        DOCUMENT WITH
-                        RESPECT TO WHICH THIS CERTIFICATE MAY BE ISSUED OR MAY PERTAIN, THE INSURANCE AFFORDED BY
-                        THE
-                        POLICIES DESCRIBED HEREIN IS SUBJECT TO ALL THE TERMS, EXCLUSIONS AND CONDITIONS OF SUCH
-                        POLICIES.
-                        LIMITS SHOWN MAY HAVE BEEN REDUCED BY PAID CLAIMS.</p>
-                </td>
-            </tr>
-            <tr style="height:18pt">
-                <td
-                    style="width:19pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s9" style="padding-left: 3pt;padding-right: 1pt;text-indent: -1pt;text-align: left;">
-                        INSR LTR
-                    </p>
-                </td>
-                <td style="width:122pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="3">
-                    <p class="s8" style="padding-top: 5pt;padding-left: 31pt;text-indent: 0pt;text-align: left;">
-                        TYPE OF
-                        INSURANCE</p>
-                </td>
-                <td
-                    style="width:138pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s8" style="padding-top: 5pt;padding-left: 45pt;text-indent: 0pt;text-align: left;">
-                        POLICY
-                        NUMBER</p>
-                </td>
-                <td
-                    style="width:65pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s9"
-                       style="padding-left: 4pt;padding-right: 4pt;text-indent: 1pt;line-height: 93%;text-align: left;">
-                        POLICY EFFECTIVE DATE (MM/DD/YYYY}</p>
-                </td>
-                <td
-                    style="width:65pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s9"
-                       style="padding-left: 4pt;padding-right: 4pt;text-indent: 0pt;line-height: 93%;text-align: left;">
-                        POLICY EXPIRATION DATE (MM/DD/YYYY)</p>
-                </td>
-                <td style="width:90pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="2">
-                    <p class="s2" style="padding-top: 5pt;padding-left: 14pt;text-indent: 0pt;text-align: left;">
-                        COVERED
-                        PROPERTY</p>
-                </td>
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s8" style="padding-top: 5pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        LIMITS</p>
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td style="width:19pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="11">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:65pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="2" rowspan="2">
-                    <p class="s8" style="padding-right: 17pt;text-indent: 0pt;text-align: right;">PROPERTY</p>
-                    <p class="s10" style="padding-top: 5pt;padding-right: 14pt;text-indent: 0pt;text-align: right;">
-                        <input type="checkbox" {{$form->property_causes_loss == 1 ? 'Checked' : ''}}/>
-
-                        CAUSES
-                        OF LOSS</p>
-                </td>
-                <td style="width:57pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="2">
-                    <p style="padding-top: 5pt;text-indent: 0pt;text-align: left;"><br/></p>
-                    <p class="s10" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">DEDUCTIBLES :
-                        <br>
-                        {{$form->property_deductible}}
-                    </p>
-                </td>
-                <td style="width:138pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="11">
-                    <p style="text-indent: 0pt;text-align: left;"><br/>
-                        {{$form->property_policy_number}}
-                    </p>
-                </td>
-                <td style="width:65pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="11">
-                    <p style="text-indent: 0pt;text-align: left;"><br/>
-                        {{$form->property_effective_date}}
-                    </p>
-                </td>
-                <td style="width:65pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="11">
-                    <p style="text-indent: 0pt;text-align: left;"><br/>
-                        {{$form->property_expiration_date}}
-                    </p>
-                </td>
-                <td style="width:14pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="11">
-
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt"><input
-                            type="checkbox" {{$form->property_coverage_building == 1 ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt  "><input
-                            type="checkbox" {{$form->property_coverage_personal == 1 ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt  "><input
-                            type="checkbox" {{$form->property_coverage_income == 1 ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt  "><input
-                            type="checkbox" {{$form->property_coverage_expense == 1 ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt  "><input
-                            type="checkbox" {{$form->property_coverage_rental == 1 ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt  "><input
-                            type="checkbox" {{$form->property_coverage_b_building == 1 ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt  "><input
-                            type="checkbox" {{$form->property_coverage_b_prop == 1 ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt  "><input
-                            type="checkbox" {{$form->property_coverage_b_pp == 1 ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt  "><input
-                            type="checkbox" {{$form->property_coverage_other_one   ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt  "><input
-                            type="checkbox" {{$form->property_coverage_other_two   ? 'Checked' : ''}}/></p>
-
-
-                </td>
-                <td style="width:76pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="11">
-                    <p class="s2 property-coverage-p"
-                       style="padding-left: 1pt; text-indent: 0pt; text-align: left;">BUILDING</p>
-                    <p class="s2 property-coverage-p"
-                       style="padding-left: 1pt; text-indent: 0pt; text-align: left;">PERSONAL PROPERTY</p>
-                    <p class="s2 property-coverage-p"
-                       style="padding-left: 1pt; text-indent: 0pt; text-align: left;">EXTRA INCOME</p>
-                    <p class="s2 property-coverage-p"
-                       style="padding-left: 1pt; text-indent: 0pt; text-align: left;">EXTRA EXPENSE</p>
-                    <p class="s2 property-coverage-p"
-                       style="padding-left: 1pt; text-indent: 0pt; text-align: left;"> RENTAL VALUE</p>
-                    <p class="s2 property-coverage-p"
-                       style="padding-left: 1pt; text-indent: 0pt; text-align: left;">BLANKET BUILDING</p>
-                    <p class="s2 property-coverage-p"
-                       style="padding-left: 1pt; text-indent: 0pt; text-align: left;"> BLANKET PERS PROP</p>
-                    <p class="s2 property-coverage-p"
-                       style="padding-left: 1pt; text-indent: 0pt; text-align: left;"> BLANKET BLDG & PP</p>
-                    <p class="s2 property-coverage-p"
-                       style="padding-left: 1pt; text-indent: 0pt; text-align: left;">{{$form->property_coverage_other_one}}</p>
-                    <p class="s2 property-coverage-p"
-                       style="padding-left: 1pt; text-indent: 0pt; text-align: left;">{{$form->property_coverage_other_two}}</p>
-
-                </td>
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->property_coverage_building_limit}}</p>
-
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->property_coverage_personal_limit}}</p>
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td
-                    style="width:14pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><input
-                            type="checkbox" {{$form->property_basic   ? 'Checked' : ''}}/></p>
-                </td>
-                <td
-                    style="width:51pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s10" style="padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
-                        BASIC</p>
-                </td>
-                <td style="width:57pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="2">
-                    <p class="s10" style="padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
-                        BUILDING <br>
-                        {{$form->property_building}}
-                    </p>
-
-                </td>
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->property_coverage_income_limit}}</p>
-                </td>
-            </tr>
-            <tr style="height:6pt">
-                <td style="width:14pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="2">
-                    <p style="text-indent: 0pt;text-align: left;"><input
-                            type="checkbox" {{$form->property_broad   ? 'Checked' : ''}}/></p>
-                </td>
-                <td style="width:51pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="2">
-                    <p class="s10" style="padding-left: 1pt;text-indent: 0pt;line-height: 7pt;text-align: left;">
-                        BROAD</p>
-                </td>
-                <td style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="2">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->property_coverage_expense_limit}}</p>
-                </td>
-            </tr>
-            <tr style="height:6pt">
-                <td style="width:57pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="2">
-                    <p class="s10" style="padding-left: 1pt;text-indent: 0pt;line-height: 7pt;text-align: left;">
-                        CONTENTS <br>
-                        {{$form->property_contents}}
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td style="width:14pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                >
-                    <p style="text-indent: 0pt;text-align: left;"><input
-                            type="checkbox" {{$form->property_special   ? 'Checked' : ''}}/></p>
-                </td>
-                <td
-                    style="width:51pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s2" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">SPECIAL</p>
-                </td>
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->property_coverage_rental_limit}}</p>
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td style="width:14pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                >
-                    <p style="text-indent: 0pt;text-align: left;"><input
-                            type="checkbox" {{$form->property_earthquake   ? 'Checked' : ''}}/></p>
-                </td>
-                <td
-                    style="width:51pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s2" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">EARTHQUAKE</p>
-                </td>
-                <td
-                    style="width:57pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"></p>
-                </td>
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->property_coverage_b_building_limit}}</p>
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td
-                    style="width:14pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><input
-                            type="checkbox" {{$form->property_wind   ? 'Checked' : ''}}/></p>
-                </td>
-                <td
-                    style="width:51pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s10" style="padding-left: 2pt;text-indent: 0pt;line-height: 7pt;text-align: left;">
-                        WIND</p>
-                </td>
-                <td
-                    style="width:57pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"></p>
-                </td>
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->property_coverage_b_prop_limit}}</p>
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td
-                    style="width:14pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><input
-                            type="checkbox" {{$form->property_flood   ? 'Checked' : ''}}/></p>
-                </td>
-                <td
-                    style="width:51pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s2" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">FLOOD</p>
-                </td>
-                <td
-                    style="width:57pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->property_coverage_b_pp_limit}}</p>
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td
-                    style="width:14pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><input
-                            type="checkbox" {{$form->property_other_one   ? 'Checked' : ''}}/></p>
-                </td>
-                <td
-                    style="width:51pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"> {{$form->property_other_one}}</p>
-                </td>
-                <td
-                    style="width:57pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->property_coverage_other_one_limit}}</p>
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td
-                    style="width:14pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><input
-                            type="checkbox" {{$form->property_other_two   ? 'Checked' : ''}}/></p>
-                </td>
-                <td
-                    style="width:51pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"> {{$form->property_other_two}}</p>
-                </td>
-                <td
-                    style="width:57pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->property_coverage_other_two_limit}}</p>
-                </td>
-            </tr>
-
-            <tr style="height:12pt">
-                <td style="width:19pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="4">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:122pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="3" rowspan="4">
-                    <p class="s5" style="padding-left: 15pt;text-indent: 0pt;line-height: 7pt;text-align: left;">
-                        INLAND
-                        MARINE</p>
-
-                     <p class="s2"
-                       style="padding-top: 5pt;padding-left: 15pt;padding-right: 63pt;text-indent: -14pt;line-height: 190%;text-align: left;">
-                        <input type="checkbox" {{$form->inland_causes   ? 'Checked' : ''}}/>
-                        CAUSES OF LOSS</p>
-                    <p class="s2"
-                       style="padding-top: 5pt;padding-left: 15pt;padding-right: 63pt;text-indent: -14pt;line-height: 190%;text-align: left;">
-                        <input
-                            type="checkbox" {{$form->inland_perils   ? 'Checked' : ''}}/>
-                        NAMED PERILS</p>
-                </td>
-                <td style="width:138pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="2">
-                    <p class="s2" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">TYPE OF POLICY <br>
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->inland_policy_type}}</p>
-
-                    </p>
-                </td>
-                <td style="width:65pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="4">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->inland_policy_effective_date}}<br/></p>
-                </td>
-                <td style="width:65pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="4">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->inland_policy_expiration_date}}<br/></p>
-                </td>
-                <td style="width:14pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="4">
-                    <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->inland_coverage_one   ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->inland_coverage_two   ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->inland_coverage_three   ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->inland_coverage_four   ? 'Checked' : ''}}/></p>
-
-                </td>
-                <td style="width:76pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="4">
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt">{{$form->inland_coverage_one}}   </p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt"> {{$form->inland_coverage_two}}   </p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt">  {{$form->inland_coverage_three}}   </p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt">  {{$form->inland_coverage_four}}   </p>
-                </td>
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->inland_coverage_one_limit}} </p>
-
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->inland_coverage_two_limit}} </p>
-
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td style="width:138pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="2">
-                    <p class="s2" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">POLICY NUMBER
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->inland_policy_number}}</p>
-
-                    </p>
-                </td>
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->inland_coverage_three_limit}} </p>
-
-                </td>
-            </tr>
-
-            <tr style="height:12pt">
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->inland_coverage_four_limit}} </p>
-                </td>
-            </tr>
-
-
-            <tr style="height:12pt">
-                <td style="width:19pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:122pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="3" rowspan="3">
-                    <p class="s5" style="padding-right: 71pt;text-indent: 0pt;line-height: 7pt;text-align: center;">
-                        CRIME
-                    </p>
-                    <p style="padding-top: 1pt;text-indent: 0pt;text-align: left;"><br/></p>
-                    <p class="s2" style="padding-right: 72pt;text-indent: 0pt;text-align: center;">TYPE OF
-                        POLICY
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->crime_policy_type}}</p>
-                    </p>
-                </td>
-                <td style="width:138pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->crime_policy_number}}</p>
-
-                </td>
-                <td style="width:65pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->crime_effective_date}}</p>
-                </td>
-                <td style="width:65pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->crime_expiration_date}}</p>
-                </td>
-                <td style="width:14pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->crime_coverage_one   ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->crime_coverage_two   ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->crime_coverage_three   ? 'Checked' : ''}}/></p>
-                </td>
-                <td style="width:76pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt">{{$form->inland_coverage_one}}   </p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt"> {{$form->inland_coverage_two}}   </p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt">  {{$form->inland_coverage_three}}   </p>
-                </td>
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        {{$form->crime_coverage_one_limit}}
-                    </p>
-
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-
-                    <p style="text-indent: 0pt;text-align: left;">
-                        {{$form->crime_coverage_two_limit}}
-                    </p>
-
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        {{$form->crime_coverage_three_limit}}
-                    </p>
-                </td>
-            </tr>
-
-
-            <tr style="height:12pt">
-                <td style="width:19pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:122pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="3" rowspan="3">
-                    <p class="s5" style="padding-right: 71pt;text-indent: 0pt;line-height: 7pt;text-align: center;">
-
-                        BOILER MACHINERY / EQUIPMENT BREAKDOWN
-                    </p>
-
-                </td>
-                <td style="width:138pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->machinery_policy_number}}</p>
-
-                </td>
-                <td style="width:65pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->crime_effective_date}}</p>
-                </td>
-                <td style="width:65pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->machinery_expiration_date}}</p>
-                </td>
-                <td style="width:14pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->machinery_coverage_one   ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->machinery_coverage_two   ? 'Checked' : ''}}/></p>
-                 </td>
-                <td style="width:76pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt">{{$form->machinery_coverage_one}}   </p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt"> {{$form->machinery_coverage_two}}   </p>
-                 </td>
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        {{$form->machinery_coverage_one_limit}}
-                    </p>
-
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-
-                    <p style="text-indent: 0pt;text-align: left;">
-                        {{$form->machinery_coverage_two_limit}}
-                    </p>
-
-                </td>
-            </tr>
-            <tr style="height:12pt">
-
-            </tr>
-
-
-
-            <tr style="height:12pt">
-                <td style="width:19pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                </td>
-                <td style="width:122pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="3" rowspan="3">
-                    <p class="s5" style="padding-right: 71pt;text-indent: 0pt;line-height: 7pt;text-align: center;">
-
-                        {{ $form->other_type}}
-                    </p>
-
-                </td>
-                <td style="width:138pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->other_policy_number}}</p>
-
-                </td>
-                <td style="width:65pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->other_effective_date}}</p>
-                </td>
-                <td style="width:65pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt;text-align: left;">{{$form->other_expiration_date}}</p>
-                </td>
-                <td style="width:14pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->other_coverage_one   ? 'Checked' : ''}}/></p>
-                    <p style="text-indent: 0pt; text-align: left;"><input type="checkbox"  {{$form->other_coverage_two   ? 'Checked' : ''}}/></p>
-                </td>
-                <td style="width:76pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="3">
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt">{{$form->other_coverage_one}}   </p>
-                    <p style="text-indent: 0pt; text-align: left; margin-bottom: 6pt"> {{$form->other_coverage_two}}   </p>
-                </td>
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        {{$form->other_coverage_one_limit}}
-                    </p>
-
-                </td>
-            </tr>
-            <tr style="height:12pt">
-                <td
-                    style="width:78pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-
-                    <p style="text-indent: 0pt;text-align: left;">
-                        {{$form->other_coverage_two_limit}}
-                    </p>
-
-                </td>
-            </tr>
-            <tr style="height:12pt">
-
-            </tr>
-
-
-
-            <tr style="height:67pt">
-                <td style="width:577pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    colspan="10">
-                    <p class="s8" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">SPECIAL CONDITIONS /
-                        OTHER
-                        COVERAGES (ACORD <span class="s2">t01, Additional Remarks Schedule, may be attached if more space is
-                            required)</span></p>
-                    <p>
-                        {{$form->special_condition}}
-                    </p>
-                </td>
-            </tr>
-        </table>
-        <p style="padding-left: 9pt;text-indent: 0pt;text-align: left;">CERTIFICATE HOLDER <span
-                style="margin-left: 14.5%;">CANCELLATION</span></p>
-
-        <table style="border-collapse:collapse;margin-left:6.6pt" cellspacing="0">
-            <tr style="height:47pt">
-                <td style="width:289pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                    rowspan="2">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        {{$form->certificate_holder}}
-                    </p>
-                </td>
-                <td
-                    style="width:288pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="padding-top: 1pt;text-indent: 0pt;text-align: left;"><br/></p>
-                    <p class="s12"
-                       style="padding-left: 9pt;padding-right: 20pt;text-indent: 0pt;line-height: 112%;text-align: left;">
-                        SHOULD ANY OF THE ABOVE DESCRIBED POLICIES BE CANCELLED BEFORE THE EXPIRATION DATE THEREOF,
-                        NOTICE
-                        WILL BE DELIVERED IN <span class="s9">ACCORDANCE WITH THE POLICY PROVISIONS.</span></p>
-                </td>
-            </tr>
-            <tr style="height:35pt">
-                <td
-                    style="width:288pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p class="s2" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">AUTHORIZED
-                        REPRESENTATIVE</p>
-                    <p style="text-indent: 0pt;text-align: left;">
-                        {{$form->authorize_representative}}
-                    </p>
-                </td>
-            </tr>
-        </table>
-        <p style="text-indent: 0pt;text-align: left;">
-        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-        <p style="padding-left: 9pt;text-indent: 0pt;text-align: left;">ACORD 24 (2016/03) <span
-                style="margin-left: 21.5%;">@1995-2015 ACORD CORPORATION.
-            All rights reserved.</span></p>
-        <p style="margin-left: 10%;"><br/>The ACORD name and logo are registered marks of ACORD</p>
-    </div>
-
-</div>
-<script>
-    function printOriginal() {
-        window.print();
-    }
-</script>
-
-</body>
-</html>
+@endsection

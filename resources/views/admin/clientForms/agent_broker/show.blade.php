@@ -1,736 +1,727 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('admin.layouts.form')
+@push('styles')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACORD Agent/Broker of Record Change Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Base and Reset */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { width: 100%; height: 100%; }
+        /* Base styles for screen viewing and print intent */
         body {
-            font-family: Arial, sans-serif;
-            background: #fff;
-            color: #222;
-            min-height: 100vh;
-        }
-        .container {
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 8px 12px 8px 12px;
-        }
-        .print-view {
-            background: #fff;
-            width: 100%;
-            position: relative;
+            font-family: 'Arial', sans-serif;
+            /* Common form font */
+            font-size: 9pt;
+            /* Base font size, uses points for print accuracy */
+            color: #000;
+            margin: 0;
             padding: 0;
-        }
-        .main-title {
-            text-align: center;
-            font-weight: bold;
-            font-size: 16pt;
-            margin: 10px 0 20px 0;
-        }
-        .table, table {
-            width: 100%;
-            border-collapse: collapse;
-            border: 1px solid #222;
-            table-layout: fixed;
-        }
-        .table td, table td, .table th, table th {
-            border: 1px solid #222;
-            padding: 6px 4px;
-            vertical-align: top;
-            font-size: 10pt;
-            word-break: break-word;
-        }
-        .label { font-weight: bold; font-size: 9pt; }
-        .value { font-size: 10pt; }
-        .section {
-            border: 1px solid #222;
-            margin-top: 10px;
-            padding: 6px 4px;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 8pt;
-        }
-        .underline { text-decoration: underline; padding: 0 5px; }
-        .btn, .no-print, .buttons-container {
-            display: none !important;
-        }
-
-        /* Add vertical spacing between sections */
-        .acord-row,
-        .acord-signature,
-        .acord-footer {
-            margin-bottom: 8px;
-        }
-        .acord-row:last-child,
-        .acord-signature:last-child,
-        .acord-footer:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Responsive for screen */
-        @media (max-width: 950px) {
-            .container { max-width: 100%; padding: 10px; }
-            .main-title { font-size: 13pt; }
-        }
-
-        @media print {
-    @page {
-        size: A4 portrait;
-        margin: 10mm 10mm;
-    }
-
-    html, body {
-        width: 210mm;
-        height: 297mm;
-        margin: 0;
-        padding: 0;
-        background: #fff !important;
-        color: #000 !important;
-        overflow: hidden;
-        font-size: 8pt;
-    }
-
-    * {
-        color: #000 !important;
-        box-sizing: border-box !important;
-    }
-
-    .no-print, .buttons-container, .btn {
-        display: none !important;
-    }
-
-    .container,
-    .print-view,
-    .acord-form,
-    .acord-form-content {
-        width: 190mm !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
-        page-break-inside: avoid;
-        page-break-before: avoid;
-        page-break-after: avoid;
-    }
-
-    .print-view {
-        transform: scale(0.95);
-        transform-origin: top center;
-        min-height: 277mm;
-        background: #fff !important;
-    }
-
-    .main-title, .label, .value, .footer, .acord-title {
-        font-size: 8pt !important;
-    }
-
-    .acord-label {
-        font-size: 6pt !important;
-    }
-
-    .acord-value {
-        font-size: 7pt !important;
-    }
-
-    .table, table {
-        width: 100% !important;
-        table-layout: fixed;
-        border-collapse: collapse !important;
-        border: 1px solid #000;
-    }
-
-    .table td, .table th, table td, table th {
-        border: 1px solid #000;
-        padding: 2px 4px;
-        font-size: 7pt !important;
-        word-break: break-word;
-    }
-
-    .section {
-        border: 1px solid #000 !important;
-        padding: 3px 5px !important;
-        margin-bottom: 6px;
-    }
-
-    .acord-row,
-    .acord-signature,
-    .acord-footer {
-        margin: 4px 0 !important;
-        padding: 2px 4px !important;
-        page-break-inside: avoid;
-    }
-
-    .acord-sign-field span,
-    .acord-sign-label,
-    .acord-date-label,
-    .acord-footer {
-        font-size: 6pt !important;
-    }
-
-    div[style*="font-size: 10pt"] {
-        font-size: 7pt !important;
-        line-height: 1.3;
-        padding: 0px 12px !important;
-    }
-
-    div[style*="font-size: 8pt"] {
-        font-size: 6pt !important;
-    }
-
-    div[style*="font-size: 6pt"] {
-        font-size: 5pt !important;
-    }
-
-    .acord-signature:last-child,
-    .acord-footer:last-child {
-        margin-bottom: 0 !important;
-    }
-}
-
-
-        /* Form styling */
-        body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
+            display: flex;
+            /* For centering the form on screen */
+            justify-content: center;
+            background-color: #f0f0f0;
+            /* Light background for screen view */
         }
 
         .form-container {
+            width: 8.5in;
+            /* Standard US Letter width */
+            /*height: 11in;*/
+            /* Standard US Letter height */
+            height: 12in;
+            /* Standard US Letter height */
+            padding: 0.5in;
+            /* Consistent margin inside the form content */
+            box-sizing: border-box;
+            /* Padding included in width/height */
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 30px;
+            border: 1px solid #ccc;
+            /* Optional: visual boundary on screen */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for screen view */
+        }
+
+        /* Reusable Form Field Line (Label + Underline Input) */
+        .form-field-line {
+            display: flex;
+            /* align-items: flex-end; Aligns label baseline with input line */
+            margin-bottom: 0.08in;
+            /* Vertical spacing between form lines */
+            line-height: 1.0;
+            /* Tighter line height for labels */
+        }
+
+        .form-field-line label {
+            /* white-space: nowrap; Prevent label from wrapping */
+            font-size: 8pt;
+            /* Label font size */
+            color: #333;
+            /* flex-shrink: 0; Prevent label from shrinking */
+            margin-right: 4pt;
+            /* Space between label and input */
+            padding-bottom: 0.5pt;
+            /* Fine-tune label baseline alignment */
+        }
+
+        .form-field-line input[type="text"] {
+            flex-grow: 1;
+            /* Input takes remaining width */
+            border: none;
+            border-bottom: 0.5pt solid black;
+            /* The underline */
+            padding: 0 2pt;
+            font-size: 8pt;
+            /* Input text size */
+            height: 11pt;
+            /* Explicit height to control line vertical position */
+            background-color: transparent;
+            box-sizing: border-box;
+            line-height: 1;
+            /* Keep input text tight */
+        }
+
+        /* Specific styles for multi-part address lines (e.g., Pasadena TX 77504) */
+        .address-line-container {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 0.08in;
+            /* Consistent spacing */
+            gap: 0.2in;
+            /* Horizontal space between City, State, Zip groups */
+        }
+
+        .address-line-item {
+            display: flex;
+            align-items: flex-end;
+            line-height: 1.0;
+        }
+
+        .address-line-item label {
+            white-space: nowrap;
+            font-size: 8pt;
+            color: #333;
+            flex-shrink: 0;
+            margin-right: 4pt;
+            padding-bottom: 0.5pt;
+        }
+
+        .address-line-item input[type="text"] {
+            border: none;
+            border-bottom: 0.5pt solid black;
+            padding: 0 2pt;
+            font-size: 8pt;
+            height: 11pt;
+            background-color: transparent;
+            box-sizing: border-box;
+            line-height: 1;
+        }
+
+        .address-line-item.city input {
+            width: 80pt;
+            flex-grow: 0;
+        }
+
+        .address-line-item.state input {
+            width: 30pt;
+            flex-grow: 0;
+        }
+
+        .address-line-item.zip input {
+            width: 45pt;
+            flex-grow: 0;
+        }
+
+
+        /* Header Section Styling */
+        .header-title {
+            font-size: 14pt;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .acord-logo {
-            max-width: 120px;
-            margin-bottom: 10px;
+            height: 70pt;
+            /* Height based on typical logo size */
+            vertical-align: middle;
+            /*margin-right: 5pt;*/
         }
 
-        .form-label {
-            font-weight: 600;
-            font-size: 0.9rem;
+        /* Smallest font for the date label */
+        .date-field-label {
+            font-size: 6.5pt;
         }
 
-        /* Print view styling */
-        .print-view {
-            width: 100%;
-            height: 279.4mm; /* Letter height */
-            margin: 0 auto;
-            /* background-color: white; */
-            /* padding: 15px; */
-            font-family: Arial, sans-serif;
-            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-            position: relative;
-            overflow: hidden;
+        /* Date input needs to be right-aligned within its fixed width */
+        .date-input {
+            text-align: right;
+            width: 70pt;
+            /* Fixed width for the date input field */
         }
 
-        /* ACORD form specific styling */
-        .acord-form {
-            width: 100%;
-            margin: 0 auto;
-            padding: 10px;
+        table.insuredtable td {
+            padding: 5pt 3pt
         }
 
-        .acord-form-content {
-            border: 1px solid #000;
-            width: 100%;
-        }
-
-        /* Header section specific styling */
-        .acord-header {
-            display: flex;
-            align-items: center;
-            /* border-bottom: 1px solid #000; */
-        }
-
-        .acord-logo-print {
-            width: 80px;
-        }
-
-        .acord-title {
-            flex-grow: 1;
-            text-align: center;
-            font-size: 11pt;
-            font-weight: bold;
-            padding: 0 10px;
-        }
-
-        .acord-date {
-            border: 1px solid #000;
-            padding: 3px;
-            width: 120px;
-            text-align: center;
-            border-bottom:none !important;
-        }
-
-        .acord-date-label {
-            font-size: 7pt;
-            font-weight: bold;
-        }
-
-        .acord-row {
-            display: flex;
-            border-bottom: 1px solid #000;
-        }
-
-        .acord-cell {
-            border-right: 1px solid #000;
-            /* padding: 5px; */
-            
-        }
-
-        .acord-cell:last-child {
-            border-right: none;
-        }
-
-        .acord-label {
-            font-size: 5pt;
-            font-weight: bold;
-        }
-
-        .acord-value {
-            font-size: 7pt;
-            min-height: 16px;
-        }
-
-        .acord-checkbox {
-            margin-right: 5px;
-        }
-
-        .acord-table {
-            width: 100%;
+        /* Table styling */
+        table {
             border-collapse: collapse;
+            width: 100%;
+            /* margin-top: 15pt; Space before table */
+            /* margin-bottom: 15pt; Space after table */
         }
 
-        .acord-table th,
-        .acord-table td {
-            border: 1px solid #000;
-            padding: 4px;
+        table th,
+        table td {
+            border: 0.5pt solid black;
+            /* Fine border for cells */
+            padding: 2pt 3pt;
+            /* Tight padding inside cells */
             text-align: left;
-            font-size: 7pt;
-        }
-
-        .acord-table th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        .acord-text {
-            font-size: 7pt;
-            margin: 8px 0;
-            padding: 0 8px;
-        }
-
-        .acord-signature {
-            margin: 20px 10px;
-            display: flex;
-        }
-
-        .acord-sign-field {
-            flex: 1;
-            border-top: 1px solid #000;
-            margin: 0 5px;
-            text-align: center;
-            padding-top: 2px;
-        }
-
-        .acord-sign-label {
-            font-size: 5pt;
-            text-align: center;
-        }
-
-        .acord-footer {
-            text-align: center;
-            font-size: 5pt;
-            margin: 12px 0;
-        }
-
-        /* Agency section styling */
-        td[style*="font-weight: bold; font-size: 8pt;"],
-        td[style*="font-size: 8pt; font-weight: bold;"],
-        div[style*="font-weight: bold; font-size: 8pt;"] {
-            font-size: 7pt !important;
-        }
-
-        #print-agencyPhone,
-        #print-agencyFax,
-        #print-newAgencyName,
-        #print-agencyAddress,
-        #print-agencyCity,
-        #print-agencyState,
-        #print-agencyZip,
-        #print-insuredCompanyName,
-        #print-agencyEmail,
-        #print-agencyCode,
-        #print-agencySubCode,
-        #print-currentAgency,
-        #print-currentProducer {
+            vertical-align: middle;
+            /* Center content vertically */
             font-size: 8pt;
-        }
-
-        /* Insurance company section */
-        div[style*="font-weight: bold; font-size: 8pt;"] {
-            font-size: 6pt !important;
-        }
-
-        /* Email and code sections */
-        .acord-cell div[style*="font-weight: bold; font-size: 8pt;"] {
-            font-size: 6pt !important;
-            padding: 1px 2px !important;
-        }
-
-        /* Adjust cell padding in header section */
-        .acord-row:nth-child(-n+4) .acord-cell {
-            padding: 2px 3px;
-        }
-
-        /* Removed duplicate print media query - using comprehensive one above */
-
-        /* Text section styling */
-        div[style*="font-size: 10pt; line-height: 1.6;"] {
-            font-size: 9pt !important;
-            line-height: 1.4 !important;
-            padding: 0px 30px !important;
-        }
-
-        /* Producer section styling */
-        div[style*="text-align: center; margin-top: 1px; font-size: 8pt;"] {
-            font-size: 6pt !important;
-            margin-top: 0px !important;
-        }
-
-        /* Signature section styling */
-        .acord-signature {
-            margin: 8px 10px;
-        }
-
-        .acord-sign-field {
-            margin: 0 3px;
-            padding-top: 1px;
-        }
-
-        .acord-sign-label {
-            font-size: 5pt;
-            text-align: center;
-            margin-top: 1px;
-        }
-
-        /* City/State/Zip row */
-        .acord-signature:last-of-type {
-            margin-bottom: 15px;
-        }
-
-        /* Footer styling */
-        .acord-footer {
-            text-align: center;
-            font-size: 5pt;
-            margin: 8px 0;
             line-height: 1.2;
         }
 
-        /* Dynamic content styling */
-        #print-formDate,
-        #print-agencyPhone,
-        #print-agencyFax,
-        #print-newAgencyName,
-        #print-agencyAddress,
-        #print-agencyCity,
-        #print-agencyState,
-        #print-agencyZip,
-        #print-insuredCompanyName,
-        #print-agencyEmail,
-        #print-agencyCode,
-        #print-agencySubCode,
-        #print-currentAgency,
-        #print-currentProducer,
-        #print-agencyCustomerId,
-        #print-namedInsured,
-        #print-policyNumber,
-        #print-effectiveDate,
-        #print-expirationDate,
-        #print-lineOfBusiness,
-        #print-insuredSignature,
-        #print-signatureDate,
-        #print-title,
-        #print-companyName,
-        #print-insuredStreetAddress,
-        #print-insuredCityField,
-        #print-insuredStateField,
-        #print-insuredZipField {
-            font-size: 6.5pt !important;
+        table th {
+            font-weight: normal;
+            /* ACORD headers are usually not bold */
+            text-align: center;
+            background-color: #f8f8f8;
+            /* Very subtle header background */
         }
 
-        /* Table data styling */
-        .acord-table td {
-            font-size: 6.5pt;
+        /* Authorization Statement Text Styling */
+        .statement-text {
+            line-height: 1.3;
+            margin-bottom: 10pt;
+            font-size: 9pt;
         }
 
-        /* Signature values */
-        .acord-sign-field span {
-            font-size: 6.5pt;
+        .statement-text input {
+            border: none;
+            border-bottom: 0.5pt solid black;
+            font-size: 9pt;
+            /* Match surrounding text size */
+            padding: 0 2pt;
+            height: 12pt;
+            /* Ensure enough height for the line */
+            vertical-align: bottom;
+            /* Align with text baseline */
+            display: inline-block;
+            /* Allows width to be set */
+        }
+
+        /* Signature lines and labels */
+        .signature-line {
+            display: flex;
+            align-items: flex-end;
+            /* Align the label/title to the bottom of the line */
+            padding-bottom: 2pt;
+            /* Space below the line for clarity */
+            margin-top: 15pt;
+            /* Space between signature areas */
+            position: relative;
+            /* For absolute positioning of labels */
+        }
+
+        .signature-line .line-input {
+            flex-grow: 1;
+            border: none;
+            border-bottom: 0.5pt solid black;
+            height: 10pt;
+            /* Height for the actual line */
+            padding: 0 2pt;
+            font-size: 8pt;
+            /* For actual signature/printed name if typed */
+            background-color: transparent;
+        }
+
+        .signature-line .line-label {
+            position: absolute;
+            /* Position label below the line */
+            top: 12pt;
+            /* Adjust based on line-input height + label font size */
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 7pt;
+            font-weight: bold;
+            /* Labels often bold */
+            white-space: nowrap;
+        }
+
+        .signature-group {
+            display: flex;
+            width: 100%;
+            margin-top: 20pt;
+            /* Space before first signature block */
+        }
+
+        .signature-group>div {
+            flex: 1;
+            /* Each column takes equal width */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .signature-group .date-field {
+            text-align: right;
+            /* For date label */
+            flex-grow: 1;
+            /* Take remaining space */
+            display: flex;
+            /* Make date field itself a flex container */
+            justify-content: flex-end;
+            /* Push content to the right */
+            align-items: flex-end;
+        }
+
+        .signature-group .date-field .line-input {
+            width: 60pt;
+            /* Specific width for date input */
+            flex-grow: 0;
+            /* Don't let it grow */
+            text-align: right;
+            /* Text inside date field aligns right */
+        }
+
+        .signature-group .date-field .line-label {
+            right: 0;
+            /* Align date label to the right */
+            left: auto;
+            /* Remove left constraint */
+            text-align: right;
+            bottom: -8pt;
+            /* Ensure label is below line */
+        }
+
+        .signature-group .left-sig {
+            margin-right: 20pt;
+            /* Space between signature and date areas */
+        }
+
+        /* Styling for City/State/Zip in the signature section */
+        .signature-address-line-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.2in;
+            /* Space above this line */
+            gap: 0.1in;
+            /* Small gap between City, State, Zip fields */
+        }
+
+        .signature-address-line-item {
+            display: flex;
+            align-items: flex-end;
+            line-height: 1.0;
+        }
+
+        .signature-address-line-item input[type="text"] {
+            border: none;
+            border-bottom: 0.5pt solid black;
+            padding: 0 2pt;
+            font-size: 8pt;
+            height: 11pt;
+            background-color: transparent;
+            box-sizing: border-box;
+            line-height: 1;
+        }
+
+        .signature-address-line-item label {
+            white-space: nowrap;
+            font-size: 8pt;
+            color: #333;
+            flex-shrink: 0;
+            margin-left: 4pt;
+            /* Space between input and label */
+            padding-bottom: 0.5pt;
+        }
+
+        .signature-address-line-item.city input {
+            flex-grow: 1;
+        }
+
+        /* City input fills available space */
+        .signature-address-line-item.state input {
+            width: 25pt;
+            flex-grow: 0;
+        }
+
+        /* Fixed width for State */
+        .signature-address-line-item.zip input {
+            width: 45pt;
+            flex-grow: 0;
+        }
+
+        /* Fixed width for Zip */
+
+
+        /* Footer Section */
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 10pt;
+            /* Space from content above */
+            /* padding-top: 5pt; */
+            border-top: 0.5pt solid #ccc;
+            font-size: 6pt;
+            /* color: #555; */
+        }
+
+        .footer-copyright {
+            /* flex-grow: 1; */
+            text-align: center;
+        }
+
+        /* PRINT MEDIA QUERIES - CRITICAL for accurate printing */
+        @media print {
+            body {
+                background-color: white;
+                /* No background on print */
+                margin: 0;
+                padding: 0;
+                display: block;
+                /* Remove flex on print to avoid centering issues */
+                -webkit-print-color-adjust: exact;
+                /* Crucial for background colors/borders */
+                print-color-adjust: exact;
+                orphans: 3;
+                /* Prevent single lines at page breaks */
+                widows: 3;
+                /* Prevent single lines at page breaks */
+            }
+
+            .form-container {
+                border: none;
+                /* Remove screen-only border on print */
+                box-shadow: none;
+                /* Remove screen-only shadow on print */
+                margin: 0;
+                /* Remove auto margins on print */
+                padding: 0.5in;
+                /* Keep internal padding as form margin */
+                width: 8.5in;
+                height: 11in;
+            }
+
+            /* Ensure all inputs and text align perfectly for print */
+            input[type="text"] {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                vertical-align: baseline;
+                /* Align text exactly on the baseline */
+                padding-bottom: 0;
+                /* Remove any padding that might push text off line */
+                height: auto;
+                /* Let content determine height, but maintain min-height */
+                min-height: 11pt;
+                /* Maintain minimum line height for input areas */
+            }
+
+            .form-field-line label,
+            .address-line-item label,
+            .signature-address-line-item label {
+                padding-bottom: 0;
+                /* Ensure labels are tightly aligned */
+            }
+
+            .signature-line .line-label {
+                bottom: -7pt;
+                /* Fine-tune label position below signature lines for print */
+            }
+
+            .statement-text input {
+                height: auto;
+                min-height: 12pt;
+            }
+
+            /* Adjust grid gaps if they cause issues on print, sometimes unitless works best */
+            .grid {
+                /* You might need to override Tailwind's responsive gaps if they break print layout */
+                /* gap: 0; will remove all gaps, then re-add specific ones if needed */
+                /* For example: */
+                /* column-gap: 0.5in !important; */
+                /* row-gap: 0.1in !important; */
+            }
+
+            .grid>div {
+                padding: 0;
+                /* Ensure no unwanted padding from Tailwind on grid cells */
+            }
+
+            /* Prevent elements from being split across page breaks where possible */
+            .signature-group,
+            .statement-text,
+            table {
+                page-break-inside: avoid;
+            }
+
+            table thead {
+                display: table-header-group;
+                /* Ensure table headers repeat on new page */
+            }
+
+            table tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
         }
     </style>
-</head>
+@endpush
+@section('content')
+    <div class="form-container">
+        <div class="flex justify-between items-end">
+            <div class="text-xs font-bold mr-4 flex-shrink-0" style="font-size: 9pt;">
+                <img src="{{asset('backend/img/acord-logo.png')}}" alt="ACORD Logo" class="acord-logo">
 
-<body>
-<div class="container my-4">
-    <div class="row">
-        <div class="col-12 mb-4 buttons-container">
-            <h1 class="text-center mb-4">ACORD Agent/Broker of Record Change Form</h1>
-            <div style="display: flex; justify-content: end;" class=" no-print">
-                <button id="printFormBtn" class="btn btn-secondary">Print Form</button>
+            </div>
+            <div class="flex-grow header-title">
+                AGENT/BROKER OF RECORD CHANGE
+            </div>
+            <div class="text-right flex-shrink-0 ml-4" style="border:1px solid #000; padding: 1px 5px;">
+                <div class="" style="text-align: center;">
+                    <label class="date-field-label">DATE (MM/DD/YYYY):</label>
+
+                    <div id="print-formDate">{{ $form->creation_date ?? now()->format('m/d/Y') }}</div>
+                </div>
             </div>
         </div>
 
-        <!-- Printable View Section - Styled exactly like ACORD Form -->
-        <div class="print-view" id="printView">
-            <div class="acord-form">
-                <!-- Header -->
-                <div class="acord-header">
-                    <img
-                        src="{{ asset('backend/img/acord-logo.png') }}" alt="ACORD Logo" class="acord-logo-print">
-                    <div class="acord-title">AGENT/BROKER OF RECORD CHANGE</div>
-                    <div class="acord-date">
-                        <div class="acord-date-label">DATE (MM/DD/YYYY)</div>
-                        <div id="print-formDate">{{ $form->creation_date ?? now()->format('m/d/Y') }}</div>
-                        <!-- Assuming there's a date attribute -->
-                    </div>
-                </div>
-                <div class="acord-form-content">
-                <!-- First row - Agency and Phone -->
-                    <div class="acord-row" >
-                        <div class="acord-cell" style="width: 50%; border-top:none;">
-                            <table style="width: 100%; border-collapse: collapse;">
-                                <tr>
-                                    <td style="font-weight: bold; font-size: 8pt; border-right: 1px solid #000; padding: 2px; width: 70px;">
-                                        NEW AGENCY
-                                    </td>
-                                    <td style="width: 100px; border-bottom: 1px solid #000;font-size: 8pt; font-weight: bold; padding: 2px; vertical-align: top;">
-                                        PHONE<br>(A/C, No, Ext):
-                                    </td>
-                                    <td style="border-bottom: 1px solid #000; padding: 2px; vertical-align: top;">
-                                        <div id="print-agencyPhone">{{ $form->agency_phone ?? '' }}</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="border-right: 1px solid #000; padding: 2px;"></td>
-                                    <td style="font-size: 8pt; font-weight: bold; border-bottom: 1px solid #000; padding: 2px; vertical-align: top;">
-                                        FAX<br>(A/C, No):
-                                    </td>
-                                    <td style="padding: 2px; vertical-align: top; border-bottom: 1px solid #000;">
-                                        <div id="print-agencyFax">{{ $form->agency_fax ?? '' }}</div>
-                                    </td>
-                                </tr>
-                            </table>
-                            <div id="print-newAgencyName" ">{{ $form->agency_name ?? '' }}</div>
-                            <div id="print-agencyAddress" ">{{ $form->agency_address ?? '' }}</div>
-                            <div ">
-                                <span id="print-agencyCity">{{ $form->agency_city ?? '' }}</span>
-                                <span id="print-agencyState">{{ $form->agency_state ?? '' }}</span>
-                                <span id="print-agencyZip">{{ $form->agency_zip ?? '' }}</span>
-                            </div>
-                        </div>
-                        <div class="acord-cell" style="width: 50%; border-top:none;">
-                            <div style="font-weight: bold; font-size: 8pt; padding: 2px;">
-                                INSURANCE COMPANY NAME
-                            </div>
-                            <div id="print-insuredCompanyName">{{ $form->insurance_company_name ?? '' }}</div>
-                            <div id="print-agencyAddress"
-                                ">{{ $form->insurance_company_address ?? '' }}</div>
-                            <div ">
-                                <span id="print-agencyCity">{{ $form->insurance_company_city ?? '' }}</span>
-                                <span id="print-agencyState">{{ $form->insurance_company_state ?? '' }}</span>
-                                <span id="print-agencyZip">{{ $form->insurance_company_zipcode ?? '' }}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Second row - Email -->
-                    <div class="acord-row">
-                        <div class="acord-cell" style="width: 50%; display: flex; justify-content: space-between;">
-                            <div style="font-weight: bold; font-size: 8pt; padding: 2px;">
-                                E-MAIL ADDRESS:
-                            </div>
-                            <div id="print-agencyEmail">{{ $form->email ?? '' }}</div>
-                        </div>
-                        <div class="acord-cell" style="width: 50%;"></div>
-                    </div>
-
-                    <!-- Third row - Codes and Current Agency -->
-                    <div class="acord-row">
-                        <div class="acord-cell" style="width: 25%; display: flex; justify-content: space-between;">
-                            <div style="font-weight: bold; font-size: 8pt; padding: 2px;">
-                                CODE:
-                            </div>
-                            <div id="print-agencyCode">{{ $form->code ?? '' }}</div>
-                        </div>
-                        <div class="acord-cell" style="width: 25%; display: flex; justify-content: space-between;">
-                            <div style="font-weight: bold; font-size: 8pt; padding: 2px;">
-                                SUB CODE:
-                            </div>
-                            <div id="print-agencySubCode">{{ $form->sub_code ?? '' }}</div>
-                        </div>
-                        <div class="acord-cell" style="width: 25%; display: flex; justify-content: space-between;">
-                            <div style="font-weight: bold; font-size: 8pt; padding: 2px;">
-                                CURRENT AGENCY:
-                            </div>
-                            <div id="print-currentAgency">{{ $form->current_agency ?? '' }}</div>
-                        </div>
-                        <div class="acord-cell" style="width: 25%; display: flex; justify-content: space-between;">
-                            <div style="font-weight: bold; font-size: 8pt; padding: 2px;">
-                                CURRENT PRODUCER:
-                            </div>
-                            <div id="print-currentProducer">{{ $form->current_producer ?? '' }}</div>
-                        </div>
-                    </div>
-
-                    <!-- Fourth row - Agency Customer ID -->
-                    <div class="acord-row" style="border-bottom:none;">
-                        <div class="acord-cell" style="width: 100%; display: flex; justify-content: start;">
-                            <div style="font-weight: bold; font-size: 8pt; padding: 2px;">
-                                AGENCY CUSTOMER ID:
-                            </div>
-                            <div id="print-agencyCustomerId" style="margin-left: 10px; font-size: 8pt;">{{ $form->agency_customer_id ?? '' }}</div>
-                        </div>
-                    </div>
-
-                    <!-- Policy Information Table -->
-                    <table class="acord-table">
-                        <thead>
+        <div class="grid grid-cols-2  gap-y-[0.1in]" style="border: 1px solid black;">
+            <div style="border-right: 1px solid black; margin-top: 5px ;">
+                <div class="form-field-line">
+                    <table style="width: 100%;">
                         <tr>
-                            <th style="width: 25%; border-left:none;">NAMED INSURED<br>(AS IT APPEARS ON POLICY)</th>
-                            <th style="width: 20%;">POLICY NUMBER(S)</th>
-                            <th style="width: 15%;">EFFECTIVE DATE</th>
-                            <th style="width: 15%;">EXPIRATION DATE</th>
-                            <th style="width: 25%; border-right:none;">LINE OF BUSINESS</th>
+                            <td rowspan="2" style="border: none;">New Agency</td>
+                            <td style="border-right: 0;">PHONE (A/C, No, Ext)</td>
+                            <td style="border-left: 0;">
+                                <div id="print-agencyPhone">{{ $form->agency_phone ?? '' }}</div>
+                            </td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($form->companies->take(6) as $company)
-                            <tr>
-                                <td  style="border-left:none; padding: 10px;" id="print-namedInsured">{{ $company->name ?? '' }}</td>
-                                <td id="print-policyNumber">{{ $company->policy_number ?? '' }}</td>
-                                <td id="print-effectiveDate">{{ $company->effective_date ?? '' }}</td>
-                                <td id="print-expirationDate">{{ $company->expiration_date ?? '' }}</td>
-                                <td style="border-right:none;" id="print-lineOfBusiness">{{ $company->line_of_business ?? '' }}</td>
-                            </tr>
-                        @endforeach
-                        @for($i = count($form->companies->take(6)); $i < 6; $i++)
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                        @endfor
-                        </tbody>
+                        <tr>
+                            <!-- <td></td> -->
+                            <td style="border-right: 0;">FAX (A/C, No)</td>
+                            <td style="border-left: 0;">
+                                <div id="print-agencyFax">{{ $form->agency_fax ?? '' }}</div>
+                            </td>
+                        </tr>
                     </table>
-           
+                    <!-- <label>NEW AGENCY</label>
+                        <input type="text" value="" class="flex-grow"> -->
+                </div>
+                <div class="form-field-line">
+                    <p style="padding: 2px 5px;">
+                        <div id="print-newAgencyName">{{ $form->agency_name ?? '' }}</div>
+                    </p>
+                    <p style="padding: 2px 5px;">
+                        <div id="print-agencyAddress">{{ $form->agency_address ?? '' }}</div>
+                    </p>
+                </div>
+                <div class="form-field-line" style="margin-bottom: 0; ">
+                    <table style="width: 100%; border: none; ">
+                        <tr>
+                            <td colspan="2">
+                                <span id="print-agencyCity">{{ $form->agency_city ?? '' }}</span>
+                            </td>
+                            <td>
+                                <span id="print-agencyState">{{ $form->agency_state ?? '' }}</span>
+                            </td>
+                            <td colspan="2">
+                                <span id="print-agencyZip">{{ $form->agency_zipcode ?? '' }}</span>
+                            </td>
+                        </tr>
 
-                    <!-- Text section -->
-                    <div style="margin-top: 10px; padding: 0px 50px; font-weight: 600;">
-                        <div style="margin-bottom: 18px;">
-                            Please be advised that we wish to name
-                            <span
-                                style="display: inline-block; width: 300px; border-bottom: 1px solid black;">{{$form->advice_producer_name}}</span>
-                            <div style="text-align: center; margin-top: 1px; font-size: 8pt; margin-right: 20px;">PRODUCER</div>
-                        </div>
+                    </table>
 
-                        <div style="margin-bottom: 18px;">
-                            <span
-                                style="display: inline-block; width: 150px; border-bottom: 1px solid black;">{{$form->code}}</span>
-                            as our exclusive representative effective
-                            <span
-                                style="display: inline-block; width: 150px; border-bottom: 1px solid black; margin-left: 10px;">{{$form->advice_producer_effective_date}}</span>
-                            <div style="display: flex; justify-content: space-between; margin-top: 2px; font-size: 8pt;">
-                                <span style="width: 150px;">CODE #</span>
-                                <span style="width: 333px; text-align: center; margin-left: 180px;">DATE</span>
-                            </div>
-                        </div>
+                </div>
+                <div class="form-field-line" style="margin-bottom: 0;">
 
-                        <div style="margin-bottom: 18px;">
-                            for the lines of business shown above, currently in force or submitted by application.
-                        </div>
+                    <table style="width: 100%; ">
+                        <tr>
 
-                        <div style="margin-bottom: 0;">
-                            This authorization replaces any other authorization that may have been previously completed for any
-                            other insurance representative for the stated lines of business.
-                        </div>
-                    </div>
+                            <td colspan="2">Email: <div id="print-agencyEmail">{{ $form->email ?? '' }}</div></td>
+                        </tr>
+                        <tr>
+                            <td>CODE : <div id="print-agencyCode">{{ $form->code ?? '' }}</div></td>
+                            <td>SUBCODE : <div id="print-agencySubCode">{{ $form->sub_code ?? '' }}</div></td>
+                        </tr>
+                        <tr>
 
-                    <!-- Signature section -->
-                    <div class="acord-signature">
-                        <div class="acord-sign-field" style="width: 60%;">
-                            <span id="print-insuredSignature">{{ $form->insured_signature ?? '' }}</span>
-                            <div class="acord-sign-label">INSURED SIGNATURE</div>
-                        </div>
-                        <div class="acord-sign-field" style="width: 40%;">
-                            <span id="print-signatureDate">{{ $form->issued_date ?? '' }}</span>
-                            <div class="acord-sign-label">DATE</div>
-                        </div>
-                    </div>
+                            <td colspan="2">AGENCY CUSTOMER ID : <div id="print-agencyCustomerId" style="margin-left: 10px; font-size: 8pt;">{{ $form->agency_customer_id ?? '' }}</div></td>
+                        </tr>
+                    </table>
+                </div>
 
-                    <div class="acord-signature">
-                        <div class="acord-sign-field">
-                            <span id="print-title">{{ $form->insured_title ?? '' }}</span>
-                            <div class="acord-sign-label">TITLE (IF APPLICABLE)</div>
-                        </div>
-                    </div>
+            </div>
 
-                    <div class="acord-signature">
-                        <div class="acord-sign-field">
-                            <span id="print-companyName">{{ $form->insured_company_name ?? '' }}</span>
-                            <div class="acord-sign-label">COMPANY NAME (IF APPLICABLE)</div>
-                        </div>
-                    </div>
+            <div style="margin-top: 14px ">
+                <div class="form-field-line" style="margin-left: 10px;">
+                    <label>INSURANCE COMPANY NAME: <div id="print-insuredCompanyName">{{ $form->insurance_company_name ?? '' }}</div></label>
 
-                    <div class="acord-signature">
-                        <div class="acord-sign-field">
-                            <span id="print-insuredStreetAddress">{{ $form->insured_company_address ?? '' }}</span>
-                            <div class="acord-sign-label">STREET ADDRESS OF INSURED</div>
-                        </div>
-                    </div>
+                </div>
+                <div class="form-field-line" style="height: 20px; margin-left: 10px;">
+                    <label>STREET ADDRESS: <div id="print-agencyAddress" ">{{ $form->insurance_company_address ?? '' }}</div></label>
+                </div>
+                <div class="form-field-line" style="height: 20px; margin-left: 10px;">
+                    <label>CITY: <span id="print-agencyCity">{{ $form->insurance_company_city ?? '' }}</span></label>
+                </div>
+                <div class="form-field-line" style="height: 20px; margin-left: 10px;">
+                    <label>STATE: <span id="print-agencyState">{{ $form->insurance_company_state ?? '' }}</span> </label>
+                </div>
+                <div class="form-field-line" style="height: 20px; margin-left: 10px;">
+                    <label>ZIP CODE: <span id="print-agencyZip">{{ $form->insurance_company_zipcode ?? '' }}</span></label>
+                </div>
+                <div class="form-field-line" style="margin-bottom: 0;">
+                    <table style="width: 100%; border: none; ">
+                        <tr>
+                            <td colspan="2">Current Agency: <div id="print-currentAgency">{{ $form->current_agency ?? '' }}</div></td>
+                            <td colspan="2">Current Producer: <div id="print-currentProducer">{{ $form->current_producer ?? '' }}</div></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <table>
+            <tr>
+                <td rowspan="10">This authorization replaces any other authorization that may have been
+                    previously completed for any other insurance representative for the
+                    stated lines of business.This authorization replaces any other authorization that may have been
+                    previously completed for any other insurance representative
+                </td>
+            </tr>
+        </table>
+        <table class="insuredtable">
+            <thead>
+                <tr>
+                    <th class="w-1/4">NAMED INSURED<br>(AS IT APPEARS ON POLICY)</th>
+                    <th class="w-1/6">POLICY NUMBER(S)</th>
+                    <th class="w-[15%]">EFFECTIVE DATE</th>
+                    <th class="w-[15%]">EXPIRATION DATE</th>
+                    <th class="w-auto">LINE OF BUSINESS</th>
+                </tr>
+            </thead>
+            <tbody>
 
-                    <div class="acord-signature">
-                        <div class="acord-sign-field" style="width: 40%;">
-                            <span id="print-insuredCityField">{{ $form->insured_company_city ?? '' }}</span>
-                            <div class="acord-sign-label">CITY OF INSURED</div>
-                        </div>
-                        <div class="acord-sign-field" style="width: 30%;">
-                            <span id="print-insuredStateField">{{ $form->insured_company_state ?? '' }}</span>
-                            <div class="acord-sign-label">STATE OF INSURED</div>
-                        </div>
-                        <div class="acord-sign-field" style="width: 30%;">
-                            <span id="print-insuredZipField">{{ $form->insured_company_zipcode ?? '' }}</span>
-                            <div class="acord-sign-label">ZIP CODE OF INSURED</div>
-                        </div>
-                    </div>
+                @foreach($form->companies->take(5) as $company)
+                    <tr>
+                        <td style="padding: 10px; text-align: center;" id="print-namedInsured">{{ $company->name ?? '' }}</td>
+                        <td style="padding: 10px; text-align: center;" id="print-policyNumber">{{ $company->policy_number ?? '' }}</td>
+                        <td style="padding: 10px; text-align: center;" id="print-effectiveDate">{{ $company->effective_date ?? '' }}</td>
+                        <td style="padding: 10px; text-align: center;" id="print-expirationDate">{{ $company->expiration_date ?? '' }}</td>
+                        <td style="padding: 10px; text-align: center;" id="print-lineOfBusiness">{{ $company->line_of_business ?? '' }}</td>
+                    </tr>
+                @endforeach
 
-                    <div class="acord-footer">
-                        ACORD 36 (2007/01) © ACORD CORPORATION 1996-2007. All rights reserved.<br>
-                        The ACORD name and logo are registered marks of ACORD.
+            </tbody>
+        </table>
+
+        <div class="statement-text mt-[0.2in]" style="padding: 0 30px;">
+            <p style="font-weight: bold; font-size: 14px;">Please be advised that we wish to name
+                <span
+                    style="display: inline-block; border-bottom: 1px solid black;">{{$form->advice_producer_name}}</span>
+                as our exclusive representative effective
+                <span
+                    style="display: inline-block; border-bottom: 1px solid black; margin-left: 10px;">{{$form->advice_producer_effective_date}}</span>
+                for the lines of business shown above, currently in force or submitted
+                by application.
+            </p>
+
+            <p class="" style="font-weight: bold; font-size: 14px; margin-top: 10px;">
+                This authorization replaces any other authorization that may have been
+                previously completed for any other insurance representative for the
+                stated lines of business.
+            </p>
+        </div>
+
+        <div class="mt-1" style="justify-self: center ; width: 80%;">
+            <div>
+                {{-- <div style="width: 70%; float: left; margin-right: 15px;">
+                    <div class="signature-line mt-[0.4in]">
+                        <input type="text" class="line-input" name="insured_title" placeholder="Title">
+                        <span class="line-label">TITLE (IF APPLICABLE)</span>
                     </div>
                 </div>
+                <div style="width: 15%; align-content:end">
+                    <div class="signature-line mt-[0.4in]">
+                        <input type="text" class="line-input">
+                        <span class="line-label">TITLE (IF APPLICABLE)</span>
+                    </div>
+                </div> --}}
+
+                <table style="width: 100%;">
+                    <tr>
+                        <td colspan="2" style="border: none;">
+                            <div style="text-align: center;">
+                                <p id="print-insuredSignature" style="border-bottom: 2px solid black;">{{ $form->insured_signature ?? '' }}</p>
+                                <p class="line-label" style="margin-top:5px;">INSURED'S SIGNATURE</p>
+                            </div>
+                        </td>
+                        <td style="border: none;">
+                            <div style="text-align: center;">
+                                <p id="print-signatureDate" style="border-bottom: 2px solid black;">{{ $form->issued_date ?? '' }}</p>
+                                <p class="line-label" style="margin-top:5px;">DATE</p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="text-align: center;margin-bottom: 3%;margin-top: 3%;">
+                <p id="print-title" style="border-bottom: 2px solid black;">{{ $form->insured_title ?? '' }}</p>
+                <p class="line-label" style="margin-top:5px;">TITLE (IF APPLICABLE)</p>
+            </div>
+
+            <div style="text-align: center;margin-bottom: 3%;margin-top: 3%;">
+                <p id="print-companyName" style="border-bottom: 2px solid black;">{{ $form->insured_company_name ?? '' }}</p>
+                <p class="line-label" style="margin-top:5px;">COMPANY NAME (IF APPLICABLE)</p>
+            </div>
+
+            <div style="text-align: center;margin-bottom: 3%;margin-top: 3%;">
+                <p id="print-insuredStreetAddress" style="border-bottom: 2px solid black;">{{ $form->insured_company_address ?? '' }}</p>
+                <p class="line-label text-left !left-0 " style="transform: translateX(0); margin-top:5px;">STREET ADDRESS OF
+                    INSURED</p>
+            </div>
+            <table style="width: 100%; " style="margin-top: 30px;">
+                <tr>
+                    <td colspan="2" style="border: none;">
+                        <div style="text-align: center;margin-bottom: 3%;margin-top: 3%;">
+                            <p id="print-insuredCityField" style="border-bottom: 2px solid black;">{{ $form->insured_company_city ?? '' }}</p>
+                            <p class="line-label" style="margin-top:5px;">City of Insured</p>
+                        </div>
+                    </td>
+                    <td style="border: none;">
+                        <div style="text-align: center;margin-bottom: 3%;margin-top: 3%;">
+                            <p id="print-insuredStateField" style="border-bottom: 2px solid black;">{{ $form->insured_company_state ?? '' }}</p>
+                            <p class="line-label" style="margin-top:5px;">State of Insured</p>
+                        </div>
+                    </td>
+                    <td style="border: none;">
+                        <div style="text-align: center;margin-bottom: 3%;margin-top: 3%;">
+                            <p id="print-insuredZipField" style="border-bottom: 2px solid black;">{{ $form->insured_company_zipcode ?? '' }}</p>
+                            <p class="line-label" style="margin-top:5px;">Zipcode of Insured</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <!-- <td></td> -->
+
+                </tr>
+            </table>
+            <div class="signature-address-line-container" style="margin-top: 30px;">
+
+
+
+            </div>
         </div>
+        <div class="footer-content">
+            <div class="flex-shrink-0" style="font-weight: bold; font-size: 9px;">
+                ACORD 38 (2007/01)
+            </div>
+            <div class="footer-copyright" style=" font-weight: bold; font-size: 9px;">
+                &copy; ACORD CORPORATION 1996-2007. All rights reserved.
+            </div>
+        </div>
+        <p style="text-align: center; font-weight: bold; font-size: 9px; margin-top: 10px;">The ACORD name and logo are
+            registered marks of ACORD</p>
     </div>
-</div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    window.addEventListener('load', function () {
-        // window.print();
-    });
-</script>
-</body>
-
-</html>
+@endsection

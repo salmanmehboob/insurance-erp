@@ -234,9 +234,25 @@ Route::middleware(['auth'])->group(function () {
     Route::get('general/liability/form/{id}/create', [FormsController::class, 'CreateGeneralLiabilityForm'])->name('create-general-liability-form');
     Route::post('store/general/liability', [FormsController::class, 'storeGeneralLiabilityForm'])->name('store-general-liability');
 
-    // COMMERCIAL GENERAL LIABILITY SECTION
+    // INSURANCE APPLICATION FORM
     Route::get('insurance/application/form/{id}/create', [FormsController::class, 'CreateInsuranceApplicationForm'])->name('create-insurance-application-form');
     Route::post('store/insurance/application', [FormsController::class, 'storeInsuranceApplicationForm'])->name('store-insurance-application');
+
+    // Commercial APPLICATION FORM
+    Route::get('commercial/insurance/application/form/{id}/create', [FormsController::class, 'CreateCommercialInsuranceApplicationForm'])->name('create-commercial-insurance-application-form');
+    Route::post('store/commercial/insurance/application', [FormsController::class, 'storeCommercialInsuranceApplicationForm'])->name('store-commercial-insurance-application');
+
+    // Installation Builder Risk
+    Route::get('installation/builder/risk/form/{id}/create', [FormsController::class, 'CreateInstallationBuilderRiskForm'])->name('create-installation-builder-risk-form');
+    Route::post('store/installation/builder/risk', [FormsController::class, 'storeInstallationBuilderRisk'])->name('store-installation-builder-risk');
+   
+    // Property Section
+    Route::get('property/section/form/{id}/create', [FormsController::class, 'CreatePropertySectionForm'])->name('create-property-section-form');
+    Route::post('store/property/section', [FormsController::class, 'storePropertySection'])->name('store-property-section');
+
+    // Dwelling Fire Application
+    Route::get('dwelling/fire/application/{id}/create', [FormsController::class, 'CreateDwellingForm'])->name('create-dwelling-application-form');
+    Route::post('store/dwelling/fire', [FormsController::class, 'storeDwellingForm'])->name('store-dwelling-application');
 
 
     Route::get('/create/{type}/{client_id}', [FormsController::class, 'showUploadForm'])->name('show-upload-form');

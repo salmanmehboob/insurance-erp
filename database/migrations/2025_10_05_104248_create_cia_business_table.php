@@ -1,0 +1,131 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('cia_business', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('commerical_appId')->constrained('commercial_insurance_applications')->onDelete('cascade');
+            $table->text('natureB_apartments')->nullable();
+            $table->text('natureB_contractor')->nullable();
+            $table->text('natureB_manufacturing')->nullable();
+            $table->text('natureB_restaurant')->nullable();
+            $table->text('natureB_service')->nullable();
+            $table->text('natureB_otherCheck')->nullable();
+            $table->text('natureB_otherCheck_field')->nullable();
+            $table->text('natureB_dateBusiness')->nullable();
+            $table->text('natureB_condomin')->nullable();
+            $table->text('natureB_institutional')->nullable();
+            $table->text('natureB_office')->nullable();
+            $table->text('natureB_retail')->nullable();
+            $table->text('natureB_wholesale')->nullable();
+            $table->text('natureB_primary_description',)->nullable();
+            $table->text('natureB_retailStore')->nullable();
+            $table->text('natureB_installationService')->nullable();
+            $table->text('natureB_premisesInstallation')->nullable();
+            $table->text('natureB_operationDescription')->nullable();
+            $table->text('addit_nameAddress')->nullable();
+            $table->text('addit_Rank')->nullable();
+            $table->text('addit_additionalInsured')->nullable();
+            $table->text('addit_beachWarranty')->nullable();
+            $table->text('addit_coOwner')->nullable();
+            $table->text('addit_employeeLessor')->nullable();
+            $table->text('addit_leasebackOwner')->nullable();
+            $table->text('addit_lenderLoss')->nullable();
+            $table->text('addit_otherCheck')->nullable();
+            $table->text('addit_otherCheckField')->nullable();
+            $table->text('addit_lienholder')->nullable();
+            $table->text('addit_lossPayee')->nullable();
+            $table->text('addit_mortgagee')->nullable();
+            $table->text('addit_owner')->nullable();
+            $table->text('addit_registrant')->nullable();
+            $table->text('addit_trustee')->nullable();
+            $table->text('addit_eviCertificate')->nullable();
+            $table->text('addit_eviPolicy')->nullable();
+            $table->text('addit_eviSendBill')->nullable();
+            $table->text('addit_reference')->nullable();
+            $table->text('addit_location')->nullable();
+            $table->text('addit_building')->nullable();
+            $table->text('addit_vehicle')->nullable();
+            $table->text('addit_boat')->nullable();
+            $table->text('addit_airport')->nullable();
+            $table->text('addit_aircraft')->nullable();
+            $table->text('addit_itemclass')->nullable();
+            $table->text('addit_item')->nullable();
+            $table->text('addit_itemDescription')->nullable();
+            $table->text('addit_refLoan')->nullable();
+            $table->text('addit_interestEDate')->nullable();
+            $table->text('addit_lienAmount')->nullable();
+            $table->text('addit_phone')->nullable();
+            $table->text('addit_fax')->nullable();
+            $table->text('addit_reasonFInterest')->nullable();
+            $table->text('addit_emailAdd')->nullable();
+            $table->text('generalInfo_q1A_parentCompany')->nullable();
+            $table->text('generalInfo_q1A_Relationship')->nullable();
+            $table->text('generalInfo_q1A_owned')->nullable();
+            $table->text('generalInfo_q1B_parentCompany')->nullable();
+            $table->text('generalInfo_q1B_Relationship')->nullable();
+            $table->text('generalInfo_q1B_owned')->nullable();
+            $table->text('generalInfo_q2')->nullable();
+            $table->text('generalInfo_q3_explosive')->nullable();
+            $table->text('generalInfo_q4_t1r1_lBusiness')->nullable();
+            $table->text('generalInfo_q4_t1r1_policy')->nullable();
+            $table->text('generalInfo_q4_t1r2_lBusiness')->nullable();
+            $table->text('generalInfo_q4_t1r2_policy')->nullable();
+            $table->text('generalInfo_q4_t2r1_lBusiness')->nullable();
+            $table->text('generalInfo_q4_t2r1_policy')->nullable();
+            $table->text('generalInfo_q4_t2r2_lBusiness')->nullable();
+            $table->text('generalInfo_q4_t2r2_policy')->nullable();
+            $table->text('generalInfo_q5')->nullable();
+            $table->text('generalInfo_q6')->nullable();
+            $table->text('generalInfo_q7')->nullable();
+            $table->text('generalInfo_q8_r1_occurDate')->nullable();
+            $table->text('generalInfo_q8_r1_explanation')->nullable();
+            $table->text('generalInfo_q8_r1_resolution')->nullable();
+            $table->text('generalInfo_q8_r1_resolveDate')->nullable();
+            $table->text('generalInfo_q8_r2_occurDate')->nullable();
+            $table->text('generalInfo_q8_r2_explanation')->nullable();
+            $table->text('generalInfo_q8_r2_resolution')->nullable();
+            $table->text('generalInfo_q8_r2_resolveDate')->nullable();
+            $table->text('generalInfo_q9_r1_occurDate')->nullable();
+            $table->text('generalInfo_q9_r1_explanation')->nullable();
+            $table->text('generalInfo_q9_r1_resolution')->nullable();
+            $table->text('generalInfo_q9_r1_resolveDate')->nullable();
+            $table->text('generalInfo_q9_r2_occurDate')->nullable();
+            $table->text('generalInfo_q9_r2_explanation')->nullable();
+            $table->text('generalInfo_q9_r2_resolution')->nullable();
+            $table->text('generalInfo_q9_r2_resolveDate')->nullable();
+            $table->text('generalInfo_q10_r1_occurDate')->nullable();
+            $table->text('generalInfo_q10_r1_explanation')->nullable();
+            $table->text('generalInfo_q10_r1_resolution')->nullable();
+            $table->text('generalInfo_q10_r1_resolveDate')->nullable();
+            $table->text('generalInfo_q10_r2_occurDate')->nullable();
+            $table->text('generalInfo_q10_r2_explanation')->nullable();
+            $table->text('generalInfo_q10_r2_resolution')->nullable();
+            $table->text('generalInfo_q10_r2_resolveDate')->nullable();
+            $table->text('generalInfo_q11')->nullable();
+            $table->text('generalInfo_q12')->nullable();
+            $table->text('generalInfo_q13')->nullable();
+            $table->text('generalInfo_q14')->nullable();
+            $table->text('generalInfo_q15')->nullable();
+            $table->text('agencyID')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('cia_business');
+    }
+};

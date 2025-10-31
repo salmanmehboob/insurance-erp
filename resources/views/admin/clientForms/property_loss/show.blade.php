@@ -1,972 +1,1266 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROPERTY LOSS NOTICE</title>
+@extends('admin.layouts.form')
+@push('styles')
     <style>
-        /* Reset and base styles */
-        * {
+        .acord-logo {
+            height: 55pt !important;
+            vertical-align: middle;
+            margin-right: 5pt;
+        }
+
+        /* Base styles for screen viewing and print intent */
+        body {
+            font-family: 'Arial', sans-serif;
+            /* Common form font */
+            font-size: 9pt;
+            /* Base font size, uses points for print accuracy */
+            color: #000;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-            font-size: 10pt;
+            display: flex;
+            /* For centering the form on screen */
+            justify-content: center;
+            background-color: #f0f0f0;
+            /* Light background for screen view */
         }
 
-        body {
-            margin-top: 2%;
-        }
-
-        /* Form container */
         .form-container {
             width: 8.5in;
-            margin: 0 auto;
-            border: 1px solid #000;
+            /* Standard US Letter width */
+            min-height: 11in;
+            /* Standard US Letter height */
+            padding: 0.5in;
+            /* Consistent margin inside the form content */
+            box-sizing: border-box;
+            /* Padding included in width/height */
+            background-color: white;
+            border: 1px solid #ccc;
+            /* Optional: visual boundary on screen */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for screen view */
         }
 
-        /* Header */
-        .header {
+        /* Reusable Form Field Line (Label + Underline Input) */
+        .form-field-line {
             display: flex;
-            border-bottom: 1px solid #000;
+            /* align-items: flex-end; Aligns label baseline with input line */
+            margin-bottom: 0.08in;
+            /* Vertical spacing between form lines */
+            line-height: 1.0;
+            /* Tighter line height for labels */
         }
 
-        .logo-section {
-            width: 15%;
-            padding: 5px;
+        .form-field-line label {
+            /* white-space: nowrap; Prevent label from wrapping */
+            font-size: 8pt;
+            /* Label font size */
+            color: #333;
+            /* flex-shrink: 0; Prevent label from shrinking */
+            margin-right: 4pt;
+            /* Space between label and input */
+            padding-bottom: 0.5pt;
+            /* Fine-tune label baseline alignment */
         }
 
-        .logo {
-            max-width: 100%;
-            height: auto;
+        .form-field-line input[type="text"] {
+            flex-grow: 1;
+            /* Input takes remaining width */
+            border: none;
+            border-bottom: 0.5pt solid black;
+            /* The underline */
+            padding: 0 2pt;
+            font-size: 8pt;
+            /* Input text size */
+            height: 11pt;
+            /* Explicit height to control line vertical position */
+            background-color: transparent;
+            box-sizing: border-box;
+            line-height: 1;
+            /* Keep input text tight */
         }
 
-        .title-section {
-            width: 60%;
+        /* Specific styles for multi-part address lines (e.g., Pasadena TX 77504) */
+        .address-line-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            border-right: 1px solid #000;
+            align-items: flex-end;
+            margin-bottom: 0.08in;
+            /* Consistent spacing */
+            gap: 0.2in;
+            /* Horizontal space between City, State, Zip groups */
         }
 
-        .title {
-            font-size: 16pt;
-            font-weight: bold;
+        .address-line-item {
+            display: flex;
+            align-items: flex-end;
+            line-height: 1.0;
         }
 
-        .date-section {
-            width: 25%;
-            border-bottom: 1px solid #000;
+        .address-line-item label {
+            white-space: nowrap;
+            font-size: 8pt;
+            color: #333;
+            flex-shrink: 0;
+            margin-right: 4pt;
+            padding-bottom: 0.5pt;
         }
 
-        .date-label {
-            padding: 5px;
+        .address-line-item input[type="text"] {
+            border: none;
+            border-bottom: 0.5pt solid black;
+            padding: 0 2pt;
+            font-size: 8pt;
+            height: 11pt;
+            background-color: transparent;
+            box-sizing: border-box;
+            line-height: 1;
+        }
+
+        .address-line-item.city input {
+            width: 80pt;
+            flex-grow: 0;
+        }
+
+        .address-line-item.state input {
+            width: 30pt;
+            flex-grow: 0;
+        }
+
+        .address-line-item.zip input {
+            width: 45pt;
+            flex-grow: 0;
+        }
+
+
+        /* Header Section Styling */
+        .header-title {
+            font-size: 14pt;
             font-weight: bold;
             text-align: center;
-
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .date-value {
-            padding: 5px;
+        .acord-logo {
+            height: 18pt;
+            /* Height based on typical logo size */
+            vertical-align: middle;
+            margin-right: 5pt;
+        }
+
+        /* Smallest font for the date label */
+        .date-field-label {
+            font-size: 6.5pt;
+        }
+
+        /* Date input needs to be right-aligned within its fixed width */
+        .date-input {
+            text-align: right;
+            width: 70pt;
+            /* Fixed width for the date input field */
+        }
+
+        table.insuredtable td {
+            padding: 5pt 3pt
+        }
+
+        /* Table styling */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            /* margin-top: 15pt; Space before table */
+            /* margin-bottom: 15pt; Space after table */
+        }
+
+        table th,
+        table td {
+            border: 0.5pt solid black;
+            /* Fine border for cells */
+            padding: 2pt 3pt;
+            /* Tight padding inside cells */
+            text-align: left;
+            vertical-align: middle;
+            /* Center content vertically */
+            font-size: 8pt;
+            line-height: 1.2;
+        }
+
+        table th {
+            font-weight: normal;
+            /* ACORD headers are usually not bold */
             text-align: center;
-            font-weight: bold;
+            background-color: #f8f8f8;
+            /* Very subtle header background */
         }
 
-        /* Form grid */
-        .grid-container {
+        /* Authorization Statement Text Styling */
+        .statement-text {
+            line-height: 1.3;
+            margin-bottom: 10pt;
+            font-size: 9pt;
+        }
+
+        .statement-text input {
+            border: none;
+            border-bottom: 0.5pt solid black;
+            font-size: 9pt;
+            /* Match surrounding text size */
+            padding: 0 2pt;
+            height: 12pt;
+            /* Ensure enough height for the line */
+            vertical-align: bottom;
+            /* Align with text baseline */
+            display: inline-block;
+            /* Allows width to be set */
+        }
+
+        /* Signature lines and labels */
+        .signature-line {
+            display: flex;
+            align-items: flex-end;
+            /* Align the label/title to the bottom of the line */
+            padding-bottom: 2pt;
+            /* Space below the line for clarity */
+            margin-top: 15pt;
+            /* Space between signature areas */
+            position: relative;
+            /* For absolute positioning of labels */
+        }
+
+        .signature-line .line-input {
+            flex-grow: 1;
+            border: none;
+            border-bottom: 0.5pt solid black;
+            height: 10pt;
+            /* Height for the actual line */
+            padding: 0 2pt;
+            font-size: 8pt;
+            /* For actual signature/printed name if typed */
+            background-color: transparent;
+        }
+
+        .signature-line .line-label {
+            position: absolute;
+            /* Position label below the line */
+            top: 12pt;
+            /* Adjust based on line-input height + label font size */
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 7pt;
+            font-weight: bold;
+            /* Labels often bold */
+            white-space: nowrap;
+        }
+
+        .signature-group {
+            display: flex;
+            width: 100%;
+            margin-top: 20pt;
+            /* Space before first signature block */
+        }
+
+        .signature-group>div {
+            flex: 1;
+            /* Each column takes equal width */
             display: flex;
             flex-direction: column;
+            align-items: flex-start;
         }
 
-        .grid-row {
+        .signature-group .date-field {
+            text-align: right;
+            /* For date label */
+            flex-grow: 1;
+            /* Take remaining space */
             display: flex;
-            border-bottom: 1px solid #000;
+            /* Make date field itself a flex container */
+            justify-content: flex-end;
+            /* Push content to the right */
+            align-items: flex-end;
         }
 
-        .grid-col {
-            border-right: 1px solid #000;
-            padding: 5px;
+        .signature-group .date-field .line-input {
+            width: 60pt;
+            /* Specific width for date input */
+            flex-grow: 0;
+            /* Don't let it grow */
+            text-align: right;
+            /* Text inside date field aligns right */
         }
 
-        .grid-col:last-child {
-            border-right: none;
+        .signature-group .date-field .line-label {
+            right: 0;
+            /* Align date label to the right */
+            left: auto;
+            /* Remove left constraint */
+            text-align: right;
+            bottom: -8pt;
+            /* Ensure label is below line */
         }
 
-        /* Grid column widths */
-        .col-60 {
-            width: 60%;
+        .signature-group .left-sig {
+            margin-right: 20pt;
+            /* Space between signature and date areas */
         }
 
-        .col-40 {
-            width: 100%;
+        /* Styling for City/State/Zip in the signature section */
+        .signature-address-line-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.2in;
+            /* Space above this line */
+            gap: 0.1in;
+            /* Small gap between City, State, Zip fields */
         }
 
-        .col-33 {
-            width: 33.33%;
+        .signature-address-line-item {
+            display: flex;
+            align-items: flex-end;
+            line-height: 1.0;
         }
 
-        .col-30 {
-            width: 30%;
-        }
-
-        .col-25 {
-            width: 25%;
-        }
-
-        .col-20 {
-            width: 20%;
-        }
-
-        .col-15 {
-            width: 15%;
-        }
-
-        .col-10 {
-            width: 10%;
-        }
-
-        /* Labels */
-        .label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 3px;
+        .signature-address-line-item input[type="text"] {
+            border: none;
+            border-bottom: 0.5pt solid black;
+            padding: 0 2pt;
             font-size: 8pt;
+            height: 11pt;
+            background-color: transparent;
+            box-sizing: border-box;
+            line-height: 1;
         }
 
-        .section-header {
-            font-weight: bold;
-            padding: 2px 5px;
-            text-align: center;
-            border-bottom: 1px solid #000;
+        .signature-address-line-item label {
+            white-space: nowrap;
+            font-size: 8pt;
+            color: #333;
+            flex-shrink: 0;
+            margin-left: 4pt;
+            /* Space between input and label */
+            padding-bottom: 0.5pt;
         }
 
-        /* Checkboxes */
-        .checkbox-container {
+        .signature-address-line-item.city input {
+            flex-grow: 1;
+        }
+
+        /* City input fills available space */
+        .signature-address-line-item.state input {
+            width: 25pt;
+            flex-grow: 0;
+        }
+
+        /* Fixed width for State */
+        .signature-address-line-item.zip input {
+            width: 45pt;
+            flex-grow: 0;
+        }
+
+        /* Fixed width for Zip */
+
+
+        /* Footer Section */
+        .footer-content {
             display: flex;
-            align-items: center;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 25pt;
+            /* Space from content above */
+            /* padding-top: 5pt; */
+            border-top: 0.5pt solid #ccc;
+            font-size: 6pt;
+            /* color: #555; */
         }
 
-        .checkbox {
-            width: 10px;
-            height: 10px;
-            border: 1px solid #000;
-            display: inline-block;
-            margin-right: 5px;
-        }
-
-        /* Value fields */
-        .value {
-            min-height: 15px;
-        }
-
-        .text-center {
+        .footer-copyright {
+            /* flex-grow: 1; */
             text-align: center;
         }
 
-        .indent {
-            padding-left: 15px;
+        .checkboxtd span {
+            vertical-align: super;
         }
 
-        /* Specific section styles */
-        .tall-section {
-            min-height: 120px;
+        .checkboxtd td {
+            border: 0;
         }
 
-        /* Print styles */
+        /* PRINT MEDIA QUERIES - CRITICAL for accurate printing */
         @media print {
+            .page-break {
+                page-break-after: always;
+
+            }
+
             body {
-                padding: 0;
                 background-color: white;
+                /* No background on print */
+                margin: 0;
+                padding: 0;
+                display: block;
+                /* Remove flex on print to avoid centering issues */
+                -webkit-print-color-adjust: exact;
+                /* Crucial for background colors/borders */
+                print-color-adjust: exact;
+                orphans: 3;
+                /* Prevent single lines at page breaks */
+                widows: 3;
+                /* Prevent single lines at page breaks */
             }
 
             .form-container {
-                width: 100%;
+                border: none;
+                /* Remove screen-only border on print */
                 box-shadow: none;
+                /* Remove screen-only shadow on print */
+                margin: 0;
+                /* Remove auto margins on print */
+                padding: 0.5in;
+                /* Keep internal padding as form margin */
+                width: 8.5in;
+                height: 11in;
+            }
+
+            /* Ensure all inputs and text align perfectly for print */
+            input[type="text"] {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                vertical-align: baseline;
+                /* Align text exactly on the baseline */
+                padding-bottom: 0;
+                /* Remove any padding that might push text off line */
+                height: auto;
+                /* Let content determine height, but maintain min-height */
+                min-height: 11pt;
+                /* Maintain minimum line height for input areas */
+            }
+
+            .form-field-line label,
+            .address-line-item label,
+            .signature-address-line-item label {
+                padding-bottom: 0;
+                /* Ensure labels are tightly aligned */
+            }
+
+            .signature-line .line-label {
+                bottom: -7pt;
+                /* Fine-tune label position below signature lines for print */
+            }
+
+            .statement-text input {
+                height: auto;
+                min-height: 12pt;
+            }
+
+            /* Adjust grid gaps if they cause issues on print, sometimes unitless works best */
+            .grid {
+                /* You might need to override Tailwind's responsive gaps if they break print layout */
+                /* gap: 0; will remove all gaps, then re-add specific ones if needed */
+                /* For example: */
+                /* column-gap: 0.5in !important; */
+                /* row-gap: 0.1in !important; */
+            }
+
+            .grid>div {
+                padding: 0;
+                /* Ensure no unwanted padding from Tailwind on grid cells */
+            }
+
+            /* Prevent elements from being split across page breaks where possible */
+            .signature-group,
+            .statement-text,
+            table {
+                page-break-inside: avoid;
+            }
+
+            table thead {
+                display: table-header-group;
+                /* Ensure table headers repeat on new page */
+            }
+
+            table tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
             }
         }
 
-        .ins-form-body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .ins-form-table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-            margin-bottom: 20px;
-        }
-
-        .ins-form-table td,
-        .ins-form-table th {
-            border: 1px solid black;
-            padding: 3px 5px;
-            vertical-align: top;
-            font-size: 12px;
-        }
-
-        .ins-form-header {
-            font-weight: bold;
-
-        }
-
-        .ins-form-section-header {
-            font-weight: bold;
-
-        }
-
-        .ins-form-checkbox-container {
-            display: inline-block;
-            margin-right: 5px;
-        }
-
-        .ins-form-checkbox {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border: 1px solid black;
-            margin-right: 3px;
-            vertical-align: middle;
-        }
-
-        .ins-form-small-text {
-            font-size: 10px;
-        }
-
-        .ins-form-label {
-            font-size: 10px;
-            text-transform: uppercase;
-        }
-
-        .ins-form-footer {
-            font-size: 10px;
-            text-align: center;
-            margin-top: 5px;
-        }
-
-        .ins-form-description-box {
-            height: 200px;
-        }
-
-        .ins-form-checkbox-block {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .ins-form-checkbox-item {
-            width: 25%;
-        }
-
-        .footer {
-            position: absolute;
-
-            width: calc(8.5in - 40px); /* Adjust for padding */
-            text-align: right;
-            font-size: 12px;
+        .kol-table td {
+            border: 0;
         }
     </style>
-</head>
-<body>
-<div class="container">
-    <div class="print-button">
-        <button class="btn btn-primary" onclick="printOriginal()">Print</button>
-    </div>
+@endpush
+@section('content')
 
     <div class="form-container">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo-section">
-                <img src="https://i.ibb.co/bYYGFHD/Untitled-design-11.png" width="50px" height="auto" alt="ACORD"
-                     class="logo">
+        <div class="flex justify-between items-end">
+            <div class="text-xs font-bold mr-4 flex-shrink-0" style="font-size: 9pt;">
+                <img src="{{asset('backend/img/acord-logo.png')}}" alt="ACORD Logo" class="acord-logo">
+
             </div>
-            <div class="title-section">
-                <span class="title">PROPERTY LOSS NOTICE</span>
+            <div class="flex-grow header-title">
+                PROPERTY LOSS NOTICE
             </div>
-            <div class="date-section">
-                <div class="date-label">DATE (MM/DD/YYYY)</div>
-                <div class="date-value">{{$form->invoice_date}}</div>
+            <div class="text-right flex-shrink-0 ml-4" style="border:1px solid #000; padding: 1px 5px;">
+                <div class="" style="text-align: center;">
+                    <label class="date-field-label">DATE (MM/DD/YYYY):</label>
+                    <p>{{$form->invoice_date}}</p>
+                </div>
             </div>
         </div>
 
-        <!-- Agency Info -->
-        <div class="grid-row">
-            <div class="grid-col col-60">
-                <div class="label">AGENCY</div>
-                <div class="value">
-                    {{$form->agency_name}}<br>
-                    {{$form->agency_address}}<br><br>
-                    {{$form->agency_city}}, {{$form->agency_state}} {{$form->agency_zipcode}}
+        <div class="grid grid-cols-2  gap-y-[0.1in]" style="border: 1px solid black;">
+            <div style="border-right: 1px solid black; margin-top: 5px ;">
+                <div class="form-field-line">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td rowspan="2" style="border: none;">New Agency</td>
+
+                        </tr>
+
+                    </table>
+                    <!-- <label>NEW AGENCY</label>
+                                <input type="text" value="" class="flex-grow"> -->
+                </div>
+                <div class="form-field-line">
+                    <p style="padding: 2px 5px;">
+                        {{$form->agency_name}}
+                    </p><br>
+                    <p style="padding: 2px 5px;">
+                        {{$form->agency_address}}
+                    </p>
+                </div>
+                <div class="form-field-line" style="margin-bottom: 0; ">
+                    <table style="width: 100%; border: none; ">
+                        <tr>
+                            <td colspan="2">
+                                {{ $form->agency_city}}
+                            </td>
+                            <td>{{ $form->agency_state}}</td>
+                            <td colspan="2">{{ $form->agency_zipcode}}</td>
+                        </tr>
+
+                    </table>
+
+                </div>
+                <div class="form-field-line" style="margin-bottom: 0;">
+
+                    <table style="width: 100%; ">
+                        <tr>
+
+                            <td colspan="2">Contact : {{$form->agency_contact_name}}</td>
+                        </tr>
+                        <tr>
+
+                            <td colspan="2">Phone : {{$form->agency_phone}}</td>
+                        </tr>
+                        <tr>
+
+                            <td colspan="2">Fax : {{$form->agency_fax}}</td>
+                        </tr>
+                        <tr>
+
+
+                            <td colspan="2">Email : {{$form->agency_email}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>CODE : {{$form->agency_code}}</td>
+                            <td>SUBCODE : {{$form->agency_subcode}}</td>
+                        </tr>
+                        <tr>
+
+                            <td colspan="2">AGENCY CUSTOMER ID : {{$form->agency_customer_id}}</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+
+            <div style="margin-top: 5px ">
+                <table>
+                    <tr>
+                        <td>Insured Location Code <br> {{$form->location_code}}</td>
+                        <td>Date of loss an time <br> {{$form->date_of_loss}}</td>
+                        <td><input type="checkbox" {{($form->time_of_loss == 'am') ? 'checked disabled' : 'disabled'}}> AM <br> <input type="checkbox"
+                                {{($form->time_of_loss == 'pm') ? 'checked disabled' : 'disabled'}}> PM </td>
+                    </tr>
+                </table>
+                <h5 style="text-align: center; font-size: 10px ; font-weight: 600;">Priority Home Policy</h5>
+                <table>
+                    <tr>
+                        <td>CARRIER <br> {{$form->property_carrier}}</td>
+
+                        <td>Niac Code <br>{{$form->property_naic_code}}</td>
+                    </tr>
+                    <tr>
+                        <td>Policy Number <br> {{$form->property_policy_number}}</td>
+
+                        <td>Line of Business <br> {{$form->property_business}}</td>
+                    </tr>
+                </table>
+                <h5 style="text-align: center; font-size: 10px ; font-weight: 600;">Flood Policy</h5>
+                <table>
+                    <tr>
+                        <td>CARRIER <br>{{$form->flood_carrier}}</td>
+
+                        <td>Niac Code <br>{{$form->flood_naic_code}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Policy Number <br> {{$form->flood_policy_number}}</td>
+
+                    </tr>
+                </table>
+                <h5 style="text-align: center; font-size: 10px ; font-weight: 600;">Wind Policy</h5>
+                <table>
+                    <tr>
+                        <td>CARRIER <br> {{$form->wind_carrier}}</td>
+
+                        <td>Niac Code <br> {{$form->wind_naic_code}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Policy Number <br> {{$form->wind_policy_number}}</td>
+
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+        <div style="font-size: 12px; font-weight: 600; margin-top: 5px; margin-bottom: -5px;">Insured</div>
+        <div class="grid grid-cols-2  gap-y-[0.1in]" style="border: 1px solid black; margin-top: 10px;">
+            <div style="">
+                <table>
+                    <tr>
+                        <td colspan="3">
+                            NAME OF INSURED (First, Middle, Last) <br> {{$form->insured_name}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Date of birth <br> {{$form->insured_dob}}</td>
+                        <td>FEIN <br> {{$form->insured_fein}}</td>
+                        <td>Marital status <br> {{$form->insured_marital_status}} </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><span>Primary Phone : </span> {{$form->insured_phone_primary}} <br>
+                            <div>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="insured_phone_primary_type" {{$form->insured_phone_primary_type == 'home' ? 'checked disabled' : 'disabled'}}>
+                                    <span class="ins-form-small-text">HOME</span>
+                                </span>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="insured_phone_primary_type" {{$form->insured_phone_primary_type == 'bus' ? 'checked disabled' : 'disabled'}} 
+                                        class="ins-form-checkbox">
+                                    <span class="ins-form-small-text">BUS</span>
+                                </span>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="insured_phone_primary_type" {{$form->insured_phone_primary_type == 'cell' ? 'checked disabled' : 'disabled'}} 
+                                        class="ins-form-checkbox">
+                                    <span class="ins-form-small-text">CELL</span>
+                                </span>
+                            </div>
+                        </td>
+                        <td>Secondary Phone : </span> {{$form->insured_phone_secondary}} <br>
+                            <div>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="insured_phone_secondary_type" {{$form->insured_phone_secondary_type == 'home' ? 'checked disabled' : 'disabled'}}
+                                        class="ins-form-checkbox">
+                                    <span class="ins-form-small-text">HOME</span>
+                                </span>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="insured_phone_secondary_type" {{$form->insured_phone_secondary_type == 'bus' ? 'checked disabled' : 'disabled'}} 
+                                        class="ins-form-checkbox">
+                                    <span class="ins-form-small-text">BUS</span>
+                                </span>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="insured_phone_secondary_type" {{$form->insured_phone_secondary_type == 'cell' ? 'checked disabled' : 'disabled'}}
+                                        class="ins-form-checkbox">
+                                    <span class="ins-form-small-text">CELL</span>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Name of Spouse <br> {{$form->spouse_name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Date of birth <br> {{$form->spouse_dob}} </td>
+                        <td>FEIN <br> {{$form->spouse_fein}}</td>
+                        <td>Marital status <br> {{$form->spouse_marital_status}} </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Primary Phone <br> {{$form->spouse_phone_primary}} <br>
+                            <div>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="spouse_phone_primary_type" {{$form->spouse_phone_primary_type == 'home' ? 'checked disabled' : 'disabled'}}
+                                        class="ins-form-checkbox" checked>
+                                    <span class="ins-form-small-text">HOME</span>
+                                </span>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="spouse_phone_primary_type" {{$form->spouse_phone_primary_type == 'bus' ? 'checked disabled' : 'disabled'}}
+                                        class="ins-form-checkbox">
+                                    <span class="ins-form-small-text">BUS</span>
+                                </span>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="spouse_phone_primary_type" {{$form->spouse_phone_primary_type == 'cell' ? 'checked disabled' : 'disabled'}}
+                                        class="ins-form-checkbox">
+                                    <span class="ins-form-small-text">CELL</span>
+                                </span>
+                            </div>
+                        </td>
+                        <td>Secondary Phone <br> {{$form->spouse_phone_secondary}} <br>
+                            <div>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="spouse_phone_secondary_type" {{$form->spouse_phone_secondary_type == 'home' ? 'checked disabled' : 'disabled'}}
+                                        class="ins-form-checkbox">
+                                    <span class="ins-form-small-text">HOME</span>
+                                </span>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="spouse_phone_secondary_type" {{$form->spouse_phone_secondary_type == 'bus' ? 'checked disabled' : 'disabled'}}
+                                        class="ins-form-checkbox">
+                                    <span class="ins-form-small-text">BUS</span>
+                                </span>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="spouse_phone_secondary_type" {{$form->spouse_phone_secondary_type == 'cell' ? 'checked disabled' : 'disabled'}}
+                                        class="ins-form-checkbox">
+                                    <span class="ins-form-small-text">CELL</span>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+
+            </div>
+            <div style=" ">
+                <div class="form-field-line">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td rowspan="2" style="border: none;">Insured Mailing Addess</td>
+                        </tr>
+                    </table>
+                    <!-- <label>NEW AGENCY</label>
+                                <input type="text" value="" class="flex-grow"> -->
                 </div>
                 <div>
+                    <p style="padding: 2px 5px;">{{$form->insured_address}}</p>
+                </div>
+                <div style="margin-bottom: 0; ">
+                    <table style="width: 100%; border: none; ">
+                        <tr>
+                            <td colspan="2">{{$form->insured_city}}</td>
+                            <td>{{$form->insured_state}}</td>
+                            <td colspan="2">{{$form->insured_zipcode}}</td>
+                        </tr>
 
-                    <h3 style="border: solid 1px black;margin-left: -5px;width: 103.5%; font-weight: 100;"><b> Contact
-                            Name:</b> {{$form->agency_contact_name}}</h3>
+                    </table>
 
-                    <h3 style="border: solid 1px black;margin-left: -5px;width: 103.5%; font-weight: 100;"><b> Phone
-                            (A/C,No,Ext) :</b> {{$form->agency_phone}}</h3>
+                </div>
+                <div class="form-field-line" style="margin-bottom: 0;">
 
-                    <h3 style="border: solid 1px black;margin-left: -5px;width: 103.5%; font-weight: 100;"> FAX
-                        (A/C,No,Ext) :</b> {{$form->agency_fax}}</h3>
+                    <table style="width: 100%; ">
+                        <tr>
+                            <td colspan="2">Primary EMail : {{$form->insured_email_primary}} </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Secondary EMail : {{$form->insured_email_secondary}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <p style="padding: 2px 5px;">Spouse Mailing Addess <br> {{$form->spouse_address}}</p>
+                </div>
+                <div style="margin-bottom: 0; ">
+                    <table style="width: 100%; border: none; ">
+                        <tr>
+                            <td colspan="2">{{$form->spouse_city}}</td>
+                            <td>{{$form->spouse_state}}</td>
+                            <td colspan="2">{{$form->spouse_zipcode}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="form-field-line" style="margin-bottom: 0;">
 
-                    <h3 style="border: solid 1px black;margin-left: -5px;width: 103.5%; font-weight: 100;"><b> Email
-                            Address: </b> {{$form->agency_email}}</h3>
+                    <table style="width: 100%; ">
+                        <tr>
 
-                    <h3 style="border: solid 1px black;margin-left: -5px;width: 103.5%; font-weight: 100;"><b>
-                            Code:</b> {{$form->agency_code}}
-                        <b> Sub Code:</b> {{$form->agency_subcode}} </h3>
+                            <td colspan="2">Primary EMail : {{$form->spouse_email_primary}}</td>
+                        </tr>
+                        <tr>
 
-                    <h3 style="border: solid 1px black;margin-left: -5px;width: 103.5%; font-weight: 100;"> Agency
-                        Customer Id:{{$form->agency_customer_id}} </h3>
+                            <td colspan="2">Secondary EMail : {{$form->spouse_email_secondary}}</td>
+                        </tr>
+
+
+
+                    </table>
                 </div>
             </div>
 
-            <div class="grid-col col-40">
-                <div class="grid-row" style="border-top: none; border-left: none; border-right: none;">
-                    <div class="grid-col col-60" style="border-right: 1px solid #000;">
-                        <div class="label">INSURED LOCATION CODE</div>
-                        <div class="value">{{$form->location_code}}</div>
-                    </div>
-                    <div class="grid-col col-40">
-                        <div class="label">DATE OF LOSS AND TIME : {{$form->date_of_loss}}</div>
-                        <div class="value">
-                            <div style="display: flex; justify-content: flex-end; padding-top: 5px;">
-                                <div class="checkbox-container" style="margin-right: 10px;">
-                                    <input type="checkbox"  {{($form->time_of_loss == 'am') ? 'checked' : ''}}>
-                                    <span>AM</span>
-                                </div>
-                                <div class="checkbox-container">
-                                    <input type="checkbox"  {{($form->time_of_loss == 'pm') ? 'checked' : ''}}>
-                                    <span>PM</span>
 
-                                </div>
+        </div>
+        <div style="display: flex; margin-top: 5px;">
+            <div style="font-size: 12px; font-weight: 600;  margin-bottom: -5px;">Contact</div>
+        </div>
+
+        <div class="grid grid-cols-2  gap-y-[0.1in]" style="border: 1px solid black; margin-top: 10px;">
+            <div style="">
+                <table>
+                    <tr>
+                        <td colspan="3">Name of Contact <br> {{$form->contact_name}}</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">Primary Phone <br> {{$form->contact_phone_primary}} <br>
+                            <div>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="contact_phone_primary_type" {{$form->contact_phone_primary_type == 'home' ? 'checked disabled' : 'disabled'}}
+                                        class="ins-form-checkbox" checked>
+                                    <span class="ins-form-small-text">HOME</span>
+                                </span>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="contact_phone_primary_type" {{$form->contact_phone_primary_type == 'bus' ? 'checked disabled' : 'disabled'}}
+                                        class="ins-form-checkbox">
+                                    <span class="ins-form-small-text">BUS</span>
+                                </span>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="contact_phone_primary_type" {{$form->contact_phone_primary_type == 'cell' ? 'checked disabled' : 'disabled'}}
+                                        class="ins-form-checkbox">
+                                    <span class="ins-form-small-text">CELL</span>
+                                </span>
                             </div>
-                        </div>
-                    </div>
+                        </td>
+                        <td>Secondary Phone <br> {{$form->contact_phone_secondary}} <br>
+                            <div>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="contact_phone_secondary_type" {{$form->contact_phone_secondary_type == 'home' ? 'checked disabled' : 'disabled'}}
+                                        class="ins-form-checkbox" checked>
+                                    <span class="ins-form-small-text">HOME</span>
+                                </span>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="contact_phone_secondary_type" {{$form->contact_phone_secondary_type == 'bus' ? 'checked disabled' : 'disabled'}}
+                                        class="ins-form-checkbox">
+                                    <span class="ins-form-small-text">BUS</span>
+                                </span>
+                                <span class="ins-form-checkbox-container">
+                                    <input type="radio" name="contact_phone_secondary_type" {{$form->contact_phone_secondary_type == 'cell' ? 'checked disabled' : 'disabled'}}
+                                        class="ins-form-checkbox">
+                                    <span class="ins-form-small-text">CELL</span>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">When to contact <br> {{$form->contact_when}}</td>
+                    </tr>
+
+                </table>
+
+
+            </div>
+            <div style=" ">
+                <div class="form-field-line">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td rowspan="2" style="border: none;">Contact Mailing Addess<br> {{$form->contact_address}}</td>
+                        </tr>
+                    </table>
+                    <!-- <label>NEW AGENCY</label>
+                                <input type="text" value="" class="flex-grow"> -->
+                </div>
+                <div style="margin-bottom: 0; ">
+                    <table style="width: 100%; border: none; ">
+                        <tr>
+                            <td colspan="2">{{$form->contact_city}}</td>
+                            <td>{{$form->contact_state}}</td>
+                            <td colspan="2">{{$form->contact_zipcode}}</td>
+                        </tr>
+                    </table>
                 </div>
 
-                <div class="section-header">PROPERTY / HOME POLICY</div>
-                <div class="grid-row" style="border-top: none; border-left: none; border-right: none;">
-                    <div class="grid-col col-75" style="border-right: 1px solid #000;">
-                        <div class="label">CARRIER</div>
-                        <div class="value">{{$form->property_carrier}}</div>
-                    </div>
-                    <div class="grid-col col-25">
-                        <div class="label">NAIC CODE</div>
-                        <div class="value">{{$form->property_naic_code}}</div>
-                    </div>
-                </div>
-                <div class="grid-row" style="border-top: none; border-left: none; border-right: none;">
-                    <div class="grid-col col-60" style="border-right: 1px solid #000;">
-                        <div class="label">POLICY NUMBER</div>
-                        <div class="value">{{$form->property_policy_number}}</div>
-                    </div>
-                    <div class="grid-col col-40">
-                        <div class="label">LINE OF BUSINESS</div>
-                        <div class="value">{{$form->property_business}}</div>
-                    </div>
-                </div>
-                <div class="section-header">FLOOD POLICY</div>
-                <div class="grid-row" style="border-top: none; border-left: none; border-right: none;">
-                    <div class="grid-col col-75" style="border-right: 1px solid #000;">
-                        <div class="label">CARRIER</div>
-                        <div class="value">{{$form->flood_carrier}}</div>
-                    </div>
-                    <div class="grid-col col-25">
-                        <div class="label">NAIC CODE</div>
-                        <div class="value">{{$form->flood_naic_code}}</div>
-                    </div>
-                </div>
-                <div class="grid-row" style="border-top: none; border-left: none; border-right: none;">
-                    <div class="grid-col col-100">
-                        <div class="label">POLICY NUMBER</div>
-                        <div class="value">{{$form->flood_policy_number}}</div>
-                    </div>
-                </div>
-                <div class="section-header">WIND POLICY</div>
-                <div class="grid-row" style="border-top: none; border-left: none; border-right: none;">
-                    <div class="grid-col col-75" style="border-right: 1px solid #000;">
-                        <div class="label">CARRIER</div>
-                        <div class="value">{{$form->wind_carrier}}</div>
-                    </div>
-                    <div class="grid-col col-25">
-                        <div class="label">NAIC CODE</div>
-                        <div class="value">{{$form->wind_naic_code}}</div>
-                    </div>
-                </div>
-                <div class="grid-row" style="border-top: none; border-left: none; border-right: none;">
-                    <div class="grid-col col-100">
-                        <div class="label">POLICY NUMBER</div>
-                        <div class="value">{{$form->wind_policy_number}}</div>
-                    </div>
+
+                <div class="form-field-line" style="margin-bottom: 0;">
+
+                    <table style="width: 100%; ">
+                        <tr>
+                            <td colspan="2">Primary EMail : {{$form->contact_email_primary}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Secondary EMail : {{$form->contact_email_secondary}} </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
-        <!-- FIRST TABLE: INSURED INFO -->
-        <table class="ins-form-table">
+        <div style="font-size: 12px; font-weight: 600; margin-top: 5px; margin-bottom: -5px;">Loss</div>
+        <table style="width: 100%; margin-top: 20px;">
             <tr>
-                <td colspan="3" class="ins-form-header">INSURED</td>
+                <td>Location of loss:<br> {{$form->loss_location}}</td>
+                <td>Police or fire department contacted : {{$form->loss_police_contact}}</td>
             </tr>
-
             <tr>
-                <td colspan="2">
-                    <div class="ins-form-label">NAME OF INSURED (First, Middle, Last)</div>
-                    {{$form->insured_name}}
+                <td>Street:
+                    <br> {{$form->loss_address }}
+                    <br> {{$form->loss_city}} <br> {{$form->loss_state}}  <br> #333{{$form->loss_zipcode}}
                 </td>
-                <td>
-                    <div class="ins-form-label">INSURED'S MAILING ADDRESS</div>
-                    {{$form->insured_address}}<br><br>
-                    {{$form->insured_city}}   {{$form->insured_state}}   {{$form->insured_zipcode}}
-                </td>
+                <td rowspan="2" style="vertical-align: top;">Report Number : {{$form->loss_police_report}}</td>
             </tr>
-
             <tr>
-                <td>
-                    <div class="ins-form-label">DATE OF BIRTH</div>
-                    {{$form->insured_dob}}
-                </td>
-                <td>
-                    <div class="ins-form-label">FEIN (if applicable)</div>
-                    {{$form->insured_fein}}
-                </td>
-                <td>
-                    <div class="ins-form-label">MARITAL STATUS / CIVIL UNION (if applicable)</div>
-                    {{$form->insured_marital_status}}
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <div class="ins-form-label">PRIMARY PHONE #</div>
-                    {{$form->insured_phone_primary}}
-                    <div>
-                      <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->insured_phone_primary_type == 'home' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">HOME</span>
-                      </span>
-                        <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->insured_phone_primary_type == 'bus' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">BUS</span>
-                      </span>
-                        <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->insured_phone_primary_type == 'cell' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">CELL</span>
-                      </span>
-                    </div>
-                </td>
-                <td>
-                    <div class="ins-form-label">SECONDARY PHONE #</div>
-                    {{$form->insured_phone_secondary}}
-                    <div>
-                      <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->insured_phone_secondary_type == 'home' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">HOME</span>
-                      </span>
-                        <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->insured_phone_secondary_type == 'bus' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">BUS</span>
-                      </span>
-                        <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->insured_phone_secondary_type == 'cell' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">CELL</span>
-                      </span>
-                    </div>
-                </td>
-                <td>
-                    <div class="ins-form-label">PRIMARY E-MAIL ADDRESS:</div>
-                    {{$form->insured_email_primary}}
-                    <hr>
-                    <div class="ins-form-label">SECONDARY E-MAIL ADDRESS:</div>
-                    {{$form->insured_email_secondary}}
-                </td>
-            </tr>
-
-            <!-- SPOUSE SECTION -->
-            <tr>
-                <td colspan="2">
-                    <div class="ins-form-label">NAME OF SPOUSE :</div> {{$form->spouse_name}}
-                </td>
-                <td>
-                    <div class="ins-form-label">SPOUSE'S MAILING ADDRESS
-
-                    </div>
-                    {{$form->spouse_address}} <br>
-                    {{$form->spouse_city}} {{$form->spouse_state}} {{$form->spouse_zipcode}}
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <div class="ins-form-label">DATE OF BIRTH :</div>
-                    {{$form->spouse_dob}}
-                </td>
-                <td>
-                    <div class="ins-form-label">FEIN (if applicable) :</div> {{$form->spouse_fein}}
-                </td>
-                <td>
-                    <div class="ins-form-label">MARITAL STATUS / CIVIL UNION :</div> {{$form->spouse_marital_status}}
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <div class="ins-form-label">PRIMARY PHONE #</div>
-                    {{$form->spouse_phone_primary}}
-                    <div>
-                      <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->spouse_phone_primary_type == 'home' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">HOME</span>
-                      </span>
-                        <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->spouse_phone_primary_type == 'bus' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">BUS</span>
-                      </span>
-                        <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->spouse_phone_primary_type == 'cell' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">CELL</span>
-                      </span>
-                    </div>
-                </td>
-                <td>
-                    <div class="ins-form-label">SECONDARY PHONE #</div>
-                    {{$form->spouse_phone_secondary}}
-                    <div>
-                      <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->spouse_phone_secondary_type == 'home' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">HOME</span>
-                      </span>
-                        <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->spouse_phone_secondary_type == 'bus' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">BUS</span>
-                      </span>
-                        <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->spouse_phone_secondary_type == 'cell' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">CELL</span>
-                      </span>
-                    </div>
-                </td>
-                <td>
-                    <div class="ins-form-label">PRIMARY E-MAIL ADDRESS:</div>
-                    {{$form->spouse_email_primary}}
-                    <hr>
-                    <div class="ins-form-label">SECONDARY E-MAIL ADDRESS:</div>
-                    {{$form->spouse_email_secondary}}
-                </td>
-            </tr>
-
-            <!-- CONTACT SECTION -->
-            <tr>
-                <td colspan="3" class="ins-form-header">CONTACT</td>
-
+                <td>Country : {{$form->loss_country}}</td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <div class="ins-form-label">NAME OF CONTACT</div>
-                    {{$form->contact_name}}
-                </td>
-                <td>
-                    <div class="ins-form-label">CONTACT'S MAILING ADDRESS</div>
-                    {{$form->contact_address}} <br>
-                    {{$form->contact_city}} {{$form->contact_state}} {{$form->contact_zipcode}}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="ins-form-label">PRIMARY PHONE #</div>
-                    {{$form->contact_phone_primary}}
-                    <div>
-                      <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->contact_phone_primary_type == 'home' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">HOME</span>
-                      </span>
-                        <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->contact_phone_primary_type == 'bus' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">BUS</span>
-                      </span>
-                        <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->contact_phone_primary_type == 'cell' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">CELL</span>
-                      </span>
-                    </div>
-                </td>
-                <td>
-                    <div class="ins-form-label">SECONDARY PHONE #</div>
-                    {{$form->contact_phone_secondary}}
-                    <div>
-                      <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->contact_phone_secondary_type == 'home' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">HOME</span>
-                      </span>
-                        <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->contact_phone_secondary_type == 'bus' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">BUS</span>
-                      </span>
-                        <span class="ins-form-checkbox-container">
-                          <input type="checkbox"   {{$form->contact_phone_secondary_type == 'cell' ? 'checked' : ''}} >
-                        <span class="ins-form-small-text">CELL</span>
-                      </span>
-                    </div>
-                </td>
-                <td rowspan="2">
-                    <div class="ins-form-label">PRIMARY E-MAIL ADDRESS:</div>
-                    {{$form->contact_email_primary}}
-                    <hr>
-                    <div class="ins-form-label">SECONDARY E-MAIL ADDRESS:</div>
-                    {{$form->contact_email_secondary}}
+                    <table class="kol-table">
+                        <tr>
+                            <td class="kind-of-loss-cell" rowspan="2">KIND OF LOSS</td>
+                            <td>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="loss_type" {{$form->loss_type == 'fire' ? 'checked disabled' : 'disabled'}}>
+                                        <label>FIRE</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="loss_type" {{$form->loss_type == 'theft' ? 'checked disabled' : 'disabled'}} >
+                                        <label>THEFT</label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="loss_type" {{$form->loss_type == 'lightning' ? 'checked disabled' : 'disabled'}} >
+                                        <label>LIGHTNING</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="loss_type" {{$form->loss_type == 'hail' ? 'checked disabled' : 'disabled'}} >
+                                        <label>HAIL</label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="loss_type" {{$form->loss_type == 'flood' ? 'checked disabled' : 'disabled'}} >
+                                        <label>FLOOD</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="loss_type" {{$form->loss_type == 'wind' ? 'checked disabled' : 'disabled'}} >
+                                        <label>WIND</label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="loss_type" {{$form->loss_type == 'other' ? 'checked disabled' : 'disabled'}} >
+                                        <label>Other</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        {{$form->loss_type_other}}
+                                    </div>
+                                </div>
+                            </td>
+                            <!-- <td class="text-field-cell" colspan="2">
+                                            <input type="text">
+                                        </td> -->
+                            <td style="border-left: 1px solid black;" class="amount-cell" rowspan="2">PROBABLE AMOUNT:
+                                {{$form->loss_amount}}
+                            </td>
+                        </tr>
+                    </table>
+
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <div class="ins-form-label">WHEN TO CONTACT</div>
-                    {{$form->contact_when}}
-                </td>
-            </tr>
-        </table>
-
-        <!-- SECOND TABLE: LOSS SECTION -->
-        <table class="ins-form-table">
-            <tr>
-                <td colspan="2" class="ins-form-header">LOSS</td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="ins-form-label">LOCATION OF LOSS</div>
-                    {{$form->loss_location}}
-                </td>
-                <td>
-                    <div class="ins-form-label">POLICE OR FIRE DEPARTMENT CONTACTED</div>
-                    {{$form->loss_police_contact}}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="ins-form-label">STREET:</div>
-                    {{$form->loss_address    }} <br>
-
-                </td>
-                <td rowspan="2">
-                    <div style="height: 60px;"></div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="ins-form-label">CITY, STATE, ZIP:</div>
-                    {{$form->loss_city}} {{$form->loss_state}} {{$form->loss_zipcode}}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="ins-form-label">COUNTRY:</div>
-                    {{$form->loss_country}}
-                </td>
-                <td>
-                    <div class="ins-form-label">REPORT NUMBER</div>
-                    {{$form->loss_police_report}}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <div class="ins-form-label">DESCRIBE LOCATION OF LOSS IF NOT AT SPECIFIC STREET ADDRESS:</div>
-                    {{$form->loss_description}}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="ins-form-label">KIND OF LOSS</div>
-                    <div class="ins-form-checkbox-block">
-                        <div class="ins-form-checkbox-item">
-                            <input type="checkbox" {{$form->loss_type == 'fire' ? 'checked' : ''}} >
-                            <span
-                                class="ins-form-small-text">FIRE</span></div>
-                        <div class="ins-form-checkbox-item">
-                            <input type="checkbox" {{$form->loss_type == 'lightning' ? 'checked' : ''}} >
-
-                            <span
-                                class="ins-form-small-text">LIGHTNING</span></div>
-                        <div class="ins-form-checkbox-item">
-                            <input type="checkbox" {{$form->loss_type == 'flood' ? 'checked' : ''}} >
-                            <span
-                                class="ins-form-small-text">FLOOD</span></div>
-                        <div class="ins-form-checkbox-item">
-                            <input type="checkbox" {{$form->loss_type == 'other' ? 'checked' : ''}} >
-                            <span
-                                class="ins-form-small-text">OTHER</span></div>
-                    </div>
-                    <div class="ins-form-checkbox-block" style="margin-top: 5px;">
-                        <div class="ins-form-checkbox-item">
-                            <input type="checkbox" {{$form->loss_type == 'theft' ? 'checked' : ''}} >
-
-                            <span
-                                class="ins-form-small-text">THEFT</span></div>
-                        <div class="ins-form-checkbox-item">
-                            <input type="checkbox" {{$form->loss_type == 'hail' ? 'checked' : ''}} >
-
-                            <span
-                                class="ins-form-small-text">HAIL</span></div>
-                        <div class="ins-form-checkbox-item">
-                            <input type="checkbox" {{$form->loss_type == 'wind' ? 'checked' : ''}} >
-
-                            <span
-                                class="ins-form-small-text">WIND</span></div>
-                        <div class="ins-form-checkbox-item">
-                            {{$form->loss_type_other}}
-                            </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="ins-form-label">PROBABLE AMOUNT ENTIRE LOSS</div>
-                    {{$form->loss_amount}}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" class="ins-form-description-box">
                     <div class="ins-form-label">DESCRIPTION OF LOSS & DAMAGE</div>
                     {{$form->loss_description}}
                 </td>
             </tr>
             <tr>
-                <td>
-                    <div class="ins-form-label">REPORTED BY</div>
-                    {{$form->report_by}}
-                </td>
-                <td>
-                    <div class="ins-form-label">REPORTED TO</div>
-                    {{$form->report_to}}
-                </td>
+                <td>Reported By: <br> {{$form->report_by}}</td>
+                <td>Reported To: <br> {{$form->report_to}}</td>
             </tr>
         </table>
 
-        <!-- FOOTER -->
-        <div class="ins-form-footer">
-            <div>ACORD 1 (2016/10)</div>
-            <div style="display: flex; justify-content: center; margin-top: 3px;">
 
-                <div style="width: 33%;">© 1988-2016 ACORD CORPORATION. All rights reserved.</div>
-                <div style="width: 33%;"></div>
+        <div class="footer-content">
+            <div class="flex-shrink-0" style="font-weight: bold; font-size: 9px;">
+                ACORD 38 (2007/01)
+            </div>
+            <div class="footer-copyright" style=" font-weight: bold; font-size: 9px;">
+                &copy; ACORD CORPORATION 1996-2007. All rights reserved.
             </div>
         </div>
-        <div class="footer">
-            Page 1 of 3
+        <p style="text-align: center; font-weight: bold; font-size: 9px; margin-top: 10px;">The ACORD name and logo are
+            registered marks of ACORD</p>
+        <div class="page-break"></div>
+        <table>
+            <tr>
+                <td>
+                    <p style="font-size: 12px; margin-top: 5px;">Applicable in Alabama
+                        Any person who knowingly presents a false or fraudulent claim for payment of a loss or benefit
+                        or
+                        who
+                        knowingly presents false information in an application for insurance is guilty of a
+                        crime and may be subject to restitution, fines, or confinement in prison, or any combination
+                        thereof.</p>
+                    <p style="font-size: 12px; margin-top: 5px;">Applicable in Alaska
+                        Any person who knowingly and with intent to injure, defraud, or deceive an insurance company
+                        files
+                        a claim containing false, incomplete, or misleading information may be prosecuted under state
+                        law.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">Applicable in Arizona
+                        For your protection Arizona law requires the following statement to appear on this form. Any
+                        person
+                        who knowingly presents a false or fraudulent claim for payment of a loss is subject to criminal
+                        and
+                        civil penalties.</p>
+                    <p style="font-size: 12px; margin-top: 5px;">Applicable in Arkansas
+                        Any person who knowingly presents a false or fraudulent claim for payment of a loss or benefit
+                        or
+                        knowingly presents false information in an application for insurance is guilty of a crime and
+                        may be
+                        subject to fines and confinement in prison.</p>
+                    <p style="font-size: 12px; margin-top: 5px;">Applicable in California
+                        For your protection California law requires the following to appear on this form. Any person who
+                        knowingly presents false or fraudulent claim for the payment of a loss is guilty of a crime and
+                        may
+                        be subject to fines and confinement in state prison.</p>
+                    <p style="font-size: 12px; margin-top: 5px;">Applicable in Colorado
+                        It is unlawful to knowingly provide false, incomplete, or misleading facts or information to an
+                        insurance company for the purpose of defrauding or attempting to defraud the company. Penalties
+                        may
+                        include imprisonment, fines, denial of insurance and civil damages. Any insurance company or
+                        agent
+                        of an insurance company who knowingly provides false, incomplete, or misleading facts or
+                        information
+                        to a policyholder or claimant for the purpose of defrauding or attempting to defraud the
+                        policyholder or claimant with regard to a settlement or award payable for insurance proceeds
+                        shall
+                        be reported to the Colorado Division of Insurance within the Department of Regulatory Agencies.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">Applicable in Delaware
+                        Any person who knowingly, and with intent to injure, defraud or deceive any insurer, files a
+                        statement of claim containing any false, incomplete, or misleading information is guilty of a
+                        felony.</p>
+                    <p style="font-size: 12px; margin-top: 5px;">Applicable in the District of Columbia
+                        WARNING: It is a crime to provide false or misleading information to an insurer for the purpose
+                        of
+                        defrauding the insurer or any other person. Penalties include imprisonment and/or fines. In
+                        addition, an insurer may deny insurance benefits if false information materially related to a
+                        claim
+                        was provided by the applicant.</p>
+                    <p style="font-size: 12px; margin-top: 5px;">Applicable in Florida
+                        Any person who knowingly and with intent to injure, defraud, or deceive any insurer files a
+                        statement of claim containing any false, incomplete, or misleading information is guilty of a
+                        felony
+                        of the third degree.</p>
+                    <p style="font-size: 12px; margin-top: 5px;">Applicable in Hawaii
+                        Any person who intentionally or knowingly misrepresents or conceals material facts, opinions,
+                        intention, or law to obtain or attempt to obtain coverage, benefits, recovery, or compensation
+                        commits the offense of insurance fraud which is a crime punishable by fines or imprisonment or
+                        both.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">Applicable in Idaho
+                        Any person who knowingly, and with intent to defraud or deceive any insurance company, files a
+                        statement containing any false, incomplete or misleading information is guilty of a felony.</p>
+                    <p style="font-size: 12px; margin-top: 5px;">Applicable in Indiana
+                        Any person who knowingly and with intent to defraud an insurer files a statement of claim
+                        containing
+                        any false, incomplete, or misleading information commits a felony.</p>
+                    <p style="font-size: 12px; margin-top: 5px;">Applicable in Kansas
+                        Any person who, knowingly and with intent to defraud, presents, causes to be presented or
+                        prepares
+                        with knowledge or belief that it will be presented to or by an insurer, purported insurer,
+                        broker or
+                        any agent thereof, any written, electronic, electronic impulse, facsimile, magnetic, oral, or
+                        telephonic communication or statement as part of, or in support of, an application for the
+                        issuance
+                        of, or the rating of an insurance policy for personal or commercial insurance, or a claim for
+                        payment or other benefit pursuant to an insurance policy for commercial or personal insurance
+                        which
+                        such person knows to contain materially false information concerning any fact material thereto;
+                        or
+                        conceals, for the purpose of misleading, information concerning any fact material thereto
+                        commits a
+                        fraudulent insurance act.</p>
+                    <p style="font-size: 12px; margin-top: 5px;">Applicable in Kentucky
+                        Any person who knowingly and with intent to defraud any insurance company or other person files
+                        a
+                        statement of claim containing any materially false information or conceals, for the purpose of
+                        misleading, information concerning any fact material thereto commits a fraudulent insurance act,
+                        which is a crime.</p>
+                </td>
+            </tr>
+        </table>
+        <div class="footer-content">
+            <div class="flex-shrink-0" style="font-weight: bold; font-size: 9px;">
+                ACORD 38 (2007/01)
+            </div>
+            <div class="footer-copyright" style=" font-weight: bold; font-size: 9px;">
+                &copy; ACORD CORPORATION 1996-2007. All rights reserved.
+            </div>
         </div>
+        <p style="text-align: center; font-weight: bold; font-size: 9px; margin-top: 10px;">The ACORD name and logo are
+            registered marks of ACORD</p>
+
+        <div class="page-break"></div>
+        <table>
+            <tr>
+                <td>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Louisiana: Any person who knowingly presents a false or fraudulent claim for
+                        payment
+                        of a loss or benefit or knowingly presents false information in an application for insurance is
+                        guilty of a crime and may be subject to fines and confinement in prison.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Maine: A crime to knowingly provide false, incomplete or misleading information to
+                        an
+                        insurance company for the purpose of defrauding the company. Penalties may include imprisonment,
+                        fines or denial of insurance benefits.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Maryland: Any person who knowingly and willfully presents a false or fraudulent
+                        claim
+                        for payment of a loss or benefit or who knowingly presents willfully false information in an
+                        application for insurance is guilty of a crime and may be subject to fines and confinement in
+                        prison.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Michigan: Any person who knowingly presents a false or fraudulent claim for
+                        payment of
+                        a loss or benefit or knowingly presents false information in an application for insurance is
+                        guilty
+                        of a crime and may be subject to fines and confinement in prison.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Minnesota: A person who files a claim with intent to defraud or helps commit a
+                        fraud
+                        against an insurer is guilty of a crime.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Nevada: Pursuant to NRS 686A.291, any person who knowingly and willfully files a
+                        statement of claim that contains any false, incomplete or misleading information concerning a
+                        material fact is guilty of a category D felony.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in New Hampshire: Any person who, with a purpose to injure, defraud or deceive any
+                        insurance company, files a statement of claim containing any false, incomplete or misleading
+                        information is subject to prosecution and punishment for insurance fraud as provided in RSA
+                        638:20.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in New Jersey: Any person who knowingly files a statement of claim containing any
+                        false
+                        or misleading information is subject to criminal and civil penalties.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in New Mexico: Any person who knowingly presents a false or fraudulent claim for
+                        payment
+                        of a loss or benefit or knowingly presents false information in an application for insurance is
+                        guilty of a crime and may be subject to civil fines and criminal penalties.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in New York: Any person who knowingly and with intent to defraud any insurance
+                        company or
+                        other person files an application for insurance or statement of claim containing any materially
+                        false information, or conceals for the purpose of misleading, information concerning any fact
+                        material thereto, commits a fraudulent insurance act, which is a crime, and shall also be
+                        subject to
+                        a civil penalty not to exceed five thousand dollars and the stated value of the claim for each
+                        such
+                        violation.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Ohio: Any person who, with intent to defraud or knowing that he is facilitating a
+                        fraud against an insurer, submits an application or files a claim containing a false or
+                        deceptive
+                        statement is guilty of insurance fraud.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Oklahoma: WARNING: Any person who knowingly, and with intent to injure, defraud or
+                        deceive any insurer, makes any claim for the proceeds of an insurance policy containing any
+                        false,
+                        incomplete or misleading information is guilty of a felony.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Oregon: Any person who knowingly and with intent to defraud or solicit another to
+                        defraud the insurer by submitting an application containing a false statement as to any material
+                        fact may be violating state law.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Pennsylvania: Any person who knowingly and with intent to defraud any insurance
+                        company or other person files an application for insurance or statement of claim containing any
+                        materially false information or conceals for the purpose of misleading, information concerning
+                        any
+                        fact material thereto commits a fraudulent insurance act, which is a crime and subjects such
+                        person
+                        to criminal and civil penalties.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Puerto Rico: Any person who knowingly and with the intention of defrauding
+                        presents
+                        false information in an insurance application, or presents, helps, or causes the presentation of
+                        a
+                        fraudulent claim for the payment of a loss or any other benefit, or presents more than one claim
+                        for
+                        the same damage or loss, shall incur a felony and, upon conviction, shall be sanctioned for each
+                        violation by a fine of not less than five thousand dollars ($5,000) and not more than ten
+                        thousand
+                        dollars ($10,000), or fixed term of imprisonment for three (3) years, or both penalties. Should
+                        aggravating circumstances be present, the penalty thus established may be increased to a maximum
+                        of
+                        five (5) years, if extenuating circumstances are present, it may be reduced to a minimum of two
+                        (2)
+                        years.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Rhode Island: Any person who knowingly presents a false or fraudulent claim for
+                        payment of a loss or benefit or knowingly presents false information in an application for
+                        insurance
+                        is guilty of a crime and may be subject to fines and confinement in prison.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Tennessee: It is a crime to knowingly provide false, incomplete or misleading
+                        information to an insurance company for the purpose of defrauding the company. Penalties include
+                        imprisonment, fines and denial of insurance benefits.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Texas: Any person who knowingly presents a false or fraudulent claim for the
+                        payment
+                        of a loss is guilty of a crime and may be subject to fines and confinement in state prison.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Virginia: It is a crime to knowingly provide false, incomplete or misleading
+                        information to an insurance company for the purpose of defrauding the company. Penalties include
+                        imprisonment, fines and denial of insurance benefits.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in Washington: It is a crime to knowingly provide false, incomplete or misleading
+                        information to an insurance company for the purpose of defrauding the company. Penalties include
+                        imprisonment, fines and denial of insurance benefits.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 5px;">
+                        Applicable in West Virginia: Any person who knowingly presents a false or fraudulent claim for
+                        payment of a loss or benefit or knowingly presents false information in an application for
+                        insurance
+                        is guilty of a crime and may be subject to fines and confinement in prison.
+                    </p>
+                </td>
+            </tr>
+        </table>
+        <div class="footer-content">
+            <div class="flex-shrink-0" style="font-weight: bold; font-size: 9px;">
+                ACORD 38 (2007/01)
+            </div>
+            <div class="footer-copyright" style=" font-weight: bold; font-size: 9px;">
+                &copy; ACORD CORPORATION 1996-2007. All rights reserved.
+            </div>
+        </div>
+        <p style="text-align: center; font-weight: bold; font-size: 9px; margin-top: 10px;">The ACORD name and logo are
+            registered marks of ACORD</p>
+
     </div>
-<br>
-    <style>
 
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid #000;
-            padding: 4px;
-            font-size: 9px;
-            font-weight: bold;
-        }
-
-        .header-left {
-            text-align: left;
-            width: 60%;
-        }
-
-        .header-right {
-            text-align: right;
-            width: 40%;
-        }
-
-        .content {
-            padding: 10px;
-        }
-
-        .state-section {
-            margin-bottom: 10px;
-        }
-
-        .state-title {
-            font-weight: bold;
-            margin-bottom: 3px;
-        }
-
-        hr {
-            border: 0;
-            border-top: 1px solid #000;
-            margin: 8px 0;
-        }
-    </style>
-    <div class="form-container">
-        <div class="header">
-            <div class="header-left">
-                WARNING (ATTACH TO: Additional Remarks Schedule, may be attached if more space is needed)
-            </div>
-            <div class="header-right">
-                AGENCY CUSTOMER ID: {{$form->agency_customer_id}}
-            </div>
-        </div>
-
-        <div class="content">
-            <div class="state-section">
-                <div class="state-title">Applicable in Alabama:</div>
-                <p>A person who knowingly presents a false or fraudulent claim for payment of a loss or benefit or who knowingly presents false information in an application for insurance is guilty of a crime and may be subject to restitution, fines, or confinement in prison, or any combination thereof.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in Alaska:</div>
-                <p>A person who knowingly and with intent to injure, defraud, or deceive an insurance company files a claim containing false, incomplete, or misleading information may be prosecuted under state law.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in Arizona:</div>
-                <p>For your protection Arizona law requires the following statement to appear on this form. Any person who knowingly presents a false or fraudulent claim for payment of a loss is subject to criminal and civil penalties.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in Arkansas:</div>
-                <p>A person who knowingly presents a false or fraudulent claim for payment of a loss or benefit or knowingly presents false information in an application for insurance is guilty of a crime and may be subject to fines and confinement in prison.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in California:</div>
-                <p>For your protection California law requires the following to appear on this form. Any person who knowingly presents a false or fraudulent claim for the payment of a loss is guilty of a crime and may be subject to fines and confinement in state prison.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in Colorado:</div>
-                <p>It is unlawful to knowingly provide false, incomplete, or misleading facts or information to an insurance company for the purpose of defrauding or attempting to defraud the company. Penalties may include imprisonment, fines, denial of insurance, and civil damages. Any insurance company or agent of an insurance company who knowingly provides false, incomplete, or misleading facts or information to a policyholder or claimant for the purpose of defrauding or attempting to defraud the policyholder or claimant with regard to a settlement or award payable from insurance proceeds shall be reported to the Colorado Division of Insurance within the Department of Regulatory Agencies.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in Delaware:</div>
-                <p>A person who knowingly, and with intent to injure, defraud, or deceive any insurance company, files a statement of claim containing any false, incomplete, or misleading information is guilty of a felony.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in District of Columbia:</div>
-                <p>WARNING: It is a crime to provide false or misleading information to an insurer for the purpose of defrauding the insurer or any other person. Penalties include imprisonment and/or fines. In addition, an insurer may deny insurance benefits if false information materially related to a claim was provided by the applicant.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in Florida:</div>
-                <p>Any person who knowingly and with intent to injure, defraud, or deceive any insurer files a statement of claim or an application containing any false, incomplete, or misleading information is guilty of a felony of the third degree.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in Hawaii:</div>
-                <p>For your protection, Hawaii law requires you to be informed that presenting a fraudulent claim for payment of a loss or benefit is a crime punishable by fines or imprisonment, or both.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in Idaho:</div>
-                <p>Any person who knowingly, and with intent to defraud or deceive any insurance company, files a statement of claim containing any false, incomplete, or misleading information is guilty of a felony.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in Indiana:</div>
-                <p>A person who knowingly and with intent to defraud an insurer files a statement of claim containing any false, incomplete, or misleading information commits a felony.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in Kentucky:</div>
-                <p>Any person who knowingly and with intent to defraud any insurance company or other person files a statement of claim containing any materially false information or conceals, for the purpose of misleading, information concerning any fact material thereto commits a fraudulent insurance act, which is a crime.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in Louisiana:</div>
-                <p>Any person who knowingly presents a false or fraudulent claim for payment of a loss or benefit or knowingly presents false information in an application for insurance is guilty of a crime and may be subject to fines and confinement in prison.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in Maine:</div>
-                <p>It is a crime to knowingly provide false, incomplete or misleading information to an insurance company for the purpose of defrauding the company. Penalties may include imprisonment, fines or a denial of insurance benefits.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in Maryland:</div>
-                <p>Any person who knowingly or willfully presents a false or fraudulent claim for payment of a loss or benefit or who knowingly or willfully presents false information in an application for insurance is guilty of a crime and may be subject to fines and confinement in prison.</p>
-            </div>
-
-            <div class="state-section">
-                <div class="state-title">Applicable in Minnesota:</div>
-                <p>A person who files a claim with intent to defraud or helps commit a fraud against an insurer is guilty of a crime.</p>
-            </div>
-         </div>
-        <div class="footer">
-            Page 2 of 3
-        </div>
-
-    </div>
-
-    <br>
-    <style>
-
-        .header {
-            text-align: center;
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .section-title {
-            font-weight: bold;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            font-size: 14px;
-            text-transform: uppercase;
-        }
-        .content {
-            font-size: 14px;
-            text-align: justify;
-        }
-        .content p {
-            margin: 5px 0;
-        }
-
-    </style>
-    <div class="form-container">
-        <div class="header">
-            AGENCY STATEMENT
-        </div>
-        <div class="content">
-            <div class="section-title">Applicable in Louisiana person who knowingly presents a false or fraudulent claim for payment of a loss or benefit or knowingly presents false information in an application for insurance is guilty of a crime and may be subject to fines and confinement in prison.</div>
-            <p>In Louisiana, any person who knowingly presents a false or fraudulent claim for the payment of a loss or benefit or knowingly presents false information in an application for insurance is guilty of a crime and may be subject to fines and confinement in prison. This applies to any individual or entity submitting such claims or information with the intent to deceive an insurance company or other parties involved in the insurance process. Such actions undermine the integrity of the insurance system and can lead to severe legal consequences, including monetary penalties and imprisonment.</p>
-
-            <div class="section-title">Applicable in Maine person who knowingly provides false, incomplete, or misleading information to an insurance company for the purpose of defrauding the company commits a crime and may be subject to penalties.</div>
-            <p>In Maine, it is a crime for any person to knowingly provide false, incomplete, or misleading information to an insurance company with the purpose of defrauding the company. Penalties for such actions may include fines, imprisonment, or both, depending on the severity of the offense and the extent of the fraud committed.</p>
-
-            <div class="section-title">Applicable in Minnesota person who files a claim with intent to defraud or helps commit a fraud against an insurer is guilty of a crime and may be subject to penalties.</div>
-            <p>In Minnesota (Minn. Stat. ยง 609.611), any person who files a claim with the intent to defraud or assists in committing a fraud against an insurer is guilty of a crime. This includes submitting false claims or aiding others in fraudulent activities against an insurance company. Violators may face penalties such as fines, imprisonment, or both, as determined by the legal system.</p>
-
-            <div class="section-title">Applicable in New Hampshire person who, with a purpose to injure, defraud, or deceive any insurance company, files a statement of claim containing any false, incomplete, or misleading information is subject to prosecution and punishment for insurance fraud as provided in RSA 638:20.</div>
-            <p>In New Hampshire, any person who, with the purpose to injure, defraud, or deceive any insurance company, files a statement of claim containing any false, incomplete, or misleading information is subject to prosecution and punishment for insurance fraud as provided in RSA 638:20. This statute ensures that individuals or entities engaging in deceptive practices face legal consequences, which may include fines, imprisonment, or other penalties.</p>
-
-            <div class="section-title">Applicable in New Jersey person who knowingly presents a false or fraudulent claim for payment of a loss or benefit or knowingly submits false information in an application for insurance is guilty of a crime and may be subject to fines and confinement in prison.</div>
-            <p>In New Jersey, any person who knowingly presents a false or fraudulent claim for the payment of a loss or benefit or knowingly submits false information in an application for insurance is guilty of a crime. Such actions are considered insurance fraud, and offenders may be subject to fines, imprisonment, or both, depending on the severity of the offense and the extent of the fraud.</p>
-
-            <div class="section-title">Applicable in New Mexico person who knowingly presents a false or fraudulent claim for payment of a loss or benefit or knowingly submits false information in an application for insurance is guilty of a crime and may be subject to fines and confinement in prison.</div>
-            <p>In New Mexico, any person who knowingly presents a false or fraudulent claim for the payment of a loss or benefit or knowingly submits false information in an application for insurance is guilty of a crime. This includes any individual or entity that submits such claims or information with the intent to deceive. Offenders may face fines, imprisonment, or both, as determined by the legal system.</p>
-
-            <div class="section-title">Applicable in Ohio person who, with intent to defraud or knowing that he is facilitating a fraud against an insurer, submits an application or files a claim containing a false or deceptive statement is guilty of insurance fraud.</div>
-            <p>In Ohio, any person who, with the intent to defraud or knowing that they are facilitating a fraud against an insurer, submits an application or files a claim containing a false or deceptive statement is guilty of insurance fraud. Such actions are considered a crime, and offenders may be subject to legal consequences, including fines, imprisonment, or both.</p>
-
-            <div class="section-title">Applicable in Puerto Rico person who knowingly and with the intention of defrauding presents false information in an insurance application, or presents, helps, or causes the presentation of a fraudulent claim for the payment of a loss or other benefit may be subject to fines and confinement in prison.</div>
-            <p>In Puerto Rico, any person who knowingly and with the intention of defrauding presents false information in an insurance application, or presents, helps, or causes the presentation of a fraudulent claim for the payment of a loss or other benefit, may be subject to fines and confinement in prison. This applies to individuals or entities involved in such deceptive practices, and penalties may vary based on the severity of the offense.</p>
-
-            <div class="section-title">Applicable in Tennessee a person who knowingly presents false information in an insurance application or claim commits a fraudulent insurance act, which is a crime and may be subject to fines and confinement in prison.</div>
-            <p>In Tennessee, a person who knowingly presents false information in an insurance application or claim commits a fraudulent insurance act, which is considered a crime. Such actions may lead to penalties, including fines, imprisonment, or both, depending on the extent of the fraud and the legal consequences determined by the courts.</p>
-
-            <div class="section-title">Applicable in Virginia person who knowingly provides false, incomplete, or misleading information to an insurance company for the purpose of defrauding the company commits a crime and may be subject to penalties.</div>
-            <p>In Virginia, any person who knowingly provides false, incomplete, or misleading information to an insurance company for the purpose of defrauding the company commits a crime. Offenders may be subject to penalties, including fines, imprisonment, or both, as determined by the legal system.</p>
-        </div>
-        <div class="footer">
-            Page 3 of 3
-        </div>
-    </div>
-
-
-</div>
-<script>
-    function printOriginal() {
-        window.print();
-    }
-</script>
-
-</body>
-</html>
+@endsection
