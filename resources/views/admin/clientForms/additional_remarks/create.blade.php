@@ -457,11 +457,15 @@
                     font-weight: 600;">The ACORD name and logo are registered marks of ACORD</p>
                 </div>
             </div>
-            <div class="row mt-10 pb-3">
-                <div class="col-md-12 text-center">
-                    <button type="submit" class="btn btn-primary m-1">Submit</button>
-                    <button type="reset" class="btn btn-secondary m-1">Reset</button>
-                </div>
+            <div class="flex justify-center mt-6 space-x-3">
+                <button type="submit"
+                        class="bg-sky-500 hover:bg-sky-600 text-white font-medium px-5 py-2 rounded-lg shadow transition">
+                    Submit
+                </button>
+                <button type="reset"
+                        class="bg-gray-800 hover:bg-gray-900 text-white font-medium px-5 py-2 rounded-lg shadow transition">
+                    Reset
+                </button>
             </div>
         </form>
     </div>     

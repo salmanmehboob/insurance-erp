@@ -402,12 +402,7 @@
                             </td>
                         </tr>
                     </table>
-                    <div class="page-of-field">
-                        <label>Page</label>
-                        <input type="text" value="">
-                        <label>of</label>
-                        <input type="text" value="">
-                    </div>
+                    
                 </div>
                 <h4 style="font-size: 16px;
                 font-weight: 600;
