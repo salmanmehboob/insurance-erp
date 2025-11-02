@@ -1,908 +1,928 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.form')
 @push('styles')
-    <style type="text/css">
-        * {
+       <style>
+        /* Base styles for screen viewing and print intent */
+        body {
+            font-family: 'Arial', sans-serif; /* Common form font */
+            font-size: 8pt; /* Base font size, uses points for print accuracy */
+            color: #000;
             margin: 0;
             padding: 0;
-            text-indent: 0;
+            display: flex; /* For centering the form on screen */
+            justify-content: center;
+            background-color: #f0f0f0; /* Light background for screen view */
+        }
+        .form-container {
+            width: 8.5in; /* Standard US Letter width */
+            /* min-height: 11in; Min height to ensure page size, content will expand */
+            /* padding: 0.25in 0.5in; Top/bottom padding, left/right padding */
+            box-sizing: border-box; /* Padding included in width/height */
+            background-color: white;
+            border: 1px solid #000; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Subtle shadow for screen view */
+            display: flex; /* Use flexbox for overall layout */
+            flex-direction: column;
         }
 
-        .s1 {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
-            font-size: 13.5pt;
+        /* Reusable Form Field Line (Label + Underline Input) */
+        .form-field-line {
+            display: flex;
+            align-items: flex-end; /* Aligns label baseline with input line */
+            line-height: 1.0;
+            margin-bottom: 2pt; /* Small vertical spacing */
+        }
+        .form-field-line label {
+            white-space: nowrap; /* Prevent label from wrapping */
+            font-size: 7pt; /* Label font size */
+            color: #333;
+            flex-shrink: 0; /* Prevent label from shrinking */
+            margin-right: 2pt; /* Space between label and input */
+            padding-bottom: 0.5pt; /* Fine-tune label baseline alignment */
+        }
+        .form-field-line input[type="text"] {
+            flex-grow: 1; /* Input takes remaining width */
+            border: none;
+            border-bottom: 0.5pt solid black; /* The underline */
+            padding: 0 1pt;
+            font-size: 8pt; /* Input text size */
+            height: 10pt; /* Explicit height to control line vertical position */
+            background-color: transparent;
+            box-sizing: border-box;
+            line-height: 1; /* Keep input text tight */
+        }
+        .form-field-line.no-label input {
+            margin-right: 0; /* No margin if no label */
         }
 
-        .s2 {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
-            font-size: 5.5pt;
+        /* Header Section */
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            /* margin-bottom: 0.05in; */
         }
-
-        .s3 {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
+        .acord-logo-text {
+            display: flex;
+            align-items: flex-end;
             font-size: 8pt;
-        }
-
-        .s4 {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
-            font-size: 7.5pt;
-        }
-
-        .s5 {
-            color: black;
-            font-family: "Arial Black", sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
-            font-size: 5.5pt;
-        }
-
-        .s6 {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
             font-weight: bold;
-            text-decoration: none;
+            flex-shrink: 0;
+            margin: 10px;
+        }
+        .acord-logo {
+            height: 15pt;
+            vertical-align: middle;
+            margin-right: 2pt;
+        }
+        .header-right-meta {
+            display: flex;
+            align-items: flex-end;
+            font-size: 7pt;
+            padding: 5px;
+            border: 1px solid #000;
+        }
+        .header-right-meta .form-field-line {
+            margin-left: 0.2in;
+            margin-bottom: 0;
+        }
+        .header-right-meta .form-field-line label {
             font-size: 6pt;
         }
+        .header-right-meta .form-field-line input {
+            width: 60pt;
+            height: 9pt;
+            font-size: 7pt;
+            text-align: right;
+        }
+        .main-title {
+            font-size: 11pt;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.05in;
+        }
+        .header-statement {
+            font-size: 7pt;
+            line-height: 1.2;
+            text-align: justify;
+            padding: 5px;
+            /* margin-bottom: 0.1in;
+            padding-bottom: 0.05in;
+            border-bottom: 0.5pt solid black; */
+        }
 
-        p {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
+        /* Producer / Insured Section */
+        
+
+        /* Table specific styling for the Producer/Insured Section */
+        .producer-insured-table {
+            border-collapse: collapse; /* Collapse borders for single lines */
+            width: 100%;
+            border: 0.5pt solid black; /* Outer border for the entire table */
             font-size: 8pt;
-            margin: 0pt;
+            line-height: 1.2;
         }
 
-        .s7 {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
-            font-size: 7.5pt;
-        }
-
-        .s8 {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 5.5pt;
-        }
-
-        .s9 {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
-            font-size: 6.5pt;
-        }
-
-        .s10 {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
-            font-size: 6pt;
-        }
-
-        .s11 {
-            color: black;
-            font-family: "Arial Black", sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
-            font-size: 6.5pt;
-        }
-
-        .s12 {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 6.5pt;
-        }
-
-        .ins-container {
-            width: 98%;
-            max-width: 800px;
-            margin: 0 auto;
-            border: 2px solid #000;
-            padding: 15px;
+        .producer-insured-table td {
+            border: 0.5pt solid black; /* Inner borders for cells */
+            padding: 0; /* No default padding for precise control */
+            vertical-align: top; /* Align content to the top of the cell */
             box-sizing: border-box;
         }
 
-        .ins-header {
-            text-align: center;
+        /* Column specific styling */
+        .producer-insured-table .left-col {
+            width: 50%; /* Left column takes half width */
+        }
+        .producer-insured-table .right-col {
+            width: 50%; /* Right column takes half width */
+        }
+
+        /* Cell content padding for better visual spacing */
+        .cell-content {
+            padding: 5pt; /* Internal padding for cell content */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Headers within cells */
+        .cell-header {
             font-weight: bold;
-            margin-bottom: 15px;
-            font-size: 0.6875rem; /* 11px */
-            padding: 5px;
+            font-size: 7pt; /* Smaller font for internal headers */
+            margin-bottom: 2pt;
         }
 
-        .ins-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
+        /* Generic Field line within cells */
+        .field-line-cell {
+            display: flex;
+            align-items: flex-end; /* Align label baseline with input line */
+            line-height: 1.0;
+            margin-bottom: 2pt; /* Small vertical spacing */
+        }
+        .field-line-cell label {
+            white-space: nowrap;
+            font-size: 7pt;
+            color: #333;
+            flex-shrink: 0;
+            margin-right: 2pt;
+            padding-bottom: 0.5pt;
+        }
+        .field-line-cell input[type="text"] {
+            flex-grow: 1;
+            border: none;
+            border-bottom: 0.5pt solid black;
+            padding: 0 1pt;
+            font-size: 8pt;
+            height: 10pt;
+            background-color: transparent;
+            box-sizing: border-box;
+            line-height: 1;
+        }
+        .field-line-cell.no-label input {
+            margin-right: 0; /* No margin if no label */
         }
 
-        .ins-th, .ins-td {
-            border: 1px solid #000;
-            padding: 4px;
-            text-align: left;
-            vertical-align: top;
-            font-size: 0.5625rem; /* 9px */
+        /* Specific styles for the "CONTACT" line in the right column */
+        .contact-info-line {
+            display: flex;
+            align-items: flex-end;
+            margin-top: 3pt;
+            font-size: 7pt;
+        }
+        .contact-info-line span {
+            margin-right: 2pt;
+        }
+        .contact-info-line input {
+            flex-grow: 0;
+            width: 70pt; /* Fixed width for phone/fax numbers */
+            height: 9pt;
+            border-bottom: 0.5pt solid black;
+            padding: 0 1pt;
+            font-size: 7pt;
+            background-color: transparent;
+        }
+        .contact-info-line .fax-label {
+            margin-left: 10pt;
         }
 
-        .ins-th {
-            text-align: center;
+        /* City, State, Zip */
+        .city-state-zip {
+            display: flex;
+            align-items: flex-end;
+            margin-top: 3pt;
+            gap: 5pt; /* Gap between city, state, zip inputs */
+        }
+        .city-state-zip .field-line-cell {
+            margin-bottom: 0;
+            flex: 1; /* Allow each part to take equal space */
+        }
+        .city-state-zip .field-line-cell input {
+            width: auto; /* Auto width for inputs within this flex container */
+            flex-grow: 1;
+        }
+        .city-state-zip .field-line-cell.state input {
+            width: 25pt; /* Fixed width for State */
+            flex-grow: 0;
+        }
+        .city-state-zip .field-line-cell.zip input {
+            width: 40pt; /* Fixed width for Zip */
+            flex-grow: 0;
+        }
+
+        /* Insurer(s) Affording Coverage section */
+        .insurer-coverage-section {
+            padding-top: 5pt; /* Space from above fields */
+        }
+        .insurer-coverage-title {
+            font-size: 7pt;
             font-weight: bold;
-            background-color: #f5f5f5;
+            margin-bottom: 2pt;
+            padding-bottom: 2pt;
+            border-bottom: 0.5pt solid black;
+        }
+        .insurer-line {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 2pt;
+        }
+        .insurer-line label {
+            white-space: nowrap;
+            font-size: 7pt;
+            flex-shrink: 0;
+            margin-right: 2pt;
+            padding-bottom: 0.5pt;
+        }
+        .insurer-line input {
+            flex-grow: 1;
+            border: none;
+            border-bottom: 0.5pt solid black;
+            padding: 0 1pt;
+            font-size: 8pt;
+            height: 10pt;
+            background-color: transparent;
+        }
+        .insurer-line .naic-code-input {
+            width: 45pt; /* Fixed width for NAIC # */
+            flex-grow: 0;
+            margin-left: 5pt;
+            text-align: right;
         }
 
-        .ins-section-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-size: 0.625rem; /* 10px */
-        }
-
-        .ins-description-box {
-            border: 1px solid #000;
-            height: 100px;
-            margin-top: 5px;
-        }
-
-        .ins-text-center {
-            text-align: center;
-        }
-
-        .ins-col-narrow {
-            width: 3%;
-        }
-
-        .ins-col-1 {
-            width: 1%;
-        }
-
-        .ins-col-10 {
-            width: 10%;
-        }
-
-        .ins-col-15 {
-            width: 15%;
-        }
-
-        .ins-col-25 {
-            width: 25%;
-        }
-
-        .ins-col-27 {
-            width: 27%;
-        }
-
-        .ins-col-39 {
-            width: 39%;
-        }
-
-        .ins-col-8 {
-            width: 8%;
-        }
-
-        .ins-col-5 {
-            width: 5%;
-        }
-
-        .ins-dollar {
-            float: right;
-        }
-
-        .ins-checkbox-input {
-            width: 12px;
-            height: 12px;
-            vertical-align: middle;
-            margin: 0;
-        }
-
-        .ins-indent {
-            padding-left: 10px;
-        }
-
-        @media (max-width: 600px) {
-            .ins-container {
-                padding: 10px;
-            }
-
-            .ins-th, .ins-td {
-                font-size: 0.5rem; /* 8px */
-            }
-
-            .ins-header {
-                font-size: 0.5625rem; /* 9px */
-            }
-        }
-
+        /* Print Specific Styles */
         @media print {
-            @page {
-                size: A4;
-                margin: 1cm;
+            body {
+                background-color: white;
+                margin: 0;
+                padding: 0;
+                display: block;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                orphans: 3;
+                widows: 3;
             }
-
-            .ins-container {
-                width: 800px !important;
-                margin: 0 auto !important;
-                padding: 10px !important;
+            .section-container {
+                border: none;
+                box-shadow: none;
+                margin: 0;
+                padding: 0; /* Remove container padding for full page control */
+                width: 8.5in; /* Ensure full page width for positioning */
             }
-
-            .ins-table {
-                width: 100% !important;
-                table-layout: fixed !important;
+            /* .producer-insured-table {
+                width: 7.5in; 
+                margin: 0.5in auto 0.1in auto; 
+            } */
+            .producer-insured-table td {
+                padding: 0; /* Keep padding at 0 for inputs to fill cell */
             }
-
-            .ins-th, .ins-td {
-                font-size: 8pt !important;
-                word-wrap: break-word !important;
+            .cell-content {
+                padding: 5pt; /* Maintain internal content padding */
             }
-
-            .ins-section {
-                page-break-inside: avoid !important;
+            input[type="text"] {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                vertical-align: baseline;
+                padding-bottom: 0;
+                height: auto;
+                min-height: 9pt; /* Ensure inputs have a minimum height */
             }
-
-            .ins-header {
-                font-size: 9pt !important;
+            .field-line-cell label, .contact-info-line span, .insurer-line label {
+                padding-bottom: 0;
             }
-
-            .ins-section-title {
-                font-size: 8pt !important;
+            .producer-insured-table .cell-header {
+                font-size: 7pt; /* Ensure font size consistency */
             }
-
-            .ins-description-box {
-                height: 80px !important;
+            .insurer-line input {
+                 min-height: 9pt; /* Ensure input box has height */
             }
         }
+        /* Coverage Section */
+        .coverage-section {
+            /* margin-bottom: 0.1in; */
+        }
+        .coverage-title {
+            font-size: 9pt;
+            font-weight: bold;
+            margin-bottom: 5pt;
+            padding-bottom: 2pt;
+            border-bottom: 0.5pt solid black;
+        }
+        .coverage-meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.1in;
+            margin-bottom: 0.1in;
+        }
+        .coverage-meta-grid .form-field-line {
+            margin-bottom: 0;
+        }
+        .coverage-meta-grid .form-field-line label {
+            font-size: 7pt;
+        }
+        .coverage-meta-grid .form-field-line input {
+            font-size: 8pt;
+            height: 10pt;
+        }
 
+        /* Main Coverage Table */
+        .coverage-table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 0.5pt solid black; /* Outer border */
+            font-size: 7pt;
+            line-height: 1.2;
+        }
+        .coverage-table th, .coverage-table td {
+            border: 0.5pt solid black; /* Inner borders */
+            padding: 2pt 3pt;
+            vertical-align: top;
+            box-sizing: border-box;
+        }
+        .coverage-table th {
+            font-weight: bold;
+            text-align: center;
+            background-color: #f8f8f8;
+            height: 20pt; /* Fixed height for header cells */
+        }
+        .coverage-table td {
+            position: relative;
+            height: 22pt; /* Fixed height for data rows */
+			align-items: anchor-center;
+        }
+        .coverage-table .col-checkbox { width: 15pt; text-align: center; padding: 0;}
+        .coverage-table .col-type { width: 15%; }
+        .coverage-table .col-deductibles { width: 15%; }
+        .coverage-table .col-policy-number { width: 15%; }
+        .coverage-table .col-date { width: 15%; }
+        .coverage-table .col-covered-property { width: 15%; }
+        .coverage-table .col-limit { width: 10%; text-align: right;}
+        .coverage-table .col-checkbox input[type="checkbox"] {
+            margin: 0;
+            vertical-align: middle;
+            transform: scale(0.7); /* Smaller checkboxes */
+        }
+        .coverage-table .limit-input {
+            width: calc(100% - 2pt); /* Full width minus padding */
+            border: none;
+            border-bottom: 0.5pt solid black;
+            font-size: 7pt;
+            height: 9pt;
+            padding: 0 1pt;
+            text-align: right;
+            background-color: transparent;
+            box-sizing: border-box;
+            position: absolute;
+            bottom: 1pt; /* Align to bottom of cell */
+            right: 1pt;
+        }
+        .coverage-table .policy-number-input,
+        .coverage-table .date-input {
+            width: calc(100% - 2pt);
+            border: none;
+            border-bottom: 0.5pt solid black;
+            font-size: 7pt;
+            height: 9pt;
+            padding: 0 1pt;
+            background-color: transparent;
+            box-sizing: border-box;
+            position: absolute;
+            bottom: 1pt;
+            left: 1pt;
+        }
+
+        /* Special Conditions / Other Coverages */
+        .special-conditions {
+            font-size: 7pt;
+            line-height: 1.2;
+            margin-top: 0.1in;
+            padding-top: 5pt;
+            border-top: 0.5pt solid black;
+            margin-bottom: 0.1in;
+        }
+
+        /* Certificate Holder / Cancellation Section */
+        .certificate-cancel-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.1in;
+            flex-grow: 1; /* Allows this section to fill remaining space */
+        }
+        .certificate-holder-box {
+            border: 1pt solid black;
+            padding: 0.1in;
+            display: flex;
+            flex-direction: column;
+        }
+        .certificate-holder-title {
+            font-size: 9pt;
+            font-weight: bold;
+            margin-bottom: 5pt;
+            padding-bottom: 2pt;
+            border-bottom: 0.5pt solid black;
+        }
+        .certificate-holder-address {
+            flex-grow: 1; /* Allow address area to expand */
+            border: none;
+            resize: none;
+            font-family: 'Arial', sans-serif;
+            font-size: 8pt;
+            line-height: 1.2;
+            padding: 0;
+            outline: none;
+        }
+
+        .cancellation-box {
+            border: 1pt solid black;
+            padding: 0.1in;
+            display: flex;
+            flex-direction: column;
+        }
+        .cancellation-title {
+            font-size: 9pt;
+            font-weight: bold;
+            margin-bottom: 5pt;
+            padding-bottom: 2pt;
+            border-bottom: 0.5pt solid black;
+        }
+        .cancellation-text {
+            font-size: 8pt;
+            line-height: 1.2;
+            flex-grow: 1;
+            margin-bottom: 5pt;
+        }
+        .cancellation-representative {
+            font-size: 8pt;
+            font-weight: bold;
+            text-align: right;
+            margin-top: auto; /* Push to bottom */
+        }
+        .cancellation-representative input {
+            width: 100%;
+            border: none;
+            border-bottom: 0.5pt solid black;
+            padding: 0 2pt;
+            font-size: 8pt;
+            height: 10pt;
+            background-color: transparent;
+            box-sizing: border-box;
+        }
+
+        /* Footer Section */
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 5px;
+            font-size: 6pt;
+            font-weight: 600;
+            /* color: #555; */
+        }
+
+        .footer-copyright {
+            flex-grow: 1;
+            text-align: right;
+        }
+
+        /* PRINT MEDIA QUERIES - CRITICAL for accurate printing */
+       
+        .w50{width: 50%;}
+        /* .table-producer table td.50per{width: 50%;} */
+        .table-producer table td{padding: 3px;}
+        .tableinnertd td{
+            border-left: 0.5pt solid black;
+            border-right: 0.5pt solid black;
+            border-top: 0.5pt solid black;
+            border-bottom: 0.5pt solid black;
+            padding: 4px;
+            vertical-align: middle;
+            display: flex;
+            box-sizing: border-box;
+        }
+        .certificate td{width: 50%; border: 1px solid black;vertical-align: text-top; padding: 5px;}
+        
+        input[type="text"] {
+            width: 100%;
+            border: 1px solid black;
+            margin-right: 8px;
+        }
+
+        textarea{
+            border: 1px solid black;
+        }
     </style>
 @endpush
 @section('content')
 
     <form action="{{ route('store-liability-insurance') }}" method="POST" class=" mt-4">
         @csrf
-
         <input type="hidden" name="client_id" value="{{ $clientPolicy->client_id }}">
-
-        <div style="max-width: 800px; width: 100%; height: 80%; margin: 0 auto; font-family: Arial, sans-serif;">
-
-
-            <table border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td><a href="https://imgbb.com/"><img src="https://i.ibb.co/GfrMJ73J/Untitled-design.png"
-                                                          width="50px" height="auto" alt="Untitled-design"
-                                                          border="0"></a></td>
-                </tr>
-            </table>
-            <table style="border-collapse:collapse;margin-left:6.6pt" cellspacing="0">
-                <tr style="height:23pt">
-                    <td style="width:490pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                        colspan="6">
-                        <p class="s1" style="padding-top: 2pt;padding-left: 145pt;text-indent: 0pt;text-align: left;">
-                            CERTIFICATE OF LIABILITY INSURANCE</p>
-                    </td>
-                    <td style="width:87pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                        colspan="2">
-                        <p class="s2"
-                           style="padding-top: 2pt;padding-left: 6pt;padding-right: 3pt;text-indent: 0pt;text-align: center;">
-                            DATE (MM/DD/YYYY)</p>
-                        <p class="s3"
-                           style="padding-top: 5pt;padding-left: 6pt;text-indent: 0pt;line-height: 8pt;text-align: center;">
-                            <input type="text" name="invoice_date" placeholder="Date" value="02/23/2025"/>
-                        </p>
-                    </td>
-                </tr>
-                <tr style="height:41pt">
-                    <td style="width:577pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                        colspan="8">
-                        <p class="s3" style="padding-left: 9pt;text-indent: 0pt;line-height: 9pt;text-align: justify;">
-                            THIS
-                            CERTIFICATE IS ISSUED AS A MATTER OF INFORMATION ONLY AND CONFERS NO RIGHTS UPON THE
-                            CERTIFICATE
-                            HOLDER. THIS</p>
-                        <p class="s3"
-                           style="padding-left: 9pt;padding-right: 71pt;text-indent: 0pt;text-align: justify;">
-                            CERTIFICATE DOES NOT AFFIRMATIVELY OR NEGATIVELY AMEND, EXTEND OR ALTER THE COVERAGE
-                            AFFORDED BY THE
-                            POLICIES BELOW. THIS CERTIFICATE OF INSURANCE DOES NOT CONSTITUTE A CONTRACT BETWEEN THE
-                            ISSUING
-                            INSURER(S), AUTHORIZED REPRESENTATIVE OR PRODUCER, AND THE CERTIFICATE HOLDER.</p>
-                    </td>
-                </tr>
-                <tr style="height:11pt">
-                    <td
-                        style="width:160pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt">
-                        <p class="s2" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">PRODUCER</p>
-                    </td>
-                    <td style="width:76pt;border-top-style:solid;border-top-width:2pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td
-                        style="width:53pt;border-top-style:solid;border-top-width:2pt;border-right-style:solid;border-right-width:2pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:288pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
-                        colspan="5">
-                        <p class="s3" style="padding-left: 2pt; text-indent: 0pt; line-height: 9pt; text-align: left;">
-                            Contact Name:</p>
-                        <p class="s4" style="padding-left: 45pt; text-indent: 0pt; text-align: left;">
-                            <input type="text" name="contact_name" placeholder="Contact Name" value="Ibrahim Khan"/>
-                        </p>
-                    </td>
-                </tr>
-                <tr style="height:11pt">
-                    <td style="width:160pt;border-left-style:solid;border-left-width:2pt">
-                        <p class="s3" style="padding-left: 5pt;text-indent: 0pt;text-align: left;">
-                            <input type="text" name="producer_name" placeholder="Producer Name"
-                                   value="Aim Insurance Of Texas"/>
-                        </p>
-                    </td>
-                    <td style="width:76pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:53pt;border-right-style:solid;border-right-width:2pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:176pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
-                        colspan="2">
-
-                        <p class="s3" style="padding-left: 2pt; text-indent: 0pt; line-height: 9pt; text-align: left;">
-                            Phone:</p>
-                        <p class="s3" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left;">
-                            <input type="text" name="contact_phone_no" value="(713)946-3969"/>
-                        </p>
-                    </td>
-                    <td style="width:33pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt">
-                        <p class="s3" style="padding-left: 2pt; text-indent: 0pt; line-height: 9pt; text-align: left;">
-                            Fax:</p>
-                    </td>
-                    <td style="width:79pt; border-top-style:solid; border-top-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
-                        colspan="2">
-                        <p class="s3" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left;">
-                            <input type="text" name="contact_fax_no" value="(713)946-3969"/>
-                        </p>
-                    </td>
-                </tr>
-                <tr style="height:11pt">
-                    <td style="width:160pt;border-left-style:solid;border-left-width:2pt">
-                        <p class="s3" style="padding-left: 5pt;text-indent: 0pt;text-align: left;">
-                            <input type="text" name="producer_address" placeholder="Producer Address"
-                                   value="3322 Shaver St"/>
-                        </p>
-                    </td>
-                    <td style="width:76pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:53pt;border-right-style:solid;border-right-width:2pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:288pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
-                        colspan="5">
-                        <p class="s3" style="padding-left: 2pt; text-indent: 0pt; line-height: 9pt; text-align: left;">
-                            Email Address:</p>
-                        <p class="s3" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left;">
-                            <input type="text" name="contact_email" value=""/>
-                        </p>
-                    </td>
-                </tr>
-                <tr style="height:11pt">
-                    <td style="width:160pt;border-left-style:solid;border-left-width:2pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:76pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:53pt;border-right-style:solid;border-right-width:2pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:288pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
-                        colspan="5">
-                        <p class="s3" style="padding-left: 2pt; text-indent: 0pt; line-height: 9pt; text-align: left;">
-                            Producer Customer ID:</p>
-                        <p class="s3" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left;">
-                            <input type="text" name="producer_customer_id" value=""/>
-                        </p>
-                    </td>
-                </tr>
-                <tr style="height:11pt">
-                    <td
-                        style="width:160pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt">
-                        <p class="s4" style="padding-left: 5pt; text-indent: 0pt; text-align: left;">
-                            <input type="text" name="producer_city" placeholder="Producer City" value="Pasadena"/>
-                        </p></td>
-                    <td style="width:76pt;border-bottom-style:solid;border-bottom-width:2pt">
-                        <p class="s4" style="padding-right: 3pt; text-indent: 0pt; text-align: right;">
-                            <input type="text" name="producer_state" value="TX"/>
-                        </p>
-                    </td>
-                    <td
-                        style="width:53pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                        <p class="s4" style="padding-left: 5pt; text-indent: 0pt; text-align: left;">
-                            <input type="text" name="producer_zipcode" value="77504"/>
-                        </p></td>
-                    <td style="width:235pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                        colspan="4">
-                        <p class="s5"
-                           style="padding-top: 3pt;padding-left: 67pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
-                            INSURER(S) AFFORDING COVERAGE</p>
-                    </td>
-                    <td
-                        style="width:53pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                        <p class="s5"
-                           style="padding-top: 3pt;padding-left: 18pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
-                            NAIC
-                            #</p>
-                    </td>
-                </tr>
-                <tr style="height:11pt">
-                    <td
-                        style="width:160pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt">
-                        <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 7pt;text-align: left;">
-                            INSURED</p>
-                    </td>
-                    <td style="width:76pt;border-top-style:solid;border-top-width:2pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td
-                        style="width:53pt;border-top-style:solid;border-top-width:2pt;border-right-style:solid;border-right-width:2pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:235pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                        colspan="4">
-                        <p class="s5"
-                           style="padding-top: 2pt; padding-left: 2pt; text-indent: 0pt; line-height: 7pt; text-align: left;">
-                            INSURER A: <input type="text" name="insurer_a"/>
-                        </p>
-                    </td>
-                    <td style="width:53pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
-                        <p style="text-indent: 0pt; text-align: left;"><input type="text" name="insurer_a_naic"
-                                                                              value="0"/></p>
-                    </td>
-                </tr>
-                <tr style="height:11pt">
-                    <td style="width:160pt;border-left-style:solid;border-left-width:2pt">
-                        <input type="text" name="insured_name" value="JJH CONSTRUCTION LLC"/>
-                    </td>
-                    <td style="width:76pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:53pt;border-right-style:solid;border-right-width:2pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:235pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
-                        colspan="4">
-                        <p class="s5"
-                           style="padding-top: 2pt; padding-left: 2pt; text-indent: 0pt; line-height: 7pt; text-align: left;">
-                            INSURER B: <input type="text" name="insurer_b"/>
-                        </p>
-                    </td>
-                    <td style="width:33pt; border-top-style:solid; border-top-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
-                        <p style="text-indent: 0pt; text-align: left;"><input type="text" name="insurer_b_naic"/></p>
-                    </td>
-
-                </tr>
-                <tr style="height:11pt">
-                    <td style="width:160pt;border-left-style:solid;border-left-width:2pt" rowspan="2">
-                        <p class="s3" style="padding-left: 5pt; text-indent: 0pt; line-height: 9pt; text-align: left;">
-                            <input type="text" name="insured_address" value="22402 Sierra Lake Ct"/>
-                        </p>
-                    </td>
-                    <td style="width:76pt" rowspan="2">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:53pt;border-right-style:solid;border-right-width:2pt" rowspan="2">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:235pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
-                        colspan="4">
-                        <p class="s5"
-                           style="padding-top: 2pt; padding-left: 2pt; text-indent: 0pt; line-height: 7pt; text-align: left;">
-                            INSURER C: <input type="text" name="insurer_c"/>
-                        </p>
-                    </td>
-                    <td style="width:53pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
-                        <p style="text-indent: 0pt; text-align: left;"><input type="text" name="insurer_c_naic"/></p>
-                    </td>
-                </tr>
-                <tr style="height:11pt">
-                    <td style="width:235pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
-                        colspan="4">
-                        <p class="s5"
-                           style="padding-top: 1pt; padding-left: 2pt; text-indent: 0pt; line-height: 8pt; text-align: left;">
-                            INSURER D: <input type="text" name="insurer_d"/>
-                        </p>
-                    </td>
-                    <td style="width:53pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
-                        <p style="text-indent: 0pt; text-align: left;"><input type="text" name="insurer_d_naic"/></p>
-                    </td>
-                </tr>
-                <tr style="height:11pt">
-                    <td style="width:160pt;border-left-style:solid;border-left-width:2pt">
-                        <input type="text" name="insured_city" value="Katy"/>
-                    </td>
-                    <td style="width:76pt">
-                        <p class="s4" style="padding-right: 3pt; text-indent: 0pt; text-align: right;">
-                            <input type="text" name="insured_state" value="TX"/>
-                        </p>
-                    </td>
-                    <td style="width:53pt;border-right-style:solid;border-right-width:2pt">
-                        <p class="s4" style="padding-left: 5pt; text-indent: 0pt; text-align: left;">
-                            <input type="text" name="insured_zipcode" value="77494"/>
-                        </p>
-                    </td>
-                    <td style="width:235pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
-                        colspan="4">
-                        <p class="s5"
-                           style="padding-top: 2pt; padding-left: 2pt; text-indent: 0pt; line-height: 7pt; text-align: left;">
-                            INSURER E: <input type="text" name="insurer_e"/>
-                        </p>
-                    </td>
-                    <td style="width:53pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
-                        <p style="text-indent: 0pt; text-align: left;"><input type="text" name="insurer_e_naic"/></p>
-                    </td>
-                </tr>
-                <tr style="height:11pt">
-                    <td
-                        style="width:160pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:76pt;border-bottom-style:solid;border-bottom-width:2pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td
-                        style="width:53pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                        <p style="text-indent: 0pt;text-align: left;"><br/></p>
-                    </td>
-                    <td style="width:235pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt"
-                        colspan="4">
-                        <p class="s5"
-                           style="padding-top: 2pt; padding-left: 2pt; text-indent: 0pt; line-height: 7pt; text-align: left;">
-                            INSURER F: <input type="text" name="insurer_f"/>
-                        </p>
-                    </td>
-                    <td style="width:53pt; border-top-style:solid; border-top-width:2pt; border-left-style:solid; border-left-width:2pt; border-bottom-style:solid; border-bottom-width:2pt; border-right-style:solid; border-right-width:2pt">
-                        <p style="text-indent: 0pt; text-align: left;"><input type="text" name="insurer_f_naic"/></p>
-                    </td>
-                </tr>
-            </table>
-            <p style="padding-bottom: 1pt; padding-left: 9pt; text-indent: 0pt; text-align: left;">
-                COVERAGES CERTIFICATE NUMBER: <input type="text" name="certificate_no" style="width: 100pt;"/>
-                <span class="s7">REVISION NUMBER: <input type="text" name="revision_no" style="width: 100pt;"/></span>
-            </p>
-            <div class="ins-container"
-                 style="  max-width: 800px; margin: 0 auto; border: 2px solid #000; padding: 15px; box-sizing: border-box;margin-left: 0.5%;">
-                <div class="ins-header">
-                    THIS IS TO CERTIFY THAT THE POLICIES OF INSURANCE LISTED BELOW HAVE BEEN ISSUED TO THE INSURED NAMED
-                    ABOVE FOR THE POLICY PERIOD INDICATED. NOTWITHSTANDING ANY REQUIREMENT, TERM OR CONDITION OF ANY
-                    CONTRACT OR OTHER DOCUMENT WITH RESPECT TO WHICH THIS CERTIFICATE MAY BE ISSUED OR MAY PERTAIN, THE
-                    INSURANCE AFFORDED BY THE POLICIES DESCRIBED HEREIN IS SUBJECT TO ALL THE TERMS, EXCLUSIONS AND
-                    CONDITIONS OF SUCH POLICIES. LIMITS SHOWN MAY HAVE BEEN REDUCED BY PAID CLAIMS.
+    <div>
+        <div>
+            <div class="header-top">
+                <div class="acord-logo-text">
+                    <img src="{{ asset('backend/img/acord-logo.png') }}" alt="ACORD Logo"
+                        class="acord-logo inline-block align-middle" style="width: 100%;height: 52px;">
                 </div>
-
-                <section class="ins-section">
-                    <table class="ins-table">
-                        <thead>
-                        <tr>
-                            <th scope="col" class="ins-th ins-col-narrow">INSR LTR</th>
-                            <th scope="col" class="ins-th ins-col-25">TYPE OF INSURANCE</th>
-                            <th scope="col" class="ins-th ins-col-1">ADDL INSD</th>
-                            <th scope="col" class="ins-th ins-col-1">SUBR WVD</th>
-                            <th scope="col" class="ins-th ins-col-15">POLICY NUMBER</th>
-                            <th scope="col" class="ins-th ins-col-10">POLICY EFF (MM/DD/YYYY)</th>
-                            <th scope="col" class="ins-th ins-col-10">POLICY EXP (MM/DD/YYYY)</th>
-                            <th scope="col" colspan="2" class="ins-th ins-col-27">LIMITS</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="ins-td ins-text-center ins-col-narrow"></td>
-                            <td class="ins-td  ins-col-27">
-                                COMMERCIAL GENERAL LIABILITY
-                                <br>
-                                <div class="ins-indent">
-                                    <input type="checkbox" name="commercial_claim" value="1" class="ins-checkbox-input">
-                                    CLAIMS-MADE
-                                    <input type="checkbox" name="commercial_occur" value="1" class="ins-checkbox-input">
-                                    OCCUR
-                                    <br>
-                                    <input type="checkbox" class="ins-checkbox-input">
-                                    <input type="text" name="commercial_other_one"/>
-                                    <br>
-                                    <input type="checkbox" class="ins-checkbox-input">
-                                    <input type="text" name="commercial_other_two"/>
-                                </div>
-                                <br>
-                                GEN AGGREGATE LIMIT APPLIES PER
-                                <div class="ins-indent">
-                                    <input type="checkbox" name="commercial_aggregate_policy" value="1" class="ins-checkbox-input">
-                                   POLICY
-                                    <input type="checkbox" name="commercial_aggregate_project" value="1" class="ins-checkbox-input">
-                                    PROJECT
-                                    <input type="checkbox" name="commercial_aggregate_loc" value="1" class="ins-checkbox-input">
-                                    LOC
-                                    <input type="checkbox" name="commercial_aggregate_other" value="1" class="ins-checkbox-input">
-                                    OTHER
-                                    <br>
-
-                                </div>
-                            </td>
-                            <td class="ins-td"><input type="text" style="width: 20pt" name="commercial_addl"/></td>
-                            <td class="ins-td"><input type="text" style="width: 20pt" name="commercial_subr"/></td>
-                            <td class="ins-td"><input type="text" style="width: 40pt" name="commercial_policy_number"/>
-                            </td>
-                            <td class="ins-td"><input type="text" style="width: 40pt" name="commercial_effective_date"/>
-                            </td>
-                            <td class="ins-td"><input type="text" style="width: 40pt"
-                                                      name="commercial_expiration_date"/></td>
-                            <td class="ins-td ins-col-25">
-                                <input type="checkbox" name="commercial_each_occurrence" value="1"
-                                       class="ins-checkbox-input">
-                                EACH OCCURRENCE <br>
-                                <input type="checkbox" name="commercial_damage" value="1" class="ins-checkbox-input">
-                                DAMAGE TO RENTED PREMISES (Ea occurrence) <br>
-                                <input type="checkbox" name="commercial_expense" value="1" class="ins-checkbox-input">
-                                MED EXP (Any one person)<br>
-                                <input type="checkbox" name="commercial_injury" value="1" class="ins-checkbox-input">
-                                PERSONAL & ADV INJURY<br>
-
-                                <input type="checkbox" name="commercial_general_aggregate" value="1" class="ins-checkbox-input">
-                                GENERAL AGGREGATE<br>
-                                <input type="checkbox" name="commercial_general_product" value="1" class="ins-checkbox-input">
-                                PRODUCTS - COMP/OP AGG<br>
-                                <input type="checkbox"   class="ins-checkbox-input">
-                                <input type="text" name="commercial_general_other"/><br>
-                            </td>
-                            <td class="ins-td">
-                                <input type="text" name="commercial_each_occurrence_limit"/>
-                                <input type="text" name="commercial_damage_limit"/>
-                                <input type="text" name="commercial_expense_limit"/>
-                                <input type="text" name="commercial_injury_limit"/>
-                                <input type="text" name="commercial_general_aggregate_limit"/>
-                                <input type="text" name="commercial_general_product_limit"/>
-                                <input type="text" name="commercial_general_other_limit"/>
-                            </td>
-                        </tr>
-
-
-                        </tbody>
-                    </table>
-                </section>
-
-                <section class="ins-section">
-                    <div class="ins-section-title">AUTOMOBILE LIABILITY</div>
-                    <table class="ins-table">
-                        <tr>
-                            <td class="ins-td ins-text-center ins-col-narrow"></td>
-                            <td class="ins-td ins-col-27">
-                                <input type="checkbox" name="automobile_any" value="1" class="ins-checkbox-input">
-                                ANY AUTO <br>
-                                <input type="checkbox" name="automobile_own" value="1" class="ins-checkbox-input">
-                                OWNED AUTOS ONLY <br>
-                                <input type="checkbox" name="automobile_schedule" value="1" class="ins-checkbox-input">
-                                SCHEDULED AUTOS <br>
-                                <input type="checkbox" name="automobile_hired" value="1" class="ins-checkbox-input">
-                                HIRED AUTOS ONLY <br>
-                                <input type="checkbox" name="automobile_non_own" value="1" class="ins-checkbox-input">
-                                NON-OWNED AUTOS ONLY <br>
-                                <input type="checkbox" class="ins-checkbox-input">
-                                <input type="text" name="automobile_other_one"/>
-                                <br>
-                                <input type="checkbox" class="ins-checkbox-input">
-                                <input type="text" name="automobile_other_two"/>
-                                <br>
-                            </td>
-                            <td class="ins-td"><input type="text" style="width: 20pt" name="automobile_addl"/></td>
-                            <td class="ins-td"><input type="text" style="width: 20pt" name="automobile_subr"/></td>
-                            <td class="ins-td"><input type="text" style="width: 40pt" name="automobile_policy_number"/>
-                            </td>
-                            <td class="ins-td"><input type="text" style="width: 40pt" name="automobile_effective_date"/>
-                            </td>
-                            <td class="ins-td"><input type="text" style="width: 40pt"
-                                                      name="automobile_expiration_date"/></td>
-                            <td class="ins-td ins-col-25">
-
-                                <input type="checkbox" name="automobile_combine" value="1" class="ins-checkbox-input">
-                                COMBINED SINGLE LIMIT (Ea accident)<br>
-                                <input type="checkbox" name="automobile_injury_person" value="1"
-                                       class="ins-checkbox-input">
-                                BODILY INJURY (Per accident)<br>
-                                <input type="checkbox" name="automobile_injury_accident" value="1"
-                                       class="ins-checkbox-input">
-                                BODILY INJURY (Per person)<br>
-                                <input type="checkbox" name="automobile_property_damage" value="1"
-                                       class="ins-checkbox-input">
-                                PROPERTY DAMAGE (Per accident)<br>
-                                <input type="checkbox" class="ins-checkbox-input">
-                                <input type="text" name="automobile_other"/><br>
-                            </td>
-                            <td class="ins-td">
-                                <input type="text" name="automobile_combine_limit"/>
-                                <input type="text" name="automobile_injury_person_limit"/>
-                                <input type="text" name="automobile_injury_accident_limit"/>
-                                <input type="text" name="automobile_property_damage_limit"/>
-                                <input type="text" name="automobile_other_limit"/>
-                            </td>
-                        </tr>
-                    </table>
-                </section>
-
-                <section class="ins-section">
-                    <table class="ins-table">
-                        <tr>
-                            <td class="ins-td ins-text-center ins-col-narrow"></td>
-                            <td class="ins-td ins-col-27">
-                                <input type="checkbox" name="umbrella" value="1" class="ins-checkbox-input">
-                                UMBRELLA LIAB
-                                <br>
-                                <input type="checkbox" name="umbrella_occur" value="1" class="ins-checkbox-input">
-                                OCCUR
-                                <br>
-                                <input type="checkbox" name="umbrella_excess" value="1" class="ins-checkbox-input">
-                                EXCESS LIAB
-                                <br>
-                                <input type="checkbox" name="umbrella_claim" value="1" class="ins-checkbox-input">
-                                CLAIMS-MADE
-                                <br>
-                                <input type="checkbox" name="umbrella_ded" value="1" class="ins-checkbox-input">
-                                DED
-                                <br>
-                                <input type="checkbox" name="umbrella_retention" value="1" class="ins-checkbox-input">
-                                RETENTION
-                                <br>
-                            </td>
-                            <td class="ins-td"><input type="text" style="width: 20pt" name="umbrella_addl"/></td>
-                            <td class="ins-td"><input type="text" style="width: 20pt" name="umbrella_subr"/></td>
-                            <td class="ins-td"><input type="text" style="width: 40pt" name="umbrella_policy_number"/>
-                            </td>
-                            <td class="ins-td"><input type="text" style="width: 40pt" name="umbrella_effective_date"/>
-                            </td>
-                            <td class="ins-td"><input type="text" style="width: 40pt" name="umbrella_expiration_date"/>
-                            </td>
-                            <td class="ins-td ins-col-25">
-                                <input type="checkbox" name="umbrella_each_occurrence" value="1"
-                                       class="ins-checkbox-input">
-                                EACH OCCURRENCE <br>
-                                <input type="checkbox" name="umbrella_aggregate" value="1" class="ins-checkbox-input">
-                                Aggregate <br>
-                                <input type="checkbox" class="ins-checkbox-input">
-                                <input type="text" name="umbrella_aggregate_other"/>
-                                <br>
-
-                            </td>
-                            <td class="ins-td">
-                                <input type="text" name="umbrella_each_occurrence_limit"/>
-                                <input type="text" name="umbrella_aggregate_limit"/>
-                                <input type="text" name="umbrella_aggregate_other_limit"/>
-                            </td>
-                        </tr>
-
-                    </table>
-                </section>
-
-                <section class="ins-section">
-                    <div class="ins-section-title">WORKERS COMPENSATION AND EMPLOYERS' LIABILITY</div>
-                    <table class="ins-table">
-                        <tr>
-                            <td class="ins-td ins-text-center ins-col-narrow"></td>
-                            <td class="ins-td ins-col-27">ANY PROPRIETOR/PARTNER/EXECUTIVE OFFICER/MEMBER EXCLUDED?
-                                <br>
-                                <input type="radio" name="compensation" value="y" class="ins-checkbox-input"> YES
-                                <input type="radio" name="compensation" value="n" class="ins-checkbox-input"> NO
-                                <br>
-                                (Mandatory in NH) If yes, describe under DESCRIPTION OF OPERATIONS below
-
-                            </td>
-                            <td class="ins-td"><input type="text" style="width: 20pt" name="compensation_addl"/></td>
-                            <td class="ins-td"><input type="text" style="width: 20pt" name="compensation_subr"/></td>
-                            <td class="ins-td"><input type="text" style="width: 40pt"
-                                                      name="compensation_policy_number"/></td>
-                            <td class="ins-td"><input type="text" style="width: 40pt"
-                                                      name="compensation_effective_date"/></td>
-                            <td class="ins-td"><input type="text" style="width: 40pt"
-                                                      name="compensation_expiration_date"/></td>
-                            <td class="ins-td ins-col-25">
-                                <input type="checkbox" name="compensation_per_stat" value="1"
-                                       class="ins-checkbox-input"> PER STATUTE
-                                <br>
-                                <input type="checkbox" name="compensation_other" value="1"
-                                       class="ins-checkbox-input"> OTHER
-                                <br>
-                                <input type="checkbox" name="compensation_each_accident" value="1"
-                                       class="ins-checkbox-input"> E.L. EACH ACCIDENT
-                                <br>
-                                <input type="checkbox" name="compensation_disease_employee" value="1"
-                                       class="ins-checkbox-input"> E.L. DISEASE - EA EMPLOYEE
-                                <br>
-                                <input type="checkbox" name="compensation_disease_policy" value="1"
-                                       class="ins-checkbox-input">E.L. DISEASE - POLICY LIMIT
-                                <br>
-                            </td>
-                            <td class="ins-td">
-                                <input type="text" name="compensation_per_stat_limit"/>
-                                <input type="text" name="compensation_each_accident_limit"/>
-                                <input type="text" name="compensation_disease_employee_limit"/>
-                                <input type="text" name="compensation_disease_policy_limit"/>
-                            </td>
-                        </tr>
-
-
-                    </table>
-                </section>
-
-                <section class="ins-section">
-                    <div class="ins-section-title">DESCRIPTION OF OPERATIONS / LOCATIONS / VEHICLES (ACORD 101,
-                        Additional Remarks Schedule, may be attached if more space is required)
+                <div class="main-title">
+                    CERTIFICATE OF LIABALITY INSURANCE
+                </div>
+                <div class="header-right-meta">
+                    <div class="" style="text-align: center;">
+                        <label>DATE (MM/DD/YYYY):</label>
+                        <p><input type="text" name="invoice_date" /></p>
                     </div>
-                    <div class="ins-description-box">
-                        <textarea name="special_condition" style="width: 100%" rows="4"></textarea>
-                    </div>
-                </section>
+                </div>
             </div>
-            <!-- aaaa -->
-            <p style="padding-left: 9pt;text-indent: 0pt;text-align: left;">CERTIFICATE HOLDER <span
-                    style="margin-left: 14.5%;">CANCELLATION</span></p>
-            <table style="border-collapse:collapse;margin-left:6.6pt;" cellspacing="0">
-                <tr style="height:47pt">
-                    <td style="width:289pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt"
-                        rowspan="2">
-                        <p style="text-indent: 0pt;text-align: left;">
-                            <input type="text" name="certificate_holder"/>
-                        </p>
-                    </td>
-                    <td
-                        style="width:288pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                        <p style="padding-top: 1pt;text-indent: 0pt;text-align: left;"><br/></p>
-                        <p class="s12"
-                           style="padding-left: 9pt;padding-right: 20pt;text-indent: 0pt;line-height: 112%;text-align: left;">
-                            SHOULD ANY OF THE ABOVE DESCRIBED POLICIES BE CANCELLED BEFORE THE EXPIRATION DATE THEREOF,
-                            NOTICE
-                            WILL BE DELIVERED IN <span class="s9">ACCORDANCE WITH THE POLICY PROVISIONS.</span></p>
-                    </td>
+        
+        </div>
+        
+        <div class="form-container">
+            <div class="header-statement">
+                THIS CERTIFICATE IS ISSUED AS A MATTER OF INFORMATION ONLY AND CONFERS NO RIGHTS UPON THE CERTIFICATE HOLDER. THIS 
+                CERTIFICATE DOES NOT AFFIRMATIVELY OR NEGATIVELY AMEND, EXTEND OR ALTER THE COVERAGE AFFORDED BY THE POLICIES 
+                BELOW. THIS CERTIFICATE OF INSURANCE DOES NOT CONSTITUTE A CONTRACT BETWEEN THE ISSUING INSURER(S), AUTHORIZED 
+                REPRESENTATIVE OR PRODUCER, AND THE CERTIFICATE HOLDER.
+            </div>
+            <div class="header-statement" style="border-top: 1px solid #000;">
+                IMPORTANT: If the certificate holder is an ADDITIONAL INSURED, the policy(ies) must have ADDITIONAL INSURED provisions or be endored. If SUBROGATION IS WAIVED, subject to the terms and conditions of the policy, certain policies may require an endorsement. A statement on this certificate does not confer rights to the Certificate holder in lieu of such endorsement(s).
+            </div>
+    
+            <!-- Producer / Insured Section -->
+           
+            <div class="section-container">
+                <table class="producer-insured-table">
+                    <tr>
+                        <td class="left-col">
+                            <div class="cell-content">
+                                <div class="cell-header">PRODUCER</div>
+                                <div class="field-line-cell no-label">
+                                    <input type="text" name="producer_name" placeholder="Producer Name"/>
+                                </div>
+                                <div class="field-line-cell no-label">
+                                     <input type="text" name="producer_address" placeholder="Producer Address"/>
+                                </div>
+                                <div class="city-state-zip">
+                                    <div class="field-line-cell">
+                                        <input type="text" name="producer_city" placeholder="City" >
+                                    </div>
+                                    <div class="field-line-cell state">
+                                        <input type="text" name="producer_state" placeholder="State" >
+                                    </div>
+                                    <div class="field-line-cell zip">
+                                        <input type="text" name="producer_zipcode" placeholder="zip code">
+                                    </div>
+                                </div>
+                            </div>
+                            <hr style="margin-top: 10px; margin-bottom: 10px; border-color: #000;">
+                            <div class="cell-content">
+                                <div class="cell-header">INSURED</div>
+                                <div class="field-line-cell no-label">
+                                    <input type="text" name="insured_name" placeholder="Name">
+                                </div>
+                                <div class="field-line-cell no-label">
+                                    <input type="text" name="insured_address" placeholder="Address">
+                                </div>
+                                <div class="city-state-zip">
+                                    <div class="field-line-cell">
+                                        <input type="text" name="insured_city" placeholder="City">
+                                    </div>
+                                    <div class="field-line-cell state">
+                                        <input type="text" name="insured_state" placeholder="State">
+                                    </div>
+                                    <div class="field-line-cell zip">
+                                        <input type="text" name="insured_zipcode" placeholder="Zip Code">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+        
+                        <td class="right-col">
+                            <div class="cell-content">
+                                <div class="field-line-cell">
+                                    <label>CONTACT NAME:</label>
+                                    <input type="text" name="contact_name" placeholder="Contact Name">
+                                </div>
+                                <div class="contact-info-line">
+                                    <span>PHONE</span>
+                                    <input type="text" name="contact_phone_no" placeholder="Phone No">
+                                    <span class="fax-label">FAX</span>
+                                    <input type="text" name="contact_fax_no" placeholder="Fax">
+                                </div>
+                                <div class="field-line-cell">
+                                    <label>E-MAIL ADDRESS:</label>
+                                    <input type="text" name="contact_email" placeholder="Email">
+                                </div>
+                                <div class="field-line-cell">
+                                    <label>PRODUCER CUSTOMER ID:</label>
+                                    <input type="text" name="producer_customer_id" placeholder="Customer ID">
+                                </div>
+        
+                                <div class="insurer-coverage-section">
+                                    <div class="insurer-coverage-title">INSURER(S) AFFORDING COVERAGE</div>
+                                    <div class="insurer-line">
+                                        <label>INSURER A:</label>
+                                        <input type="text" name="insurer_a">
+                                        <label class="ml-auto">NAIC #</label>
+                                        <input type="text" name="insurer_a_naic" value="0">
+                                    </div>
+                                    <div class="insurer-line">
+                                        <label>INSURER B:</label>
+                                        <input type="text" name="insurer_b">
+                                        <label class="ml-auto">NAIC #</label>
+                                        <input type="text" name="insurer_b_naic" value="0">
+                                    </div>
+                                    <div class="insurer-line">
+                                        <label>INSURER C:</label>
+                                        <input type="text" name="insurer_c">
+                                        <label class="ml-auto">NAIC #</label>
+                                        <input type="text" name="insurer_c_naic" value="0">
+                                    </div>
+                                    <div class="insurer-line">
+                                        <label>INSURER D:</label>
+                                        <input type="text" name="insurer_d">
+                                        <label class="ml-auto">NAIC #</label>
+                                        <input type="text" name="insurer_d_naic" value="0">
+                                    </div>
+                                    <div class="insurer-line">
+                                        <label>INSURER E:</label>
+                                        <input type="text" name="insurer_e">
+                                        <label class="ml-auto">NAIC #</label>
+                                        <input type="text" name="insurer_e_naic" value="0">
+                                    </div>
+                                    <div class="insurer-line">
+                                        <label>INSURER F:</label>
+                                        <input type="text" name="insurer_f">
+                                        <label class="ml-auto">NAIC #</label>
+                                        <input type="text" name="insurer_f_naic" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </div>
+            
+           
+        </div>
+        <div style="display: flex;
+        justify-content: space-between;
+        width: 100%; margin-top: 10px; font-size: 11px;">
+            <h2><b>COVERAGES Certificate NUMBER:</b> <input type="text" name="certificate_no" style="width: 100pt;"></h2>
+            <h2><b>REVISION NUMBER:</b> <input type="text" name="revision_no" style="width: 100pt;"></h2>
+        </div>
+        <div class="form-container" style="margin-top: 10px;">
+            <!-- Coverages Section -->
+            <div class="coverage-section">
+   
+                <!-- Main Coverage Table -->
+                <table class="coverage-table">
+                    <thead>
+                        
+                        <tr>
+							<td colspan="9">
+								THIS IS TO CERTIFY THAT THE POLICIES OF INSURANCE LISTED BELOW HAVE BEEN ISSUED TO THE INSURED NAMED ABOVE FOR THE POLICY PERIOD INDICATED. NOT WITH STANDING ANY REQUIREMENT, TERM OR CONDITIONS OF ANY CONTRACT OR OTHER DOCUMENT WITH RESPECT TO WHICH THIS CERTIFICATE MAY BE ISSUED OR MAY PERTAIN. THE INSURANCE AFFORDED BY THE POLICIES DESCRIBED HEREIN IS SUBJECT TO ALL THE TERMS, EXCLUSIONS AND CONDITIONS OF SUCH POLICIES. LIMITS SHOWN MAY HAVE BEEN REDUCED BY PAID CLAIMS.
+							</td>
+						</tr>
+                            <tr>
+                                <th rowspan="2">INSR<br>LTR</th>
+                                <th >TYPE OF INSURANCE</th>
+                                <th rowspan="2">ADDL INSD</th>
+                                <th rowspan="2">SUBR WVD</th>
+                                <th rowspan="2">POLICY NUMBER</th>
+                                <th >POLICY EFFECTIVE</th>
+                                <th >DATE (MM/DD/YYYY)</th>
+                                <th colspan="2" rowspan="2">LIMITS</th>
+                            </tr>
+                            
+                    </thead>
+                    <tbody>
+                        <tr>
+                          <td rowspan="10"></td>
+                    
+                          <!-- Nested table in Col 2 -->
+                          <td rowspan="10" style="padding: 0;">
+                            <table class="tableinnertd"  cellpadding="3" cellspacing="0" style="width: 100%;">
+                              <tr><td><input type="checkbox"> COMMERCIAL GENERAL LIABILITY</td> </tr>
+                              <tr><td><input type="checkbox" name="commercial_claim" value="1" class="ins-checkbox-input"> CLAIMS-MADE <input type="checkbox" name="commercial_occur" value="1" class="ins-checkbox-input"> OCCUR</td> </tr>
+                              <tr><td><input type="checkbox" class="ins-checkbox-input"> <input type="text" name="commercial_other_one"></td> </tr>
+                              <tr><td><input type="checkbox" class="ins-checkbox-input"> <input type="text" name="commercial_other_two"></td> </tr>
+                              <tr><td>GEN'L AGGREGATE LIMIT APPLIES PER:</td> </tr>
+                              <tr><td><input type="checkbox" name="commercial_aggregate_policy" value="1" class="ins-checkbox-input"> POLICY <input type="checkbox" name="commercial_aggregate_project" value="1" class="ins-checkbox-input"> PROJECT <input type="checkbox" name="commercial_aggregate_loc" value="1" class="ins-checkbox-input"> LOC</td> </tr>
+                              <tr><td><input type="checkbox" name="commercial_aggregate_other" value="1" class="ins-checkbox-input"> OTHER</td> </tr>
+                             
+                            </table>
+                          </td>
+                    
+                          <td rowspan="7"><input type="text"  name="commercial_addl"></td>
+                          <td rowspan="7"><input type="text"  name="commercial_subr"></td>
+                          <td rowspan="7"><input type="text"  name="commercial_policy_number"></td>
+                          <td rowspan="7"><input type="text"  name="commercial_effective_date"></td>
+                          <td rowspan="7"><input type="text"  name="commercial_expiration_date"></td>
+                    
+                          <!-- Start of Col 6 & Col 7 rows -->
+                          <td><input type="checkbox" name="commercial_each_occurrence" value="1" class="ins-checkbox-input"> EACH OCCURANCE</td>
+                          <td>$ <input type="text" name="commercial_each_occurrence_limit"></td>
+                        </tr>
+                        <tr><td><input type="checkbox" name="commercial_damage" value="1" class="ins-checkbox-input"> DEMAGE TO RENTED PREMISES (Ea occurrence)</td><td>$ <input type="text" name="commercial_damage_limit"></td></tr>
+                        <tr><td><input type="checkbox" name="commercial_expense" value="1" class="ins-checkbox-input"> MED EXP (Any one person)</td><td>$ <input type="text" name="commercial_expense_limit"></td></tr>
+                        <tr><td><input type="checkbox" name="commercial_injury" value="1" class="ins-checkbox-input"> PERSONAL & ADV INJURY</td><td>$ <input type="text" name="commercial_injury_limit"></td></tr>
+                        <tr><td><input type="checkbox" name="commercial_general_aggregate" value="1" class="ins-checkbox-input"> GENERAL AGGREGATE</td><td>$ <input type="text" name="commercial_general_aggregate_limit"></td></tr>
+                        <tr><td><input type="checkbox" name="commercial_general_product" value="1" class="ins-checkbox-input"> PROUCTS - COMP/OP AGG</td><td>$ <input type="text" name="commercial_general_product_limit"></td></tr>
+                        <tr><td><input type="checkbox" class="ins-checkbox-input"> <input type="text" name="commercial_general_other"></td><td>$ <input type="text" name="commercial_general_other_limit"></td></tr>
+                      </tbody>
+                      <tbody>
+                        <tr>
+                          <td rowspan="10"></td>
+                    
+                          <!-- Nested table in Col 2 -->
+                          <td rowspan="10" style="padding: 0;">
+                            <table class="tableinnertd"  cellpadding="3" cellspacing="0" style="width: 100%;">
+                              <tr><td> AUTOMOBILE LIABILITY</td> </tr>
+                              <tr><td><input type="checkbox" name="automobile_any" value="1" class="ins-checkbox-input"> ANY AUTO</td> </tr>
+                              <tr><td><input type="checkbox" name="automobile_own" value="1" class="ins-checkbox-input"> OWNED AUTOS ONLY  <input type="checkbox" name="automobile_schedule" style="margin-left: 10px;"> SCHEDULED AUTOS</td></td> </tr>
+                              <tr><td><input type="checkbox" name="automobile_hired" value="1" class="ins-checkbox-input"> HIRED AUTOS ONLY  <input type="checkbox" name="automobile_non_own" style="margin-left: 10px;"> NON-OWNED AUTOS ONLY</td></td> </tr>
+                              <tr><td><input type="checkbox" class="ins-checkbox-input"> <input type="text" name="automobile_other_one"> <input type="checkbox" class="ins-checkbox-input"> <input type="text" name="automobile_other_two"></td></td> </tr>
+                              
+                             
+                            </table>
+                          </td>
+                    
+                          <td rowspan="7"><input type="text"  name="automobile_addl"></td>
+                          <td rowspan="7"><input type="text"  name="automobile_subr"></td>
+                          <td rowspan="7"><input type="text"  name="automobile_policy_number"></td>
+                          <td rowspan="7"><input type="text"  name="automobile_effective_date"></td>
+                          <td rowspan="7"><input type="text"  name="automobile_expiration_date"></td>
+                    
+                          <!-- Start of Col 6 & Col 7 rows -->
+                          <td><input type="checkbox" name="automobile_combine" value="1" class="ins-checkbox-input"> COMBINED SINGLE LIMIT (Ea occurrence)</td>
+                          <td>$ <input type="text" name="automobile_combine_limit"></td>
+                        </tr>
+                        <tr><td><input type="checkbox" name="automobile_injury_person" value="1" class="ins-checkbox-input"> BODILY INJURY (Per person)</td><td>$ <input type="text" name="automobile_injury_person_limit"></td></tr>
+                        <tr><td><input type="checkbox" name="automobile_injury_accident" value="1" class="ins-checkbox-input"> BODILY INJURY (Per accident)</td><td>$ <input type="text" name="automobile_injury_accident_limit"></td></tr>
+                        <tr><td><input type="checkbox" name="automobile_property_damage" value="1" class="ins-checkbox-input"> PROPERTY DAMAGE (Per accident)</td><td>$ <input type="text" name="automobile_property_damage_limit"></td></tr>
+                        <tr><td><input type="checkbox" class="ins-checkbox-input"> <input type="text" name="automobile_other"></td><td>$ <input type="text" name="automobile_other_limit"></td></tr>
+                        
+                      </tbody>
+                      <tbody>
+                        <tr>
+                          <td rowspan="10"></td>
+                    
+                          <!-- Nested table in Col 2 -->
+                          <td rowspan="10" style="padding: 0;">
+                            <table class="tableinnertd"  cellpadding="3" cellspacing="0" style="width: 100%;">
+                              <tr><td><input type="checkbox" name="umbrella" value="1" class="ins-checkbox-input"> UMBRELLA LIAB  <input type="checkbox" name="umbrella_occur" style="margin-left: 10px;"> OCCUR</td></td> </tr>
+                              <tr><td><input type="checkbox" name="umbrella_excess" value="1" class="ins-checkbox-input"> EXCESS LIAB  <input type="checkbox" name="umbrella_claim" style="margin-left: 10px;"> CLAIMS-MADE</td></td> </tr>
+                              <tr><td><input type="checkbox" name="umbrella_ded" value="1" class="ins-checkbox-input"> DED  <input type="checkbox" name="umbrella_retention" style="margin-left: 10px;"> RETENTION</td></td> </tr>
+                              
+                             
+                            </table>
+                          </td>
+                    
+                          <td rowspan="7"><input type="text"  name="umbrella_addl"></td>
+                          <td rowspan="7"><input type="text"  name="umbrella_subr"></td>
+                          <td rowspan="7"><input type="text"  name="umbrella_policy_number"></td>
+                          <td rowspan="7"><input type="text"  name="umbrella_effective_date"></td>
+                          <td rowspan="7"><input type="text"  name="umbrella_expiration_date"></td>
+                    
+                          <!-- Start of Col 6 & Col 7 rows -->
+                          <td><input type="checkbox" name="umbrella_each_occurrence" value="1" class="ins-checkbox-input"> EACH OCCURENCE</td>
+                          <td>$ <input type="text" name="umbrella_each_occurrence_limit"></td>
+                        </tr>
+                        <tr><td><input type="checkbox" name="umbrella_aggregate" value="1" class="ins-checkbox-input"> AGGREGATE</td><td>$ <input type="text" name="umbrella_aggregate_limit"></td></tr>
+                        <tr><td><input type="checkbox" class="ins-checkbox-input"> <input type="text" name="umbrella_aggregate_other"></td><td>$ <input type="text" name="umbrella_aggregate_other_limit"></td></tr>
+                        
+                        
+                        
+                      </tbody>
+                      <tbody>
+                        <tr>
+                          <td rowspan="10"></td>
+                    
+                          <!-- Nested table in Col 2 -->
+                          <td rowspan="10" style="padding: 0;">
+                            <table class="tableinnertd"  cellpadding="3" cellspacing="0" style="width: 100%;">
+                              <tr><td style="height: 30px;">Workers compensation and employer liabalities</td> </tr>
+                              <tr><td> ANY PROPRIETORY/PARTNER/EXECUTIVE OFFICER/MEMBER EXCLUDED? </br> <input type="radio" name="compensation" value="y" class="ins-checkbox-input"> Yes <input type="radio" name="compensation" value="n" class="ins-checkbox-input"> No</td> </tr>
+                              <tr><td> (Mandatory in NH)</td> </tr>
+                              <tr><td> If yes, describe under DESCRIPTION OF OPERATIONS below</td> </tr>
+                            </table>
+                          </td>
+                    
+                          <td rowspan="7"><input type="text"  name="compensation_addl"></td>
+                          <td rowspan="7"><input type="text"  name="compensation_subr"></td>
+                          <td rowspan="7"><input type="text"  name="compensation_policy_number"></td>
+                          <td rowspan="7"><input type="text"  name="compensation_effective_date"></td>
+                          <td rowspan="7"><input type="text"  name="compensation_expiration_date"></td>
+                    
+                          <!-- Start of Col 6 & Col 7 rows -->
+                          <td><input type="checkbox" name="compensation_per_stat" value="1" class="ins-checkbox-input">PER STATUTE <br><input type="checkbox" name="compensation_other" value="1" class="ins-checkbox-input"> OTHER </td>
+                          <td> <input type="text" name="compensation_per_stat_limit"></td>
+                        </tr>
+                        <tr><td><input type="checkbox" name="compensation_each_accident" value="1" class="ins-checkbox-input"> E.L. EACH ACCIDENT</td><td>$ <input type="text" name="compensation_each_accident_limit"></td></tr>
+                        <tr><td><input type="checkbox" name="compensation_disease_employee" value="1" class="ins-checkbox-input"> E.L. DISEASE - EA EMPLOYEE</td><td>$ <input type="text" name="compensation_disease_employee_limit"></td></tr>
+                        <tr><td><input type="checkbox" name="compensation_disease_policy" value="1" class="ins-checkbox-input"> E.L. DISEASE - POLICY LIMIT</td><td>$ <input type="text" name="compensation_disease_policy_limit"></td></tr>
+                      </tbody>
+                      <tbody>
+                        <tr>
+                          <td rowspan="10"></td>
+                    
+                          <!-- Nested table in Col 2 -->
+                          <td rowspan="10" style="padding: 0;">
+                            
+                          </td>
+                    
+                          <td rowspan="7"></td>
+                          <td rowspan="7"></td>
+                          <td rowspan="7"></td>
+                          <td rowspan="7"></td>
+                          <td rowspan="7"></td>
+                    
+                          <!-- Start of Col 6 & Col 7 rows -->
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                      <tbody>
+                        
+                        <tr>
+							<td colspan="9">
+								DESCRIPTION OF OPERATIONS/LOCATIONS/VEHICLES  (ACORD 101, Additional Remarks Schedule, may be attached if more space is required)
+								<br>
+								<textarea name="special_condition" style="width: 100%" rows="4"></textarea>
+							</td>
+						</tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="display: flex;
+        justify-content: space-between;
+        width: 100%; margin-top: 10px; font-size: 11px;">
+            <h2 style="width: 50%;"><b>CERTIFICATE HOLDER</b></h2>
+            <h2 style="width: 50%;"><b>CANCELLATION</b></h2>
+        </div>
+        <div class="form-container" style="margin-top: 10px;">
+            <!-- Certificate Holder / Cancellation Section -->
+           
+            <table class="certificate" style="width: 100%;">
+                <tr>
+                    <td rowspan="2"><input type="text" name="certificate_holder"></td>
+                    <td>
+						SHOULD ANY OF THE ABOVE DESCRIBED POLICIES BE CANCELLED BEFORE THE EXPIRATION DATE THEREOF, NOTICE WILL BE DELIVERED IN ACCORDANCE WITH THE POLICY PROVISIONS.
+					</td>
                 </tr>
-                <tr style="height:35pt">
-                    <td
-                        style="width:288pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                        <p class="s2" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">AUTHORIZED
-                            REPRESENTATIVE</p>
-                        <input type="text" name="authorize_representative"/>
-                    </td>
+                <tr>
+                    <td>AUTHORIZED REPRESENTATIVE <br> <input type="text" name="authorize_representative"></td>
                 </tr>
             </table>
-
-        </div>
-        <div class="row mt-12 mt-3 ">
-            <div class="col-md-12 text-center">
-                <button type="submit" class="btn btn-primary float-end m-1">Submit</button>
-                <button type="reset" class="btn btn-secondary float-end m-1">Reset</button>
+            
+    
+            <!-- Footer Section -->
+            <div class="footer-content">
+                <div class="flex-shrink-0">
+                    ACORD 101 (2008/01)
+                </div>
+                <div class="footer-copyright">
+                    &copy; 2008 ACORD CORPORATION. All rights reserved.<br>
+                    
+                </div>
+            </div>
+            <div>
+               
+                <p style="text-align: center;
+                font-size: 10px;
+                font-weight: 600;">The ACORD name and logo are registered marks of ACORD</p>
             </div>
         </div>
 
-    </form>
+    </div>
+    <div class="row mt-12 mt-3 ">
+        <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-primary float-end m-1">Submit</button>
+            <button type="reset" class="btn btn-secondary float-end m-1">Reset</button>
+        </div>
+    </div>
+
+</form>
 @endsection
