@@ -529,13 +529,14 @@
         textarea{
             border: 1px solid black;
         }
-    </style>
+    </style> 
 @endpush
 @section('content')
 
     <form action="{{ route('store-liability-insurance') }}" method="POST" class=" mt-4">
         @csrf
         <input type="hidden" name="client_id" value="{{ $clientPolicy->client_id }}">
+        
     <div>
         <div>
             <div class="header-top">
