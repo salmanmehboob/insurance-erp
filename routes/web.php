@@ -200,43 +200,43 @@ Route::middleware(['auth'])->group(function () {
     Route::get('view/form/{type}', [FormsController::class, 'viewForm'])->name('view.form');
     Route::get('show/form/{id}/{type}', [FormsController::class, 'showForm'])->name('show.form');
 
-    // Agent Broker Form
-    Route::get('agent/broker/form/{id}/create', [FormsController::class, 'createAgentBrokerForm'])->name('create-agent/broker-form');
-    Route::post('store-agentBrokerForm', [FormsController::class, 'storeAgentBrokerForm'])->name('store-agentBrokerForm');
-    // Additional Remarks Form
-    Route::get('additional/remarks/form/{id}/create', [FormsController::class, 'CreateAdditionalRemarksForm'])->name('create-additional/remarks-form');
-    Route::post('store-additionalRemarks', [FormsController::class, 'storeAdditionalRemarksForm'])->name('store-additionalRemarks');
-// Additional Remarks Form
-    Route::get('evidence/of/property/form/{id}/create', [FormsController::class, 'CreateEvidenceOfPropertyForm'])->name('create-evidence/of/property-form');
-    Route::post('store-evidence/of/property', [FormsController::class, 'storeEvidenceOfProperty'])->name('store-evidence/of/property');
-
-    // Invoice Fro Payment
-    Route::get('invoice/for/payment/form/{id}/create', [FormsController::class, 'CreateInvoiceForPaymentForm'])->name('create-invoice-for-payment-form');
-    Route::post('store/invoice/for/payment', [FormsController::class, 'storeInvoiceForPayment'])->name('store-invoice-for-payment');
-
-    // Property OF Loss Notice
-    Route::get('property/loss/form/{id}/create', [FormsController::class, 'CreatePropertyLossForm'])->name('create-property-loss-form');
-    Route::post('store/property/loss', [FormsController::class, 'storePropertyLoss'])->name('store-property-loss');
-
-    // Certificate Of Property Insurance
-    Route::get('property/insurance/form/{id}/create', [FormsController::class, 'CreatePropertyInsuranceForm'])->name('create-property-insurance-form');
-    Route::post('store/property/insurance', [FormsController::class, 'storePropertyInsurance'])->name('store-property-insurance');
-
-    // Certificate Of Liability Insurance
-    Route::get('liability/insurance/form/{id}/create', [FormsController::class, 'CreateLiabilityInsuranceForm'])->name('create-liability-insurance-form');
-    Route::post('store/liability/insurance', [FormsController::class, 'storeLiabilityInsurance'])->name('store-liability-insurance');
-
-    // INSURANCE IDENTIFICATION CARD
-    Route::get('insurance/card/form/{id}/create', [FormsController::class, 'CreateInsuranceCardForm'])->name('create-insurance-card-form');
-    Route::post('store/insurance/card', [FormsController::class, 'storeInsuranceCardForm'])->name('store-insurance-card');
-
-    // COMMERCIAL GENERAL LIABILITY SECTION
-    Route::get('general/liability/form/{id}/create', [FormsController::class, 'CreateGeneralLiabilityForm'])->name('create-general-liability-form');
-    Route::post('store/general/liability', [FormsController::class, 'storeGeneralLiabilityForm'])->name('store-general-liability');
-
-    // COMMERCIAL GENERAL LIABILITY SECTION
-    Route::get('insurance/application/form/{id}/create', [FormsController::class, 'CreateInsuranceApplicationForm'])->name('create-insurance-application-form');
-    Route::post('store/insurance/application', [FormsController::class, 'storeInsuranceApplicationForm'])->name('store-insurance-application');
+//    // Agent Broker Form
+//    Route::get('agent/broker/form/{id}/create', [FormsController::class, 'createAgentBrokerForm'])->name('create-agent/broker-form');
+//    Route::post('store-agentBrokerForm', [FormsController::class, 'storeAgentBrokerForm'])->name('store-agentBrokerForm');
+//    // Additional Remarks Form
+//    Route::get('additional/remarks/form/{id}/create', [FormsController::class, 'CreateAdditionalRemarksForm'])->name('create-additional/remarks-form');
+//    Route::post('store-additionalRemarks', [FormsController::class, 'storeAdditionalRemarksForm'])->name('store-additionalRemarks');
+//// Additional Remarks Form
+//    Route::get('evidence/of/property/form/{id}/create', [FormsController::class, 'CreateEvidenceOfPropertyForm'])->name('create-evidence/of/property-form');
+//    Route::post('store-evidence/of/property', [FormsController::class, 'storeEvidenceOfProperty'])->name('store-evidence/of/property');
+//
+//    // Invoice Fro Payment
+//    Route::get('invoice/for/payment/form/{id}/create', [FormsController::class, 'CreateInvoiceForPaymentForm'])->name('create-invoice-for-payment-form');
+//    Route::post('store/invoice/for/payment', [FormsController::class, 'storeInvoiceForPayment'])->name('store-invoice-for-payment');
+//
+//    // Property OF Loss Notice
+//    Route::get('property/loss/form/{id}/create', [FormsController::class, 'CreatePropertyLossForm'])->name('create-property-loss-form');
+//    Route::post('store/property/loss', [FormsController::class, 'storePropertyLoss'])->name('store-property-loss');
+//
+//    // Certificate Of Property Insurance
+//    Route::get('property/insurance/form/{id}/create', [FormsController::class, 'CreatePropertyInsuranceForm'])->name('create-property-insurance-form');
+//    Route::post('store/property/insurance', [FormsController::class, 'storePropertyInsurance'])->name('store-property-insurance');
+//
+//    // Certificate Of Liability Insurance
+//    Route::get('liability/insurance/form/{id}/create', [FormsController::class, 'CreateLiabilityInsuranceForm'])->name('create-liability-insurance-form');
+//    Route::post('store/liability/insurance', [FormsController::class, 'storeLiabilityInsurance'])->name('store-liability-insurance');
+//
+//    // INSURANCE IDENTIFICATION CARD
+//    Route::get('insurance/card/form/{id}/create', [FormsController::class, 'CreateInsuranceCardForm'])->name('create-insurance-card-form');
+//    Route::post('store/insurance/card', [FormsController::class, 'storeInsuranceCardForm'])->name('store-insurance-card');
+//
+//    // COMMERCIAL GENERAL LIABILITY SECTION
+//    Route::get('general/liability/form/{id}/create', [FormsController::class, 'CreateGeneralLiabilityForm'])->name('create-general-liability-form');
+//    Route::post('store/general/liability', [FormsController::class, 'storeGeneralLiabilityForm'])->name('store-general-liability');
+//
+//    // COMMERCIAL GENERAL LIABILITY SECTION
+//    Route::get('insurance/application/form/{id}/create', [FormsController::class, 'CreateInsuranceApplicationForm'])->name('create-insurance-application-form');
+//    Route::post('store/insurance/application', [FormsController::class, 'storeInsuranceApplicationForm'])->name('store-insurance-application');
 
 
     Route::get('/create/{type}/{client_id}', [FormsController::class, 'showUploadForm'])->name('show-upload-form');

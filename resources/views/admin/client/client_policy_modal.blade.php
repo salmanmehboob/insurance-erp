@@ -62,7 +62,8 @@
 
                             <a class="nav-link" id="v-pills-attachment-tab-{{ $policy->id }}" data-bs-toggle="pill"
                                href="#v-pills-attachment-{{ $policy->id }}" role="tab"
-                               aria-controls="v-pills-attachment-{{ $policy->id }}" aria-selected="false"> Scan Documents</a>
+                               aria-controls="v-pills-attachment-{{ $policy->id }}" aria-selected="false"> Scan
+                                Documents</a>
 
                         </div>
                     </div>
@@ -111,7 +112,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <p><strong>Email:</strong> <a
-                                                    href="mailto:{{ optional($policy->client)->email }}">{{ optional($policy->client)->email ?? 'N/A' }}</a>
+                                                        href="mailto:{{ optional($policy->client)->email }}">{{ optional($policy->client)->email ?? 'N/A' }}</a>
                                             </p>
                                         </div>
                                     </div>
@@ -201,137 +202,159 @@
                                             <h1 class="mb-3">Forms</h1>
                                         </div>
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-agent/broker-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">Create Agent/Broker Form</a>  --}}
+                                            {{--                                              <a href="{{ route('create-agent/broker-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">Create Agent/Broker Form</a>  --}}
 
-                                               <a href="{{ route('show-upload-form', ['type' => 'agent_broker', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">AGENT/BROKER FORM</a>
+                                            <a href="{{ route('show-upload-form', ['type' => slugify('ACORD-36-Agent-broker-of-Record-Change'), 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">{{slugify('Agent-broker-of-Record-Change')}}</a>
                                         </div>
                                         <div class="col-md-4">
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'agent_broker', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' => slugify('ACORD-36-Agent-broker-of-Record-Change'), 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         </div>
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-additional/remarks-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">Create Additional/Remarks Form</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'additional_remarks', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">ADDITIONAL/REMARKS FORM</a>
+                                            {{--                                              <a href="{{ route('create-additional/remarks-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">Create Additional/Remarks Form</a> --}}
+
+                                            <a href="{{ route('show-upload-form', ['type' => slugify('ACORD-101-Additional-Remarks'), 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">{{slugify('Additional-Remarks')}}</a>
                                         </div>
 
                                         <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'additional_remarks'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'additional_remarks', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
-                                                <i class="fa fa-eye"></i> View
-                                            </a>
-                                        </div>
-
-                                        <div class="col-md-8">
-{{--                                              <a href="{{ route('create-evidence/of/property-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">Evidence Of Property</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'evidence_of_property', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">EVIDENCE OF PROPERTY</a>
-                                        </div>
-
-                                        <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'evidenceOfProperty'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'evidence_of_property', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'additional_remarks'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' => slugify('ACORD-101-Additional-Remarks'), 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         </div>
 
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-invoice-for-payment-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">Invoice For Payment</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'invoice_for_payment', 'client_id' => $policy->client->id]) }}"
+                                            {{--                                              <a href="{{ route('create-evidence/of/property-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">Evidence Of Property</a> --}}
+
+                                            <a href="{{ route('show-upload-form', ['type' => slugify('ACORD-27-Evidence-of-Property-Insurance'), 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">{{slugify('Evidence-of-Property-Insurance')}}</a>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'evidenceOfProperty'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' =>  slugify('ACORD-27-Evidence-of-Property-Insurance'), 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            {{--                                              <a href="{{ route('create-invoice-for-payment-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">Invoice For Payment</a> --}}
+                                            <a href="{{ route('show-upload-form', ['type' => 'invoice_for_payment', 'client_id' => $policy->client->id]) }}"
                                                class="text-primary w-100 text-uppercase">INVOICE FOR PAYMENT</a>
                                         </div>
                                         <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'invoiceForPayment'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'invoice_for_payment', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'invoiceForPayment'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' => 'invoice_for_payment', 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         </div>
 
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-property-loss-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">Property Loss Notice</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'property_loss', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">PROPERTY LOSS NOTICE</a>
+                                            {{--                                              <a href="{{ route('create-property-loss-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">Property Loss Notice</a> --}}
+                                            <a href="{{ route('show-upload-form', ['type' => slugify('ACORD-1-Property Loss Notice'), 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">{{slugify('Property-Loss-Notice')}}</a>
                                         </div>
 
                                         <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'propertyLoss'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'property_loss', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'propertyLoss'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' => slugify('ACORD-1-Property Loss Notice'), 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         </div>
 
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-property-insurance-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">Certificate Of Property Insurance</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'property_insurance', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">CERTIFICATE OF PROPERTY INSURANCE</a>
+                                            {{--                                              <a href="{{ route('create-property-insurance-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">Certificate Of Property Insurance</a> --}}
+                                            <a href="{{ route('show-upload-form', ['type' => slugify('ACORD-24-Certificate of Property Insurance'), 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">{{slugify('Certificate-of-Property-Insurance')}}</a>
                                         </div>
 
                                         <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'propertyInsurance'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'property_insurance', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'propertyInsurance'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' => slugify('ACORD-24-Certificate of Property Insurance'), 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         </div>
 
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-liability-insurance-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">Certificate Of Liability Insurance</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'liability_insurance', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">CERTIFICATE OF LIABILITY INSURANCE</a>
+                                            {{--                                              <a href="{{ route('create-liability-insurance-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">Certificate Of Liability Insurance</a> --}}
+                                            <a href="{{ route('show-upload-form', ['type' => slugify('ACORD-25-Certificate-of-Liability-Insurance'), 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">{{slugify('Certificate-of-Liability-Insurance')}}</a>
                                         </div>
 
                                         <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'liabilityInsurance'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'liability_insurance', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'liabilityInsurance'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' => slugify('ACORD-25-Certificate-of-Liability-Insurance'), 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         </div>
 
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-insurance-card-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">INSURANCE IDENTIFICATION CARD</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'insurance_card', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">INSURANCE IDENTIFICATION CARD</a>
+                                            {{--                                              <a href="{{ route('create-insurance-card-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">INSURANCE IDENTIFICATION CARD</a> --}}
+                                            <a href="{{ route('show-upload-form', ['type' =>  slugify('ACORD-50-Insurance-id-card'), 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">{{slugify('Insurance-id-card')}}</a>
                                         </div>
 
                                         <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceCard'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'insurance_card', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceCard'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' => slugify('ACORD-50-Insurance-id-card'), 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         </div>
 
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-general-liability-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">COMMERCIAL GENERAL LIABILITY SECTION</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'general_liability', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">COMMERCIAL GENERAL LIABILITY SECTION</a>
+                                            {{--                                              <a href="{{ route('create-general-liability-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">COMMERCIAL GENERAL LIABILITY SECTION</a> --}}
+                                            <a href="{{ route('show-upload-form', ['type' => slugify('ACORD-126-Commercial General Liability Section 2016-09'), 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">{{slugify('Commercial General Liability Section 2016-09')}}</a>
                                         </div>
 
                                         <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'GeneralLiability'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'general_liability', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'GeneralLiability'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' => slugify('ACORD-126-Commercial General Liability Section 2016-09'), 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         </div>
                                         <div class="col-md-8">
-{{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"--}}
-{{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
-                                               <a href="{{ route('show-upload-form', ['type' => 'insurance_application', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">COMMERCIAL INSURANCE APPLICATION</a>
+                                            {{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"--}}
+                                            {{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
+                                            <a href="{{ route('show-upload-form', ['type' => slugify('ACORD-125-Commercial Insurance Application'), 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">{{slugify('Commercial Insurance Application')}}</a>
                                         </div>
 
                                         <div class="col-md-4">
-{{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'insurance_application', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' => slugify('ACORD-125-Commercial Insurance Application'), 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         </div>
@@ -339,13 +362,15 @@
                                         <div class="col-md-8">
                                             {{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"--}}
                                             {{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
-                                            <a href="{{ route('show-upload-form', ['type' => 'dwelling_fire', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">DWELLING FIRE APPLICATION</a>
+                                            <a href="{{ route('show-upload-form', ['type' => slugify('Acord-84-Dwelling-Fire-Application'), 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">{{slugify('Acord-84-Dwelling-Fire-Application')}}</a>
                                         </div>
 
                                         <div class="col-md-4">
                                             {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'dwelling_fire', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' => slugify('Acord-84-Dwelling-Fire-Application'), 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         </div>
@@ -353,13 +378,15 @@
                                         <div class="col-md-8">
                                             {{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"--}}
                                             {{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
-                                            <a href="{{ route('show-upload-form', ['type' => 'installation_builders', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">INSTALLATION BUILDERS RISK SECTION</a>
+                                            <a href="{{ route('show-upload-form', ['type' => slugify('ACORD-147-Installation-Builders Risk Section'), 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">{{slugify('Installation-Builders Risk Section')}}</a>
                                         </div>
 
                                         <div class="col-md-4">
                                             {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'installation_builders', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' => slugify('ACORD-147-Installation-Builders Risk Section'), 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         </div>
@@ -367,13 +394,15 @@
                                         <div class="col-md-8">
                                             {{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"--}}
                                             {{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
-                                            <a href="{{ route('show-upload-form', ['type' => 'property_section', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">PROPERTY SECTION</a>
+                                            <a href="{{ route('show-upload-form', ['type' => slugify('ACORD-140-Property Section'), 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">{{slugify('Property Section')}}</a>
                                         </div>
 
                                         <div class="col-md-4">
                                             {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'property_section', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' => slugify('ACORD-140-Property Section'), 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         </div>
@@ -381,13 +410,15 @@
                                         <div class="col-md-8">
                                             {{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"--}}
                                             {{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
-                                            <a href="{{ route('show-upload-form', ['type' => 'umbrella_section', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">UMBRELLA EXCESS SECTION</a>
+                                            <a href="{{ route('show-upload-form', ['type' => slugify('ACORD-131-Excess-Umbrella Section 2017-11'), 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">{{slugify('Excess-Umbrella Section 2017-11')}}</a>
                                         </div>
 
                                         <div class="col-md-4">
                                             {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'umbrella_section', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' => slugify('ACORD-131-Excess-Umbrella Section 2017-11'), 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         </div>
@@ -395,13 +426,15 @@
                                         <div class="col-md-8">
                                             {{--                                              <a href="{{ route('create-insurance-application-form', $policy->client->id) }}"--}}
                                             {{--                                               class="text-primary w-100">COMMERCIAL INSURANCE APPLICATION</a> --}}
-                                            <a href="{{ route('show-upload-form', ['type' => 'worker_compensation', 'client_id' => $policy->client->id]) }}"
-                                               class="text-primary w-100 text-uppercase">WORKERS COMPENSATION APPLICATION</a>
+                                            <a href="{{ route('show-upload-form', ['type' => slugify('ACORD-130-Workers Comp Application 2017-05'), 'client_id' => $policy->client->id]) }}"
+                                               class="text-primary w-100 text-uppercase">{{slugify('Workers Comp Application 2017-05')}}</a>
                                         </div>
 
                                         <div class="col-md-4">
                                             {{--                                            <a target="_blank" href="{{route('view.form',['type' => 'InsuranceApplication'])}}" class="btn btn-info w-100 mb-2">View Forms</a> --}}
-                                            <a target="_blank" href="{{ route('view-uploaded-form', ['type' => 'worker_compensation', 'client_id' => $policy->client->id]) }}" class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
+                                            <a target="_blank"
+                                               href="{{ route('view-uploaded-form', ['type' => slugify('ACORD-130-Workers Comp Application 2017-05'), 'client_id' => $policy->client->id]) }}"
+                                               class="btn btn-info btn-sm w-100 mb-2 text-uppercase">
                                                 <i class="fa fa-eye"></i> View
                                             </a>
                                         </div>
@@ -410,12 +443,13 @@
                             </div>
 
                             <!-- Attachments Tab -->
-                            <div class="tab-pane fade text-black" id="v-pills-attachment-{{ $policy->id }}" role="tabpanel"
+                            <div class="tab-pane fade text-black" id="v-pills-attachment-{{ $policy->id }}"
+                                 role="tabpanel"
                                  aria-labelledby="v-pills-attachment-tab-{{ $policy->id }}">
                                 <div class="container py-3">
                                     <div class="row">
                                         <div class="col-12">
-                                            <h2 >Attachment</h2>
+                                            <h2>Attachment</h2>
                                         </div>
 
                                         @if($policy->client && $policy->client->attachments->count())
@@ -425,7 +459,8 @@
                                                     @foreach($policy->client->attachments as $attachment)
                                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                                             {{ $attachment->attachment_name }}
-                                                            <a href="{{ asset('storage/' . $attachment->path) }}" target="_blank" class="btn btn-sm btn-primary">
+                                                            <a href="{{ asset('storage/' . $attachment->path) }}"
+                                                               target="_blank" class="btn btn-sm btn-primary">
                                                                 View
                                                             </a>
                                                         </li>
@@ -445,24 +480,29 @@
                                                     <div class="col-md-5">
                                                         <div class="form-group">
                                                             <label for="attachment_name">Attachment Name</label>
-                                                            <input type="text" name="attachment_name[]" class="form-control" placeholder="Enter attachment name">
+                                                            <input type="text" name="attachment_name[]"
+                                                                   class="form-control"
+                                                                   placeholder="Enter attachment name">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-5">
                                                         <div class="form-group">
                                                             <label for="attachment_file">Attachment File</label>
-                                                            <input type="file" name="attachment_file[]" class="form-control">
+                                                            <input type="file" name="attachment_file[]"
+                                                                   class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <button type="button" class="btn btn-danger mt-3 remove-row"><i class="fa fa-trash-alt"></i></button>
+                                                        <button type="button" class="btn btn-danger mt-3 remove-row"><i
+                                                                    class="fa fa-trash-alt"></i></button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </template>
 
                                         <div class="col-md-6 mt-5">
-                                            <button type="button" class="btn btn-primary" id="add-attachment">Add Attachment
+                                            <button type="button" class="btn btn-primary" id="add-attachment">Add
+                                                Attachment
                                             </button>
                                         </div>
 
@@ -476,7 +516,6 @@
                                     </div>
                                 </div>
                             </div>
-
 
 
                         </div>

@@ -5,12 +5,12 @@
 @section('content')
 
     <div class="mb-3">
-        <a href="{{ asset('forms/'.$formType.'.pdf') }}" class="btn btn-outline-info" download>
+        <a href="{{ asset('forms/editable/'.$formType.'.pdf') }}" class="btn btn-outline-info" download>
             @php
                 $displayFormType = preg_replace('/([a-z])([A-Z])/', '$1 $2', $formType); // camelCase to space
                 $displayFormType = ucwords(str_replace('_', ' ', $displayFormType)); // snake_case to space and capitalize
             @endphp
-            Download Sample {{ $displayFormType }} PDF
+            Download Sample {{ unslugify($displayFormType) }} PDF
         </a>
     </div>
 
@@ -19,7 +19,7 @@
             <div class="col-md-6">
                 <div class="card shadow">
                     <div class="card-header text-white">
-                        <h5 class="mb-0">Upload {{ $displayFormType }} PDF for Client  {{ $client->applicant_name }}</h5>
+                        <h5 class="mb-0">Upload {{ unslugify($displayFormType) }} PDF for Client  {{ $client->applicant_name }}</h5>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('upload-form') }}" method="POST" enctype="multipart/form-data">

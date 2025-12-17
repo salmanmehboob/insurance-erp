@@ -26,6 +26,21 @@ function showStatus($status)
 
 }
 
+function slugify($string)
+{
+    $string = strtolower($string);          // convert to lowercase
+    $string = str_replace(' ', '-', $string); // replace spaces with hyphen
+    return $string;
+}
+
+function unslugify($string)
+{
+    $string = str_replace('-', ' ', $string); // replace - with space
+    return ucwords($string);                  // capitalize words
+}
+
+
+
 
 
 
